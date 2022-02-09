@@ -197,3 +197,74 @@ CREATE TABLE HistorialFacturasAnuladas
 )
 GO
 
+CREATE TABLE Bodegas 
+(
+	BdgId INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	bdgDescripción varchar(30) NOT NULL
+)GO
+
+ALTER TABLE Movimientos 
+ADD MvmIdBodega INT FOREIGN KEY(MvmIdBodega) References Bodegas(BdgId) NOT NULL
+GO
+
+INSERT INTO Bodegas(bdgDescripción) VALUES('Central'), ('Tienda')
+GO
+
+CREATE TABLE Pedido
+(
+	PddId INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	PddFecha DATETIME NOT NULL,
+	PddIdUsuario INT FOREIGN KEY(PddIdUsuario) References Usuarios(UsrID) NOT NULL,
+	PddRazonCancelada TEXT NULL
+)
+GO
+
+CREATE TABLE Moneda
+(
+	MndId INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	MndCodigo VARCHAR(10) NOT NULL,
+	MndDescripcion VARCHAR(30) NOT NULL
+)
+GO
+
+INSERT INTO Moneda(MndCodigo,MndDescripcion) VALUES('CRC','Colones'), ('USD','Dolares')
+GO
+
+CREATE TABLE Proveedores
+(
+	PvdId INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	PvdProveedorNmbre VARCHAR(100) NOT NULL,
+	PvdProveedorCorreo VARCHAR(100)  NULL,
+	PvdProveedorNumeroTelefono VARCHAR(30) NULL,
+	PvdCodigoPais INT NULL
+)
+GO
+
+ALTER TABLE Pedido ADD PddProveedor INT FOREIGN KEY(PddProveedor) References Proveedores(PvdId) NOT NULL
+go
+
+CREATE TABLE EstadoPedido
+(
+	EtpId INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	EtpDescripcion VARCHAR(30) NOT NULL,
+
+)
+GO
+
+INSERT INTO EstadoPedido(EtpDescripcion) VALUES('Finalizada'),('En progreso'), ('Cancelada o Anulada'),('Llegada parcial')
+GO
+
+
+ALTER TABLE Pedido ADD PddEstado INT FOREIGN KEY(PddEstado) References EstadoPedido(EtpId) NOT NULL
+go
+
+CREATE TABLE DetalleProductoPedido
+(
+	DppId INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	DppIdProducto INT FOREIGN KEY(DppIdProducto) References Productos(PrdId) NOT NULL,
+	DppIdMoneda INT FOREIGN KEY(DppIdMoneda) References Moneda(MndId) NOT NULL,
+	DppPesoUnitario FLOAT NULL,
+	DppValorMoneda FLOAT NULL,
+	DppCostoMoneda FLOAT NULL,
+	DppCostoColones FLOAT NULL
+)
