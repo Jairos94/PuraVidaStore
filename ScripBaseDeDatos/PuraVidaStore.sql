@@ -201,7 +201,7 @@ CREATE TABLE Bodegas
 (
 	BdgId INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 	bdgDescripción varchar(30) NOT NULL
-)GO
+)
 
 ALTER TABLE Movimientos 
 ADD MvmIdBodega INT FOREIGN KEY(MvmIdBodega) References Bodegas(BdgId) NOT NULL
@@ -262,9 +262,15 @@ CREATE TABLE DetalleProductoPedido
 (
 	DppId INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 	DppIdProducto INT FOREIGN KEY(DppIdProducto) References Productos(PrdId) NOT NULL,
+	DppIdPedido INT FOREIGN KEY(DppIdPedido) References Pedido(PddId) NOT NULL,
 	DppIdMoneda INT FOREIGN KEY(DppIdMoneda) References Moneda(MndId) NOT NULL,
 	DppPesoUnitario FLOAT NULL,
 	DppValorMoneda FLOAT NULL,
 	DppCostoMoneda FLOAT NULL,
 	DppCostoColones FLOAT NULL
+)
+
+CREATE TABLE Trakins 
+(
+	Trk INT IDENTITY(1,1) PRIMARY KEY NOT NULL
 )
