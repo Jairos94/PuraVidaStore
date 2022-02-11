@@ -269,8 +269,44 @@ CREATE TABLE DetalleProductoPedido
 	DppCostoMoneda FLOAT NULL,
 	DppCostoColones FLOAT NULL
 )
+GO
 
-CREATE TABLE Trakins 
+CREATE TABLE Trackins 
 (
-	Trk INT IDENTITY(1,1) PRIMARY KEY NOT NULL
+	TrkId INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	TrkFecha DATETIME NOT NULL,
+	TrKTrackin VARCHAR(300) NOT NULL,
+	TrkMoneda INT FOREIGN KEY(TrkMoneda) References Moneda(MndId) NOT NULL,
+	TrkCostoMoneda FLOAT NULL,
+	TrkValorMoneda FLOAT NULL,
+	TrkIdPedido INT FOREIGN KEY(TrkIdPedido) References Pedido(PddId) NULL,
+	TrkPesoProveedor FLOAT NULL,
+	TrkPesoReal FLOAT NULL,
+	TrkMedidaLargoCm FLOAT NULL,
+	TrkMedidaAnchoCm FLOAT NULL,
+	TrkMedidaAlturaCm FLOAT NULL,
+	TrkEstado INT FOREIGN KEY(TrkEstado) References EstadoPedido(EtpId) NOT NULL,
+	TrkProveedor INT FOREIGN KEY(TrkProveedor) References Proveedores(PvdId) NOT NULL,
 )
+GO
+
+CREATE TABLE TrackinsAsociados
+(
+	TraId INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	TraIdTrackin INT FOREIGN KEY(TraIdTrackin) References Trackins(TrkId) NOT NULL,
+	TraIdTrackinPrincial INT FOREIGN KEY(TraIdTrackin) References Trackins(TrkId) NOT NULL
+)
+
+CREATE TABLE OtrosCargos
+(
+	OtrId INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	OtrIdMoneda INT FOREIGN KEY(OtrIdMoneda) References Moneda(MndId) NOT NULL,
+	OtrIdPedido INT FOREIGN KEY(OtrIdPedido) References Pedido(PddId) NOT NULL,
+	OtrValorMoneda FLOAT NULL ,
+	OtrCostoMoneda FLOAT NULL,
+	OtrRazon TEXT NOT NULL
+)
+GO
+
+ALTER TABLE Factura
+ADD FtrBodega INT FOREIGN KEY(FtrBodega) References Bodegas(BdgId) NOT NULL
