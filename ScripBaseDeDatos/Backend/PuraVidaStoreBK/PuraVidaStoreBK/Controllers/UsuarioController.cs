@@ -1,18 +1,26 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PuraVidaStoreBK.Models;
+using System.Threading.Tasks;
 using PuraVidaStoreBK.ExecQuerys;
 
 namespace PuraVidaStoreBK.Controllers
 {
+    
     public class UsuarioController : Controller
     {
-
+       
         // GET: UsuarioController
         [HttpGet("GetUsuario")]
-        public async Task<Object> GetUsuario(string user,string password)
+        public UsuarioModel GetUsuario(string user,string password)
+        //public ActionResult  GetUsuario()
         {
-            return View();
+            UsuarioModel Usu = new UsuarioModel();
+            UsuariosQuerys Ejecuta = new UsuariosQuerys();
+            Usu = Ejecuta.GetUsuario(user, password);
+            return Usu;
+
+
         }
 
         // GET: UsuarioController/Details/5
