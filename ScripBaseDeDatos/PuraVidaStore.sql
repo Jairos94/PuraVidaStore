@@ -8,8 +8,8 @@ CREATE TABLE Usuarios
 (
 	UsrID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 	UsrUser VARCHAR(16) NOT NULL,
-	UsrPass VARCHAR(250) NOT NULL,
-	UsrEmail VARCHAR(20) NULL
+	UsrPass VARBINARY (8000) NOT NULL,
+	UsrEmail VARCHAR(50) NULL
 )
 Go
 
@@ -197,3 +197,116 @@ CREATE TABLE HistorialFacturasAnuladas
 )
 GO
 
+CREATE TABLE Bodegas 
+(
+	BdgId INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	bdgDescripción varchar(30) NOT NULL
+)
+
+ALTER TABLE Movimientos 
+ADD MvmIdBodega INT FOREIGN KEY(MvmIdBodega) References Bodegas(BdgId) NOT NULL
+GO
+
+INSERT INTO Bodegas(bdgDescripción) VALUES('Central'), ('Tienda')
+GO
+
+CREATE TABLE Pedido
+(
+	PddId INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	PddFecha DATETIME NOT NULL,
+	PddIdUsuario INT FOREIGN KEY(PddIdUsuario) References Usuarios(UsrID) NOT NULL,
+	PddRazonCancelada TEXT NULL
+)
+GO
+
+CREATE TABLE Moneda
+(
+	MndId INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	MndCodigo VARCHAR(10) NOT NULL,
+	MndDescripcion VARCHAR(30) NOT NULL
+)
+GO
+
+INSERT INTO Moneda(MndCodigo,MndDescripcion) VALUES('CRC','Colones'), ('USD','Dolares')
+GO
+
+CREATE TABLE Proveedores
+(
+	PvdId INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	PvdProveedorNmbre VARCHAR(100) NOT NULL,
+	PvdProveedorCorreo VARCHAR(100)  NULL,
+	PvdProveedorNumeroTelefono VARCHAR(30) NULL,
+	PvdCodigoPais INT NULL
+)
+GO
+
+ALTER TABLE Pedido ADD PddProveedor INT FOREIGN KEY(PddProveedor) References Proveedores(PvdId) NOT NULL
+go
+
+CREATE TABLE EstadoPedido
+(
+	EtpId INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	EtpDescripcion VARCHAR(30) NOT NULL,
+
+)
+GO
+
+INSERT INTO EstadoPedido(EtpDescripcion) VALUES('Finalizada'),('En progreso'), ('Cancelada o Anulada'),('Llegada parcial')
+GO
+
+
+ALTER TABLE Pedido ADD PddEstado INT FOREIGN KEY(PddEstado) References EstadoPedido(EtpId) NOT NULL
+go
+
+CREATE TABLE DetalleProductoPedido
+(
+	DppId INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	DppIdProducto INT FOREIGN KEY(DppIdProducto) References Productos(PrdId) NOT NULL,
+	DppIdPedido INT FOREIGN KEY(DppIdPedido) References Pedido(PddId) NOT NULL,
+	DppIdMoneda INT FOREIGN KEY(DppIdMoneda) References Moneda(MndId) NOT NULL,
+	DppPesoUnitario FLOAT NULL,
+	DppValorMoneda FLOAT NULL,
+	DppCostoMoneda FLOAT NULL,
+	DppCostoColones FLOAT NULL
+)
+GO
+
+CREATE TABLE Trackins 
+(
+	TrkId INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	TrkFecha DATETIME NOT NULL,
+	TrKTrackin VARCHAR(300) NOT NULL,
+	TrkMoneda INT FOREIGN KEY(TrkMoneda) References Moneda(MndId) NOT NULL,
+	TrkCostoMoneda FLOAT NULL,
+	TrkValorMoneda FLOAT NULL,
+	TrkIdPedido INT FOREIGN KEY(TrkIdPedido) References Pedido(PddId) NULL,
+	TrkPesoProveedor FLOAT NULL,
+	TrkPesoReal FLOAT NULL,
+	TrkMedidaLargoCm FLOAT NULL,
+	TrkMedidaAnchoCm FLOAT NULL,
+	TrkMedidaAlturaCm FLOAT NULL,
+	TrkEstado INT FOREIGN KEY(TrkEstado) References EstadoPedido(EtpId) NOT NULL,
+	TrkProveedor INT FOREIGN KEY(TrkProveedor) References Proveedores(PvdId) NOT NULL,
+)
+GO
+
+CREATE TABLE TrackinsAsociados
+(
+	TraId INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	TraIdTrackin INT FOREIGN KEY(TraIdTrackin) References Trackins(TrkId) NOT NULL,
+	TraIdTrackinPrincial INT FOREIGN KEY(TraIdTrackin) References Trackins(TrkId) NOT NULL
+)
+
+CREATE TABLE OtrosCargos
+(
+	OtrId INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	OtrIdMoneda INT FOREIGN KEY(OtrIdMoneda) References Moneda(MndId) NOT NULL,
+	OtrIdPedido INT FOREIGN KEY(OtrIdPedido) References Pedido(PddId) NOT NULL,
+	OtrValorMoneda FLOAT NULL ,
+	OtrCostoMoneda FLOAT NULL,
+	OtrRazon TEXT NOT NULL
+)
+GO
+
+ALTER TABLE Factura
+ADD FtrBodega INT FOREIGN KEY(FtrBodega) References Bodegas(BdgId) NOT NULL

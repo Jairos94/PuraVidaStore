@@ -1,0 +1,18 @@
+Usuario
+pvs
+
+pass
+$psv2022$
+
+
+Scaffold-DbContext "Data Source=DESKTOP-4FJOI9V;Initial Catalog=PuraVidaStore;Integrated Security=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
+
+
+--Crear los modelos acorde a la base de datos
+Scaffold-DbContext "" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
+
+
+
+
+--Actualiza las clases sobreescribiendolas
+Scaffold-DbContext "Server=DESKTOP-4FJOI9V;Database=PuraVidaStore;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -force
