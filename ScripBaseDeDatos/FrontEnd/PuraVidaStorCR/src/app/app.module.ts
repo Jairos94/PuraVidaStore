@@ -13,17 +13,19 @@ import { PrimeNgModule } from './prime-ng.module';
   declarations: [
     AppComponent,
     LoginComponent,
-
+    
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     DashModuleModule,
-    PrimeNgModule
+    PrimeNgModule,
+    
 
   ],
   exports: [
-    LoginComponent
+    LoginComponent,
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

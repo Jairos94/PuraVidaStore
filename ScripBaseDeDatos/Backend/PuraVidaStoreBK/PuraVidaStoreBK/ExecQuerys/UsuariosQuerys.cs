@@ -7,6 +7,7 @@ namespace PuraVidaStoreBK.ExecQuerys
 {
     public class UsuariosQuerys
     {
+        
         DataBase data= new DataBase();
         public UsuarioModel GetUsuario(string Usuario, string Contrasena )
         {
@@ -31,7 +32,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                     {
                         Usu.IdUsuario = reader.GetInt32(0);
                         Usu.Usuario = reader.GetString(1);
-                        Usu.password =  reader.GetString(2);
+                        Usu.password = reader.GetString(2);
                         try
                         {
                             Usu.email = reader.GetString(3);
@@ -41,11 +42,17 @@ namespace PuraVidaStoreBK.ExecQuerys
 
                             Usu.email = "";
                         }
-                        
+
                         Usu.IdRol = reader.GetInt32(4);
                         Usu.IdPersona = reader.GetInt32(5);
-                       
+
                     }
+                    //else 
+                    //{
+
+                    //    Usu.RetornoParametro = (int)ParameterDirection.ReturnValue;
+                    //}
+                    
 
                 }
                 return Usu;
@@ -54,7 +61,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             }
             catch (Exception)
             {
-                conn.Close();
+                //conn.Close();
                 throw;
             }
             finally 
