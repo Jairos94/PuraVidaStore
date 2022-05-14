@@ -1,3 +1,9 @@
+C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\obj\Debug\net6.0\PuraVidaStoreBK.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\obj\Debug\net6.0\PuraVidaStoreBK.AssemblyInfoInputs.cache
+C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\obj\Debug\net6.0\PuraVidaStoreBK.AssemblyInfo.cs
+C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\obj\Debug\net6.0\PuraVidaStoreBK.csproj.CoreCompileInputs.cache
+C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\obj\Debug\net6.0\PuraVidaStoreBK.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\obj\Debug\net6.0\PuraVidaStoreBK.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\bin\Debug\net6.0\appsettings.Development.json
 C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\bin\Debug\net6.0\appsettings.json
 C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\bin\Debug\net6.0\PuraVidaStoreBK.exe
@@ -16,12 +22,6 @@ C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVi
 C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
 C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\bin\Debug\net6.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
 C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\obj\Debug\net6.0\PuraVidaStoreBK.csproj.AssemblyReference.cache
-C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\obj\Debug\net6.0\PuraVidaStoreBK.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\obj\Debug\net6.0\PuraVidaStoreBK.AssemblyInfoInputs.cache
-C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\obj\Debug\net6.0\PuraVidaStoreBK.AssemblyInfo.cs
-C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\obj\Debug\net6.0\PuraVidaStoreBK.csproj.CoreCompileInputs.cache
-C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\obj\Debug\net6.0\PuraVidaStoreBK.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\obj\Debug\net6.0\PuraVidaStoreBK.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\obj\Debug\net6.0\staticwebassets.build.json
 C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\obj\Debug\net6.0\staticwebassets.development.json
 C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\obj\Debug\net6.0\scopedcss\bundle\PuraVidaStoreBK.styles.css

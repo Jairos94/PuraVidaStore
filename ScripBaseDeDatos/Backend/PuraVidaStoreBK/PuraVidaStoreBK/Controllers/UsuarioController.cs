@@ -10,7 +10,7 @@ namespace PuraVidaStoreBK.Controllers
     //[Route("api/[controller]")]
     public class UsuarioController : Controller
     {
-        
+        UsuariosQuerys Ejecuta = new UsuariosQuerys();
 
         // GET: UsuarioController
         [HttpGet("GetUsuario")]
@@ -18,7 +18,6 @@ namespace PuraVidaStoreBK.Controllers
         //public ActionResult  GetUsuario()
         {
             UsuarioModel Usu = new UsuarioModel();
-            UsuariosQuerys Ejecuta = new UsuariosQuerys();
             Usu = Ejecuta.GetUsuario(user, password);
             if (Usu.Usuario != null) 
             { 
@@ -30,8 +29,34 @@ namespace PuraVidaStoreBK.Controllers
                 return BadRequest("Error de usuario");
             }
 
+        }
 
+        [HttpPost("IngresarUsuario")]
+        public async Task<IActionResult>  IngresarUsuario(UsuarioModel Usario)
+        {
 
+            if (Ejecuta.IngresarUsario(Usario))
+            {
+                return Ok("Ingreso con exito");
+            }
+            else 
+            {
+                return BadRequest("Al ingresar");
+            }
+        }
+
+        [HttpPost("EditarUsuario")]
+        public async Task<IActionResult> EditarUsuario(UsuarioModel Usario)
+        {
+
+            if (Ejecuta.EditarUsuario(Usario))
+            {
+                return Ok("Ingreso con exito");
+            }
+            else
+            {
+                return BadRequest("Al ingresar");
+            }
         }
 
         // GET: UsuarioController/Details/5
