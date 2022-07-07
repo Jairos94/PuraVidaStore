@@ -6,21 +6,57 @@ using PuraVidaStoreBK.ExecQuerys;
 
 namespace PuraVidaStoreBK.Controllers
 {
-    
+    //[ApiController]
+    //[Route("api/[controller]")]
     public class UsuarioController : Controller
     {
-       
+        UsuariosQuerys Ejecuta = new UsuariosQuerys();
+
         // GET: UsuarioController
         [HttpGet("GetUsuario")]
-        public UsuarioModel GetUsuario(string user,string password)
+        public async Task<IActionResult> GetUsuario(string user,string password)
         //public ActionResult  GetUsuario()
         {
             UsuarioModel Usu = new UsuarioModel();
-            UsuariosQuerys Ejecuta = new UsuariosQuerys();
             Usu = Ejecuta.GetUsuario(user, password);
-            return Usu;
+            if (Usu.Usuario != null) 
+            { 
+                return  Ok(Usu); 
+            }
 
+            else
+            {
+                return BadRequest("Error de usuario");
+            }
 
+        }
+
+        [HttpPost("IngresarUsuario")]
+        public async Task<IActionResult>  IngresarUsuario(UsuarioModel Usario)
+        {
+
+            if (Ejecuta.IngresarUsario(Usario))
+            {
+                return Ok("Ingreso con exito");
+            }
+            else 
+            {
+                return BadRequest("Al ingresar");
+            }
+        }
+
+        [HttpPost("EditarUsuario")]
+        public async Task<IActionResult> EditarUsuario(UsuarioModel Usario)
+        {
+
+            if (Ejecuta.EditarUsuario(Usario))
+            {
+                return Ok("Ingreso con exito");
+            }
+            else
+            {
+                return BadRequest("Al ingresar");
+            }
         }
 
         // GET: UsuarioController/Details/5

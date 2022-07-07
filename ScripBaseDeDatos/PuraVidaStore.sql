@@ -310,3 +310,21 @@ GO
 
 ALTER TABLE Factura
 ADD FtrBodega INT FOREIGN KEY(FtrBodega) References Bodegas(BdgId) NOT NULL
+
+
+CREATE TABLE FacturaResumen
+(
+	FtrId INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	FtrFactura INT FOREIGN KEY(FtrFactura) References Factura(FtrId) NOT NULL,
+	MontoTotal FLOAT NOT NULL,
+)
+
+CREATE TABLE FormaPago
+(
+	FrpId INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	FrpDescripcion varchar(50) not null
+)
+
+INSERT INTO FormaPago(FrpDescripcion) VALUES('Sinpe movil'),('Efectivo'),('Credito'),('Transferencia bancaria')
+
+alter table Factura add FtrFormaPago int FOREIGN KEY(FtrFormaPago) References FormaPago(FrpId) NOT NULL
