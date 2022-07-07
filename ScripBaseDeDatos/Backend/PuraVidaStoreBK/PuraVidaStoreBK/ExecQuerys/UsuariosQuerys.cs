@@ -33,7 +33,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                     {
                         Usu.IdUsuario = reader.GetInt32(0);
                         Usu.Usuario = reader.GetString(1);
-                        Usu.password = reader.GetString(2);
+                        //Usu.password = reader.GetString(2);
                         try
                         {
                             Usu.email = reader.GetString(3);
