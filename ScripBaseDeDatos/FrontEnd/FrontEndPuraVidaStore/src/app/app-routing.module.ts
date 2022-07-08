@@ -7,6 +7,11 @@ const routes: Routes = [
   
   { path: 'login', component: LoginComponent },
   { path: 'principal', component: PrincipalComponent },
+  {
+    path: 'principal',
+    component: PrincipalComponent,
+    loadChildren: () => import('./principal/principal.module').then(m => m.PrincipalModule)
+  },
   { path: '',   redirectTo: '/login', pathMatch: 'full' }, // redirect to `first-component`
   { path: '**', component: LoginComponent },  // Wildcard route for a 404 page
 ];

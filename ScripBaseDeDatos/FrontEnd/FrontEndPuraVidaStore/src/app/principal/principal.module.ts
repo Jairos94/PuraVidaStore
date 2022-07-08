@@ -9,7 +9,7 @@ import { ComponentesComponent } from './componentes/componentes.component';
 @NgModule({
   declarations: [
     MantenimientosComponent,
-    ComponentesComponent
+    ComponentesComponent,
   ],
   imports: [
     CommonModule,
