@@ -19,12 +19,12 @@ import { PrincipalComponent } from './principal/principal.component';   //accord
     PrincipalComponent,
   ],
   imports: [
-    BrowserModule,
-    AppRoutingModule,
     AccordionModule,
-    PrimeNGModule,
+    AppRoutingModule,
+    BrowserModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    PrimeNGModule,
   ],
   exports:[
     
