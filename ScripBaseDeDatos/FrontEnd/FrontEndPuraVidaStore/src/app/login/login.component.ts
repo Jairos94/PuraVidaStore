@@ -20,7 +20,13 @@ export class LoginComponent implements OnInit {
 
       activo.usuarioPrograma=u;
     }), (_error => {
-      console.log(_error.message);
+      
+      try {
+        console.log(_error.error);
+      } catch (error) {
+        
+      }
+      
       
     }));
 

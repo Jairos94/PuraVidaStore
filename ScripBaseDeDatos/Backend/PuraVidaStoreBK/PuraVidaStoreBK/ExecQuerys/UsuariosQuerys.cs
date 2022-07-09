@@ -10,14 +10,14 @@ namespace PuraVidaStoreBK.ExecQuerys
         
         DataBase data= new DataBase();
         //Valida Usuario login
-        public UsuarioModel GetUsuario(string Usuario, string Contrasena )
+        public object GetUsuario(string Usuario, string Contrasena )
         {
             SqlConnection conn=data.GetConnection();
-
+            object Usu = new object();
 
             try
             {
-                UsuarioModel Usu= new UsuarioModel();
+                
                 SqlDataReader reader;
                 SqlCommand command = conn.CreateCommand();
                 conn.Open();
@@ -29,41 +29,44 @@ namespace PuraVidaStoreBK.ExecQuerys
                 reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    if (reader.GetString(1) != null)
-                    {
-                        Usu.IdUsuario = reader.GetInt32(0);
-                        Usu.Usuario = reader.GetString(1);
-                        //Usu.password = reader.GetString(2);
                         try
                         {
-                            Usu.email = reader.GetString(3);
+                            UsuarioModel Usu2= new UsuarioModel();
+
+                            Usu2.IdUsuario = reader.GetInt32(0);
+                            Usu2.Usuario = reader.GetString(1);
+                            //Usu.password = reader.GetString(2);
+                            try
+                            {
+                                Usu2.email = reader.GetString(3);
+                            }
+                            catch (Exception)
+                            {
+
+                                Usu2.email = "";
+                            }
+
+                            Usu2.IdRol = reader.GetInt32(4);
+                            Usu2.IdPersona = reader.GetInt32(5);
+                            Usu = Usu2;
                         }
                         catch (Exception)
                         {
 
-                            Usu.email = "";
+                           Usu= reader.GetString(0);
                         }
+                        
 
-                        Usu.IdRol = reader.GetInt32(4);
-                        Usu.IdPersona = reader.GetInt32(5);
-
-                    }
-                    //else 
-                    //{
-
-                    //    Usu.RetornoParametro = (int)ParameterDirection.ReturnValue;
-                    //}
                     
 
                 }
-                return Usu;
+                return (UsuarioModel)Usu;
 
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //conn.Close();
-                throw;
+                return Usu;
             }
             finally 
             { conn.Close(); }
