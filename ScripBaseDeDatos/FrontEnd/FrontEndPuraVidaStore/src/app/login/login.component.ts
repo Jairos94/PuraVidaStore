@@ -17,7 +17,8 @@ export class LoginComponent implements OnInit {
 
   validar() {
     this.servicio.login(this.Usuario, this.Contrasena).subscribe((u => {
-      activo.usuarioPrograma=u
+
+      activo.usuarioPrograma=u;
     }), (_error => {
       console.log(_error.message);
       
