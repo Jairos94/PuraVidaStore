@@ -5,9 +5,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //prime ng
 import {ButtonModule} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
+import {MegaMenuModule} from 'primeng/megamenu';
+import { PanelMenuModule } from 'primeng/panelmenu';
 import {ToastModule} from 'primeng/toast';
 import {SidebarModule} from 'primeng/sidebar';
-
 
 @NgModule({
   declarations: [],
@@ -15,11 +16,15 @@ import {SidebarModule} from 'primeng/sidebar';
     CommonModule
   ],
   exports:[
+    BrowserAnimationsModule,
     ButtonModule,
     InputTextModule,
+    MegaMenuModule,
+    
+    PanelMenuModule,
     ToastModule,
     SidebarModule,
-    BrowserAnimationsModule,
+    
   ]
 })
 export class PrimeNGModule { }
