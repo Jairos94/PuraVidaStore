@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { PrincipalRoutingModule } from './principal-routing.module';
 import { MantenimientosComponent } from './mantenimientos/mantenimientos.component';
 import { ComponentesComponent } from './componentes/componentes.component';
+import { PrimeNGModule } from '../prime-ng.module';
+
 
 
 @NgModule({
@@ -13,7 +15,8 @@ import { ComponentesComponent } from './componentes/componentes.component';
   ],
   imports: [
     CommonModule,
-    PrincipalRoutingModule
+    PrincipalRoutingModule,
+    PrimeNGModule,
   ]
 })
 export class PrincipalModule { }

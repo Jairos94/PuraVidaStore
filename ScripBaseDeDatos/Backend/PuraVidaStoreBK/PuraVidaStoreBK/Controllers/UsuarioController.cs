@@ -17,17 +17,20 @@ namespace PuraVidaStoreBK.Controllers
         public async Task<IActionResult> GetUsuario(string user,string password)
         //public ActionResult  GetUsuario()
         {
-            UsuarioModel Usu = new UsuarioModel();
+            object Usu = new object();
             Usu = Ejecuta.GetUsuario(user, password);
-            if (Usu.Usuario != null) 
-            { 
-                return  Ok(Usu); 
-            }
-
-            else
+            try
             {
-                return BadRequest("Error de usuario");
+                return Ok((UsuarioModel)Usu);
             }
+            catch (Exception)
+            {
+
+                return BadRequest(Usu);
+            }
+           
+
+           
 
         }
 
