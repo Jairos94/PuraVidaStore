@@ -17,13 +17,24 @@ export class PrincipalComponent implements OnInit {
 
   ngOnInit(): void {
     this.usuario=activo.usuarioPrograma.usuario;
-    this.items = [
-      {label: 'Home', icon: 'pi pi-fw pi-home'},
-      {label: 'Calendar', icon: 'pi pi-fw pi-calendar'},
-      {label: 'Edit', icon: 'pi pi-fw pi-pencil'},
-      {label: 'Documentation', icon: 'pi pi-fw pi-file'},
-      {label: 'Settings', icon: 'pi pi-fw pi-cog'}
-  ];
+    if(activo.usuarioPrograma.idRol===1)
+    {
+      this.items = [
+        {label: 'Punto de venta', icon: 'pi pi-fw pi-wallet'},
+        {label: 'Usuarios', icon: 'pi pi-fw pi-user',routerLink: './usuarios'},
+        {label: 'Edit', icon: 'pi pi-fw pi-pencil'},
+        {label: 'Documentation', icon: 'pi pi-fw pi-file'},
+        {label: 'Settings', icon: 'pi pi-fw pi-cog'}
+    ];
+    }else{
+      this.items = [
+        {label: 'Calendar', icon: 'pi pi-fw pi-calendar'},
+        {label: 'Edit', icon: 'pi pi-fw pi-pencil'},
+        {label: 'Documentation', icon: 'pi pi-fw pi-file'},
+        {label: 'Settings', icon: 'pi pi-fw pi-cog'}
+    ];
+    }
+    
   }
 
 }

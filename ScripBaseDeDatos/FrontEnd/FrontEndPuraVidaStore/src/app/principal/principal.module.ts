@@ -10,6 +10,7 @@ import { PrimeNGModule } from '../prime-ng.module';
 @NgModule({
   declarations: [
     ComponentesComponent,
+    
   ],
   imports: [
     CommonModule,
