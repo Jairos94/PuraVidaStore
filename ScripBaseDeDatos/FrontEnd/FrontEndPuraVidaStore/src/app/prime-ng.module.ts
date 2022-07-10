@@ -11,6 +11,7 @@ import {TabMenuModule} from 'primeng/tabmenu';
 import {ToastModule} from 'primeng/toast';
 import {SidebarModule} from 'primeng/sidebar';
 import { MessageModule } from 'primeng/message';
+import { MenuModule } from 'primeng/menu';
 
 @NgModule({
   declarations: [],
@@ -27,6 +28,7 @@ import { MessageModule } from 'primeng/message';
     ToastModule,
     SidebarModule,
     MessageModule,
+    MenuModule ,
     
   ]
 })
