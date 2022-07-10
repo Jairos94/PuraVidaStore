@@ -10,14 +10,14 @@ namespace PuraVidaStoreBK.ExecQuerys
         
         DataBase data= new DataBase();
         //Valida Usuario login
-        public UsuarioModel GetUsuario(string Usuario, string Contrasena )
+        public Object GetUsuario(string Usuario, string Contrasena )
         {
             SqlConnection conn=data.GetConnection();
 
 
+                object Usu= new object();
             try
             {
-                UsuarioModel Usu= new UsuarioModel();
                 SqlDataReader reader;
                 SqlCommand command = conn.CreateCommand();
                 conn.Open();
@@ -29,30 +29,33 @@ namespace PuraVidaStoreBK.ExecQuerys
                 reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    if (reader.GetString(1) != null)
+                    try
                     {
-                        Usu.IdUsuario = reader.GetInt32(0);
-                        Usu.Usuario = reader.GetString(1);
+                        UsuarioModel u = new UsuarioModel();
+                        u.IdUsuario = reader.GetInt32(0);
+                        u.Usuario = reader.GetString(1);
                         //Usu.password = reader.GetString(2);
                         try
                         {
-                            Usu.email = reader.GetString(3);
+                            u.email = reader.GetString(3);
                         }
                         catch (Exception)
                         {
 
-                            Usu.email = "";
+                            u.email = "";
                         }
 
-                        Usu.IdRol = reader.GetInt32(4);
-                        Usu.IdPersona = reader.GetInt32(5);
-
+                        u.IdRol = reader.GetInt32(4);
+                        u.IdPersona = reader.GetInt32(5);
+                        Usu = (UsuarioModel)u;
                     }
-                    //else 
-                    //{
+                    catch (Exception)
+                    {
+                        Usu  = reader.GetString(0);
+                    }
+                       
 
-                    //    Usu.RetornoParametro = (int)ParameterDirection.ReturnValue;
-                    //}
+                    
                     
 
                 }
