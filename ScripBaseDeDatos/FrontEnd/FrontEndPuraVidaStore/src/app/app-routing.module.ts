@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { PrincipalComponent } from './principal/principal.component';
 import { UsuariosComponent } from './principal/usuarios/usuarios.component';
+import { VentasComponent } from './principal/ventas/ventas.component';
 
 const routes: Routes = [
 
@@ -13,6 +14,10 @@ const routes: Routes = [
     {
       path: 'usuarios', // child route path
       component: UsuariosComponent, // child route component that the router renders
+    },
+    {
+      path: 'ventas', // child route path
+      component: VentasComponent, // child route component that the router renders
     },
     
   ],
