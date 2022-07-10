@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MantenimientosComponent } from './mantenimientos/mantenimientos.component';
+import { UsuariosComponent } from './usuarios/usuarios.component';
+import { VentasComponent } from './ventas/ventas.component';
 const routes: Routes = [
-  {
-    path: 'mantenimientos',
-    component: MantenimientosComponent,
-    loadChildren: () => import('./mantenimientos/mantenimientos.module').then(m => m.MantenimientosModule)
-  },
+  {path: 'usuarios',component: UsuariosComponent},
+  {path: 'ventas',component: VentasComponent},
+  { path: '',   redirectTo: './ventas', pathMatch: 'full' }, // redirect to `first-component`
+  { path: '**',  redirectTo: './ventas', pathMatch: 'full' },
 ]
 
 @NgModule({

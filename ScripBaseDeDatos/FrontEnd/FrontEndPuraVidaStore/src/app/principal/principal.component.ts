@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MegaMenuItem} from 'primeng/api';
+import { MegaMenuItem, MenuItem} from 'primeng/api';
 import { activo } from '../activo';
 
 
@@ -13,17 +13,28 @@ export class PrincipalComponent implements OnInit {
 
   constructor() { }
   usuario: string = '';
-  items: MegaMenuItem[] = [];
+  items: MenuItem[] = [];
 
   ngOnInit(): void {
     this.usuario=activo.usuarioPrograma.usuario;
-    this.items = [
-      {
-          label: 'Usuarios', icon: 'pi pi-fw pi-users',
-          items: [
-          ]
-      },
-  ]
+    if(activo.usuarioPrograma.idRol===1)
+    {
+      this.items = [
+        {label: 'Punto de venta', icon: 'pi pi-fw pi-wallet',routerLink:'./ventas'},
+        {label: 'Usuarios', icon: 'pi pi-fw pi-user',routerLink: './usuarios'},
+        {label: 'Edit', icon: 'pi pi-fw pi-pencil'},
+        {label: 'Documentation', icon: 'pi pi-fw pi-file'},
+        {label: 'Settings', icon: 'pi pi-fw pi-cog'}
+    ];
+    }else{
+      this.items = [
+        {label: 'Punto de venta', icon: 'pi pi-fw pi-wallet',routerLink:'./ventas'},
+        {label: 'Edit', icon: 'pi pi-fw pi-pencil'},
+        {label: 'Documentation', icon: 'pi pi-fw pi-file'},
+        {label: 'Settings', icon: 'pi pi-fw pi-cog'}
+    ];
+    }
+    
   }
 
 }

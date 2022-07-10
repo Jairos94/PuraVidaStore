@@ -29,8 +29,11 @@ namespace PuraVidaStoreBK.Controllers
                 return BadRequest(Usu);
             }
            
+<<<<<<< HEAD
+=======
 
            
+>>>>>>> feature/Cambios
 
         }
 

@@ -10,14 +10,22 @@ namespace PuraVidaStoreBK.ExecQuerys
         
         DataBase data= new DataBase();
         //Valida Usuario login
+<<<<<<< HEAD
+        public Object GetUsuario(string Usuario, string Contrasena )
+=======
         public object GetUsuario(string Usuario, string Contrasena )
+>>>>>>> feature/Cambios
         {
             SqlConnection conn=data.GetConnection();
             object Usu = new object();
 
+                object Usu= new object();
             try
             {
+<<<<<<< HEAD
+=======
                 
+>>>>>>> feature/Cambios
                 SqlDataReader reader;
                 SqlCommand command = conn.CreateCommand();
                 conn.Open();
@@ -29,6 +37,17 @@ namespace PuraVidaStoreBK.ExecQuerys
                 reader = command.ExecuteReader();
                 while (reader.Read())
                 {
+<<<<<<< HEAD
+                    try
+                    {
+                        UsuarioModel u = new UsuarioModel();
+                        u.IdUsuario = reader.GetInt32(0);
+                        u.Usuario = reader.GetString(1);
+                        //Usu.password = reader.GetString(2);
+                        try
+                        {
+                            u.email = reader.GetString(3);
+=======
                         try
                         {
                             UsuarioModel Usu2= new UsuarioModel();
@@ -49,14 +68,33 @@ namespace PuraVidaStoreBK.ExecQuerys
                             Usu2.IdRol = reader.GetInt32(4);
                             Usu2.IdPersona = reader.GetInt32(5);
                             Usu = Usu2;
+>>>>>>> feature/Cambios
                         }
                         catch (Exception)
                         {
 
+<<<<<<< HEAD
+                            u.email = "";
+=======
                            Usu= reader.GetString(0);
+>>>>>>> feature/Cambios
                         }
                         
 
+<<<<<<< HEAD
+                        u.IdRol = reader.GetInt32(4);
+                        u.IdPersona = reader.GetInt32(5);
+                        Usu = (UsuarioModel)u;
+                    }
+                    catch (Exception)
+                    {
+                        Usu  = reader.GetString(0);
+                    }
+                       
+
+                    
+=======
+>>>>>>> feature/Cambios
                     
 
                 }
