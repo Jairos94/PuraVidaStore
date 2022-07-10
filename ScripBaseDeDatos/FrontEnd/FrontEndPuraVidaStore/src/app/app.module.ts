@@ -11,6 +11,8 @@ import {AccordionModule} from 'primeng/accordion';
 import { LoginComponent } from './login/login.component';
 import { PrincipalComponent } from './principal/principal.component';   //accordion and accordion tab
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 @NgModule({
   declarations: [
@@ -19,12 +21,14 @@ import { PrincipalComponent } from './principal/principal.component';   //accord
     PrincipalComponent,
   ],
   imports: [
-    BrowserModule,
-    AppRoutingModule,
     AccordionModule,
-    PrimeNGModule,
+    AppRoutingModule,
+    BrowserModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    PrimeNGModule,
+    BrowserAnimationsModule,
+
   ],
   exports:[
     
