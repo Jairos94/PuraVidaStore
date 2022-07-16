@@ -17,19 +17,28 @@ export class UsuariosComponent implements OnInit {
     this.items = [{
         label: 'Options',
         items: [{
-            label: 'Update',
+            label: 'Lista',
             icon: 'pi pi-refresh',
             command: () => {
                 this.update();
             }
         },
         {
-            label: 'Delete',
+            label: 'Nuevo',
             icon: 'pi pi-times',
             command: () => {
                 this.delete();
             }
-        }
+        },
+
+        {
+          label: 'Delete',
+          icon: 'pi pi-times',
+          command: () => {
+              this.delete();
+          }
+      },
+        
         ]},
     ];
   }
