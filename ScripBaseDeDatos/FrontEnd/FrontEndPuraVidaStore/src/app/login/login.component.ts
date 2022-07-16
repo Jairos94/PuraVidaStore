@@ -29,7 +29,6 @@ export class LoginComponent implements OnInit {
 
       activo.usuarioPrograma = u;
       this.route.navigate(['/principal'])
-      console.log(activo.usuarioPrograma);
 
     }), (_error => {
 

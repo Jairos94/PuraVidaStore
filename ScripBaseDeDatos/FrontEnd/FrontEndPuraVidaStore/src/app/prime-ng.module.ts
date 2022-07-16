@@ -12,6 +12,7 @@ import {ToastModule} from 'primeng/toast';
 import {SidebarModule} from 'primeng/sidebar';
 import { MessageModule } from 'primeng/message';
 import { MenuModule } from 'primeng/menu';
+import {MenubarModule} from 'primeng/menubar';
 
 @NgModule({
   declarations: [],
@@ -29,7 +30,7 @@ import { MenuModule } from 'primeng/menu';
     SidebarModule,
     MessageModule,
     MenuModule ,
-    
+    MenubarModule
   ]
 })
 export class PrimeNGModule { }

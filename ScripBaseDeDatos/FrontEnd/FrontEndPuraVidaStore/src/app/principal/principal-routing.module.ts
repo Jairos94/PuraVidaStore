@@ -6,7 +6,7 @@ const routes: Routes = [
   {path: 'usuarios',component: UsuariosComponent},
   {path: 'ventas',component: VentasComponent},
   { path: '',   redirectTo: './ventas', pathMatch: 'full' }, // redirect to `first-component`
-  { path: '**',  redirectTo: './ventas', pathMatch: 'full' },
+  { path: '**',  redirectTo: '/..login', pathMatch: 'full' },
 ]
 
 @NgModule({

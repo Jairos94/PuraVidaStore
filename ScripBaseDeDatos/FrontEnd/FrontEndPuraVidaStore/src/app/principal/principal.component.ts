@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MegaMenuItem, MenuItem} from 'primeng/api';
+import { MenuItem } from 'primeng/api/menuitem';
 import { activo } from '../activo';
 
 
@@ -9,32 +9,42 @@ import { activo } from '../activo';
   styleUrls: ['./principal.component.css']
 })
 export class PrincipalComponent implements OnInit {
-  
+
 
   constructor() { }
   usuario: string = '';
   items: MenuItem[] = [];
+  administrador: boolean = false;
 
   ngOnInit(): void {
-    this.usuario=activo.usuarioPrograma.usuario;
-    if(activo.usuarioPrograma.idRol===1)
-    {
+    this.usuario = activo.usuarioPrograma.usuario;
+    if (activo.usuarioPrograma.idRol === 1) {
+      this.administrador = true;
       this.items = [
-        {label: 'Punto de venta', icon: 'pi pi-fw pi-wallet',routerLink:'./ventas'},
-        {label: 'Usuarios', icon: 'pi pi-fw pi-user',routerLink: './usuarios'},
-        {label: 'Edit', icon: 'pi pi-fw pi-pencil'},
-        {label: 'Documentation', icon: 'pi pi-fw pi-file'},
-        {label: 'Settings', icon: 'pi pi-fw pi-cog'}
-    ];
-    }else{
+        {
+          label: 'ventas',
+          icon: 'pi pi-money-bill',
+          routerLink: "./ventas",
+        },
+
+        {
+          label: 'Usuarios',
+          icon: 'pi pi-users',
+          routerLink: "./usuarios",
+        },
+      ];
+    } else {
+      this.administrador = false;
       this.items = [
-        {label: 'Punto de venta', icon: 'pi pi-fw pi-wallet',routerLink:'./ventas'},
-        {label: 'Edit', icon: 'pi pi-fw pi-pencil'},
-        {label: 'Documentation', icon: 'pi pi-fw pi-file'},
-        {label: 'Settings', icon: 'pi pi-fw pi-cog'}
-    ];
+        {
+          label: 'Edit',
+        }
+      ];
     }
-    
+
+
+
+
   }
 
 }
