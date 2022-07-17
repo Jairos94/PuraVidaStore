@@ -1,20 +1,20 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using PuraVidaStoreBK.Models;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
 using PuraVidaStoreBK.ExecQuerys;
+using PuraVidaStoreBK.Models;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace PuraVidaStoreBK.Controllers
 {
-    //[ApiController]
-    //[Route("api/[controller]")]
-    public class UsuarioController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class UsuarioController : ControllerBase
     {
         UsuariosQuerys Ejecuta = new UsuariosQuerys();
+        // GET: api/<UsuarioController>
 
-        // GET: UsuarioController
         [HttpGet("GetUsuario")]
-        public async Task<IActionResult> GetUsuario(string user,string password)
+        public async Task<IActionResult> GetUsuario(string user, string password)
         //public ActionResult  GetUsuario()
         {
             object Usu = new object();
@@ -31,101 +31,35 @@ namespace PuraVidaStoreBK.Controllers
 
         }
 
-        [HttpPost("IngresarUsuario")]
-        public async Task<IActionResult>  IngresarUsuario(UsuarioModel Usario)
+        [HttpGet]
+        public IEnumerable<string> Get()
         {
-
-            if (Ejecuta.IngresarUsario(Usario))
-            {
-                return Ok("Ingreso con exito");
-            }
-            else 
-            {
-                return BadRequest("Al ingresar");
-            }
+            return new string[] { "value1", "value2" };
         }
 
-        [HttpPost("EditarUsuario")]
-        public async Task<IActionResult> EditarUsuario(UsuarioModel Usario)
+        // GET api/<UsuarioController>/5
+        [HttpGet("{id}")]
+        public string Get(int id)
         {
-
-            if (Ejecuta.EditarUsuario(Usario))
-            {
-                return Ok("Ingreso con exito");
-            }
-            else
-            {
-                return BadRequest("Al ingresar");
-            }
+            return "value";
         }
 
-        // GET: UsuarioController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: UsuarioController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: UsuarioController/Create
+        // POST api/<UsuarioController>
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public void Post([FromBody] string value)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
 
-        // GET: UsuarioController/Edit/5
-        public ActionResult Edit(int id)
+        // PUT api/<UsuarioController>/5
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] string value)
         {
-            return View();
         }
 
-        // POST: UsuarioController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        // DELETE api/<UsuarioController>/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: UsuarioController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: UsuarioController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }

@@ -1,3 +1,5 @@
+import { PersonaModel } from "./persona-model";
+
 export interface UsuarioModel {
     idUsuario: number | null;
     usuario: string;
@@ -5,4 +7,5 @@ export interface UsuarioModel {
     email: string;
     idRol: number;
     idPersona: number;
+    persona:PersonaModel
 }
