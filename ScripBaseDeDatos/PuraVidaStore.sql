@@ -328,3 +328,11 @@ CREATE TABLE FormaPago
 INSERT INTO FormaPago(FrpDescripcion) VALUES('Sinpe movil'),('Efectivo'),('Credito'),('Transferencia bancaria')
 
 alter table Factura add FtrFormaPago int FOREIGN KEY(FtrFormaPago) References FormaPago(FrpId) NOT NULL
+
+
+
+CREATE PROCEDURE ObtenerUsuarios
+AS
+SELECT U.UsrID,U.UsrUser,U.UsrEmail,U.UsrIdRol,U.UsrIdPersona,R.*,P.* FROM Usuarios U
+INNER JOIN Persona P on U.UsrIdPersona=P.PsrId
+INNER JOIN RolUsiario R ON U.UsrIdRol= R.RluID

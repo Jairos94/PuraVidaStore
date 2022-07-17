@@ -8,6 +8,6 @@
         public  string  email { get; set; }
         public int IdRol { get; set; }
         public int IdPersona { get; set; }
-        //public int RetornoParametro { get; set; }
+        public PersonaModel persona { get; set; }
     }
 }
