@@ -9,5 +9,6 @@
         public int IdRol { get; set; }
         public int IdPersona { get; set; }
         public PersonaModel persona { get; set; }
+        public RolModel Rol { get; set; }
     }
 }

@@ -15,7 +15,6 @@ namespace PuraVidaStoreBK.Controllers
 
         [HttpGet("GetUsuario")]
         public async Task<IActionResult> GetUsuario(string user, string password)
-        //public ActionResult  GetUsuario()
         {
             object Usu = new object();
             Usu = Ejecuta.GetUsuario(user, password);
@@ -30,6 +29,28 @@ namespace PuraVidaStoreBK.Controllers
             }
 
         }
+
+
+
+        [HttpGet("ListaUsuarios")]
+        public async Task<IActionResult> ListaUsuarios()
+        //public ActionResult  GetUsuario()
+        {
+            object Usu = new object();
+            Usu = Ejecuta.listaUsuarios();
+            try
+            {
+                return Ok(Usu);
+            }
+            catch (Exception)
+            {
+
+                return BadRequest(Usu);
+            }
+
+        }
+
+
 
         [HttpGet]
         public IEnumerable<string> Get()
