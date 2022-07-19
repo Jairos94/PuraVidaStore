@@ -9,10 +9,6 @@ namespace PuraVidaStoreBK.ExecQuerys
     {
         
         DataBase data= new DataBase();
-        //Valida Usuario login
-
-       // public Object GetUsuario(string Usuario, string Contrasena )
-
         public object GetUsuario(string Usuario, string Contrasena )
 
         {
@@ -54,6 +50,69 @@ namespace PuraVidaStoreBK.ExecQuerys
             {
                 return Usu;
             }
+            finally
+            { conn.Close(); }
+        }
+
+        public object listaUsuarios()
+
+        {
+            SqlConnection conn = data.GetConnection();
+            try
+            {
+                SqlDataReader reader;
+                SqlCommand command = conn.CreateCommand();
+                conn.Open();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "ObtenerUsuarios";
+                //command.ExecuteNonQuery();
+                reader = command.ExecuteReader();
+                List<UsuarioModel> ListaUsuarios= new List<UsuarioModel>();
+          
+                while (reader.Read())
+                {
+                    UsuarioModel u = new UsuarioModel();
+                    RolModel r = new RolModel();
+                    PersonaModel p = new PersonaModel();
+
+                    u.IdUsuario = reader.GetInt32(0);
+                        u.Usuario = reader.GetString(1);
+                    try
+                    {
+                        u.email = reader.GetString(2);
+                    }
+                    catch (Exception)
+                    {
+
+                        u.email ="";
+                    }
+                        
+                        u.IdRol = reader.GetInt32(3);
+                        u.IdPersona = reader.GetInt32(4);
+
+                        
+                        r.RluID = reader.GetInt32(5);
+                        r.RluDescripcion = reader.GetString(6);
+                        u.Rol = r;
+
+                        
+                        p.PsrId = reader.GetInt32(7);
+                        p.PsrIdentificacion= reader.GetString(8);
+                        p.PsrNombre = reader.GetString(9);
+                        p.PsrApellido1= reader.GetString(10);
+                        p.PsrApellido2= reader.GetString(11);
+                        u.persona = p;
+                        ListaUsuarios.Add(u); 
+                }
+                return ListaUsuarios;
+            }
+
+            catch (Exception ex)
+            {
+                return ex.Message;
+               
+            }
+
             finally
             { conn.Close(); }
         }

@@ -15,13 +15,11 @@ export class UsuariosComponent implements OnInit {
     this.primengConfig.ripple = true;
 
     this.items = [{
-        label: 'Options',
+        label: 'Opciones',
         items: [{
             label: 'Lista',
             icon: 'pi pi-refresh',
-            command: () => {
-                this.update();
-            }
+            routerLink:'./lista-usuarios'
         },
         {
             label: 'Nuevo',

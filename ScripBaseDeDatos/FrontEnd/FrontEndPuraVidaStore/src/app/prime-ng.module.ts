@@ -13,6 +13,7 @@ import {SidebarModule} from 'primeng/sidebar';
 import { MessageModule } from 'primeng/message';
 import { MenuModule } from 'primeng/menu';
 import {MenubarModule} from 'primeng/menubar';
+import {TableModule} from 'primeng/table';
 
 @NgModule({
   declarations: [],
@@ -30,7 +31,8 @@ import {MenubarModule} from 'primeng/menubar';
     SidebarModule,
     MessageModule,
     MenuModule ,
-    MenubarModule
+    MenubarModule,
+    TableModule
   ]
 })
 export class PrimeNGModule { }
