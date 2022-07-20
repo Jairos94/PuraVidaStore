@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
     CommonModule
   ],
   exports:[
-    //! Aquí se colocan los módulos de prime NG
+    
   ]
 })
 export class PrimeNgModule { }
