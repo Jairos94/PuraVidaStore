@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import {InputTextModule} from 'primeng/inputtext';
 
 
 @NgModule({
@@ -9,7 +10,7 @@ import { CommonModule } from '@angular/common';
     CommonModule
   ],
   exports:[
-    
+    InputTextModule
   ]
 })
 export class PrimeNgModule { }
