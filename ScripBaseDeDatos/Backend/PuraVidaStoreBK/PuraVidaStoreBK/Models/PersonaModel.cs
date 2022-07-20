@@ -2,7 +2,7 @@
 {
     public class PersonaModel
     {
-        public System.Nullable< int> PsrId { get; set; }
+        public int PsrId { get; set; }
         public string PsrIdentificacion { get; set; }
         public string PsrNombre { get; set; }
         public string PsrApellido1 { get; set; }

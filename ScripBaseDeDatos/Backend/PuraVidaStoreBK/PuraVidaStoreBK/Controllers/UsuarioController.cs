@@ -1,20 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using PuraVidaStoreBK.ExecQuerys;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using PuraVidaStoreBK.Models;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using System.Threading.Tasks;
+using PuraVidaStoreBK.ExecQuerys;
 
 namespace PuraVidaStoreBK.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UsuarioController : ControllerBase
+    //[ApiController]
+    //[Route("api/[controller]")]
+    public class UsuarioController : Controller
     {
         UsuariosQuerys Ejecuta = new UsuariosQuerys();
-        // GET: api/<UsuarioController>
 
+        // GET: UsuarioController
         [HttpGet("GetUsuario")]
-        public async Task<IActionResult> GetUsuario(string user, string password)
+        public async Task<IActionResult> GetUsuario(string user,string password)
         {
             object Usu = new object();
             Usu = Ejecuta.GetUsuario(user, password);
@@ -29,7 +29,6 @@ namespace PuraVidaStoreBK.Controllers
             }
 
         }
-
 
 
         [HttpGet("ListaUsuarios")]
@@ -50,37 +49,101 @@ namespace PuraVidaStoreBK.Controllers
 
         }
 
-
-
-        [HttpGet]
-        public IEnumerable<string> Get()
+        [HttpPost("IngresarUsuario")]
+        public async Task<IActionResult>  IngresarUsuario(UsuarioModel Usario)
         {
-            return new string[] { "value1", "value2" };
+
+            if (Ejecuta.IngresarUsario(Usario))
+            {
+                return Ok("Ingreso con exito");
+            }
+            else 
+            {
+                return BadRequest("Al ingresar");
+            }
         }
 
-        // GET api/<UsuarioController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpPost("EditarUsuario")]
+        public async Task<IActionResult> EditarUsuario(UsuarioModel Usario)
         {
-            return "value";
+
+            if (Ejecuta.EditarUsuario(Usario))
+            {
+                return Ok("Ingreso con exito");
+            }
+            else
+            {
+                return BadRequest("Al ingresar");
+            }
         }
 
-        // POST api/<UsuarioController>
+        // GET: UsuarioController/Details/5
+        public ActionResult Details(int id)
+        {
+            return View();
+        }
+
+        // GET: UsuarioController/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: UsuarioController/Create
         [HttpPost]
-        public void Post([FromBody] string value)
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(IFormCollection collection)
         {
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
         }
 
-        // PUT api/<UsuarioController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        // GET: UsuarioController/Edit/5
+        public ActionResult Edit(int id)
         {
+            return View();
         }
 
-        // DELETE api/<UsuarioController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        // POST: UsuarioController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, IFormCollection collection)
         {
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: UsuarioController/Delete/5
+        public ActionResult Delete(int id)
+        {
+            return View();
+        }
+
+        // POST: UsuarioController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, IFormCollection collection)
+        {
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
         }
     }
 }
