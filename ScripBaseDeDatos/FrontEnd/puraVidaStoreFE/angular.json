@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "PuraVidaStoreFE": {
+    "puraVidaStoreFE": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -67,10 +67,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "PuraVidaStoreFE:build:production"
+              "browserTarget": "puraVidaStoreFE:build:production"
             },
             "development": {
-              "browserTarget": "PuraVidaStoreFE:build:development"
+              "browserTarget": "puraVidaStoreFE:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -78,7 +78,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "PuraVidaStoreFE:build"
+            "browserTarget": "puraVidaStoreFE:build"
           }
         },
         "test": {
@@ -102,6 +102,6 @@
     }
   },
   "cli": {
-    "analytics": "8cb0da00-d73d-4a34-bfa8-d6cacf4f0a7e"
+    "analytics": "c5098637-1c4c-4ddc-b1c1-e1c054c09a83"
   }
 }
