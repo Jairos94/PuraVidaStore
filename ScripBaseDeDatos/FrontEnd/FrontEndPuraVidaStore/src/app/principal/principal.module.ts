@@ -5,6 +5,8 @@ import { UsuariosModule } from './usuarios/usuarios.module';
 import { PrincipalRoutingModule } from './principal-routing.module';
 import { ComponentesComponent } from './componentes/componentes.component';
 import { PrimeNGModule } from '../prime-ng.module';
+import { VentasComponent } from './ventas/ventas.component';
+import { VentasModule } from './ventas/ventas.module';
 
 
 @NgModule({
@@ -16,7 +18,8 @@ import { PrimeNGModule } from '../prime-ng.module';
     CommonModule,
     PrincipalRoutingModule,
     PrimeNGModule,
-    UsuariosModule
+    UsuariosModule,
+    VentasModule
   ]
 })
 export class PrincipalModule { }

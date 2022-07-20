@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ComponentesComponent } from './componentes/componentes.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
 const routes: Routes = [
-  {
-    path: '',
-    children: [
+  
+    
       {
         path: 'usuarios',
         component: UsuariosComponent,
@@ -15,14 +15,13 @@ const routes: Routes = [
         component: UsuariosComponent,
         loadChildren: () => import('../principal/ventas/ventas.module').then(m => m.VentasModule)
       },
-      
 
+      { path: '/menu', component: ComponentesComponent },
       {
-        path: '',
-        redirectTo:'ventas'
+        path: '**', redirectTo: '/menu'
       },
-    ]
-  }
+    
+  
 ]
 
 @NgModule({
