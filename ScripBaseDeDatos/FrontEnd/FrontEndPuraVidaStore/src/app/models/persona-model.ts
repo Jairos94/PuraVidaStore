@@ -1,5 +1,5 @@
 export interface PersonaModel {
-    psrId: number | null;
+    psrId: number;
     psrIdentificacion: string;
     psrNombre: string;
     psrApellido1: string;
