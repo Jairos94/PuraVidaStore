@@ -9,23 +9,13 @@ namespace PuraVidaStoreBK.ExecQuerys
     {
         
         DataBase data= new DataBase();
-        //Valida Usuario login
-<<<<<<< HEAD
-        public Object GetUsuario(string Usuario, string Contrasena )
-=======
         public object GetUsuario(string Usuario, string Contrasena )
->>>>>>> feature/Cambios
+
         {
             SqlConnection conn=data.GetConnection();
             object Usu = new object();
-
-                object Usu= new object();
             try
             {
-<<<<<<< HEAD
-=======
-                
->>>>>>> feature/Cambios
                 SqlDataReader reader;
                 SqlCommand command = conn.CreateCommand();
                 conn.Open();
@@ -35,78 +25,95 @@ namespace PuraVidaStoreBK.ExecQuerys
                 command.Parameters.Add("@Pass", SqlDbType.VarChar, 50).Value = Contrasena;
                 //command.ExecuteNonQuery();
                 reader = command.ExecuteReader();
-                while (reader.Read())
+                while (reader.Read()) 
                 {
-<<<<<<< HEAD
                     try
                     {
                         UsuarioModel u = new UsuarioModel();
                         u.IdUsuario = reader.GetInt32(0);
                         u.Usuario = reader.GetString(1);
-                        //Usu.password = reader.GetString(2);
-                        try
-                        {
-                            u.email = reader.GetString(3);
-=======
-                        try
-                        {
-                            UsuarioModel Usu2= new UsuarioModel();
-
-                            Usu2.IdUsuario = reader.GetInt32(0);
-                            Usu2.Usuario = reader.GetString(1);
-                            //Usu.password = reader.GetString(2);
-                            try
-                            {
-                                Usu2.email = reader.GetString(3);
-                            }
-                            catch (Exception)
-                            {
-
-                                Usu2.email = "";
-                            }
-
-                            Usu2.IdRol = reader.GetInt32(4);
-                            Usu2.IdPersona = reader.GetInt32(5);
-                            Usu = Usu2;
->>>>>>> feature/Cambios
-                        }
-                        catch (Exception)
-                        {
-
-<<<<<<< HEAD
-                            u.email = "";
-=======
-                           Usu= reader.GetString(0);
->>>>>>> feature/Cambios
-                        }
-                        
-
-<<<<<<< HEAD
+                        u.email=reader.GetString(3);
                         u.IdRol = reader.GetInt32(4);
                         u.IdPersona = reader.GetInt32(5);
-                        Usu = (UsuarioModel)u;
+                       Usu = u;
                     }
                     catch (Exception)
                     {
-                        Usu  = reader.GetString(0);
+
+                        Usu = reader.GetString(0);
                     }
-                       
-
-                    
-=======
->>>>>>> feature/Cambios
-                    
-
                 }
-                return (UsuarioModel)Usu;
-
-
+                return Usu;
             }
+
             catch (Exception ex)
             {
                 return Usu;
             }
-            finally 
+            finally
+            { conn.Close(); }
+        }
+
+        public object listaUsuarios()
+
+        {
+            SqlConnection conn = data.GetConnection();
+            try
+            {
+                SqlDataReader reader;
+                SqlCommand command = conn.CreateCommand();
+                conn.Open();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "ObtenerUsuarios";
+                //command.ExecuteNonQuery();
+                reader = command.ExecuteReader();
+                List<UsuarioModel> ListaUsuarios= new List<UsuarioModel>();
+          
+                while (reader.Read())
+                {
+                    UsuarioModel u = new UsuarioModel();
+                    RolModel r = new RolModel();
+                    PersonaModel p = new PersonaModel();
+
+                    u.IdUsuario = reader.GetInt32(0);
+                        u.Usuario = reader.GetString(1);
+                    try
+                    {
+                        u.email = reader.GetString(2);
+                    }
+                    catch (Exception)
+                    {
+
+                        u.email ="";
+                    }
+                        
+                        u.IdRol = reader.GetInt32(3);
+                        u.IdPersona = reader.GetInt32(4);
+
+                        
+                        r.RluID = reader.GetInt32(5);
+                        r.RluDescripcion = reader.GetString(6);
+                        u.Rol = r;
+
+                        
+                        p.PsrId = reader.GetInt32(7);
+                        p.PsrIdentificacion= reader.GetString(8);
+                        p.PsrNombre = reader.GetString(9);
+                        p.PsrApellido1= reader.GetString(10);
+                        p.PsrApellido2= reader.GetString(11);
+                        u.persona = p;
+                        ListaUsuarios.Add(u); 
+                }
+                return ListaUsuarios;
+            }
+
+            catch (Exception ex)
+            {
+                return ex.Message;
+               
+            }
+
+            finally
             { conn.Close(); }
         }
 

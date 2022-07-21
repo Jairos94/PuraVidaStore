@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 //prime ng
@@ -11,12 +10,10 @@ import {TabMenuModule} from 'primeng/tabmenu';
 import {ToastModule} from 'primeng/toast';
 import {SidebarModule} from 'primeng/sidebar';
 import { MessageModule } from 'primeng/message';
-
+import {MenubarModule} from 'primeng/menubar';
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule
-  ],
+  
   exports:[
     BrowserAnimationsModule,
     ButtonModule,
@@ -27,7 +24,7 @@ import { MessageModule } from 'primeng/message';
     ToastModule,
     SidebarModule,
     MessageModule,
-    
+    MenubarModule
   ]
 })
 export class PrimeNGModule { }

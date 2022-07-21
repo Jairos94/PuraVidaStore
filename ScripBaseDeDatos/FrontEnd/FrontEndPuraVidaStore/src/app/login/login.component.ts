@@ -25,26 +25,22 @@ export class LoginComponent implements OnInit {
   }
 
   validar() {
-    this.servicio.login(this.Usuario, this.Contrasena).subscribe((u => {
-
-      activo.usuarioPrograma = u;
-      this.route.navigate(['/principal'])
-      console.log(activo.usuarioPrograma);
-
-    }), (_error => {
-
-      let datoError = '';
-      try {
-        datoError = _error.error;
-        this.showError(datoError);
-      } catch (error) {
-        datoError = 'Error de conexcion'
-      }
-      
-      console.log(datoError);
-      
-
-    }));
+    try {
+      this.servicio.login(this.Usuario, this.Contrasena).subscribe((u => {
+        activo.usuarioPrograma = u;
+        this.route.navigate(['principal'])
+      }), (_error => {
+  
+        let datoError = '';
+          datoError = _error.error;
+          this.showError(datoError);
+          console.log(datoError);
+          
+      }));
+    } catch (error) {
+      this.showError('Error de conexción con el servidor');
+    }
+   
   }
 
 showError(MensajeError:string) {

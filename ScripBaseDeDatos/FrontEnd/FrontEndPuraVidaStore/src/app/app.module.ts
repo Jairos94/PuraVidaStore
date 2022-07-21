@@ -7,18 +7,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import {AccordionModule} from 'primeng/accordion';
+import { AccordionModule } from 'primeng/accordion';
 import { LoginComponent } from './login/login.component';
-import { PrincipalComponent } from './principal/principal.component';   //accordion and accordion tab
-
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { PrincipalModule } from './principal/principal.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    PrincipalComponent,
   ],
   imports: [
     AccordionModule,
@@ -28,10 +26,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     PrimeNGModule,
     BrowserAnimationsModule,
-
+    PrincipalModule
   ],
-  exports:[
-    
+  exports: [
+    PrimeNGModule
   ],
   providers: [],
   bootstrap: [AppComponent]

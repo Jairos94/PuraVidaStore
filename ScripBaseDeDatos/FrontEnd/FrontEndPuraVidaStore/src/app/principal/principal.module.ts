@@ -1,22 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { UsuariosModule } from './usuarios/usuarios.module';
 import { PrincipalRoutingModule } from './principal-routing.module';
-import { ComponentesComponent } from './componentes/componentes.component';
-import { PrimeNGModule } from '../prime-ng.module';
+import { PrincipalComponent } from './principal.component';
+import { UsuariosModule } from './usuarios/usuarios.module';
+import { VentasModule } from './ventas/ventas.module';
 
 
 @NgModule({
   declarations: [
-    ComponentesComponent,
-    
+    PrincipalComponent
   ],
   imports: [
     CommonModule,
     PrincipalRoutingModule,
-    PrimeNGModule,
-    UsuariosModule
-  ]
+    UsuariosModule,
+    VentasModule,
+  ],
 })
 export class PrincipalModule { }
