@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import {InputTextModule} from 'primeng/inputtext';
-
+import {PasswordModule} from 'primeng/password';
 
 @NgModule({
   declarations: [],
@@ -10,7 +10,8 @@ import {InputTextModule} from 'primeng/inputtext';
     CommonModule
   ],
   exports:[
-    InputTextModule
+    InputTextModule,
+    PasswordModule
   ]
 })
 export class PrimeNgModule { }
