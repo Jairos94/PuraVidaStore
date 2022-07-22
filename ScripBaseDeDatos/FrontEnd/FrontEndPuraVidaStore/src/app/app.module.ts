@@ -9,7 +9,6 @@ import { AppComponent } from './app.component';
 
 import {AccordionModule} from 'primeng/accordion';
 import { LoginComponent } from './login/login.component';
-import { PrincipalComponent } from './principal/principal.component';   //accordion and accordion tab
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -18,7 +17,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   declarations: [
     AppComponent,
     LoginComponent,
-    PrincipalComponent,
   ],
   imports: [
     AccordionModule,

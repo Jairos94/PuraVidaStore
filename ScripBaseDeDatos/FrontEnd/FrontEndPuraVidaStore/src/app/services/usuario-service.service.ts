@@ -16,7 +16,7 @@ private baseUrl:string = environment.urlBase;
     const params = new HttpParams()
     .set('user', usario)
     .set('password', contrasena);
-    return this.http.get<UsuarioModel>(`${this.baseUrl}GetUsuario`,{params});
+    return this.http.get<UsuarioModel>(`${this.baseUrl}Usuario/GetUsuario`,{params});
   }
 
 }
