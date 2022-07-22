@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "puraVidaStoreFE": {
+    "frontEndPVS": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/pura-vida-store-fe",
+            "outputPath": "dist/front-end-pvs",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -26,8 +26,7 @@
               "src/styles.css",
               "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/themes/arya-blue/theme.css",
-              "node_modules/primeng/resources/primeng.min.css",
-              "node_modules/primeflex/primeflex.css"
+              "node_modules/primeng/resources/primeng.min.css"
             ],
             "scripts": []
           },
@@ -68,10 +67,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "puraVidaStoreFE:build:production"
+              "browserTarget": "frontEndPVS:build:production"
             },
             "development": {
-              "browserTarget": "puraVidaStoreFE:build:development"
+              "browserTarget": "frontEndPVS:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -79,7 +78,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "puraVidaStoreFE:build"
+            "browserTarget": "frontEndPVS:build"
           }
         },
         "test": {
@@ -94,7 +93,10 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/arya-blue/theme.css",
+              "node_modules/primeng/resources/primeng.min.css"
             ],
             "scripts": []
           }
@@ -103,6 +105,6 @@
     }
   },
   "cli": {
-    "analytics": "c5098637-1c4c-4ddc-b1c1-e1c054c09a83"
+    "analytics": "f153514e-385c-461f-b0c5-c62dc81c8172"
   }
 }
