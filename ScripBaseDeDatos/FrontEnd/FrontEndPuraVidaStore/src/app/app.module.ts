@@ -10,7 +10,6 @@ import { AppComponent } from './app.component';
 import { AccordionModule } from 'primeng/accordion';
 import { LoginComponent } from './login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { PrincipalModule } from './principal/principal.module';
 
 
 @NgModule({
@@ -26,7 +25,6 @@ import { PrincipalModule } from './principal/principal.module';
     HttpClientModule,
     PrimeNGModule,
     BrowserAnimationsModule,
-    PrincipalModule
   ],
   exports: [
     PrimeNGModule
