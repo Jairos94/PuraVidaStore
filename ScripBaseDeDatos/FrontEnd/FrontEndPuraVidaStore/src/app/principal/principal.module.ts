@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { PrincipalRoutingModule } from './principal-routing.module';
 import { PrincipalComponent } from './principal.component';
+import { PrimeNgPrincipalModule } from './prime-ng-principal.module';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { PrincipalComponent } from './principal.component';
   ],
   imports: [
     CommonModule,
-    PrincipalRoutingModule
+    PrincipalRoutingModule,
+    PrimeNgPrincipalModule
   ]
 })
 export class PrincipalModule { }

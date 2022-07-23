@@ -1,2 +1,5 @@
-<p>principal works!</p>
+<p-menubar [model]="items">
+    <input type="text" pInputText placeholder="Search">
+    <button pButton label="Salir" icon="pi pi-power-off" routerLink="/login"></button>
+</p-menubar>
 <router-outlet></router-outlet>
