@@ -5,8 +5,7 @@ import { UsuariosRoutingModule } from './usuarios-routing.module';
 import { UsuariosComponent } from './usuarios.component';
 import { ListaUsuariosComponent } from './lista-usuarios/lista-usuarios.component';
 import { EditarNuevoComponent } from './editar-nuevo/editar-nuevo.component';
-import { PrimeNgUsuariosModule } from './prime-ng-usuarios.module';
-
+import { PrimeNgPrincipalModule } from '../prime-ng-principal.module';
 
 @NgModule({
   declarations: [
@@ -16,8 +15,8 @@ import { PrimeNgUsuariosModule } from './prime-ng-usuarios.module';
   ],
   imports: [
     CommonModule,
+    PrimeNgPrincipalModule,
     UsuariosRoutingModule,
-  //  PrimeNgUsuariosModule
   ]
 })
 export class UsuariosModule { }

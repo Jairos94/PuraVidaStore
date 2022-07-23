@@ -23,8 +23,13 @@ export class ListaUsuariosComponent implements OnInit {
 
   llenarUsuarios() {
     this.servicio.listaUsuarios().subscribe(
-      (lista => { this.listaUsuario = lista;}),
-      (_e => { console.log(_e);}));
+      (lista => {
+        this.listaUsuario = lista;
+        console.log(this.listaUsuario);
+        
+      }),
+      (_e => { console.log(_e); }));
+
   }
 
 

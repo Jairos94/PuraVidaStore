@@ -4,12 +4,14 @@ import { NgModule } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { MenubarModule } from 'primeng/menubar';
 import { InputTextModule } from 'primeng/inputtext';
+import { TableModule } from 'primeng/table';
 
 @NgModule({
   exports: [
     ButtonModule,
     MenubarModule,
-    InputTextModule
+    InputTextModule,
+    TableModule,
   ]
 })
 export class PrimeNgPrincipalModule { }
