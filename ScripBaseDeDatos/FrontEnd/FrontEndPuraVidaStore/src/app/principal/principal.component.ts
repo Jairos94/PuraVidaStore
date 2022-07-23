@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { activo } from '../activo';
+import { UsuarioModel } from '../models/usuario-model';
 
 @Component({
   selector: 'app-principal',
@@ -9,12 +10,11 @@ import { activo } from '../activo';
 })
 export class PrincipalComponent implements OnInit {
   items: MenuItem[] = [];
+  usuario:UsuarioModel=activo.usuarioPrograma;
   constructor() {
-
   }
 
   ngOnInit(): void {
-     
     this.items = [
       {
         label: 'ventas',

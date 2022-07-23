@@ -19,4 +19,8 @@ private baseUrl:string = environment.urlBase;
     return this.http.get<UsuarioModel>(`${this.baseUrl}Usuario/GetUsuario`,{params});
   }
 
+listaUsuarios():Observable<UsuarioModel[]>{
+  return this.http.get<UsuarioModel[]>(`${this.baseUrl}Usuario/ListaUsuarios`);
+}
+
 }

@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { UsuarioModel } from 'src/app/models/usuario-model';
+import { UsuarioServiceService } from 'src/app/services/usuario-service.service';
+
+//prime ng
+import { PrimeNGConfig } from 'primeng/api';
 
 @Component({
   selector: 'app-lista-usuarios',
@@ -6,10 +11,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./lista-usuarios.component.css']
 })
 export class ListaUsuariosComponent implements OnInit {
+  listaUsuario: UsuarioModel[] = [];
 
-  constructor() { }
+  constructor(private servicio: UsuarioServiceService,
+    private primengConfig: PrimeNGConfig) { }
 
   ngOnInit(): void {
+    this.llenarUsuarios();
+    this.primengConfig.ripple = true;
   }
+
+  llenarUsuarios() {
+    this.servicio.listaUsuarios().subscribe(
+      (lista => { this.listaUsuario = lista;}),
+      (_e => { console.log(_e);}));
+  }
+
+
 
 }

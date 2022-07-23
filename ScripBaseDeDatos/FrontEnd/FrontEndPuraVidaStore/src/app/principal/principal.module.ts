@@ -4,11 +4,13 @@ import { CommonModule } from '@angular/common';
 import { PrincipalRoutingModule } from './principal-routing.module';
 import { PrincipalComponent } from './principal.component';
 import { PrimeNgPrincipalModule } from './prime-ng-principal.module';
+import { PipePrincipalPipe } from './pipes/pipe-principal.pipe';
 
 
 @NgModule({
   declarations: [
-    PrincipalComponent
+    PrincipalComponent,
+    PipePrincipalPipe
   ],
   imports: [
     CommonModule,

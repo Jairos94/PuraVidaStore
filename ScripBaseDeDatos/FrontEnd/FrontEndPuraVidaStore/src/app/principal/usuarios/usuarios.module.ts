@@ -5,6 +5,7 @@ import { UsuariosRoutingModule } from './usuarios-routing.module';
 import { UsuariosComponent } from './usuarios.component';
 import { ListaUsuariosComponent } from './lista-usuarios/lista-usuarios.component';
 import { EditarNuevoComponent } from './editar-nuevo/editar-nuevo.component';
+import { PrimeNgUsuariosModule } from './prime-ng-usuarios.module';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { EditarNuevoComponent } from './editar-nuevo/editar-nuevo.component';
   ],
   imports: [
     CommonModule,
-    UsuariosRoutingModule
+    UsuariosRoutingModule,
+  //  PrimeNgUsuariosModule
   ]
 })
 export class UsuariosModule { }
