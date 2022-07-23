@@ -1,3 +1,6 @@
+import { PersonaModel } from "./persona-model";
+import { RolModel } from "./rol-model";
+
 export interface UsuarioModel {
     idUsuario: number | null;
     usuario: string;
@@ -5,4 +8,6 @@ export interface UsuarioModel {
     email: string;
     idRol: number;
     idPersona: number;
+    persona: PersonaModel
+    Rol: RolModel
 }
