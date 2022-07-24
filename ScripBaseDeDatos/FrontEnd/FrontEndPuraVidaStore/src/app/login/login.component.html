@@ -9,7 +9,7 @@
             </div>
             <div class="p-inputgroup">
                 <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
-                <input type="password" pInputText placeholder="Contraseña" [(ngModel)]="Contrasena">
+                <input type="password" pInputText placeholder="Contraseña" (keyup.enter)="validar()" [(ngModel)]="Contrasena">
             </div>
         </div>
 
