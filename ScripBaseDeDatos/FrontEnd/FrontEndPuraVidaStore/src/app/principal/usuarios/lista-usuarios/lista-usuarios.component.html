@@ -18,7 +18,7 @@
             <td>
                 <span class="p-buttonset">
                     <button pButton type="button" class="p-button-secondary m-1" label="Editar" icon="pi pi-user-edit" ></button>
-                    <button pButton type="button" class="p-button-danger m-1" label="Eliminar" icon="pi pi-trash" (click)="showConfirm(usuario.persona.psrNombre)"></button>
+                    <button pButton type="button" class="p-button-danger m-1" label="Eliminar" icon="pi pi-trash" (click)="showConfirm(usuario.persona.psrNombre,usuario.idUsuario)"></button>
                 </span>
 
             </td>
@@ -40,7 +40,7 @@
             </div>
             <div class="p-grid p-fluid">
                 <div class="p-col-6">
-                    <button type="button" pButton (click)="onConfirm()" label="Yes" class="p-button-success"></button>
+                    <button type="button" pButton (click)="onConfirm()" label="Sí" class="p-button-success"></button>
                 </div>
                 <div class="p-col-6">
                     <button type="button" pButton (click)="onReject()" label="No" class="p-button-secondary"></button>

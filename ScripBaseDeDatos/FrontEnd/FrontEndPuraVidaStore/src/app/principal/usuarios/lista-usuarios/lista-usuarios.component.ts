@@ -15,7 +15,7 @@ import { activo } from 'src/app/activo';
 export class ListaUsuariosComponent implements OnInit {
 
   listaUsuario: UsuarioModel[] = [];
-
+  idUsarioBorrar: number = 0;
 
   constructor(
     private messageService: MessageService,
@@ -80,9 +80,16 @@ export class ListaUsuariosComponent implements OnInit {
     this.messageService.add({ key: 'bc', severity: 'info', summary: 'Info', detail: 'Message Content' });
   }
 
-  showConfirm(nombre: string) {
+  showConfirm(nombre: string,id:number) {
+    this.idUsarioBorrar=id;
     this.messageService.clear();
-    this.messageService.add({ key: 'c', sticky: true, severity: 'warn', summary: '¿Estás seguro de eliminar a ' + nombre + '?', detail: 'Confirmar proceso' });
+    this.messageService.add({
+      key: 'c',
+      sticky: true,
+      severity: 'warn',
+      summary: '¿Estás seguro de eliminar a ' + nombre + '?',
+      detail: 'Confirmar proceso'
+    });
   }
 
   showMultiple() {
@@ -99,10 +106,14 @@ export class ListaUsuariosComponent implements OnInit {
 
   onConfirm() {
     this.messageService.clear('c');
+    console.log('se presionó sí ' + this.idUsarioBorrar);
+
   }
 
   onReject() {
+    this.idUsarioBorrar=0;
     this.messageService.clear('c');
+    console.log('se presionó no ' + this.idUsarioBorrar);
   }
 
   clear() {

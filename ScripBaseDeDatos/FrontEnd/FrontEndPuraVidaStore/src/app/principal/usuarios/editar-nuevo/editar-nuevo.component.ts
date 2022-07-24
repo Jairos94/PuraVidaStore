@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-editar-nuevo',
@@ -6,8 +8,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./editar-nuevo.component.css']
 })
 export class EditarNuevoComponent implements OnInit {
-
-  constructor() { }
+id:number=0;
+  constructor() {
+   }
 
   ngOnInit(): void {
   }

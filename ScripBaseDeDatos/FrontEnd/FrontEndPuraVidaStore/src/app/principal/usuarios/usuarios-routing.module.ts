@@ -10,7 +10,7 @@ const routes: Routes = [
     component: UsuariosComponent,
     children: [
       { path: 'lista-usuarios', component: ListaUsuariosComponent },
-      { path: 'editar-nuevo', component: EditarNuevoComponent },
+      { path: 'editar-nuevo/:id', component: EditarNuevoComponent },
       { path: '**', redirectTo: 'lista-usuarios' }
     ]
   }
