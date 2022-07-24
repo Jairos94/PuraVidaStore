@@ -82,7 +82,7 @@ export class ListaUsuariosComponent implements OnInit {
 
   showConfirm(nombre: string) {
     this.messageService.clear();
-    this.messageService.add({ key: 'c', sticky: true, severity: 'warn', summary: '¿Estás seguro de eliminar a ' + nombre + '?', detail: 'Confirmación del proceso' });
+    this.messageService.add({ key: 'c', sticky: true, severity: 'warn', summary: '¿Estás seguro de eliminar a ' + nombre + '?', detail: 'Confirmar proceso' });
   }
 
   showMultiple() {
