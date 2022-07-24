@@ -16,9 +16,18 @@ private baseUrl:string = environment.urlBase;
     const params = new HttpParams()
     .set('user', usario)
     .set('password', contrasena);
+<<<<<<< HEAD
     return this.http.get<UsuarioModel>(`${this.baseUrl}/Usuario/GetUsuario`,{params});
   }
 
   
+=======
+    return this.http.get<UsuarioModel>(`${this.baseUrl}Usuario/GetUsuario`,{params});
+  }
+
+listaUsuarios():Observable<UsuarioModel[]>{
+  return this.http.get<UsuarioModel[]>(`${this.baseUrl}Usuario/ListaUsuarios`);
+}
+>>>>>>> feature/Cambios
 
 }

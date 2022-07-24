@@ -9,6 +9,10 @@ import { AppComponent } from './app.component';
 
 import { AccordionModule } from 'primeng/accordion';
 import { LoginComponent } from './login/login.component';
+<<<<<<< HEAD
+=======
+
+>>>>>>> feature/Cambios
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
@@ -26,7 +30,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     PrimeNGModule,
     BrowserAnimationsModule,
   ],
+<<<<<<< HEAD
   exports: [
+=======
+  exports:[
+>>>>>>> feature/Cambios
     PrimeNGModule
   ],
   providers: [],

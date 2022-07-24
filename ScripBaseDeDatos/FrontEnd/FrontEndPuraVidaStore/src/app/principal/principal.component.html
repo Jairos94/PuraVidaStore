@@ -1,0 +1,6 @@
+<h3>{{usuario.persona.psrNombre|pipePrincipal}}</h3>
+<p-menubar [model]="items">
+    <input type="text" pInputText placeholder="Search">
+    <button pButton label="Salir" icon="pi pi-power-off" routerLink="/login"></button>
+</p-menubar>
+<router-outlet></router-outlet>

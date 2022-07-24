@@ -4,7 +4,11 @@
 
 export const environment = {
   production: false,
+<<<<<<< HEAD
   urlBase:'https://localhost:44329/api'
+=======
+  urlBase:'https://localhost:44329/api/'
+>>>>>>> feature/Cambios
 };
 
 /*

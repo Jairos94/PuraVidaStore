@@ -1,0 +1,27 @@
+<h3>Lista usuarios</h3>
+<p-table [value]="listaUsuario">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>#</th>
+            <th>Usuario</th>
+            <th>Nombre</th>
+            <th>Rol</th>
+            <th></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-usuario>
+        <tr>
+            <td>{{ usuario.idUsuario }}</td>
+            <td>{{ usuario.usuario }}</td>
+            <td>{{ usuario.persona.psrNombre }} {{ usuario.persona.psrApellido1 }} {{ usuario.persona.psrApellido }}</td>
+            <td>{{ usuario.rol.rluDescripcion }}</td>
+            <td>
+                <span class="p-buttonset">
+                    <button pButton type="button" class="p-button-secondary m-1" label="Editar" icon="pi pi-user-edit"></button>
+                    <button pButton type="button" class="p-button-danger m-1" label="Eliminar" icon="pi pi-trash"></button>
+                </span>
+
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

@@ -8,6 +8,11 @@ export interface UsuarioModel {
     email: string;
     idRol: number;
     idPersona: number;
+<<<<<<< HEAD
     persona: PersonaModel;
     Rol: RolModel;
+=======
+    persona: PersonaModel
+    Rol: RolModel
+>>>>>>> feature/Cambios
 }

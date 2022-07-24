@@ -15,16 +15,17 @@ export class LoginComponent implements OnInit {
   Usuario: string = '';
   Contrasena: string = '';
   constructor(private servicio: UsuarioServiceService,
-              private route: Router,
-              private messageService: MessageService,
-              private primengConfig: PrimeNGConfig) { }
+    private route: Router,
+    private messageService: MessageService,
+    private primengConfig: PrimeNGConfig) { }
 
   ngOnInit(): void {
-    
+
     this.primengConfig.ripple = true;
   }
 
   validar() {
+<<<<<<< HEAD
     try {
       this.servicio.login(this.Usuario, this.Contrasena).subscribe((u => {
         activo.usuarioPrograma = u;
@@ -41,10 +42,32 @@ export class LoginComponent implements OnInit {
       this.showError('Error de conexción con el servidor');
     }
    
+=======
+    this.servicio.login(this.Usuario, this.Contrasena).subscribe((u => {
+
+      activo.usuarioPrograma = u;
+
+      this.route.navigate(['/principal'])
+
+    }), (_error => {
+
+      let datoError = '';
+      try {
+        datoError = _error.error;
+        this.showError(datoError);
+      } catch (error) {
+        datoError = 'Error de conexcion'
+      }
+
+      console.log(datoError);
+
+
+    }));
+>>>>>>> feature/Cambios
   }
 
-showError(MensajeError:string) {
-    this.messageService.add({severity:'error', summary: 'Error', detail: MensajeError});
-}
+  showError(MensajeError: string) {
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: MensajeError });
+  }
 
 }
