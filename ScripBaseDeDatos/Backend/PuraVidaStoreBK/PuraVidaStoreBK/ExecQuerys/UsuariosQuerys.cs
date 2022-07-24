@@ -32,10 +32,32 @@ namespace PuraVidaStoreBK.ExecQuerys
                         UsuarioModel u = new UsuarioModel();
                         u.IdUsuario = reader.GetInt32(0);
                         u.Usuario = reader.GetString(1);
-                        u.email=reader.GetString(3);
-                        u.IdRol = reader.GetInt32(4);
-                        u.IdPersona = reader.GetInt32(5);
-                       Usu = u;
+                        try
+                        {
+                            u.email = reader.GetString(2);
+                        }
+                        catch (Exception)
+                        {
+
+                            u.email = "";
+                        }
+                        u.IdRol = reader.GetInt32(3);
+                        u.IdPersona = reader.GetInt32(4);
+
+                        PersonaModel p = new PersonaModel();
+                        p.PsrId= u.IdPersona;
+                        p.PsrIdentificacion = reader.GetString(5);
+                        p.PsrNombre= reader.GetString(6);
+                        p.PsrApellido1= reader.GetString(7);
+                        p.PsrApellido2=reader.GetString(8);
+                        u.persona= p;
+
+
+                        RolModel r = new RolModel();
+                        r.RluID= reader.GetInt32(9);
+                        r.RluDescripcion= reader.GetString(10);
+                        u.Rol= r;
+                        Usu = u;
                     }
                     catch (Exception)
                     {
