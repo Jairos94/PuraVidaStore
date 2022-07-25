@@ -5,17 +5,22 @@ import { PrincipalRoutingModule } from './principal-routing.module';
 import { PrincipalComponent } from './principal.component';
 import { PrimeNgPrincipalModule } from './prime-ng-principal.module';
 import { PipePrincipalPipe } from './pipes/pipe-principal.pipe';
+import { PersonasComponent } from './personas/personas.component';
 
 
 @NgModule({
   declarations: [
     PrincipalComponent,
-    PipePrincipalPipe
+    PipePrincipalPipe,
+    PersonasComponent
   ],
   imports: [
     CommonModule,
     PrincipalRoutingModule,
     PrimeNgPrincipalModule
+  ],
+  exports:[
+    PersonasComponent
   ]
 })
 export class PrincipalModule { }

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 //prime ng
+import { AccordionModule } from 'primeng/accordion';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
@@ -16,6 +17,7 @@ import { SidebarModule } from 'primeng/sidebar';
     CommonModule
   ],
   exports: [
+    AccordionModule,
     BrowserAnimationsModule,
     ButtonModule,
     InputTextModule,

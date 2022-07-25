@@ -1,0 +1,2 @@
+1) Agregar fotos a la base de datos.
+2) Cambios de tabla productos para codigo de barras del proveedor.
