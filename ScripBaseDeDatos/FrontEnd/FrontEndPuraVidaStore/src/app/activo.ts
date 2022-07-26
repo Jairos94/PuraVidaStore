@@ -1,7 +1,9 @@
+import { PersonaModel } from "./models/persona-model";
 import { UsuarioModel } from "./models/usuario-model"
 
 export class activo {
     public static usuarioPrograma: UsuarioModel;
+    public static personaInteractiva:PersonaModel;
 
     //!valida si es usuario está logeado con el fin de validar en los componentes sino devolver al login
     public esUsuario() {
