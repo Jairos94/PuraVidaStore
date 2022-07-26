@@ -1,5 +1,5 @@
 ﻿using PuraVidaStoreBK.Models;
-using PuraVidaStoreBK.Models.DbContex;
+using PuraVidaStoreBK.Models.DbContex2;
 
 namespace PuraVidaStoreBK.ExecQuerys
 {

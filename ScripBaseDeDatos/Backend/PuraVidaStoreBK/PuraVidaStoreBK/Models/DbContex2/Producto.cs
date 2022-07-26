@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PuraVidaStoreBK.Models.DbContex
+namespace PuraVidaStoreBK.Models.DbContex2
 {
     public partial class Producto
     {
@@ -20,6 +20,8 @@ namespace PuraVidaStoreBK.Models.DbContex
         public string? PrdCodigo { get; set; }
         public int? PrdUnidadesMinimas { get; set; }
         public int PrdIdTipoProducto { get; set; }
+        public byte[]? PrdFoto { get; set; }
+        public string? PrdCodigoProvedor { get; set; }
 
         public virtual TipoProducto PrdIdTipoProductoNavigation { get; set; } = null!;
         public virtual ICollection<DetalleFactura> DetalleFacturas { get; set; }
