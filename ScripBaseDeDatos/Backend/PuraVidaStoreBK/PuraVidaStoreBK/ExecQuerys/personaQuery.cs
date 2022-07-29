@@ -70,8 +70,14 @@ namespace PuraVidaStoreBK.ExecQuerys
             {
                 using (PuraVidaStoreContext db = new PuraVidaStoreContext())
                 {
-                    
-                    return db.Personas.Find(id);
+                    PersonaModel p = new PersonaModel();
+                    var persona = db.Personas.Find(id);
+                    p.PsrId=persona.PsrId;
+                    p.PsrIdentificacion=persona.PsrIdentificacion;
+                    p.PsrNombre=persona.PsrNombre;
+                    p.PsrApellido1=persona.PsrApellido1;
+                    p.PsrApellido2=persona.PsrApellido2;
+                    return p;
                 }
 
             }

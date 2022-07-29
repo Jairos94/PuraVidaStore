@@ -8,11 +8,15 @@ import { switchMap } from 'rxjs/operators';
   styleUrls: ['./editar-nuevo.component.css']
 })
 export class EditarNuevoComponent implements OnInit {
-id:number=0;
-  constructor() {
-   }
+  id: number = 0;
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
+     const parametroId = this.route.snapshot.paramMap.get('id');
   }
 
 }

@@ -4,6 +4,7 @@ import { UsuarioModel } from "./models/usuario-model"
 export class activo {
     public static usuarioPrograma: UsuarioModel;
     public static personaInteractiva:PersonaModel;
+    public static ConsultaIdPersona:number;//? valida cuando hay una persona por editar
 
     //!valida si es usuario está logeado con el fin de validar en los componentes sino devolver al login
     public esUsuario() {

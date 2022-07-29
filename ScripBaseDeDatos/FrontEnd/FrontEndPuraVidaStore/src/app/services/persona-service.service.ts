@@ -15,8 +15,13 @@ export class PersonaServiceService {
 
   listaPersonasCedula(cedula: string): Observable<PersonaModel[]> {
     const params = new HttpParams()
-      //.set('user', usario)
       .set('id', cedula);
     return this.http.get<PersonaModel[]>(`${this.baseUrl}persona/obtenerPersonaCedula`, { params });
+  }
+
+  buscarPersonaId(id:number):Observable<PersonaModel>{
+    const params = new HttpParams()
+    .set('id', id);
+  return this.http.get<PersonaModel>(`${this.baseUrl}persona/personaPorId`, { params });
   }
 }

@@ -13,6 +13,8 @@ export class PersonasComponent implements OnInit {
   persona!: PersonaModel;
   listaPersonas: PersonaModel[] = [];
   cedula: string = '';
+
+  //! Validación para los formularios
   personaForm = new FormGroup({
     identificacion: new FormControl(this.persona?.psrIdentificacion, [Validators.required]),
     nombre: new FormControl(this.persona?.psrNombre, [Validators.required]),
@@ -20,10 +22,15 @@ export class PersonasComponent implements OnInit {
     apellido2: new FormControl(this.persona?.psrApellido2, [Validators.required]),
   });
 
-  constructor(private servicio: PersonaServiceService) { }
+  constructor(
+    private servicio: PersonaServiceService, //todo servicio de persona
+  ) { }
 
   ngOnInit(): void {
+    this.validacion()// todo valida si es persona para editar
   }
+
+  //? Metodo para cuando se ingresa en la pantalla y aparezcan las sugerencias
   search(event?: any) {
 
     this.servicio.listaPersonasCedula(event.query).subscribe((
@@ -31,19 +38,27 @@ export class PersonasComponent implements OnInit {
         this.listaPersonas = x
         if (this.listaPersonas.length === 1) {
           this.persona = this.listaPersonas[0];
-          activo.personaInteractiva=this.persona;
+          activo.personaInteractiva = this.persona;
           this.cambios();
+        }else{
+          this.personaForm.patchValue({
+           
+            nombre: '',
+            apellido1: '',
+            apellido2: ''
+          });
         }
       }
     ),
       (_error => console.log(_error)));
 
-
+   
 
   }
+
+  //? Metodo para cargar los datos a la pantalla
   cambios() {
     if (this.persona.psrId > 0) {
-      console.log('entro al if');
       activo.personaInteractiva = this.persona;
       this.persona = this.listaPersonas[0];
       this.personaForm.setValue({
@@ -56,4 +71,14 @@ export class PersonasComponent implements OnInit {
 
   }
 
+  validacion() {
+    if (activo.ConsultaIdPersona > 0) {
+        this.servicio.buscarPersonaId(activo.ConsultaIdPersona).subscribe((x => {
+        this.persona = x;
+      }), (_error => (console.log(_error))
+      ))
+    }
+    
+    this.cambios();
+  }
 }
