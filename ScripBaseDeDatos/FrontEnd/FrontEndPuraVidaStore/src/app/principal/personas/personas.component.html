@@ -1,39 +1,41 @@
-<h3>Datos de la persona</h3>
+
 <p-accordion>
     <p-accordionTab header="Datos de la persona">
-        <form [formGroup]="personaForm">
-            <h5>Identificación</h5>
-            <p-autoComplete [(ngModel)]="persona" [suggestions]="listaPersonas" (completeMethod)="search($event)" (ngModelChange)="cambios()"
-                field="psrIdentificacion">
-                <ng-template let-persona pTemplate="item">
-                    <div style="font-size:18px;float:right;margin:10px 10px 0 0">{{persona.psrNombre}}
-                        {{persona.psrApellido1}} {{persona.psrApellido2}}</div>
-                </ng-template>
-            </p-autoComplete>
-
-            <h5>Nombre</h5>
-            <div class="grid p-fluid">
-                <div class="col-12 md:col-4">
-                    <div class="p-inputgroup">
-                        <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
-                        <input type="text" pInputText placeholder="Nombre" formControlName="nombre">
-                    </div>
-                </div>
-
-                <div class="col-12 md:col-4">
-                    <div class="p-inputgroup">
-                        <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
-                        <input type="text" pInputText placeholder="Primer Apellido" formControlName="apellido1">
-                    </div>
-                </div>
-
-                <div class="col-12 md:col-4">
-                    <div class="p-inputgroup">
-                        <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
-                        <input type="text" pInputText placeholder="Segundo Apellido" formControlName="apellido2">
-                    </div>
+        <h3>Datos de la persona</h3>
+        <h5>Identificadion</h5>
+        <div class="grid p-fluid">
+            <div class="col-12 md:col-4">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                    <input type="text" [(ngModel)]="persona.psrIdentificacion" pInputText placeholder="Cédula">
                 </div>
             </div>
-        </form>
+        </div>
+
+        <h5>Nombre Comple</h5>
+        <div class="grid p-fluid">
+            <div class="col-12 md:col-4">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                    <input type="text" [(ngModel)]="persona.psrNombre" pInputText placeholder="Nombre">
+                </div>
+            </div>
+
+            <div class="col-12 md:col-4">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                    <input type="text" [(ngModel)]="persona.psrApellido1" pInputText placeholder="Primer apellido">
+                </div>
+            </div>
+
+            <div class="col-12 md:col-4">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                    <input type="text" [(ngModel)]="persona.psrApellido2" pInputText placeholder="Segundo apellido">
+                </div>
+            </div>
+
+        </div>
+
     </p-accordionTab>
 </p-accordion>

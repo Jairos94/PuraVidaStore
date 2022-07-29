@@ -48,11 +48,6 @@ export class ListaUsuariosComponent implements OnInit {
       }),
       (_e => { console.log(_e); }));
   }
-
-  editarUsuario(id:number){
-    activo.ConsultaIdPersona=id;
-  }
-
   showSuccess() {
     this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Message Content' });
   }

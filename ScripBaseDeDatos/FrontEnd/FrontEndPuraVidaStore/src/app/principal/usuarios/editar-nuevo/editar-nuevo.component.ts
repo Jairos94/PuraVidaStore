@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { activo } from 'src/app/activo';
+import { PersonaModel } from 'src/app/models/persona-model';
 import { RolModel } from 'src/app/models/rol-model';
 import { UsuarioModel } from 'src/app/models/usuario-model';
 import { RolServiceService } from 'src/app/services/rol-service.service';
 import { UsuarioServiceService } from 'src/app/services/usuario-service.service';
-import { PersonasComponent } from '../../personas/personas.component';
 
 @Component({
   selector: 'app-editar-nuevo',
@@ -14,10 +14,10 @@ import { PersonasComponent } from '../../personas/personas.component';
   styleUrls: ['./editar-nuevo.component.css']
 })
 export class EditarNuevoComponent implements OnInit {
-  id: number = 0 ;
+  identificacion='';
   usuarioEdtitar: UsuarioModel | undefined;
+  personaM!: PersonaModel ;
   listaRoles:RolModel[]=[];
-  personaComponete:PersonasComponent | undefined
 
 
   constructor(
@@ -31,33 +31,31 @@ export class EditarNuevoComponent implements OnInit {
     const parametroId = this.route.snapshot.paramMap.get('id');
     this.validacin(parametroId);
     this.gestionInicio();
+    
   }
 
 
   validacin(parameto: any) {
     if (parameto>0) 
-    { 
-    
-      
-      this.servicio.usuarioPorId(parameto).subscribe((x=>
-        {
-  
-          this.usuarioEdtitar=x;
-          activo.ConsultaIdPersona=x.idPersona
-          activo.limpiarPersona();
-          
-          activo.personaInteractiva=x.persona
-          console.log('antes de valicación persona interactiva');
-          this.personaComponete?.validacion();
-          console.log('Despues de la calidación');
-        }
-        ),(_error=>console.log(_error)
-      ));
+    { this.servicio.usuarioPorId(parameto).subscribe((x=>
+      {
+        this.cargarDatos(x)
+      }),
+     (_error=>console.log(_error)));
+
      
     }
   }
 
+  cargarDatos(usuario:UsuarioModel)
+  {
+    this.usuarioEdtitar=usuario
+    this.personaM=usuario.persona
+    this.identificacion= this.personaM.psrIdentificacion;
+  }
+
   gestionInicio(){
+    
     this.servicioRol.listaRoles().subscribe((x=>{
       this.listaRoles=x;
       

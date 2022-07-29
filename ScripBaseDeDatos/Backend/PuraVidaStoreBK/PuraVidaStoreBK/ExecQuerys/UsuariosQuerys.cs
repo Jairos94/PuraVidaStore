@@ -202,38 +202,34 @@ namespace PuraVidaStoreBK.ExecQuerys
         {
             try
             {
-                int idUsuario = Convert.ToInt32(id);
                 using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
                 {
-                    Usuario u = new Usuario();
-                    RolUsiario r = new RolUsiario();
-                    Persona p = new Persona();
-                    u= db.Usuarios.Find(idUsuario);
-                    r=db.RolUsiarios.Find(u.UsrIdRol);
-                    p = db.Personas.Find(u.UsrIdPersona);
+                   
+                    var u= db.Usuarios.Find(id);
+                    var r=db.RolUsiarios.Find(u.UsrIdRol);
+                    var p = db.Personas.Find(u.UsrIdPersona);
 
                     //carga models
-                    UsuarioModel um = new UsuarioModel() 
-                    {
-                        IdUsuario=u.UsrId,
-                        Usuario=u.UsrUser,
-                        email=u.UsrEmail,
-                        IdRol=u.UsrIdRol,
-                        IdPersona = u.UsrIdPersona,
-                        persona= new PersonaModel() 
-                        { 
-                            PsrId=p.PsrId,
-                            PsrIdentificacion=p.PsrIdentificacion,
-                            PsrNombre=p.PsrNombre,
-                            PsrApellido1=p.PsrApellido1,
-                            PsrApellido2=p.PsrApellido2,
-                        },
-                        Rol= new RolModel() 
-                        {
-                            RluID=r.RluId,
-                            RluDescripcion=r.RluDescripcion,
-                        }
-                    };
+                    UsuarioModel um = new UsuarioModel();
+                  
+                    um.IdUsuario = u.UsrId;
+                    um.Usuario = u.UsrUser;
+                    um.password = "";
+                    um.email=u.UsrEmail;
+                    um.IdRol=u.UsrIdRol;
+                    um.IdPersona = u.UsrIdPersona;
+
+                    PersonaModel pm = new PersonaModel();
+                    pm.PsrId = p.PsrId;
+                    pm.PsrIdentificacion = p.PsrIdentificacion;
+                    pm.PsrNombre = p.PsrNombre;
+                    pm.PsrApellido1 = p.PsrApellido1;
+                    pm.PsrApellido2 = p.PsrApellido2;
+                    um.persona = pm;
+                    RolModel rm = new RolModel();
+                    rm.RluID = r.RluId;
+                    rm.RluDescripcion = r.RluDescripcion;
+                    um.Rol = rm;
                     return um;
                     
                 }

@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
 import { activo } from 'src/app/activo';
 import { PersonaModel } from 'src/app/models/persona-model';
 import { PersonaServiceService } from 'src/app/services/persona-service.service';
@@ -10,17 +9,10 @@ import { PersonaServiceService } from 'src/app/services/persona-service.service'
   styleUrls: ['./personas.component.css']
 })
 export class PersonasComponent implements OnInit {
-  persona!: PersonaModel;
+  //@Input()  cedula: string = '';; // decorate the property with @Input()
+ 
+  @Input()  persona!: PersonaModel;
   listaPersonas: PersonaModel[] = [];
-  cedula: string = '';
-
-  //! Validación para los formularios
-  personaForm = new FormGroup({
-    identificacion: new FormControl(this.persona?.psrIdentificacion, [Validators.required]),
-    nombre: new FormControl(this.persona?.psrNombre, [Validators.required]),
-    apellido1: new FormControl(this.persona?.psrApellido1, [Validators.required]),
-    apellido2: new FormControl(this.persona?.psrApellido2, [Validators.required]),
-  });
 
   constructor(
     private servicio: PersonaServiceService, //todo servicio de persona
@@ -39,13 +31,6 @@ export class PersonasComponent implements OnInit {
           this.persona = this.listaPersonas[0];
           activo.personaInteractiva = this.persona;
           this.cambios();
-        }else{
-          this.personaForm.patchValue({
-           
-            nombre: '',
-            apellido1: '',
-            apellido2: ''
-          });
         }
       }
     ),
@@ -60,26 +45,13 @@ export class PersonasComponent implements OnInit {
     if (this.persona.psrId > 0) {
       activo.personaInteractiva = this.persona;
       this.persona = this.listaPersonas[0];
-      this.personaForm.setValue({
-        identificacion: this.persona.psrIdentificacion,
-        nombre: this.persona.psrNombre,
-        apellido1: this.persona.psrApellido1,
-        apellido2: this.persona.psrApellido2
-      });
     }
 
   }
 
    validacion(){
-  console.log(activo.personaInteractiva);
   
   this.persona=activo.personaInteractiva
-  this.personaForm.setValue({
-    identificacion: this.persona.psrIdentificacion,
-    nombre: this.persona.psrNombre,
-    apellido1: this.persona.psrApellido1,
-    apellido2: this.persona.psrApellido2
-  });
    
   }
 

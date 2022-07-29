@@ -98,13 +98,12 @@ C:\Users\jairo\OneDrive\Escritorio\Backend\PuraVidaStoreBK\PuraVidaStoreBK\obj\D
 C:\Users\jairo\OneDrive\Escritorio\Backend\PuraVidaStoreBK\PuraVidaStoreBK\obj\Debug\net6.0\PuraVidaStoreBK.pdb
 C:\Users\jairo\OneDrive\Escritorio\Backend\PuraVidaStoreBK\PuraVidaStoreBK\obj\Debug\net6.0\PuraVidaStoreBK.genruntimeconfig.cache
 C:\Users\jairo\OneDrive\Escritorio\Backend\PuraVidaStoreBK\PuraVidaStoreBK\obj\Debug\net6.0\ref\PuraVidaStoreBK.dll
+C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\bin\Debug\net6.0\PuraVidaStoreBK.dll
 C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\bin\Debug\net6.0\appsettings.Development.json
 C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\bin\Debug\net6.0\appsettings.json
 C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\bin\Debug\net6.0\PuraVidaStoreBK.exe
 C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\bin\Debug\net6.0\PuraVidaStoreBK.deps.json
 C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\bin\Debug\net6.0\PuraVidaStoreBK.runtimeconfig.json
-C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\bin\Debug\net6.0\PuraVidaStoreBK.dll
-C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\bin\Debug\net6.0\PuraVidaStoreBK.pdb
 C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\bin\Debug\net6.0\Humanizer.dll
 C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\bin\Debug\net6.0\Microsoft.Data.SqlClient.dll
 C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
@@ -164,4 +163,5 @@ C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\PuraVidaStore\ScripBaseDeDatos\
 C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\obj\Debug\net6.0\refint\PuraVidaStoreBK.dll
 C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\obj\Debug\net6.0\PuraVidaStoreBK.pdb
 C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\obj\Debug\net6.0\PuraVidaStoreBK.genruntimeconfig.cache
+C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\bin\Debug\net6.0\PuraVidaStoreBK.pdb
 C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\PuraVidaStore\ScripBaseDeDatos\Backend\PuraVidaStoreBK\PuraVidaStoreBK\obj\Debug\net6.0\ref\PuraVidaStoreBK.dll
