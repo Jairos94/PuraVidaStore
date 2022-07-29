@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 
 //prime ng
 import { AccordionModule } from 'primeng/accordion';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { MenuModule } from 'primeng/menu';
@@ -14,6 +15,7 @@ import { SidebarModule } from 'primeng/sidebar';
 @NgModule({
   exports: [
     AccordionModule,
+    AutoCompleteModule,
     ButtonModule,
     InputTextModule,
     MenuModule,

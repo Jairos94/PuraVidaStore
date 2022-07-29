@@ -1,5 +1,5 @@
 ﻿using PuraVidaStoreBK.Models;
-using PuraVidaStoreBK.Models.DbContex2;
+using PuraVidaStoreBK.Models.DbContex;
 
 namespace PuraVidaStoreBK.ExecQuerys
 {
@@ -31,6 +31,55 @@ namespace PuraVidaStoreBK.ExecQuerys
                return ex.Message;
             }
             
+        }
+        public object obtenerPersonaPorCedula(string cedula) 
+        {
+            try
+            {
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
+                {
+                    List<Persona> listaP  = new List<Persona>();
+                    listaP = db.Personas.Where(x=>x.PsrIdentificacion.Contains(cedula)).ToList();
+
+                    List<PersonaModel> ListaPersonas = new List<PersonaModel>();
+                    foreach (Persona persona in listaP) 
+                    {
+                        PersonaModel model = new PersonaModel();
+                        model.PsrId=persona.PsrId;
+                        model.PsrIdentificacion=persona.PsrIdentificacion;
+                        model.PsrNombre=persona.PsrNombre;
+                        model.PsrApellido1=persona.PsrApellido1;
+                        model.PsrApellido2=persona.PsrApellido2;
+                        ListaPersonas.Add(model);
+                    }
+                    //var datos = from c in db.Personas where c.PsrIdentificacion.Contains(cedula) select c;
+                    return ListaPersonas;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                return ex.Message;
+            }
+        }
+
+        public object obtenerPersonaPorId(int id)
+        {
+            try
+            {
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
+                {
+                    
+                    return db.Personas.Find(id);
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                return ex.Message;
+            }
         }
     }
 }

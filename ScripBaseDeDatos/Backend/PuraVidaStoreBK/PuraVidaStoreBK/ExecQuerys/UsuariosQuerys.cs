@@ -140,7 +140,7 @@ namespace PuraVidaStoreBK.ExecQuerys
         }
 
         //Ingresa Usuarios
-        public bool IngresarUsario(UsuarioModel usuario) 
+        public bool IngresarUsario(UsuarioModel usuario)
         {
             SqlConnection conn = data.GetConnection();
             try
@@ -152,7 +152,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                 command.CommandText = "IngresarUsuario";
                 command.Parameters.Add("@Usuario", SqlDbType.VarChar, 15).Value = usuario.Usuario; ;
                 command.Parameters.Add("@Pass", SqlDbType.VarChar, 256).Value = usuario.password;
-                command.Parameters.Add("@Email", SqlDbType.VarChar,100).Value = usuario.email;
+                command.Parameters.Add("@Email", SqlDbType.VarChar, 100).Value = usuario.email;
                 command.Parameters.Add("@IdRol", SqlDbType.Int).Value = usuario.IdRol;
                 command.Parameters.Add("@IdPersona", SqlDbType.Int).Value = usuario.IdPersona;
                 reader = command.ExecuteReader();

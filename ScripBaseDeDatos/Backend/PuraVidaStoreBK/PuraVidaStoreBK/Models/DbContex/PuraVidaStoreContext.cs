@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace PuraVidaStoreBK.Models.DbContex2
+namespace PuraVidaStoreBK.Models.DbContex
 {
     public partial class PuraVidaStoreContext : DbContext
     {
@@ -48,7 +48,7 @@ namespace PuraVidaStoreBK.Models.DbContex2
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-4FJOI9V;Database=PuraVidaStore;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-4FJOI9V;Database=PuraVidaStore;Trusted_Connection=True;Trusted_Connection=True;");
             }
         }
 
@@ -428,6 +428,8 @@ namespace PuraVidaStoreBK.Models.DbContex2
                 entity.Property(e => e.PrdCodigoProvedor)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.PrdFoto).HasColumnType("image");
 
                 entity.Property(e => e.PrdNombre)
                     .HasMaxLength(50)

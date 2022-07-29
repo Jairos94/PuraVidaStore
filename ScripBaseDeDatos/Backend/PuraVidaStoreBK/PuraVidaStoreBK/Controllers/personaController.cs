@@ -20,10 +20,17 @@ namespace PuraVidaStoreBK.Controllers
         //}
 
         // GET api/<personaController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("obtenerPersonaCedula")]
+        public object obtenerPersonaCedula(string id)
         {
-            return "value";
+            return pq.obtenerPersonaPorCedula(id);
+        }
+
+        // GET api/<personaController>/5
+        [HttpGet("personaPorId{id}")]
+        public object personaPorId(int id)
+        {
+            return pq.obtenerPersonaPorId(id);
         }
 
         // POST api/<personaController>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PuraVidaStoreBK.Models.DbContex2
+namespace PuraVidaStoreBK.Models.DbContex
 {
     public partial class Usuario
     {

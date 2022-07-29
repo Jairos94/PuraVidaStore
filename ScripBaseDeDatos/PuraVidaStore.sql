@@ -330,3 +330,5 @@ INSERT INTO FormaPago(FrpDescripcion) VALUES('Sinpe movil'),('Efectivo'),('Credi
 alter table Factura add FtrFormaPago int FOREIGN KEY(FtrFormaPago) References FormaPago(FrpId) NOT NULL
 
 Alter table Productos add PrdFoto VARBINARY(MAX) null,  PrdCodigoProvedor varchar(50) null;
+Alter table Productos DROP COLUMN PrdFoto;
+Alter table Productos add PrdFoto image null;
