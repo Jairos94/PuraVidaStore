@@ -8,19 +8,23 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UsuarioServiceService {
-private baseUrl:string = environment.urlBase;
+  private baseUrl: string = environment.urlBase;
 
   constructor(private http: HttpClient) { }
 
-   login(usario:string,contrasena:string):Observable<UsuarioModel>{
+  login(usario: string, contrasena: string): Observable<UsuarioModel> {
     const params = new HttpParams()
-    .set('user', usario)
-    .set('password', contrasena);
-    return this.http.get<UsuarioModel>(`${this.baseUrl}Usuario/GetUsuario`,{params});
+      .set('user', usario)
+      .set('password', contrasena);
+    return this.http.get<UsuarioModel>(`${this.baseUrl}Usuario/GetUsuario`, { params });
   }
 
-listaUsuarios():Observable<UsuarioModel[]>{
-  return this.http.get<UsuarioModel[]>(`${this.baseUrl}Usuario/ListaUsuarios`);
-}
-
+  listaUsuarios(): Observable<UsuarioModel[]> {
+    return this.http.get<UsuarioModel[]>(`${this.baseUrl}Usuario/ListaUsuarios`);
+  }
+  usuarioPorId(id: any): Observable<UsuarioModel> {
+    const params = new HttpParams()
+    .set('id', id);
+    return this.http.get<UsuarioModel>(`${this.baseUrl}Usuario/UsuarioPorId`, { params });
+  }
 }

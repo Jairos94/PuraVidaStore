@@ -2,6 +2,7 @@
 using System.Data.SqlClient;
 using System.Data;
 using PuraVidaStoreBK.Models;
+using PuraVidaStoreBK.Models.DbContex;
 
 namespace PuraVidaStoreBK.ExecQuerys
 {
@@ -32,10 +33,32 @@ namespace PuraVidaStoreBK.ExecQuerys
                         UsuarioModel u = new UsuarioModel();
                         u.IdUsuario = reader.GetInt32(0);
                         u.Usuario = reader.GetString(1);
-                        u.email=reader.GetString(3);
-                        u.IdRol = reader.GetInt32(4);
-                        u.IdPersona = reader.GetInt32(5);
-                       Usu = u;
+                        try
+                        {
+                            u.email = reader.GetString(2);
+                        }
+                        catch (Exception)
+                        {
+
+                            u.email = "";
+                        }
+                        u.IdRol = reader.GetInt32(3);
+                        u.IdPersona = reader.GetInt32(4);
+
+                        PersonaModel p = new PersonaModel();
+                        p.PsrId= u.IdPersona;
+                        p.PsrIdentificacion = reader.GetString(5);
+                        p.PsrNombre= reader.GetString(6);
+                        p.PsrApellido1= reader.GetString(7);
+                        p.PsrApellido2=reader.GetString(8);
+                        u.persona= p;
+
+
+                        RolModel r = new RolModel();
+                        r.RluID= reader.GetInt32(9);
+                        r.RluDescripcion= reader.GetString(10);
+                        u.Rol= r;
+                        Usu = u;
                     }
                     catch (Exception)
                     {
@@ -118,7 +141,7 @@ namespace PuraVidaStoreBK.ExecQuerys
         }
 
         //Ingresa Usuarios
-        public bool IngresarUsario(UsuarioModel usuario) 
+        public bool IngresarUsario(UsuarioModel usuario)
         {
             SqlConnection conn = data.GetConnection();
             try
@@ -130,7 +153,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                 command.CommandText = "IngresarUsuario";
                 command.Parameters.Add("@Usuario", SqlDbType.VarChar, 15).Value = usuario.Usuario; ;
                 command.Parameters.Add("@Pass", SqlDbType.VarChar, 256).Value = usuario.password;
-                command.Parameters.Add("@Email", SqlDbType.VarChar,100).Value = usuario.email;
+                command.Parameters.Add("@Email", SqlDbType.VarChar, 100).Value = usuario.email;
                 command.Parameters.Add("@IdRol", SqlDbType.Int).Value = usuario.IdRol;
                 command.Parameters.Add("@IdPersona", SqlDbType.Int).Value = usuario.IdPersona;
                 reader = command.ExecuteReader();
@@ -174,6 +197,48 @@ namespace PuraVidaStoreBK.ExecQuerys
 
             finally
             { conn.Close(); }
+        }
+        public object UsuarioPorId(int id) 
+        {
+            try
+            {
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
+                {
+                   
+                    var u= db.Usuarios.Find(id);
+                    var r=db.RolUsiarios.Find(u.UsrIdRol);
+                    var p = db.Personas.Find(u.UsrIdPersona);
+
+                    //carga models
+                    UsuarioModel um = new UsuarioModel();
+                  
+                    um.IdUsuario = u.UsrId;
+                    um.Usuario = u.UsrUser;
+                    um.password = "";
+                    um.email=u.UsrEmail;
+                    um.IdRol=u.UsrIdRol;
+                    um.IdPersona = u.UsrIdPersona;
+
+                    PersonaModel pm = new PersonaModel();
+                    pm.PsrId = p.PsrId;
+                    pm.PsrIdentificacion = p.PsrIdentificacion;
+                    pm.PsrNombre = p.PsrNombre;
+                    pm.PsrApellido1 = p.PsrApellido1;
+                    pm.PsrApellido2 = p.PsrApellido2;
+                    um.persona = pm;
+                    RolModel rm = new RolModel();
+                    rm.RluID = r.RluId;
+                    rm.RluDescripcion = r.RluDescripcion;
+                    um.Rol = rm;
+                    return um;
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return ex.Message;
+            }
         }
     }
 }

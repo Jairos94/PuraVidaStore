@@ -32,5 +32,60 @@ namespace PuraVidaStoreBK.ExecQuerys
             }
             
         }
+        public object obtenerPersonaPorCedula(string cedula) 
+        {
+            try
+            {
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
+                {
+                    List<Persona> listaP  = new List<Persona>();
+                    listaP = db.Personas.Where(x=>x.PsrIdentificacion.Contains(cedula)).ToList();
+
+                    List<PersonaModel> ListaPersonas = new List<PersonaModel>();
+                    foreach (Persona persona in listaP) 
+                    {
+                        PersonaModel model = new PersonaModel();
+                        model.PsrId=persona.PsrId;
+                        model.PsrIdentificacion=persona.PsrIdentificacion;
+                        model.PsrNombre=persona.PsrNombre;
+                        model.PsrApellido1=persona.PsrApellido1;
+                        model.PsrApellido2=persona.PsrApellido2;
+                        ListaPersonas.Add(model);
+                    }
+                    //var datos = from c in db.Personas where c.PsrIdentificacion.Contains(cedula) select c;
+                    return ListaPersonas;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                return ex.Message;
+            }
+        }
+
+        public object obtenerPersonaPorId(int id)
+        {
+            try
+            {
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
+                {
+                    PersonaModel p = new PersonaModel();
+                    var persona = db.Personas.Find(id);
+                    p.PsrId=persona.PsrId;
+                    p.PsrIdentificacion=persona.PsrIdentificacion;
+                    p.PsrNombre=persona.PsrNombre;
+                    p.PsrApellido1=persona.PsrApellido1;
+                    p.PsrApellido2=persona.PsrApellido2;
+                    return p;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                return ex.Message;
+            }
+        }
     }
 }
