@@ -2,6 +2,7 @@
 using System.Data.SqlClient;
 using System.Data;
 using PuraVidaStoreBK.Models;
+using PuraVidaStoreBK.Models.DbContex;
 
 namespace PuraVidaStoreBK.ExecQuerys
 {
@@ -196,6 +197,52 @@ namespace PuraVidaStoreBK.ExecQuerys
 
             finally
             { conn.Close(); }
+        }
+        public object UsuarioPorId(int id) 
+        {
+            try
+            {
+                int idUsuario = Convert.ToInt32(id);
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
+                {
+                    Usuario u = new Usuario();
+                    RolUsiario r = new RolUsiario();
+                    Persona p = new Persona();
+                    u= db.Usuarios.Find(idUsuario);
+                    r=db.RolUsiarios.Find(u.UsrIdRol);
+                    p = db.Personas.Find(u.UsrIdPersona);
+
+                    //carga models
+                    UsuarioModel um = new UsuarioModel() 
+                    {
+                        IdUsuario=u.UsrId,
+                        Usuario=u.UsrUser,
+                        email=u.UsrEmail,
+                        IdRol=u.UsrIdRol,
+                        IdPersona = u.UsrIdPersona,
+                        persona= new PersonaModel() 
+                        { 
+                            PsrId=p.PsrId,
+                            PsrIdentificacion=p.PsrIdentificacion,
+                            PsrNombre=p.PsrNombre,
+                            PsrApellido1=p.PsrApellido1,
+                            PsrApellido2=p.PsrApellido2,
+                        },
+                        Rol= new RolModel() 
+                        {
+                            RluID=r.RluId,
+                            RluDescripcion=r.RluDescripcion,
+                        }
+                    };
+                    return um;
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return ex.Message;
+            }
         }
     }
 }

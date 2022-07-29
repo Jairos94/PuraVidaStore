@@ -18,4 +18,12 @@ export class activo {
             return false;
         }
     }
+    public static limpiarPersona(){
+        activo.personaInteractiva.psrId=0;
+        activo.personaInteractiva.psrIdentificacion='';
+        activo.personaInteractiva.psrNombre='';
+        activo.personaInteractiva.psrApellido1='';
+        activo.personaInteractiva.psrApellido2='';
+        
+    }
 }

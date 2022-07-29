@@ -47,9 +47,10 @@ export class ListaUsuariosComponent implements OnInit {
         this.listaUsuario = lista;
       }),
       (_e => { console.log(_e); }));
+  }
 
-
-
+  editarUsuario(id:number){
+    activo.ConsultaIdPersona=id;
   }
 
   showSuccess() {

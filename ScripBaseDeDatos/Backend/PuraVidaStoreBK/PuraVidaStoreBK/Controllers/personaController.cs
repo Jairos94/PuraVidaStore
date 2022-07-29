@@ -28,9 +28,18 @@ namespace PuraVidaStoreBK.Controllers
 
         // GET api/<personaController>/5
         [HttpGet("personaPorId{id}")]
-        public object personaPorId(int id)
+        public ActionResult personaPorId(int id)
         {
-            return pq.obtenerPersonaPorId(id);
+            try
+            {
+                return Ok( pq.obtenerPersonaPorId(id));
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+           
         }
 
         // POST api/<personaController>

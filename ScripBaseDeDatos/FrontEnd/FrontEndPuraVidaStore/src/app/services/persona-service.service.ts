@@ -19,7 +19,7 @@ export class PersonaServiceService {
     return this.http.get<PersonaModel[]>(`${this.baseUrl}persona/obtenerPersonaCedula`, { params });
   }
 
-  buscarPersonaId(id:number):Observable<PersonaModel>{
+  buscarPersonaId(id:any):Observable<PersonaModel>{
     const params = new HttpParams()
     .set('id', id);
   return this.http.get<PersonaModel>(`${this.baseUrl}persona/personaPorId`, { params });

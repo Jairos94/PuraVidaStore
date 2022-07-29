@@ -27,7 +27,6 @@ export class PersonasComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.validacion()// todo valida si es persona para editar
   }
 
   //? Metodo para cuando se ingresa en la pantalla y aparezcan las sugerencias
@@ -71,14 +70,24 @@ export class PersonasComponent implements OnInit {
 
   }
 
-  validacion() {
-    if (activo.ConsultaIdPersona > 0) {
-        this.servicio.buscarPersonaId(activo.ConsultaIdPersona).subscribe((x => {
-        this.persona = x;
-      }), (_error => (console.log(_error))
-      ))
+   validacion(){
+  console.log(activo.personaInteractiva);
+  
+  this.persona=activo.personaInteractiva
+  this.personaForm.setValue({
+    identificacion: this.persona.psrIdentificacion,
+    nombre: this.persona.psrNombre,
+    apellido1: this.persona.psrApellido1,
+    apellido2: this.persona.psrApellido2
+  });
+   
+  }
+
+  public guardarUsuario(){
+
+    if(this.persona.psrId > 0){
+
     }
-    
-    this.cambios();
+    else{}
   }
 }
