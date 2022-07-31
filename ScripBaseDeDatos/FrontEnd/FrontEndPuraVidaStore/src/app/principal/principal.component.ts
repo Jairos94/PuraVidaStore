@@ -35,7 +35,7 @@ export class PrincipalComponent implements OnInit {
           {
             label: 'Agregar usuario',
             icon: 'pi pi-user-plus',
-            routerLink:'usuarios/nuevo-usuario'
+            routerLink:'usuarios/editar-nuevo/0'
           },
       ]
       }

@@ -12,14 +12,12 @@ import { EditarNuevoComponent } from './editar-nuevo/editar-nuevo.component';
 import { FormsModule } from '@angular/forms';
 import { PrimeNgPrincipalModule } from '../prime-ng-principal.module';
 import { PrincipalModule } from '../principal.module';
-import { NuevoComponent } from './nuevo/nuevo.component';
 
 @NgModule({
   declarations: [
     UsuariosComponent,
     ListaUsuariosComponent,
     EditarNuevoComponent,
-    NuevoComponent
   ],
   imports: [
     CommonModule,

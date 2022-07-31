@@ -87,5 +87,15 @@ namespace PuraVidaStoreBK.ExecQuerys
                 return ex.Message;
             }
         }
+
+        public object EditarPersona(Persona persona) 
+        {
+            using (PuraVidaStoreContext db= new PuraVidaStoreContext()) 
+            {
+                db.Personas.Update(persona);
+                db.SaveChanges();
+                return persona;
+            }
+        }
     }
 }

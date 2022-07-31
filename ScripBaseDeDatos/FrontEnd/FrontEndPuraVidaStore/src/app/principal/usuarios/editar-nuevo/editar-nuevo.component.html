@@ -1,4 +1,83 @@
-<app-personas  [persona]="personaM"></app-personas>
+<h1>{{ titulo }}</h1>
+<p-accordion *ngIf="personaM">
+    <p-accordionTab header="Datos de la persona">
+
+        <h5>Identificación</h5>
+        <div class="grid p-fluid">
+            <div class="col-12 md:col-4">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                    <input [ngModel]="personaM.psrIdentificacion" type="text" pInputText placeholder="Identificación" >         
+                </div>
+            </div>
+        </div>
+
+        <h5>Nombre completo</h5>
+        <div class="grid p-fluid">
+            <div class="col-12 md:col-4">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                    <input [(ngModel)]="personaM.psrNombre" type="text" pInputText placeholder="Nombre">         
+                </div>
+            </div>
+            
+            <div class="col-12 md:col-4">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                    <input [(ngModel)]="personaM.psrApellido1" type="text" pInputText placeholder="Primer apellido">      
+                </div>
+            </div>
+                    
+            <div class="col-12 md:col-4">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                    <input [(ngModel)]="personaM.psrApellido2" type="text" pInputText placeholder="Segundo Apellido">      
+                </div>
+            </div>
+        </div>
+
+    </p-accordionTab>
+</p-accordion>
+
+<p-accordion *ngIf="!personaM">
+    <p-accordionTab header="Datos de la persona">
+
+        <h5>Identificación</h5>
+        <div class="grid p-fluid">
+            <div class="col-12 md:col-4">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                    <input [(ngModel)]="identificacion" type="text" pInputText placeholder="Identificación" >         
+                </div>
+            </div>
+        </div>
+
+        <h5>Nombre completo</h5>
+        <div class="grid p-fluid">
+            <div class="col-12 md:col-4">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                    <input [(ngModel)]="nombre" type="text" pInputText placeholder="Nombre">         
+                </div>
+            </div>
+            
+            <div class="col-12 md:col-4">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                    <input [(ngModel)]="primerApellido" type="text" pInputText placeholder="Primer apellido">      
+                </div>
+            </div>
+                    
+            <div class="col-12 md:col-4">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                    <input [(ngModel)]="segundoApellido" type="text" pInputText placeholder="Segundo Apellido">      
+                </div>
+            </div>
+        </div>
+
+    </p-accordionTab>
+</p-accordion>
 
 <p-accordion>
     <p-accordionTab header="Datos del usuario">

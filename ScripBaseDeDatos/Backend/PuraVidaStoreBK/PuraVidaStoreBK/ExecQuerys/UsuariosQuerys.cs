@@ -185,6 +185,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                 command.Parameters.Add("@Email", SqlDbType.VarChar, 100).Value = usuario.email;
                 command.Parameters.Add("@IdRol", SqlDbType.Int).Value = usuario.IdRol;
                 command.Parameters.Add("@IdPersona", SqlDbType.Int).Value = usuario.IdPersona;
+                command.Parameters.Add("@idUsuario", SqlDbType.Int).Value = usuario.IdUsuario;
                 reader = command.ExecuteReader();
                 return true;
             }
@@ -238,6 +239,22 @@ namespace PuraVidaStoreBK.ExecQuerys
             {
 
                 return ex.Message;
+            }
+        }
+
+        public object UsuarioPorUsuario(string usuario) 
+        {
+            using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
+            {
+                return db.Usuarios.Where(x=>x.UsrUser == usuario);
+            }
+        }
+
+        public object UsuarioIdPersona(int idPersona) 
+        {
+            using (PuraVidaStoreContext db = new PuraVidaStoreContext())
+            {
+                return db.Usuarios.Where(x => x.UsrIdPersona == idPersona);
             }
         }
     }

@@ -5,7 +5,6 @@ import { PrincipalRoutingModule } from './principal-routing.module';
 import { PrincipalComponent } from './principal.component';
 import { PrimeNgPrincipalModule } from './prime-ng-principal.module';
 import { PipePrincipalPipe } from './pipes/pipe-principal.pipe';
-import { PersonasComponent } from './personas/personas.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
@@ -13,7 +12,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   declarations: [
     PrincipalComponent,
     PipePrincipalPipe,
-    PersonasComponent
   ],
   imports: [
     CommonModule,
@@ -23,7 +21,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
   ],
   exports:[
-    PersonasComponent
   ]
 })
 export class PrincipalModule { }
