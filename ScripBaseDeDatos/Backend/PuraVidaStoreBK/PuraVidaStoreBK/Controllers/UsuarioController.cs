@@ -84,7 +84,7 @@ namespace PuraVidaStoreBK.Controllers
                 }
                 if (u!=null) 
                 {
-                    if (u.UsrUser == usuarioM.Usuario)
+                    if (u.UsrUser == usuarioM.Usuario )
                     {
                         return BadRequest("No se puede guardar a este usuario debido que ya existe");
                     }
