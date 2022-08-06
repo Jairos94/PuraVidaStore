@@ -13,22 +13,35 @@ import { UsuarioServiceService } from 'src/app/services/usuario-service.service'
   styleUrls: ['./editar-nuevo.component.css']
 })
 export class EditarNuevoComponent implements OnInit {
+  personaM: PersonaModel = {
+    psrId: 0,
+    psrIdentificacion: '',
+    psrNombre: '',
+    psrApellido1: '',
+    psrApellido2: ''
+  };
+  
+  rolM: RolModel = {
+    rluID: 0,
+    rluDescripcion: ''
+  }
 
-  usuarioEdtitar!: UsuarioModel;
+  usuarioEdtitar: UsuarioModel = {
+    idUsuario: 0,
+    password: '',
+    usuario: '',
+    email: '',
+    idPersona: 0,
+    idRol: 0,
+    persona: this.personaM,
+    Rol: this.rolM
+
+  };
   esAgregar: boolean = false;
-  personaM!: PersonaModel;
   listaPersonas: PersonaModel[] = [];
-
-  //#region variables de persona nueva
-  identificacion: string = '';
-  nombre: string = '';
-  primerApellido: string = '';
-  segundoApellido: string = '';
-  //#endregion
 
   listaRoles: RolModel[] = [];
   titulo: string = '';
-  busqueda = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -49,17 +62,11 @@ export class EditarNuevoComponent implements OnInit {
   validacion(parameto: any) {
     if (parameto > 0) {
       this.servicio.usuarioPorId(parameto).subscribe((x => {
-        this.cargarDatos(x)
+        this.usuarioEdtitar = x
+        this.personaM = x.persona
       }),
         (_error => console.log(_error)));
-
-
     }
-  }
-
-  cargarDatos(usuario: UsuarioModel) {
-    this.usuarioEdtitar = usuario
-    this.personaM = usuario.persona
   }
 
   gestionInicio(parametro: any) {
@@ -81,17 +88,6 @@ export class EditarNuevoComponent implements OnInit {
 
 
 
-  limpiar() {
-    //this.personaM.psrIdentificacion = '';
-    this.personaM.psrNombre = '';
-    this.personaM.psrApellido1 = '';
-    this.personaM.psrApellido2 = '';
 
-
-    this.identificacion = ""
-    this.nombre = ""
-    this.primerApellido = ""
-    this.segundoApellido = ""
-  }
 
 }

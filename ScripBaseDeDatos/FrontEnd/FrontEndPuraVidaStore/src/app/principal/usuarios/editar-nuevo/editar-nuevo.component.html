@@ -1,87 +1,83 @@
 <h1>{{ titulo }}</h1>
-<p-accordion *ngIf="personaM">
-    <p-accordionTab header="Datos de la persona">
+<form>
 
-        <h5>Identificación</h5>
+    <p-card>
+        <ng-template pTemplate="header">
+            Datos de la persona
+        </ng-template>
+
         <div class="grid p-fluid">
             <div class="col-12 md:col-4">
                 <div class="p-inputgroup">
-                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
-                    <input [ngModel]="personaM.psrIdentificacion" type="text" pInputText placeholder="Identificación" >         
+                    <span class="p-inputgroup-addon"><i class="pi pi-id-card"></i></span>
+                    <input type="text" pInputText placeholder="Cédula">
                 </div>
             </div>
         </div>
 
-        <h5>Nombre completo</h5>
+        <div class="card">
+            <div class="formgrid grid">
+                <div class="field col">
+                    <label for="nombre">Nombre</label>
+                    <input id="nombre" type="text"
+                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                </div>
+                <div class="field col">
+                    <label for="apellido1">Primer apellido</label>
+                    <input id="apellido1" type="text"
+                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                </div>
+                <div class="field col">
+                    <label for="apellido2">Segundo apellido</label>
+                    <input id="apellido2" type="text"
+                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                </div>
+            </div>
+        </div>
+    </p-card>
+
+    <p-card>
+        <ng-template pTemplate="header">
+            Datos del usuario
+        </ng-template>
+
+
         <div class="grid p-fluid">
             <div class="col-12 md:col-4">
                 <div class="p-inputgroup">
                     <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
-                    <input [(ngModel)]="personaM.psrNombre" type="text" pInputText placeholder="Nombre">         
+                    <input type="text" pInputText placeholder="Usuario">
                 </div>
             </div>
-            
+
             <div class="col-12 md:col-4">
                 <div class="p-inputgroup">
                     <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
-                    <input [(ngModel)]="personaM.psrApellido1" type="text" pInputText placeholder="Primer apellido">      
-                </div>
-            </div>
-                    
-            <div class="col-12 md:col-4">
-                <div class="p-inputgroup">
-                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
-                    <input [(ngModel)]="personaM.psrApellido2" type="text" pInputText placeholder="Segundo Apellido">      
+                    <input type="password" pInputText placeholder="Contraseña">
                 </div>
             </div>
         </div>
 
-    </p-accordionTab>
-</p-accordion>
-
-<p-accordion *ngIf="!personaM">
-    <p-accordionTab header="Datos de la persona">
-
-        <h5>Identificación</h5>
         <div class="grid p-fluid">
+
             <div class="col-12 md:col-4">
                 <div class="p-inputgroup">
-                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
-                    <input [(ngModel)]="identificacion" type="text" pInputText placeholder="Identificación" >         
+                    <span class="p-inputgroup-addon"><i class="pi pi-envelope"></i></span>
+                    <input type="email" pInputText placeholder="Correo">
                 </div>
             </div>
+
+            <div class="col-12 md:col-4">
+                <p-dropdown [options]="listaRoles" [(ngModel)]="rolM" optionLabel="rluDescripcion"></p-dropdown>
+            </div>
+
+
+
         </div>
 
-        <h5>Nombre completo</h5>
-        <div class="grid p-fluid">
-            <div class="col-12 md:col-4">
-                <div class="p-inputgroup">
-                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
-                    <input [(ngModel)]="nombre" type="text" pInputText placeholder="Nombre">         
-                </div>
-            </div>
-            
-            <div class="col-12 md:col-4">
-                <div class="p-inputgroup">
-                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
-                    <input [(ngModel)]="primerApellido" type="text" pInputText placeholder="Primer apellido">      
-                </div>
-            </div>
-                    
-            <div class="col-12 md:col-4">
-                <div class="p-inputgroup">
-                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
-                    <input [(ngModel)]="segundoApellido" type="text" pInputText placeholder="Segundo Apellido">      
-                </div>
-            </div>
-        </div>
+        <ng-template pTemplate="footer">
+            <button pButton type="button" label="Guardar" ></button>
+        </ng-template>
+    </p-card>
 
-    </p-accordionTab>
-</p-accordion>
-
-<p-accordion>
-    <p-accordionTab header="Datos del usuario">
-       Content 1
-    </p-accordionTab>
-</p-accordion>
-
+</form>

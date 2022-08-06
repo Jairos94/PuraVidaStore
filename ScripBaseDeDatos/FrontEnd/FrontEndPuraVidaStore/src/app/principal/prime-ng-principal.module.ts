@@ -4,6 +4,8 @@ import { NgModule } from '@angular/core';
 import { AccordionModule } from 'primeng/accordion';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
@@ -16,7 +18,9 @@ import { SidebarModule } from 'primeng/sidebar';
   exports: [
     AccordionModule,
     AutoCompleteModule,
+    CardModule,
     ButtonModule,
+    DropdownModule,
     InputTextModule,
     MenuModule,
     MenubarModule,
