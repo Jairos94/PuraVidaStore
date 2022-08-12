@@ -23,6 +23,7 @@ namespace PuraVidaStoreBK.Models.DbContex
 
         public virtual Persona UsrIdPersonaNavigation { get; set; } = null!;
         public virtual RolUsiario UsrIdRolNavigation { get; set; } = null!;
+        public virtual UsuaiosEnvioCorreo UsuaiosEnvioCorreo { get; set; } = null!;
         public virtual ICollection<Factura> Facturas { get; set; }
         public virtual ICollection<HistorialFacturasAnulada> HistorialFacturasAnulada { get; set; }
         public virtual ICollection<HistorialPrecio> HistorialPrecios { get; set; }
