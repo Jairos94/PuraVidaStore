@@ -1,5 +1,5 @@
 <h1>{{ titulo }}</h1>
-<form>
+<form [formGroup]="usuarioForm" (ngSubmit)="guardar()">
 
     <p-card>
         <ng-template pTemplate="header">
@@ -10,7 +10,7 @@
             <div class="col-12 md:col-4">
                 <div class="p-inputgroup">
                     <span class="p-inputgroup-addon"><i class="pi pi-id-card"></i></span>
-                    <input type="text" pInputText placeholder="Cédula">
+                    <input type="text" id="cedula" pInputText placeholder="Cédula" formControlName="cedula">
                 </div>
             </div>
         </div>
@@ -19,18 +19,21 @@
             <div class="formgrid grid">
                 <div class="field col">
                     <label for="nombre">Nombre</label>
-                    <input id="nombre" type="text"
-                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                    <input id="nombre" type="text" 
+                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                        formControlName="nombre">
                 </div>
                 <div class="field col">
                     <label for="apellido1">Primer apellido</label>
                     <input id="apellido1" type="text"
-                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                        formControlName="apellido1">
                 </div>
                 <div class="field col">
                     <label for="apellido2">Segundo apellido</label>
                     <input id="apellido2" type="text"
-                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                        formControlName="apellido2">
                 </div>
             </div>
         </div>
@@ -46,14 +49,14 @@
             <div class="col-12 md:col-4">
                 <div class="p-inputgroup">
                     <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
-                    <input type="text" pInputText placeholder="Usuario">
+                    <input type="text" id="usuario" pInputText placeholder="Usuario" formControlName="usuario">
                 </div>
             </div>
 
             <div class="col-12 md:col-4">
                 <div class="p-inputgroup">
                     <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
-                    <input type="password" pInputText placeholder="Contraseña">
+                    <input type="password" id="clave" pInputText placeholder="Contraseña" formControlName="clave">
                 </div>
             </div>
         </div>
@@ -63,21 +66,25 @@
             <div class="col-12 md:col-4">
                 <div class="p-inputgroup">
                     <span class="p-inputgroup-addon"><i class="pi pi-envelope"></i></span>
-                    <input type="email" pInputText placeholder="Correo">
+                    <input type="email" id="correo" pInputText placeholder="Correo" formControlName="correo">
                 </div>
             </div>
 
             <div class="col-12 md:col-4">
-                <p-dropdown [options]="listaRoles" [(ngModel)]="rolM" optionLabel="rluDescripcion"></p-dropdown>
+                <p-dropdown [options]="listaRoles" formControlName="rol" placeholder="Tipo de rol" optionLabel="rluDescripcion" optionValue="rluID"></p-dropdown>
+                
             </div>
 
 
-
         </div>
+        
 
         <ng-template pTemplate="footer">
-            <button pButton type="button" label="Guardar" ></button>
+            <button pButton type="submit" label="Guardar" ></button>
+            <button pButton type="reset" label="Limpiar" ></button>
         </ng-template>
     </p-card>
 
 </form>
+
+

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PersonaModel } from 'src/app/models/persona-model';
 import { RolModel } from 'src/app/models/rol-model';
@@ -13,6 +14,9 @@ import { UsuarioServiceService } from 'src/app/services/usuario-service.service'
   styleUrls: ['./editar-nuevo.component.css']
 })
 export class EditarNuevoComponent implements OnInit {
+
+
+
   personaM: PersonaModel = {
     psrId: 0,
     psrIdentificacion: '',
@@ -20,7 +24,7 @@ export class EditarNuevoComponent implements OnInit {
     psrApellido1: '',
     psrApellido2: ''
   };
-  
+
   rolM: RolModel = {
     rluID: 0,
     rluDescripcion: ''
@@ -37,6 +41,22 @@ export class EditarNuevoComponent implements OnInit {
     Rol: this.rolM
 
   };
+
+
+  usuarioForm = new FormGroup({
+    cedula: new FormControl('', [Validators.required]),
+    nombre: new FormControl('', [Validators.required]),
+    apellido1: new FormControl('', [Validators.required]),
+    apellido2: new FormControl('', [Validators.required]),
+    usuario: new FormControl('', [Validators.required]),
+    clave: new FormControl('', [Validators.required]),
+    correo: new FormControl('', [Validators.required]),
+    rol: new FormControl(2),
+
+  });
+
+
+
   esAgregar: boolean = false;
   listaPersonas: PersonaModel[] = [];
 
@@ -54,31 +74,37 @@ export class EditarNuevoComponent implements OnInit {
   ngOnInit(): void {
     const parametroId = this.route.snapshot.paramMap.get('id');
     this.validacion(parametroId);
-    this.gestionInicio(parametroId);
 
   }
 
 
-  validacion(parameto: any) {
-    if (parameto > 0) {
-      this.servicio.usuarioPorId(parameto).subscribe((x => {
-        this.usuarioEdtitar = x
-        this.personaM = x.persona
+  async validacion(parametro: any) {
+    this.cargarListaRoles();
+    if (parametro > 0) {
+      await this.servicio.usuarioPorId(parametro).pipe().subscribe((usuario => {
+        this.usuarioEdtitar = usuario
+        this.personaM = usuario.persona
+        this.rolM = usuario.Rol
+        this.usuarioForm.patchValue({
+          cedula: this.personaM.psrIdentificacion,
+          nombre: this.personaM.psrNombre,
+          apellido1: this.personaM.psrApellido1,
+          apellido2: this.personaM.psrApellido2,
+          usuario: this.usuarioEdtitar.usuario,
+          correo: this.usuarioEdtitar.email,
+          rol: this.usuarioEdtitar.idRol,
+        })
+
+
       }),
         (_error => console.log(_error)));
+    } else {
+      this.rolM = this.listaRoles[1]
     }
-  }
-
-  gestionInicio(parametro: any) {
-
-    this.servicioRol.listaRoles().subscribe((x => {
-      this.listaRoles = x;
-
-    }), (_error => console.log(_error)
-    ));
+    console.log(this.listaRoles);
 
     if (parametro != '0') {
-      this.titulo = 'Editar usuario'
+      this.titulo = 'Editar usuario '
       this.esAgregar = false;
     } else {
       this.titulo = 'Agregar usuario';
@@ -86,7 +112,18 @@ export class EditarNuevoComponent implements OnInit {
     }
   }
 
+  cargarListaRoles() {
+    this.servicioRol.listaRoles().subscribe((x => {
+      this.listaRoles = x
+    }), (_error => console.log(_error)
+    ));
+  }
 
+  guardar() {
+    console.log(this.usuarioForm);
+
+
+  }
 
 
 

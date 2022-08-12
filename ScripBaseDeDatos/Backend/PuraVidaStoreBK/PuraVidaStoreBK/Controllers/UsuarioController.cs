@@ -161,6 +161,24 @@ namespace PuraVidaStoreBK.Controllers
            
         }
 
+
+        // GET api/<UsuarioController>/5
+        [HttpGet("UsuarioPorId2")]
+        public ActionResult UsuarioPorId2(int id)
+        {
+            try
+            {
+                return Ok(Ejecuta.UsuarioPorId2(id));
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
         // POST api/<UsuarioController>
         [HttpPost]
         public void Post([FromBody] string value)

@@ -242,6 +242,24 @@ namespace PuraVidaStoreBK.ExecQuerys
             }
         }
 
+        public object UsuarioPorId2(int id)
+        {
+            try
+            {
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
+                {
+
+                    return db.Usuarios.Find(id).UsrPass;
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return ex.Message;
+            }
+        }
+
         public object UsuarioPorUsuario(string usuario) 
         {
             using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 

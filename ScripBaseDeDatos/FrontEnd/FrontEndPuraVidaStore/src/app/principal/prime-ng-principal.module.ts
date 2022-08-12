@@ -11,11 +11,13 @@ import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
+import { RadioButtonModule } from 'primeng/radiobutton';
 import { RippleModule } from 'primeng/ripple';
 import { SidebarModule } from 'primeng/sidebar';
 
 @NgModule({
   exports: [
+
     AccordionModule,
     AutoCompleteModule,
     CardModule,
@@ -27,6 +29,7 @@ import { SidebarModule } from 'primeng/sidebar';
     TableModule,
     ToastModule,
     RippleModule,
+    RadioButtonModule,
     SidebarModule
   ]
 })

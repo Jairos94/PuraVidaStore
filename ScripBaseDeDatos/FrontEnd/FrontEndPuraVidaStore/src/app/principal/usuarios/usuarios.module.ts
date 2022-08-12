@@ -9,7 +9,7 @@ import { EditarNuevoComponent } from './editar-nuevo/editar-nuevo.component';
 
 
 
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PrimeNgPrincipalModule } from '../prime-ng-principal.module';
 import { PrincipalModule } from '../principal.module';
 
@@ -25,6 +25,7 @@ import { PrincipalModule } from '../principal.module';
     //prime ng
     FormsModule,
     PrimeNgPrincipalModule,
+    ReactiveFormsModule,
     UsuariosRoutingModule,
     PrincipalModule
   ]
