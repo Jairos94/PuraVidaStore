@@ -19,7 +19,7 @@
             <div class="formgrid grid">
                 <div class="field col">
                     <label for="nombre">Nombre</label>
-                    <input id="nombre" type="text" 
+                    <input id="nombre" type="text"
                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
                         formControlName="nombre">
                 </div>
@@ -71,20 +71,22 @@
             </div>
 
             <div class="col-12 md:col-4">
-                <p-dropdown [options]="listaRoles" formControlName="rol" placeholder="Tipo de rol" optionLabel="rluDescripcion" optionValue="rluID"></p-dropdown>
-                
+                <p-dropdown [options]="listaRoles" formControlName="rol" placeholder="Tipo de rol"
+                    optionLabel="rluDescripcion" optionValue="rluID" (onChange)="cambioRol()"></p-dropdown>
+
             </div>
 
 
         </div>
-        
+
 
         <ng-template pTemplate="footer">
-            <button pButton type="submit" label="Guardar" ></button>
-            <button pButton type="reset" label="Limpiar" ></button>
+            <span class="p-buttonset">
+                <button pButton pRipple label="Guardar" type="submit" icon="pi pi-save"
+                    [disabled]="!usuarioForm.valid"></button>
+                <button pButton pRipple label="Cancel" type="reset"></button>
+            </span>
         </ng-template>
     </p-card>
 
 </form>
-
-

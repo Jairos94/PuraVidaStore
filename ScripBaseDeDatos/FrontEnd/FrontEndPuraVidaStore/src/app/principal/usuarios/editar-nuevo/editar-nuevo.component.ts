@@ -7,6 +7,7 @@ import { UsuarioModel } from 'src/app/models/usuario-model';
 import { PersonaServiceService } from 'src/app/services/persona-service.service';
 import { RolServiceService } from 'src/app/services/rol-service.service';
 import { UsuarioServiceService } from 'src/app/services/usuario-service.service';
+import { validaciones } from 'src/app/utils/validaciones';
 
 @Component({
   selector: 'app-editar-nuevo',
@@ -50,7 +51,10 @@ export class EditarNuevoComponent implements OnInit {
     apellido2: new FormControl('', [Validators.required]),
     usuario: new FormControl('', [Validators.required]),
     clave: new FormControl('', [Validators.required]),
-    correo: new FormControl('', [Validators.required]),
+    correo: new FormControl('', [Validators.required,
+                                 Validators.email,
+    
+    ]),
     rol: new FormControl(2),
 
   });
@@ -125,6 +129,17 @@ export class EditarNuevoComponent implements OnInit {
 
   }
 
-
+  cambioRol() {
+    const valor = this.usuarioForm.get('rol')?.value;
+    console.log(valor);
+    
+    if(valor!=undefined){
+      this.usuarioEdtitar.idRol=valor !;
+    }
+    this.usuarioForm.hasValidator
+      console.log(this.usuarioForm.errors);
+    
+    
+}
 
 }
