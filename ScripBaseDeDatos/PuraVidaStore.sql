@@ -332,3 +332,11 @@ alter table Factura add FtrFormaPago int FOREIGN KEY(FtrFormaPago) References Fo
 Alter table Productos add PrdFoto VARBINARY(MAX) null,  PrdCodigoProvedor varchar(50) null;
 Alter table Productos DROP COLUMN PrdFoto;
 Alter table Productos add PrdFoto image null;
+
+
+CREATE TABLE UsuaiosEnvioCorreos
+(
+	UecId int not null primary key identity(1,1),
+	UecIdUsuario int FOREIGN KEY(UecId) References Usuarios(UsrID) NOT NULL
+	
+)
