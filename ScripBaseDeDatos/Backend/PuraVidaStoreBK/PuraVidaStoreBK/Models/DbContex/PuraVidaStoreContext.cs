@@ -41,6 +41,7 @@ namespace PuraVidaStoreBK.Models.DbContex
         public virtual DbSet<TipoProducto> TipoProductos { get; set; } = null!;
         public virtual DbSet<Trackin> Trackins { get; set; } = null!;
         public virtual DbSet<TrackinsAsociado> TrackinsAsociados { get; set; } = null!;
+        public virtual DbSet<UsuaiosEnvioCorreo> UsuaiosEnvioCorreos { get; set; } = null!;
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -48,7 +49,7 @@ namespace PuraVidaStoreBK.Models.DbContex
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-4FJOI9V;Database=PuraVidaStore;Trusted_Connection=True;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-4FJOI9V;Database=PuraVidaStore;Trusted_Connection=True;");
             }
         }
 
@@ -544,6 +545,20 @@ namespace PuraVidaStoreBK.Models.DbContex
                     .HasForeignKey(d => d.TraIdTrackin)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__TrackinsA__TraId__6A30C649");
+            });
+
+            modelBuilder.Entity<UsuaiosEnvioCorreo>(entity =>
+            {
+                entity.HasKey(e => e.UecId)
+                    .HasName("PK__UsuaiosE__2A7A034839D1BB89");
+
+                entity.Property(e => e.UecId).ValueGeneratedOnAdd();
+
+                entity.HasOne(d => d.Uec)
+                    .WithOne(p => p.UsuaiosEnvioCorreo)
+                    .HasForeignKey<UsuaiosEnvioCorreo>(d => d.UecId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__UsuaiosEn__UecId__3C34F16F");
             });
 
             modelBuilder.Entity<Usuario>(entity =>

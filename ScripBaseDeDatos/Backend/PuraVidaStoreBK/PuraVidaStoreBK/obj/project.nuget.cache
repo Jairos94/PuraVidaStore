@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "jUegprGc70TC2UMji5qhoyztJotYld6+1kKPPSzGi4wZ5eSSU2RPOdBaw81EZd20yc/hdagDdnEDb5wLsOVrqg==",
+  "dgSpecHash": "WLhkDeY+rPKHswDWPjRxGm3mN89Sbz8Lbhx4+Uhu371mO2NKJGl5ipaGvxwu+g6Ysf6kGLM8t9p97U9Zi4yrXQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\jairo\\OneDrive\\Escritorio\\PuraVidaStore\\PuraVidaStore\\ScripBaseDeDatos\\Backend\\PuraVidaStoreBK\\PuraVidaStoreBK\\PuraVidaStoreBK.csproj",
+  "projectFilePath": "C:\\Users\\jairo\\OneDrive\\Escritorio\\PuraVidaStore\\ScripBaseDeDatos\\Backend\\PuraVidaStoreBK\\PuraVidaStoreBK\\PuraVidaStoreBK.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jairo\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\jairo\\.nuget\\packages\\microsoft.aspnetcore.cors\\2.2.0\\microsoft.aspnetcore.cors.2.2.0.nupkg.sha512",
