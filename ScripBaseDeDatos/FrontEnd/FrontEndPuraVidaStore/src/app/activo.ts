@@ -3,8 +3,10 @@ import { UsuarioModel } from "./models/usuario-model"
 
 export class activo {
     public static usuarioPrograma: UsuarioModel;
-    public static personaInteractiva:PersonaModel;
-    public static ConsultaIdPersona:number;//? valida cuando hay una persona por editar
+    public static personaInteractiva: PersonaModel;
+    public static token: string;
+
+    public static ConsultaIdPersona: number;//? valida cuando hay una persona por editar
 
     //!valida si es usuario está logeado con el fin de validar en los componentes sino devolver al login
     public esUsuario() {
@@ -18,12 +20,12 @@ export class activo {
             return false;
         }
     }
-    public static limpiarPersona(){
-        activo.personaInteractiva.psrId=0;
-        activo.personaInteractiva.psrIdentificacion='';
-        activo.personaInteractiva.psrNombre='';
-        activo.personaInteractiva.psrApellido1='';
-        activo.personaInteractiva.psrApellido2='';
-        
+    public static limpiarPersona() {
+        activo.personaInteractiva.psrId = 0;
+        activo.personaInteractiva.psrIdentificacion = '';
+        activo.personaInteractiva.psrNombre = '';
+        activo.personaInteractiva.psrApellido1 = '';
+        activo.personaInteractiva.psrApellido2 = '';
+
     }
 }

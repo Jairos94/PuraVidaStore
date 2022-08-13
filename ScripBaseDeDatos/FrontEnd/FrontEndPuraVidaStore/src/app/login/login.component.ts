@@ -26,8 +26,10 @@ export class LoginComponent implements OnInit {
 
   validar() {
     this.servicio.login(this.Usuario, this.Contrasena).subscribe((u => {
+console.log(u);
 
-      activo.usuarioPrograma = u;
+      activo.usuarioPrograma = u.usuario;
+      activo.token=u.token;
 
       this.route.navigate(['/principal'])
 

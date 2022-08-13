@@ -1,7 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using PuraVidaStoreBK.ExecQuerys;
 using PuraVidaStoreBK.Models;
 using PuraVidaStoreBK.Models.DbContex;
+using PuraVidaStoreBK.Models.Respuesta;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -13,6 +17,15 @@ namespace PuraVidaStoreBK.Controllers
     {
         UsuariosQuerys Ejecuta = new UsuariosQuerys();
         personaQuery EjecutaPersona = new personaQuery();
+
+        public IConfiguration Configuracion { get; }
+
+        public UsuarioController(IConfiguration configuracion) 
+        {
+            Configuracion = configuracion;
+        }
+
+        #region peteciones
         // GET: UsuarioController
         [HttpGet("GetUsuario")]
         public async Task<IActionResult> GetUsuario(string user, string password)
@@ -21,7 +34,10 @@ namespace PuraVidaStoreBK.Controllers
             Usu = Ejecuta.GetUsuario(user, password);
             try
             {
-                return Ok((UsuarioModel)Usu);
+                usuarioRespuesta ur = new usuarioRespuesta();
+                ur.usuario = (UsuarioModel)Usu;
+                ur.token = CrearToken((UsuarioModel)Usu);
+                return Ok(ur);
             }
             catch (Exception)
             {
@@ -37,19 +53,19 @@ namespace PuraVidaStoreBK.Controllers
             Persona p = new Persona();
             PersonaModel pm1 = new PersonaModel();
 
-           pm1.PsrIdentificacion= p.PsrIdentificacion = usuarioM.persona.PsrIdentificacion;
-           pm1.PsrNombre=  p.PsrNombre = usuarioM.persona.PsrNombre;
-           pm1.PsrApellido1= p.PsrApellido1 = usuarioM.persona.PsrApellido1;
-           pm1.PsrApellido2 =p.PsrApellido2 = usuarioM.persona.PsrApellido2;
+            pm1.PsrIdentificacion = p.PsrIdentificacion = usuarioM.persona.PsrIdentificacion;
+            pm1.PsrNombre = p.PsrNombre = usuarioM.persona.PsrNombre;
+            pm1.PsrApellido1 = p.PsrApellido1 = usuarioM.persona.PsrApellido1;
+            pm1.PsrApellido2 = p.PsrApellido2 = usuarioM.persona.PsrApellido2;
 
             //Guarda o actualiza a la persona desde el usuario
-            if (usuarioM.IdPersona == 0 ) 
+            if (usuarioM.IdPersona == 0)
             {
-              List<  PersonaModel> p2 = new List<PersonaModel>();
+                List<PersonaModel> p2 = new List<PersonaModel>();
                 p2 = (List<PersonaModel>)EjecutaPersona.obtenerPersonaPorCedula(p.PsrIdentificacion);
 
                 //valida la cèdula que no sean usuarios
-                if (p2.Count>0) 
+                if (p2.Count > 0)
                 {
                     if (p2[0].PsrIdentificacion == p.PsrIdentificacion && p2 != null)
                     {
@@ -61,17 +77,17 @@ namespace PuraVidaStoreBK.Controllers
                         }
 
                     }
-                    
+
                 }
                 pm1 = (PersonaModel)EjecutaPersona.ingresarPersona(pm1);
                 p.PsrId = pm1.PsrId;
             }
-            else 
+            else
             {
-               p= (Persona)EjecutaPersona.EditarPersona(p);
+                p = (Persona)EjecutaPersona.EditarPersona(p);
             }
             //Valida si es agregar usuario
-            if (agregar) 
+            if (agregar)
             {
                 try
                 {
@@ -82,9 +98,9 @@ namespace PuraVidaStoreBK.Controllers
 
                     u = null;
                 }
-                if (u!=null) 
+                if (u != null)
                 {
-                    if (u.UsrUser == usuarioM.Usuario )
+                    if (u.UsrUser == usuarioM.Usuario)
                     {
                         return BadRequest("No se puede guardar a este usuario debido que ya existe");
                     }
@@ -93,18 +109,18 @@ namespace PuraVidaStoreBK.Controllers
                 Ejecuta.IngresarUsario(usuarioM);
             }
             //Valida se es editar
-            else 
+            else
             {
                 UsuarioModel um = new UsuarioModel();
                 PersonaModel pm = new PersonaModel();
-                
+
                 um = (UsuarioModel)Ejecuta.UsuarioPorId((int)usuarioM.IdUsuario);
 
                 //valida si el usuario cambio existe
-                if (usuarioM.IdUsuario == um.IdUsuario && usuarioM.Usuario!=um.Usuario) 
+                if (usuarioM.IdUsuario == um.IdUsuario && usuarioM.Usuario != um.Usuario)
                 {
                     u = (Usuario)Ejecuta.UsuarioPorUsuario(usuarioM.Usuario);
-                    if (u.UsrUser == usuarioM.Usuario) 
+                    if (u.UsrUser == usuarioM.Usuario)
                     {
                         return BadRequest("No se puede guardar a este usuario debido que ya existe");
                     }
@@ -113,14 +129,12 @@ namespace PuraVidaStoreBK.Controllers
 
             }
 
-            
-            
+
+
             return Ok(true);
         }
-
         [HttpGet("ListaUsuarios")]
         public async Task<IActionResult> ListaUsuarios()
-        //public ActionResult  GetUsuario()
         {
             object Usu = new object();
             Usu = Ejecuta.listaUsuarios();
@@ -136,15 +150,6 @@ namespace PuraVidaStoreBK.Controllers
 
         }
 
-      
-
-        // GET: api/<UsuarioController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
         // GET api/<UsuarioController>/5
         [HttpGet("UsuarioPorId")]
         public ActionResult UsuarioPorId(int id)
@@ -158,9 +163,8 @@ namespace PuraVidaStoreBK.Controllers
 
                 return BadRequest(ex.Message);
             }
-           
-        }
 
+        }
 
         // GET api/<UsuarioController>/5
         [HttpGet("UsuarioPorId2")]
@@ -179,22 +183,32 @@ namespace PuraVidaStoreBK.Controllers
         }
 
 
-        // POST api/<UsuarioController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+       
+        #endregion
+
+        #region Metodos privados
+        private string CrearToken(UsuarioModel Usuario) 
         {
+            List<Claim> claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name,Usuario.Usuario)
+            };
+
+            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
+                        Configuracion.GetSection("AppSettings:token").Value));
+
+            var cred = new SigningCredentials(key,SecurityAlgorithms.HmacSha512Signature);
+
+            var Token = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials:cred);
+
+            var jwt = new JwtSecurityTokenHandler().WriteToken(Token);
+            return jwt;
         }
 
-        // PUT api/<UsuarioController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+        #endregion
 
-        // DELETE api/<UsuarioController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

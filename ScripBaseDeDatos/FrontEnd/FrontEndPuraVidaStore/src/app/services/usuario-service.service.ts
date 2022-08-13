@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { UsuarioModel } from '../models/usuario-model';
 import { Observable } from 'rxjs';
+import { UsuarioRespuesta } from '../models/respuestas/usuario-respuesta';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +13,11 @@ export class UsuarioServiceService {
 
   constructor(private http: HttpClient) { }
 
-  login(usario: string, contrasena: string): Observable<UsuarioModel> {
+  login(usario: string, contrasena: string): Observable<UsuarioRespuesta> {
     const params = new HttpParams()
       .set('user', usario)
       .set('password', contrasena);
-    return this.http.get<UsuarioModel>(`${this.baseUrl}Usuario/GetUsuario`, { params });
+    return this.http.get<UsuarioRespuesta>(`${this.baseUrl}Usuario/GetUsuario`, { params });
   }
 
   listaUsuarios(): Observable<UsuarioModel[]> {
