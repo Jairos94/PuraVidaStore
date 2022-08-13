@@ -187,6 +187,7 @@ namespace PuraVidaStoreBK.Controllers
         #endregion
 
         #region Metodos privados
+        //este metodo genera los tokens
         private string CrearToken(UsuarioModel Usuario) 
         {
             List<Claim> claims = new List<Claim>
