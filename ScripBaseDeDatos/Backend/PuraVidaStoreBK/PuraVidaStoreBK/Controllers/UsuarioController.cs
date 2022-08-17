@@ -4,8 +4,11 @@ using PuraVidaStoreBK.ExecQuerys;
 using PuraVidaStoreBK.Models;
 using PuraVidaStoreBK.Models.DbContex;
 using PuraVidaStoreBK.Models.Respuesta;
+using PuraVidaStoreBK.Utilitarios;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -181,9 +184,42 @@ namespace PuraVidaStoreBK.Controllers
             }
 
         }
+        [HttpGet("Encriptado")]
+        public ActionResult Encriptado(string encriptado)
+        {
+            EncripDescrip ED = new EncripDescrip();
+            try
+            {
+               
+                string message = "My secret message 1234";
+                string password = "3sc3RLrpd17";
+
+                // Create sha256 hash
+                SHA256 mySHA256 = SHA256Managed.Create();
+                byte[] key = mySHA256.ComputeHash(Encoding.ASCII.GetBytes(password));
+
+                // Create secret IV
+                byte[] iv = new byte[16] { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 };
+
+                var crip = ED.EncryptString(encriptado, key, iv);
+                string[] dato = new string[]
+                {
+                    encriptado,
+                    "encriptado: " + crip,
+                    "desencriptado " + ED.DecryptString(crip,key,iv)
+                };
+
+                return Ok(dato);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+
+        }
 
 
-       
         #endregion
 
         #region Metodos privados
