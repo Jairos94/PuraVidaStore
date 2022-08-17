@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { using } from 'rxjs';
 import { PersonaModel } from 'src/app/models/persona-model';
 import { RolModel } from 'src/app/models/rol-model';
 import { UsuarioModel } from 'src/app/models/usuario-model';
@@ -51,10 +52,7 @@ export class EditarNuevoComponent implements OnInit {
     apellido2: new FormControl('', [Validators.required]),
     usuario: new FormControl('', [Validators.required]),
     clave: new FormControl('', [Validators.required]),
-    correo: new FormControl('', [Validators.required,
-                                 Validators.email,
-    
-    ]),
+    correo: new FormControl('', [Validators.email,Validators.required]),
     rol: new FormControl(2),
 
   });
@@ -105,7 +103,7 @@ export class EditarNuevoComponent implements OnInit {
     } else {
       this.rolM = this.listaRoles[1]
     }
-    console.log(this.listaRoles);
+    
 
     if (parametro != '0') {
       this.titulo = 'Editar usuario '
@@ -114,6 +112,8 @@ export class EditarNuevoComponent implements OnInit {
       this.titulo = 'Agregar usuario';
       this.esAgregar = true;
     }
+
+    this.cambioRol();
   }
 
   cargarListaRoles() {
@@ -130,16 +130,23 @@ export class EditarNuevoComponent implements OnInit {
   }
 
   cambioRol() {
-    const valor = this.usuarioForm.get('rol')?.value;
-    console.log(valor);
-    
-    if(valor!=undefined){
-      this.usuarioEdtitar.idRol=valor !;
+
+    const email = this.usuarioForm.get('correo')
+    const id = this.usuarioForm.get('rol')?.value;
+    const req =  this.usuarioForm.controls.correo.hasValidator(Validators.required)
+    if (id === 1) {
+      if (!req) {
+        this.usuarioForm.controls.correo.addValidators(Validators.required)
+        this.usuarioForm.controls.correo.enable
+      }
     }
-    this.usuarioForm.hasValidator
-      console.log(this.usuarioForm.errors);
-    
-    
-}
+    else {
+      if (req) {
+        this.usuarioForm.controls.correo.removeValidators(Validators.required);
+      }
+      this.usuarioForm.controls.correo.disable
+    }
+    this.usuarioForm.controls.correo
+  }
 
 }
