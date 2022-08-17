@@ -190,8 +190,6 @@ namespace PuraVidaStoreBK.Controllers
             EncripDescrip ED = new EncripDescrip();
             try
             {
-               
-                string message = "My secret message 1234";
                 string password = "3sc3RLrpd17";
 
                 // Create sha256 hash
