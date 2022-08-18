@@ -226,7 +226,8 @@ namespace PuraVidaStoreBK.Controllers
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name,Usuario.Usuario)
+                new Claim(ClaimTypes.Name,Usuario.Usuario),
+                new Claim(ClaimTypes.Role,Usuario.IdRol.ToString())
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(

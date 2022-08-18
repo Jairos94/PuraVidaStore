@@ -12,13 +12,6 @@ namespace PuraVidaStoreBK.Controllers
     {
         personaQuery pq = new personaQuery();
 
-        //// GET: api/<personaController>
-        //[HttpGet]
-        //public ActionResult Get()
-        //{
-
-        //}
-
         // GET api/<personaController>/5
         [HttpGet("obtenerPersonaCedula")]
         public object obtenerPersonaCedula(string id)
