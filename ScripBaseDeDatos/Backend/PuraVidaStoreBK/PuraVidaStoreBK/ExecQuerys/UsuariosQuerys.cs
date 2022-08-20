@@ -10,6 +10,7 @@ namespace PuraVidaStoreBK.ExecQuerys
     {
         
         DataBase data= new DataBase();
+        //Hace Login
         public object GetUsuario(string Usuario, string Contrasena )
 
         {
@@ -77,6 +78,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             { conn.Close(); }
         }
 
+        //Obtiene a los usuarios
         public object listaUsuarios()
 
         {
@@ -170,6 +172,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             { conn.Close(); }
         }
 
+        //edita a un usuario por Id
         public bool EditarUsuario(UsuarioModel usuario)
         {
             SqlConnection conn = data.GetConnection();
@@ -242,6 +245,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             }
         }
 
+        //devuelve el password
         public object UsuarioPorId2(int id)
         {
             try
@@ -274,6 +278,36 @@ namespace PuraVidaStoreBK.ExecQuerys
             {
                 return db.Usuarios.Where(x => x.UsrIdPersona == idPersona);
             }
+        }
+
+        //elimina al usuario
+        public object EliminarUsuario(int idUsuario) 
+        {
+            try
+            {
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
+                {
+                    var usuario = db.Usuarios.Find(idUsuario);
+                    db.Usuarios.Remove(usuario);
+                    db.SaveChanges();
+
+                    var usuMo = new UsuarioModel 
+                    {
+                        IdUsuario= usuario.UsrId,
+                        Usuario = usuario.UsrUser,
+
+
+                    };
+                    return usuMo;
+                }
+               
+            }
+            catch (Exception ex)
+            {
+
+                return ex.Message;
+            }
+            
         }
     }
 }

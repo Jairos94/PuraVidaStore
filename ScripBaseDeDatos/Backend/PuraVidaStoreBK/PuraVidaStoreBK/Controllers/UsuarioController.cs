@@ -50,7 +50,7 @@ namespace PuraVidaStoreBK.Controllers
             }
 
         }
-        [HttpPost("GuardarUsario")]
+        [HttpPost("GuardarUsario"), Authorize(Roles = "1")]
         public ActionResult GuardarUsuario([FromBody] UsuarioModel usuarioM, bool agregar)
         {
             Usuario u = new Usuario();
@@ -155,7 +155,7 @@ namespace PuraVidaStoreBK.Controllers
         }
 
         // GET api/<UsuarioController>/5
-        [HttpGet("UsuarioPorId")]
+        [HttpGet("UsuarioPorId"), Authorize]
         public ActionResult UsuarioPorId(int id)
         {
             try
@@ -171,7 +171,7 @@ namespace PuraVidaStoreBK.Controllers
         }
 
         // GET api/<UsuarioController>/5
-        [HttpGet("UsuarioPorId2")]
+        [HttpGet("UsuarioPorId2"), Authorize(Roles = "1")]
         public ActionResult UsuarioPorId2(int id)
         {
             try
@@ -185,6 +185,7 @@ namespace PuraVidaStoreBK.Controllers
             }
 
         }
+
         [HttpGet("Encriptado")]
         public ActionResult Encriptado(string encriptado)
         {
@@ -218,6 +219,11 @@ namespace PuraVidaStoreBK.Controllers
 
         }
 
+        [HttpDelete("EliminarUsuario"), Authorize(Roles = "1")]
+        public ActionResult EliminarUsuario(int idUsuario) 
+        {
+            return Ok(Ejecuta.EliminarUsuario(idUsuario));
+        }
 
         #endregion
 

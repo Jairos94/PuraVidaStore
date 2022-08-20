@@ -10,9 +10,5 @@
         public int IdPersona { get; set; }
         public PersonaModel persona { get; set; }
         public RolModel Rol { get; set; }
-
-        public string Token { get; set; } = string.Empty;
-        public DateTime TokenCreado { get; set; } 
-        public DateTime TokenExpira { get; set; } 
     }
 }
