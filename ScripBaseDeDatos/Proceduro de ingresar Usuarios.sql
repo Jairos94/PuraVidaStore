@@ -22,9 +22,9 @@
            ,@IdPersona)
 GO
 
-EXEC IngresarUsuario 'Admin','123','jairo.ri.ce@gmail.com',1,1
+EXEC IngresarUsuario 'Admin','GzPfpnFb7HWhQeP0wnV0+g==','jairo.ri.ce@gmail.com',1,1
 
-EXEC IngresarUsuario 'Vendedor','123',NULL,2,2
+EXEC IngresarUsuario 'Vendedor','GzPfpnFb7HWhQeP0wnV0+g==',NULL,2,2
 
 
 

@@ -44,6 +44,8 @@ export class ListaUsuariosComponent implements OnInit {
   llenarUsuarios() {
     this.servicio.listaUsuarios().subscribe(
       (lista => {
+        
+        this.listaUsuario=[];
         this.listaUsuario = lista;
       }),
       (_e => { console.log(_e); }));
@@ -60,8 +62,8 @@ export class ListaUsuariosComponent implements OnInit {
     this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Message Content' });
   }
 
-  showError() {
-    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Message Content' });
+  showError(Encabezado: string, Detalle: string) {
+    this.messageService.add({ severity: 'error', summary: Encabezado, detail: Detalle });
   }
 
   showTopLeft() {
@@ -76,8 +78,8 @@ export class ListaUsuariosComponent implements OnInit {
     this.messageService.add({ key: 'bc', severity: 'info', summary: 'Info', detail: 'Message Content' });
   }
 
-  showConfirm(nombre: string,id:number) {
-    this.idUsarioBorrar=id;
+  showConfirm(nombre: string, id: number) {
+    this.idUsarioBorrar = id;
     this.messageService.clear();
     this.messageService.add({
       key: 'c',
@@ -100,14 +102,20 @@ export class ListaUsuariosComponent implements OnInit {
     this.messageService.add({ severity: 'info', summary: 'Sticky', detail: 'Message Content', sticky: true });
   }
 
-  onConfirm() {
+  async onConfirm() {
     this.messageService.clear('c');
-    console.log('se presionó sí ' + this.idUsarioBorrar);
+    await this.servicio.EliminarUsuario(this.idUsarioBorrar).subscribe((x => {
+      this.showError('Usuario eliminado', `se eliminó a  ${x.usuario}`)
+      this.llenarUsuarios();
+    }), (_error => {
+      console.log(_error);
 
+    }));
+   
   }
 
   onReject() {
-    this.idUsarioBorrar=0;
+    this.idUsarioBorrar = 0;
     this.messageService.clear('c');
     console.log('se presionó no ' + this.idUsarioBorrar);
   }
