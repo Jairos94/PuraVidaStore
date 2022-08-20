@@ -183,11 +183,11 @@ namespace PuraVidaStoreBK.ExecQuerys
                 conn.Open();
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "EditarUsuario";
-                command.Parameters.Add("@Usuario", SqlDbType.VarChar, 15).Value = usuario.Usuario; ;
-                command.Parameters.Add("@Pass", SqlDbType.VarChar, 256).Value = usuario.password;
+                command.Parameters.Add("@UsrUser", SqlDbType.VarChar, 15).Value = usuario.Usuario; ;
+                command.Parameters.Add("@UsrPass", SqlDbType.VarChar, 256).Value = usuario.password;
                 command.Parameters.Add("@Email", SqlDbType.VarChar, 100).Value = usuario.email;
-                command.Parameters.Add("@IdRol", SqlDbType.Int).Value = usuario.IdRol;
-                command.Parameters.Add("@IdPersona", SqlDbType.Int).Value = usuario.IdPersona;
+                command.Parameters.Add("@Rol", SqlDbType.Int).Value = usuario.IdRol;
+                command.Parameters.Add("@idPersona", SqlDbType.Int).Value = usuario.IdPersona;
                 command.Parameters.Add("@idUsuario", SqlDbType.Int).Value = usuario.IdUsuario;
                 reader = command.ExecuteReader();
                 return true;
@@ -276,7 +276,7 @@ namespace PuraVidaStoreBK.ExecQuerys
         {
             using (PuraVidaStoreContext db = new PuraVidaStoreContext())
             {
-                return db.Usuarios.Where(x => x.UsrIdPersona == idPersona);
+                return db.Usuarios.Where(x => x.UsrIdPersona == idPersona).First();
             }
         }
 

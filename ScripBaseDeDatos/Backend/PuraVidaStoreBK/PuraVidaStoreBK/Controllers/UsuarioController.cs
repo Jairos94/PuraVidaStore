@@ -74,8 +74,8 @@ namespace PuraVidaStoreBK.Controllers
                     if (p2[0].PsrIdentificacion == p.PsrIdentificacion && p2 != null)
                     {
                         Usuario u2 = new Usuario();
-                        u2 = (Usuario)Ejecuta.UsuarioIdPersona(p.PsrId);
-                        if (p.PsrId == u2.UsrIdPersona)
+                        u2 = (Usuario)Ejecuta.UsuarioIdPersona(p2[0].PsrId);
+                        if (p2[0].PsrId == u2.UsrIdPersona)
                         {
                             return BadRequest("No se puede guardar el usuario porque otro usuario tiene la misma cédula");
                         }
