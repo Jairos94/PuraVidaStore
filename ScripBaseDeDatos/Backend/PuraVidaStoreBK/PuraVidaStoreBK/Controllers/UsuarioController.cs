@@ -135,7 +135,7 @@ namespace PuraVidaStoreBK.Controllers
 
 
 
-            return Ok(true);
+            return Ok(usuarioM);
         }
         [HttpGet("ListaUsuarios"), Authorize(Roles = "1")]
         public async Task<IActionResult> ListaUsuarios()

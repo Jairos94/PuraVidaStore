@@ -34,4 +34,11 @@ export class UsuarioServiceService {
     .set('idUsuario', id);
     return this.http.delete<UsuarioModel>(`${this.baseUrl}Usuario/EliminarUsuario`, { params });
   }
+
+  GuardarUsuario(usario:UsuarioModel,agregar:boolean):Observable<UsuarioModel>{
+    const params= new HttpParams()
+    .set('agregar',agregar);
+    //const body =JSON.stringify(usario)
+    return this.http.post<UsuarioModel>(`${this.baseUrl}Usuario/GuardarUsario`,usario,{ params });
+  }
 }
