@@ -137,7 +137,7 @@ namespace PuraVidaStoreBK.Controllers
 
             return Ok(true);
         }
-        [HttpGet("ListaUsuarios")]
+        [HttpGet("ListaUsuarios"), Authorize(Roles = "1")]
         public async Task<IActionResult> ListaUsuarios()
         {
             object Usu = new object();
@@ -242,7 +242,31 @@ namespace PuraVidaStoreBK.Controllers
                 signingCredentials:cred);
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(Token);
+
             return jwt;
+        }
+
+        private ActualizarTokenModel GetRefresh() 
+        {
+            var actualizar = new ActualizarTokenModel
+            {
+                Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+                FechaExpiro = DateTime.Now.AddDays(1),
+                Creado=DateTime.Now
+
+            };
+            return actualizar;
+        }
+
+        private void enviarToken(ActualizarTokenModel nuevaActualizacionToken) 
+        {
+            var cookieOptions = new CookieOptions 
+            {
+                HttpOnly = true,
+                Expires= nuevaActualizacionToken.FechaExpiro,
+
+            };
+            Response.Cookies.Append("actualizarToken",nuevaActualizacionToken.Token, cookieOptions);
         }
 
         #endregion
