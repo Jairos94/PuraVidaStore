@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { activo } from '../activo';
 import { UsuarioServiceService } from '../services/usuario-service.service';
 import { MessageService, PrimeNGConfig } from 'primeng/api';
+import { EncripDesencrip } from '../utils/EncripDesencrip';
 
 
 @Component({
@@ -25,7 +26,7 @@ export class LoginComponent implements OnInit {
   }
 
   validar() {
-    this.servicio.login(this.Usuario, this.Contrasena).subscribe((u => {
+    this.servicio.login(this.Usuario,EncripDesencrip.encryptUsingAES256( this.Contrasena)).subscribe((u => {
 
       activo.usuarioPrograma = u.usuario;
       activo.token=u.token;

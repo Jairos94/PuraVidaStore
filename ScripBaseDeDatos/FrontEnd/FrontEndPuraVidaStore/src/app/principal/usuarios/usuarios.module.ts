@@ -12,6 +12,8 @@ import { EditarNuevoComponent } from './editar-nuevo/editar-nuevo.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PrimeNgPrincipalModule } from '../prime-ng-principal.module';
 import { PrincipalModule } from '../principal.module';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { Interceptor } from 'src/app/services/interceptor';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,11 @@ import { PrincipalModule } from '../principal.module';
     ReactiveFormsModule,
     UsuariosRoutingModule,
     PrincipalModule
-  ]
+  ],
+  providers:[{
+    provide: HTTP_INTERCEPTORS,
+    useClass: Interceptor,
+    multi: true
+  }],
 })
 export class UsuariosModule { }

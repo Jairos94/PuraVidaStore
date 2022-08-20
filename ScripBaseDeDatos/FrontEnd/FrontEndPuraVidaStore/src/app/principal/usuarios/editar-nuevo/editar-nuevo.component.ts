@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { using } from 'rxjs';
 import { PersonaModel } from 'src/app/models/persona-model';
 import { RolModel } from 'src/app/models/rol-model';
 import { UsuarioModel } from 'src/app/models/usuario-model';
 import { PersonaServiceService } from 'src/app/services/persona-service.service';
 import { RolServiceService } from 'src/app/services/rol-service.service';
 import { UsuarioServiceService } from 'src/app/services/usuario-service.service';
-import { validaciones } from 'src/app/utils/validaciones';
+import { EncripDesencrip } from 'src/app/utils/EncripDesencrip';
 
 @Component({
   selector: 'app-editar-nuevo',
@@ -52,7 +51,7 @@ export class EditarNuevoComponent implements OnInit {
     apellido2: new FormControl('', [Validators.required]),
     usuario: new FormControl('', [Validators.required]),
     clave: new FormControl('', [Validators.required]),
-    correo: new FormControl('', [Validators.email,Validators.required]),
+    correo: new FormControl('', [Validators.email, Validators.required]),
     rol: new FormControl(2),
 
   });
@@ -67,7 +66,6 @@ export class EditarNuevoComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private servicio: UsuarioServiceService,
     private servicioRol: RolServiceService,
     private servicioPersona: PersonaServiceService,
@@ -96,14 +94,14 @@ export class EditarNuevoComponent implements OnInit {
           correo: this.usuarioEdtitar.email,
           rol: this.usuarioEdtitar.idRol,
         })
-
-
       }),
         (_error => console.log(_error)));
     } else {
+      this.usuarioEdtitar.idUsuario = 0;
+      this.personaM.psrId = 0;
       this.rolM = this.listaRoles[1]
     }
-    
+
 
     if (parametro != '0') {
       this.titulo = 'Editar usuario '
@@ -124,16 +122,35 @@ export class EditarNuevoComponent implements OnInit {
   }
 
   guardar() {
-    console.log(this.usuarioForm);
+    this.personaM.psrIdentificacion = this.usuarioForm.get('cedula')?.value!;
+    this.personaM.psrNombre = this.usuarioForm.get('nombre')?.value!;
+    this.personaM.psrApellido1 = this.usuarioForm.get('apellido1')?.value!;
+    this.personaM.psrApellido2 = this.usuarioForm.get('apellido2')?.value!;
+
+    this.usuarioEdtitar.usuario = this.usuarioForm.get('usuario')?.value!;
+    this.usuarioEdtitar.password = EncripDesencrip.encryptUsingAES256(this.usuarioForm.get('clave')?.value!);
+    this.usuarioEdtitar.email = this.usuarioForm.get('correo')?.value!;
+    this.usuarioEdtitar.idRol = this.usuarioForm.get('rol')?.value!;
+
+    this.usuarioEdtitar.idPersona = this.personaM.psrId
+    this.usuarioEdtitar.persona = this.personaM;
+    console.log(this.usuarioEdtitar);
 
 
+    this.servicio.GuardarUsuario(this.usuarioEdtitar, this.esAgregar).subscribe((x => {
+      console.log(`se guardo ${x.persona}`);
+
+    }), (_e => {
+      console.log(_e);
+
+    }));
   }
 
   cambioRol() {
 
     const email = this.usuarioForm.get('correo')
     const id = this.usuarioForm.get('rol')?.value;
-    const req =  this.usuarioForm.controls.correo.hasValidator(Validators.required)
+    const req = this.usuarioForm.controls.correo.hasValidator(Validators.required)
     if (id === 1) {
       if (!req) {
         this.usuarioForm.controls.correo.addValidators(Validators.required)

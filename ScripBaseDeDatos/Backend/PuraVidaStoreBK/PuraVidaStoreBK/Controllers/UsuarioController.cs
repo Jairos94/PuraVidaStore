@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using PuraVidaStoreBK.ExecQuerys;
 using PuraVidaStoreBK.Models;
@@ -49,7 +50,7 @@ namespace PuraVidaStoreBK.Controllers
             }
 
         }
-        [HttpPost("GuardarUsario")]
+        [HttpPost("GuardarUsario"), Authorize(Roles = "1")]
         public ActionResult GuardarUsuario([FromBody] UsuarioModel usuarioM, bool agregar)
         {
             Usuario u = new Usuario();
@@ -73,8 +74,8 @@ namespace PuraVidaStoreBK.Controllers
                     if (p2[0].PsrIdentificacion == p.PsrIdentificacion && p2 != null)
                     {
                         Usuario u2 = new Usuario();
-                        u2 = (Usuario)Ejecuta.UsuarioIdPersona(p.PsrId);
-                        if (p.PsrId == u2.UsrIdPersona)
+                        u2 = (Usuario)Ejecuta.UsuarioIdPersona(p2[0].PsrId);
+                        if (p2[0].PsrId == u2.UsrIdPersona)
                         {
                             return BadRequest("No se puede guardar el usuario porque otro usuario tiene la misma cédula");
                         }
@@ -134,9 +135,9 @@ namespace PuraVidaStoreBK.Controllers
 
 
 
-            return Ok(true);
+            return Ok(usuarioM);
         }
-        [HttpGet("ListaUsuarios")]
+        [HttpGet("ListaUsuarios"), Authorize(Roles = "1")]
         public async Task<IActionResult> ListaUsuarios()
         {
             object Usu = new object();
@@ -154,7 +155,7 @@ namespace PuraVidaStoreBK.Controllers
         }
 
         // GET api/<UsuarioController>/5
-        [HttpGet("UsuarioPorId")]
+        [HttpGet("UsuarioPorId"), Authorize]
         public ActionResult UsuarioPorId(int id)
         {
             try
@@ -170,7 +171,7 @@ namespace PuraVidaStoreBK.Controllers
         }
 
         // GET api/<UsuarioController>/5
-        [HttpGet("UsuarioPorId2")]
+        [HttpGet("UsuarioPorId2"), Authorize(Roles = "1")]
         public ActionResult UsuarioPorId2(int id)
         {
             try
@@ -184,6 +185,7 @@ namespace PuraVidaStoreBK.Controllers
             }
 
         }
+
         [HttpGet("Encriptado")]
         public ActionResult Encriptado(string encriptado)
         {
@@ -217,6 +219,11 @@ namespace PuraVidaStoreBK.Controllers
 
         }
 
+        [HttpDelete("EliminarUsuario"), Authorize(Roles = "1")]
+        public ActionResult EliminarUsuario(int idUsuario) 
+        {
+            return Ok(Ejecuta.EliminarUsuario(idUsuario));
+        }
 
         #endregion
 
@@ -241,7 +248,31 @@ namespace PuraVidaStoreBK.Controllers
                 signingCredentials:cred);
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(Token);
+
             return jwt;
+        }
+
+        private ActualizarTokenModel GetRefresh() 
+        {
+            var actualizar = new ActualizarTokenModel
+            {
+                Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+                FechaExpiro = DateTime.Now.AddDays(1),
+                Creado=DateTime.Now
+
+            };
+            return actualizar;
+        }
+
+        private void enviarToken(ActualizarTokenModel nuevaActualizacionToken) 
+        {
+            var cookieOptions = new CookieOptions 
+            {
+                HttpOnly = true,
+                Expires= nuevaActualizacionToken.FechaExpiro,
+
+            };
+            Response.Cookies.Append("actualizarToken",nuevaActualizacionToken.Token, cookieOptions);
         }
 
         #endregion
