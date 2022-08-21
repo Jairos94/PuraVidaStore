@@ -88,6 +88,7 @@ namespace PuraVidaStoreBK.Controllers
             }
             else
             {
+                p.PsrId = usuarioM.IdPersona;
                 p = (Persona)EjecutaPersona.EditarPersona(p);
             }
             //Valida si es agregar usuario
