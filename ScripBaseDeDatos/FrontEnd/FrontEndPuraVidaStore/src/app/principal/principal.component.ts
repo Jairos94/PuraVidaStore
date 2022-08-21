@@ -27,11 +27,12 @@ export class PrincipalComponent implements OnInit {
         routerLink: 'usuarios',
         visible: activo.esAministrador(),
         items: [
+          /*
           {
             label: 'Lista de usuarios',
             icon: 'pi pi-users',
             routerLink:'usuarios/lista-usuarios'
-        },
+        },*/
           {
             label: 'Agregar usuario',
             icon: 'pi pi-user-plus',

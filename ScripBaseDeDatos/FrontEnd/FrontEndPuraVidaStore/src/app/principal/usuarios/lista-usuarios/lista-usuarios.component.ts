@@ -117,7 +117,6 @@ export class ListaUsuariosComponent implements OnInit {
   onReject() {
     this.idUsarioBorrar = 0;
     this.messageService.clear('c');
-    console.log('se presionó no ' + this.idUsarioBorrar);
   }
 
   clear() {

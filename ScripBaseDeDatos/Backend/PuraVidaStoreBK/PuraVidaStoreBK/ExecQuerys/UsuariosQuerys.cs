@@ -218,7 +218,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                   
                     um.IdUsuario = u.UsrId;
                     um.Usuario = u.UsrUser;
-                    um.password = "";
+                    um.password = ocpv(u.UsrId);
                     um.email=u.UsrEmail;
                     um.IdRol=u.UsrIdRol;
                     um.IdPersona = u.UsrIdPersona;
@@ -308,6 +308,37 @@ namespace PuraVidaStoreBK.ExecQuerys
                 return ex.Message;
             }
             
+        }
+
+        private string ocpv(int idUsuario) 
+        {
+            SqlConnection conn = data.GetConnection();
+            string dato = "";
+
+            try
+            {
+                SqlDataReader reader;
+                SqlCommand command = conn.CreateCommand();
+                conn.Open();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "ocpv";
+                command.Parameters.Add("@IdUsuario", SqlDbType.Int).Value = idUsuario;
+                //command.ExecuteNonQuery();
+                reader = command.ExecuteReader();
+                while (reader.Read()) 
+                {
+                    dato = reader.GetString(0);
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return dato;
+
         }
     }
 }
