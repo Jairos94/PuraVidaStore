@@ -22,17 +22,22 @@ export class PrincipalComponent implements OnInit {
         routerLink: 'ventas'
       },
       {
+        label: 'Prodctos',
+        icon: 'pi pi-box',
+        routerLink: 'productos'
+      },
+      {
+        label: 'Movimientos',
+        icon: 'pi pi-sort-amount-down',
+        routerLink: 'movimientos'
+      },
+
+      {
         label: 'Usuarios',
         icon: 'pi pi-users',
         routerLink: 'usuarios',
         visible: activo.esAministrador(),
         items: [
-          /*
-          {
-            label: 'Lista de usuarios',
-            icon: 'pi pi-users',
-            routerLink:'usuarios/lista-usuarios'
-        },*/
           {
             label: 'Agregar usuario',
             icon: 'pi pi-user-plus',
