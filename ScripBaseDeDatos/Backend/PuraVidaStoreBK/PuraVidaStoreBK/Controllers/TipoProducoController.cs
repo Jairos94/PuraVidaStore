@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PuraVidaStoreBK.ExecQuerys;
+using PuraVidaStoreBK.Models.DbContex;
 
 namespace PuraVidaStoreBK.Controllers
 {
@@ -8,10 +10,22 @@ namespace PuraVidaStoreBK.Controllers
     [ApiController]
     public class TipoProducoController : ControllerBase
     {
-        [HttpPost("IngresarTipoProducto"), Authorize(Roles = "1")]
-        public async Task<IActionResult> IngresarTipoProducto()
+        private TipoProductoQuery ejecuta = new TipoProductoQuery(); 
+
+        [HttpPost("GuardarTipoProducto"), Authorize(Roles = "1")]
+        public async Task<IActionResult> GuardarTipoProducto([FromBody] TipoProducto TipoProducto)
         {
-            return Ok("");
+            try
+            {
+                TipoProducto dato =(TipoProducto) ejecuta.Guardar(TipoProducto);
+                return Ok(dato);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex);
+            }
+            
 
         }
     }

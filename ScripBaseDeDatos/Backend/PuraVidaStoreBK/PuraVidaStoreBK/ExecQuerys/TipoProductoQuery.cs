@@ -4,13 +4,22 @@ namespace PuraVidaStoreBK.ExecQuerys
 {
     public class TipoProductoQuery
     {
-        public object IngresarTipoProducto(TipoProducto tipoProducto) 
+        public object Guardar(TipoProducto tipoProducto) 
         {
             try
             {
                 using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
                 {
-                    var dato = db.TipoProductos.Add(tipoProducto);
+                    var dato = new object();
+                    if (tipoProducto.TppId==0) 
+                    {
+                        dato = db.TipoProductos.Add(tipoProducto);
+                    }
+                    else 
+                    {
+                        dato = db.TipoProductos.Update(tipoProducto);
+                    }
+                    
                     db.SaveChanges();
                     return dato;
                 }
