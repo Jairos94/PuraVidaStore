@@ -8,12 +8,10 @@ namespace PuraVidaStoreBK.ExecQuerys
         {
             try
             {
-                
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext) 
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
                 {
                    var dato= db.Productos.Add(producto);
                     db.SaveChanges();
-
                     return dato;
                 };
             }
