@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PuraVidaStoreBK.ExecQuerys;
 using PuraVidaStoreBK.Models;
 
@@ -13,14 +14,14 @@ namespace PuraVidaStoreBK.Controllers
         personaQuery pq = new personaQuery();
 
         // GET api/<personaController>/5
-        [HttpGet("obtenerPersonaCedula")]
+        [HttpGet("obtenerPersonaCedula"),Authorize]
         public object obtenerPersonaCedula(string id)
         {
             return pq.obtenerPersonaPorCedula(id);
         }
 
         // GET api/<personaController>/5
-        [HttpGet("personaPorId{id}")]
+        [HttpGet("personaPorId{id}"), Authorize]
         public ActionResult personaPorId(int id)
         {
             try
@@ -36,23 +37,11 @@ namespace PuraVidaStoreBK.Controllers
         }
 
         // POST api/<personaController>
-        [HttpPost("agregarPersona")]
+        [HttpPost("agregarPersona"), Authorize]
         public ActionResult IngresarPersona(PersonaModel persona)
         {
 
             return Ok(pq.ingresarPersona(persona));
-        }
-
-        // PUT api/<personaController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<personaController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

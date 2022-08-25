@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PuraVidaStoreBK.ExecQuerys;
 using PuraVidaStoreBK.Models;
 
@@ -12,35 +13,10 @@ namespace PuraVidaStoreBK.Controllers
     {
         RolesQuerys Ejecuta = new RolesQuerys();
         // GET: api/<RolesController>
-        [HttpGet("ListaRoles")]
+        [HttpGet("ListaRoles"), Authorize]
         public List<RolModel> ListaRoles()
         {
             return Ejecuta.listaRoles();
-        }
-
-        // GET api/<RolesController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<RolesController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<RolesController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<RolesController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }
