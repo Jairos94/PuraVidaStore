@@ -9,6 +9,7 @@ import { CardModule } from 'primeng/card';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { DialogModule } from 'primeng/dialog';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { FileUploadModule } from 'primeng/fileupload';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -18,6 +19,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
+import { PaginatorModule } from 'primeng/paginator';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { TableModule } from 'primeng/table';
@@ -41,6 +43,7 @@ import { SlideMenuModule } from 'primeng/slidemenu';
     ConfirmDialogModule,
     ContextMenuModule,
     DialogModule,
+    DynamicDialogModule,
     DropdownModule,
     FileUploadModule,
     InputNumberModule,
@@ -50,6 +53,7 @@ import { SlideMenuModule } from 'primeng/slidemenu';
     MultiSelectModule,
     MenuModule,
     MenubarModule,
+    PaginatorModule,
     PanelMenuModule,
     ProgressBarModule,
     TableModule,

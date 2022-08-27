@@ -13,7 +13,7 @@ export class UsuariosComponent implements OnInit {
   ngOnInit(): void {
     this.items = [
       {
-          label: 'Lista usuario',
+          label: 'Lista de usuarios',
           icon: 'pi pi-users',
           routerLink:'lista-usuario',
       },

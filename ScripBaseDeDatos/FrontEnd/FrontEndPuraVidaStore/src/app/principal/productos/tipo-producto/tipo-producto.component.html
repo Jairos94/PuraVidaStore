@@ -1,1 +1,40 @@
-<router-outlet></router-outlet>
+
+    <p-card>
+
+        <div class="formgrid grid">
+            <div class="field col-8">
+                <button pButton type="button" icon="pi pi-plus" class="p-button-raised p-button-rounded"></button>
+
+            </div>
+            <div class="field col">
+                <input type="text" pInputText placeholder="Buscar"> 
+            </div>
+        </div>
+           
+     
+        
+    </p-card>
+
+
+
+<div class="my-2">
+    <p-table [value]="listaTipoProductos" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>#</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
+    
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-tipoProducto>
+            <tr>
+                <td>{{tipoProducto.tppId}}</td>
+                <td>{{tipoProducto.TppDescripcion}}</td>
+                <td></td>
+    
+            </tr>
+        </ng-template>
+    </p-table>
+
+</div>

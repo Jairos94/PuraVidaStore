@@ -14,7 +14,7 @@ export class PipePrincipalPipe implements PipeTransform {
       hi = `Buenos días, ${name}`;
     }
     else {
-      if (this.DateT.getHours() > 12 && this.DateT.getHours() < 18) {
+      if (this.DateT.getHours() >= 12 && this.DateT.getHours() < 18) {
         hi = `Buenas tardes, ${name}`;
       }
       else {
