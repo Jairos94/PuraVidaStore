@@ -28,5 +28,21 @@ namespace PuraVidaStoreBK.Controllers
             
 
         }
+
+        [HttpGet("ListaTipoProducto"),Authorize]
+       public async Task<IActionResult> ListaTipoProducto() 
+        {
+            List<TipoProducto> listaTipoProducto = new List<TipoProducto>();
+            try
+            {
+                listaTipoProducto=(List<TipoProducto>) ejecuta.ListaTipoProducto();
+                return Ok(listaTipoProducto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+            
+        }
     }
 }

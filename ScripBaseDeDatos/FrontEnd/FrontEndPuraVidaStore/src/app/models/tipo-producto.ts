@@ -1,5 +1,5 @@
-export interface TipoProducto {
+export interface TipoProductoModel {
     tppId: number;
-    tppDescripción: string;
+    TppDescripcion: string;
     tppVisible: boolean | null; 
 }

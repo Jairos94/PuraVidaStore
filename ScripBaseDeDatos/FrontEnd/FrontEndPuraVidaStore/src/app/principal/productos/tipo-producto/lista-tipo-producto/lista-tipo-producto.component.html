@@ -1,1 +1,19 @@
-<p>lista-tipo-producto works!</p>
+
+<p-table [value]="listaTipoProducto" responsiveLayout="scroll">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>#</th>
+            <th>Descripción</th>
+            <th>Acciones  <p-inputSwitch [(ngModel)]="checked"></p-inputSwitch></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-TipoProducto>
+        <tr>
+            <td>{{TipoProducto.tppId}}</td>
+            <td>{{TipoProducto.TppDescripcion}}</td>
+            <td>
+                <p-inputSwitch [(ngModel)]="checked"></p-inputSwitch>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

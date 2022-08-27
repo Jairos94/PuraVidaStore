@@ -14,6 +14,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputTextModule } from 'primeng/inputtext';
+import { InputSwitchModule } from 'primeng/inputswitch';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
@@ -45,6 +46,7 @@ import { SlideMenuModule } from 'primeng/slidemenu';
     InputNumberModule,
     InputTextareaModule,
     InputTextModule,
+    InputSwitchModule,
     MultiSelectModule,
     MenuModule,
     MenubarModule,

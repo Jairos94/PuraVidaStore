@@ -494,7 +494,7 @@ namespace PuraVidaStoreBK.Models.DbContex
 
                 entity.ToTable("TipoProducto");
 
-                entity.Property(e => e.TppDescripción)
+                entity.Property(e => e.TppDescripcion)
                     .HasMaxLength(50)
                     .IsUnicode(false);
             });
