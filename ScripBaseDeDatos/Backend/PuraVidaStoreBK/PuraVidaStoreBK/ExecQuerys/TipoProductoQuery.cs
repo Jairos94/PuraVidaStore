@@ -30,5 +30,37 @@ namespace PuraVidaStoreBK.ExecQuerys
                 return ex.Message;
             }
         }
+
+        public object ListaTipoProducto() 
+        {
+            try
+            {
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
+                {
+                    return db.TipoProductos.Where(x=>x.TppVisible==true).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return ex;
+            }
+        }
+
+        public object ListaTipoProductosNoVisibles() 
+        {
+            try
+            {
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
+                {
+                    return db.TipoProductos.Where(x => x.TppVisible == false).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return ex;
+            }
+        }
     }
 }

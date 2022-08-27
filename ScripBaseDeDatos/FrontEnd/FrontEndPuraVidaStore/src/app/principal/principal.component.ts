@@ -24,7 +24,14 @@ export class PrincipalComponent implements OnInit {
       {
         label: 'Prodctos',
         icon: 'pi pi-box',
-        routerLink: 'productos'
+        routerLink: 'productos',
+        items:[
+          {
+            label: 'Tipo de productos',
+        icon: 'pi pi-box',
+        routerLink: 'productos/tipo-producto',
+          }
+        ]
       },
       {
         label: 'Movimientos',
