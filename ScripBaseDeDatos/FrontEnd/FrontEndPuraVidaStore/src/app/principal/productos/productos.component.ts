@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MenuItem } from 'primeng/api';
+
 
 @Component({
   selector: 'app-productos',
@@ -8,8 +10,15 @@ import { Component, OnInit } from '@angular/core';
 export class ProductosComponent implements OnInit {
 
   constructor() { }
-
+  items: MenuItem[]=[];
   ngOnInit(): void {
+    this.items = [
+      {
+          label: 'Tipo de producto',
+          icon: 'pi pi-pw pi-file',
+          routerLink: 'tipo-producto',
+      },
+  ];
   }
 
 }

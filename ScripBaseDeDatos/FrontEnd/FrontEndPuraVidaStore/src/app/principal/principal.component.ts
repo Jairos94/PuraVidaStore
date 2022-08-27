@@ -25,13 +25,6 @@ export class PrincipalComponent implements OnInit {
         label: 'Prodctos',
         icon: 'pi pi-box',
         routerLink: 'productos',
-        items:[
-          {
-            label: 'Tipo de productos',
-        icon: 'pi pi-box',
-        routerLink: 'productos/tipo-producto',
-          }
-        ]
       },
       {
         label: 'Movimientos',
@@ -44,13 +37,6 @@ export class PrincipalComponent implements OnInit {
         icon: 'pi pi-users',
         routerLink: 'usuarios',
         visible: activo.esAministrador(),
-        items: [
-          {
-            label: 'Agregar usuario',
-            icon: 'pi pi-user-plus',
-            routerLink:'usuarios/editar-nuevo/0'
-          },
-      ]
       }
     ];
   }
