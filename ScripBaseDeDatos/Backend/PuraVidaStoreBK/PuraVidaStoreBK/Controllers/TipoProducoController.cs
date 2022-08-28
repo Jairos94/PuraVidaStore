@@ -18,9 +18,9 @@ namespace PuraVidaStoreBK.Controllers
         {
             try
             {
-                var Tipo = (TipoProductoModel)ejecuta.Guardar(TipoProducto);
+                //var Tipo = (TipoProductoModel);
                 
-                return Ok(Tipo);
+                return Ok(ejecuta.Guardar(TipoProducto));
             }
             catch (Exception ex)
             {

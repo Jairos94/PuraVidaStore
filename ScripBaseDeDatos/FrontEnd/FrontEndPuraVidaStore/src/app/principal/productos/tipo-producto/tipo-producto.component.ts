@@ -62,14 +62,17 @@ export class TipoProductoComponent implements OnInit {
     };
   }
 
-  guardar() {
-    if (this.TipoProductoEditar.tppId == 0) {
+  async guardar() {
+    if (this.TipoProductoEditar.tppId === 0) {
       this.TipoProductoEditar.tppVisible = true;
     }
-    this.servicio.guardarTipoUsuario(this.TipoProductoEditar).subscribe((x => {this.TipoProductoEditar=x}), (_e => { console.log(_e); }));
+   await this.servicio.guardarTipoUsuario(this.TipoProductoEditar).subscribe((x => 
+    {
+      this.TipoProductoEditar=x
+      this.inicio();}), (_e => { console.log(_e); }));
     this.Exito(this.TipoProductoEditar.TppDescripcion);
-    this.inicio();
-    this.reiniciarEditable();
+   
+    
     this.displayModal = false;
 
   }
@@ -87,5 +90,8 @@ export class TipoProductoComponent implements OnInit {
     this.messageService.add({ severity: 'success', summary: 'Se guardó con éxito el tipo de producto', detail: mensaje });
   }
 
+  cambio(parametro:TipoProductoModel){
+    this.servicio.guardarTipoUsuario(parametro).subscribe((x => {}), (_e => { console.log(_e); }));
+  }
 
 }
