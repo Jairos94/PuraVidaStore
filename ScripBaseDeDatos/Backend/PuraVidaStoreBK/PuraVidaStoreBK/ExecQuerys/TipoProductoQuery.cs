@@ -1,4 +1,6 @@
-﻿using PuraVidaStoreBK.Models.DbContex;
+﻿using PuraVidaStoreBK.Models;
+using PuraVidaStoreBK.Models.DbContex;
+using System.Linq;
 
 namespace PuraVidaStoreBK.ExecQuerys
 {
@@ -21,7 +23,11 @@ namespace PuraVidaStoreBK.ExecQuerys
                     }
                     
                     db.SaveChanges();
-                    return dato;
+                    var retorno = new TipoProductoModel();
+                    retorno.TppId = tipoProducto.TppId;
+                    retorno.TppDescripcion = tipoProducto.TppDescripcion;
+                    retorno.TppVisible = tipoProducto.TppVisible;
+                    return retorno;
                 }
             }
             catch (Exception ex)
@@ -38,6 +44,23 @@ namespace PuraVidaStoreBK.ExecQuerys
                 using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
                 {
                     return db.TipoProductos.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return ex;
+            }
+        }
+
+
+        public object TipoProductoPorId(int id)
+        {
+            try
+            {
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
+                {
+                    return db.TipoProductos.FindAsync(id);
                 }
             }
             catch (Exception ex)
