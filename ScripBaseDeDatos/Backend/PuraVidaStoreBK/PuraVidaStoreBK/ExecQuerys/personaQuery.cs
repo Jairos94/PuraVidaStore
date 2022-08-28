@@ -93,6 +93,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             using (PuraVidaStoreContext db= new PuraVidaStoreContext()) 
             {
                 db.Personas.Update(persona);
+                db.Personas.Where(x=>x.PsrId==persona.PsrId);
                 db.SaveChanges();
                 return persona;
             }
