@@ -16,6 +16,7 @@ export class ProductosComponent implements OnInit {
       {
         label:'Productos',
         icon: 'pi pi-pw pi-file',
+        routerLink:'productos'
       },
       {
         
