@@ -333,6 +333,8 @@ Alter table Productos add PrdFoto VARBINARY(MAX) null,  PrdCodigoProvedor varcha
 Alter table Productos DROP COLUMN PrdFoto;
 Alter table Productos add PrdFoto image null;
 
+Alter table Productos add PdrVisible bit 
+Alter table TipoProducto add TppVisible bit
 
 CREATE TABLE UsuaiosEnvioCorreos
 (

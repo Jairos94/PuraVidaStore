@@ -88,6 +88,7 @@ namespace PuraVidaStoreBK.Controllers
             }
             else
             {
+                p.PsrId = usuarioM.IdPersona;
                 p = (Persona)EjecutaPersona.EditarPersona(p);
             }
             //Valida si es agregar usuario
@@ -177,39 +178,6 @@ namespace PuraVidaStoreBK.Controllers
             try
             {
                 return Ok(Ejecuta.UsuarioPorId2(id));
-            }
-            catch (Exception ex)
-            {
-
-                return BadRequest(ex.Message);
-            }
-
-        }
-
-        [HttpGet("Encriptado")]
-        public ActionResult Encriptado(string encriptado)
-        {
-            EncripDescrip ED = new EncripDescrip();
-            try
-            {
-                string password = "3sc3RLrpd17";
-
-                // Create sha256 hash
-                SHA256 mySHA256 = SHA256Managed.Create();
-                byte[] key = mySHA256.ComputeHash(Encoding.ASCII.GetBytes(password));
-
-                // Create secret IV
-                byte[] iv = new byte[16] { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 };
-
-                var crip = ED.EncryptString(encriptado, key, iv);
-                string[] dato = new string[]
-                {
-                    encriptado,
-                    "encriptado: " + crip,
-                    "desencriptado " + ED.DecryptString(crip,key,iv)
-                };
-
-                return Ok(dato);
             }
             catch (Exception ex)
             {

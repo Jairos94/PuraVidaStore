@@ -3,5 +3,5 @@ Create Procedure ocpv
 as
 Begin
 	SET NOCOUNT ON;
-	Select CONVERT(varchar,DecryptByPassPhrase('password',U.UsrPass))  from Usuarios U
+	Select CONVERT(varchar,DecryptByPassPhrase('password',U.UsrPass))  from Usuarios U where U.UsrID=@IdUsuario
 end

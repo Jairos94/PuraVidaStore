@@ -11,7 +11,8 @@ namespace PuraVidaStoreBK.Models.DbContex
         }
 
         public int TppId { get; set; }
-        public string TppDescripción { get; set; } = null!;
+        public string TppDescripcion { get; set; } = null!;
+        public bool? TppVisible { get; set; }
 
         public virtual ICollection<Producto> Productos { get; set; }
     }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import {  timer } from 'rxjs';
 import { PersonaModel } from 'src/app/models/persona-model';
 import { RolModel } from 'src/app/models/rol-model';
 import { UsuarioModel } from 'src/app/models/usuario-model';
@@ -12,7 +14,8 @@ import { EncripDesencrip } from 'src/app/utils/EncripDesencrip';
 @Component({
   selector: 'app-editar-nuevo',
   templateUrl: './editar-nuevo.component.html',
-  styleUrls: ['./editar-nuevo.component.css']
+  styleUrls: ['./editar-nuevo.component.css'],
+  providers: [MessageService]
 })
 export class EditarNuevoComponent implements OnInit {
 
@@ -57,7 +60,7 @@ export class EditarNuevoComponent implements OnInit {
   });
 
 
-
+  transacionExitosa: boolean = false;
   esAgregar: boolean = false;
   listaPersonas: PersonaModel[] = [];
 
@@ -66,9 +69,11 @@ export class EditarNuevoComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private ruta: Router,
     private servicio: UsuarioServiceService,
     private servicioRol: RolServiceService,
     private servicioPersona: PersonaServiceService,
+    private messageService: MessageService,
   ) { }
 
   ngOnInit(): void {
@@ -79,6 +84,7 @@ export class EditarNuevoComponent implements OnInit {
 
 
   async validacion(parametro: any) {
+
     this.cargarListaRoles();
     if (parametro > 0) {
       await this.servicio.usuarioPorId(parametro).pipe().subscribe((usuario => {
@@ -94,8 +100,15 @@ export class EditarNuevoComponent implements OnInit {
           correo: this.usuarioEdtitar.email,
           rol: this.usuarioEdtitar.idRol,
         })
-      }),
+
+        var password = EncripDesencrip.decryptUsingAES256(this.usuarioEdtitar.password).replace('"', '').replace('"', '')
+
+
+        this.usuarioForm.patchValue({ clave: password })
+      }
+      ),
         (_error => console.log(_error)));
+
     } else {
       this.usuarioEdtitar.idUsuario = 0;
       this.personaM.psrId = 0;
@@ -134,18 +147,30 @@ export class EditarNuevoComponent implements OnInit {
 
     this.usuarioEdtitar.idPersona = this.personaM.psrId
     this.usuarioEdtitar.persona = this.personaM;
-    console.log(this.usuarioEdtitar);
 
 
     this.servicio.GuardarUsuario(this.usuarioEdtitar, this.esAgregar).subscribe((x => {
-      console.log(`se guardo ${x.persona}`);
-
+      this.transacionExitosa = true;
+      this.showOk('Se guardó con exitó al usuario', x.usuario);
+      timer(3000).subscribe(n => {
+        this.irUsuarios()
+      });
+      
     }), (_e => {
-      console.log(_e);
-
+      this.showError('Se presentó un error', _e.error)
+      this.transacionExitosa = false
     }));
+   
+    //this.irUsuarios()
+
   }
 
+
+  irUsuarios() {
+    timer(0,0).subscribe()
+    //./usuarios/lista-usuarios
+    this.ruta.navigate(['./principal/usuarios'])
+  }
   cambioRol() {
 
     const email = this.usuarioForm.get('correo')
@@ -164,6 +189,14 @@ export class EditarNuevoComponent implements OnInit {
       this.usuarioForm.controls.correo.disable
     }
     this.usuarioForm.controls.correo
+  }
+
+  showOk(encabezado: string, mensaje: string) {
+    this.messageService.add({ severity: 'success', summary: encabezado, detail: mensaje });
+  }
+
+  showError(encabezado: string, mensaje: string) {
+    this.messageService.add({ severity: 'error', summary: encabezado, detail: mensaje });
   }
 
 }
