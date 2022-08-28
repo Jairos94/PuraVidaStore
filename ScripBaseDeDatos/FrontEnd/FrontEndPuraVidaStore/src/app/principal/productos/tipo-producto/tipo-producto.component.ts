@@ -100,6 +100,7 @@ export class TipoProductoComponent implements OnInit {
     this.servicio.sugerencias(evento).subscribe((x => {
       this.listaTipoProductos=[];
       this.listaTipoProductos =x;
+      this.reiniciarEditable();
     }), (_e =>{
 
       this.inicio()

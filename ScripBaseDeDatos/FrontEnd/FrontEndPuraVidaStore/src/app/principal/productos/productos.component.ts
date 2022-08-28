@@ -10,22 +10,34 @@ import { MenuItem } from 'primeng/api';
 export class ProductosComponent implements OnInit {
 
   constructor() { }
-  items: MenuItem[]=[];
+  items: MenuItem[] = [];
   ngOnInit(): void {
     this.items = [
       {
-        label:'Productos',
+        label: 'Productos',
         icon: 'pi pi-pw pi-file',
-        routerLink:'productos'
+        routerLink: 'productos',
+        items: [
+          {
+            label: 'Agregar',
+            icon: 'pi pi-pw pi-file',
+            routerLink: 'productos/agregar-editar/0',
+          },
+          {
+            label: 'Lista de productos',
+            icon: 'pi pi-pw pi-file',
+            routerLink: 'productos/lista-productos',
+          },
+        ]
       },
       {
-        
-          label: 'Tipo de producto',
-          icon: 'pi pi-pw pi-file',
-          routerLink: 'tipo-producto',
+
+        label: 'Tipo de producto',
+        icon: 'pi pi-pw pi-file',
+        routerLink: 'tipo-producto',
       },
-      
-  ];
+
+    ];
   }
 
 }
