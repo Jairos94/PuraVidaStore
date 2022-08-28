@@ -39,12 +39,12 @@ export class TipoProductoComponent implements OnInit {
   showModalDialog(id: number) {
     if (id > 0) {
       this.Encabezado = 'Editar';
-      this.servicio.obetenerTipoProductoPorId(id).subscribe((x => {
-        this.reiniciarEditable();
-        this.TipoProductoEditar = x;
-      }), (_e => {
-        console.log(_e);
-      }));
+      this.TipoProductoEditar.tppId=id
+      this.listaTipoProductos.forEach(r=>{
+        if(r.tppId===this.TipoProductoEditar.tppId){
+          this.TipoProductoEditar.tppVisible=r.tppVisible
+        }
+      });
     }
     else {
       this.Encabezado = 'Agregar';
