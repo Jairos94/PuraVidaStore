@@ -23,4 +23,10 @@ export class TipoProductoService {
     .set('id',id)
     return this.http.get<TipoProductoModel>(`${this.baseUrl}TipoProduco/ObtenerTipoProductoPorId`,{ params });
   }
+
+  sugerencias(dato:string):Observable<TipoProductoModel[]>{
+    const params = new HttpParams()
+    .set('dato',dato)
+    return this.http.get<TipoProductoModel[]>(`${this.baseUrl}TipoProduco/BuscarTipoProductoPorDescripcion`,{ params });
+  }
 }

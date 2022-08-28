@@ -56,7 +56,7 @@ namespace PuraVidaStoreBK.Controllers
             
         }
 
-        [HttpGet("ObtenerTipoProductoPorId")]
+        [HttpGet("ObtenerTipoProductoPorId"), Authorize(Roles ="1")]
         public async Task<IActionResult> ObtenerTipoProductoPorId(int id) 
         {
             try
@@ -76,6 +76,22 @@ namespace PuraVidaStoreBK.Controllers
                 return BadRequest(ex);
             }
           
+        }
+
+        [HttpGet("BuscarTipoProductoPorDescripcion"),Authorize]
+        public async Task<IActionResult> BuscarTipoProductoPorDescripcion(string dato) 
+        {
+            try
+            {
+                List<TipoProductoModel> lista = new List<TipoProductoModel>();
+                lista = (List<TipoProductoModel>)ejecuta.BuscarTipoProductoPorDescripcion(dato);
+                return Ok(lista);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex);
+            }
         }
     }
 }
