@@ -38,7 +38,9 @@
                     <button pButton pRipple type="button" icon="pi pi-pencil"
                         class="p-button-rounded p-button-warning mx-2" [disabled]="!esAdministrador"
                         (click)="showModalDialog(tipoProducto.tppId)"></button>
+                     
                     <p-inputSwitch [(ngModel)]="tipoProducto.tppVisible" [disabled]="!esAdministrador" (onChange)="cambio(tipoProducto)"></p-inputSwitch>
+                    <label class="mx-1">Visible</label>
                 </td>
 
             </tr>
