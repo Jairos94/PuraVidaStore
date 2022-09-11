@@ -10,7 +10,7 @@
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-usuario>
-        <tr *ngIf="!esVisible(usuario.idUsuario )">
+        <tr *ngIf="!esVisible(usuario.idUsuario ) && usuario.activo">
             <td>{{ usuario.idUsuario }}</td>
             <td>{{ usuario.usuario }}</td>
             <td>{{ usuario.persona.psrNombre }} {{ usuario.persona.psrApellido1 }} {{ usuario.persona.psrApellido }}</td>

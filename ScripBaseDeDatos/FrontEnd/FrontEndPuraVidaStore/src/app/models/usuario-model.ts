@@ -8,6 +8,7 @@ export interface UsuarioModel {
     email: string;
     idRol: number;
     idPersona: number;
+    activo: boolean | null;
     persona: PersonaModel
     Rol: RolModel
 }

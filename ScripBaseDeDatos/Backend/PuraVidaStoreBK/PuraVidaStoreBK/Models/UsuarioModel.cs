@@ -8,6 +8,7 @@
         public  string?  email { get; set; }
         public int IdRol { get; set; }
         public int IdPersona { get; set; }
+        public bool? Activo { get; set; }
         public PersonaModel persona { get; set; }
         public RolModel Rol { get; set; }
     }
