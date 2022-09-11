@@ -187,12 +187,6 @@ namespace PuraVidaStoreBK.Controllers
 
         }
 
-        [HttpDelete("EliminarUsuario"), Authorize(Roles = "1")]
-        public ActionResult EliminarUsuario(int idUsuario) 
-        {
-            return Ok(Ejecuta.EliminarUsuario(idUsuario));
-        }
-
         #endregion
 
         #region Metodos privados

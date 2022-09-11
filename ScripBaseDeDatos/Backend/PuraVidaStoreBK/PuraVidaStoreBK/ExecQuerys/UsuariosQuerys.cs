@@ -284,35 +284,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             }
         }
 
-        //elimina al usuario
-        public object EliminarUsuario(int idUsuario) 
-        {
-            try
-            {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
-                {
-                    var usuario = db.Usuarios.Find(idUsuario);
-                    db.Usuarios.Remove(usuario);
-                    db.SaveChanges();
-
-                    var usuMo = new UsuarioModel 
-                    {
-                        IdUsuario= usuario.UsrId,
-                        Usuario = usuario.UsrUser,
-
-
-                    };
-                    return usuMo;
-                }
-               
-            }
-            catch (Exception ex)
-            {
-
-                return ex.Message;
-            }
-            
-        }
+     
 
         private string ocpv(int idUsuario) 
         {
