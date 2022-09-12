@@ -36,7 +36,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                 return ex.Message;
             }
         }
-
+        //cambio
         public object ListaTipoProducto() 
         {
             try
