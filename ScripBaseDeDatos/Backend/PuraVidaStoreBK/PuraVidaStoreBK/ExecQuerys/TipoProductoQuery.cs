@@ -53,6 +53,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             }
         }
 
+        //cambios
         public object ListaProductoFiltrado() 
         {
             try
