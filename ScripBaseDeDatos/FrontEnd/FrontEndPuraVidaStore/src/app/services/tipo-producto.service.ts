@@ -15,6 +15,10 @@ export class TipoProductoService {
   listaTipoProducto():Observable<TipoProductoModel[]>{
     return this.http.get<TipoProductoModel[]>(`${this.baseUrl}TipoProduco/ListaTipoProducto`);
   }
+
+  listaTipoProductoFiltrado():Observable<TipoProductoModel[]>{
+    return this.http.get<TipoProductoModel[]>(`${this.baseUrl}TipoProduco/ListaTipoProductoFiltrado`);
+  }
   guardarTipoUsuario(TipoProduco:TipoProductoModel):Observable<TipoProductoModel>{
     return this.http.post<TipoProductoModel>(`${this.baseUrl}TipoProduco/GuardarTipoProducto`,TipoProduco);
   }

@@ -62,27 +62,21 @@
         </div>
     </div>
 
+    <div class="field mx-3">
+        <p-dropdown [options]="listaTipoProductos" optionLabel="tppDescripcion" [filter]="true"
+            filterBy="tppDescripcion" [showClear]="true" placeholder="Tipo de producto">
+        </p-dropdown>
+    </div>
+
 </div>
 
+<div class="field">
+    <h2>Foto</h2>
+    <p-fileUpload name="myfile[]" accept="image/*" [auto]="true" (onSelect)="archivo($event)">
+        
+    </p-fileUpload>
+</div>
 <!--? Cuarta Línea-->
 <div class="field grid">
 
-    <div class="formgroup-line">
-
-        <div class="field">
-            <h2>Tipo de producto</h2>
-            <p-dropdown [options]="listaTipoProductos" optionLabel="TppDescripcion" optionValue="tppId"></p-dropdown>
-        </div>
-
-
-    </div>
-
-</div>
-
-<div class="field grid">
-    <div class="field">
-        <h2>Foto</h2>
-        <p-fileUpload name="myfile[]"
-        accept="image/*" [auto]="true" (onSelect)="archivo($event)"></p-fileUpload>
-    </div>
 </div>
