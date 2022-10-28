@@ -7,6 +7,6 @@ export interface ProductoModel {
     prdUnidadesMinimas: number | null;
     prdIdTipoProducto: number;
     prdCodigoProvedor: string | null;
-    prdFoto: any| null;
     pdrVisible: boolean | null;
+    pdrFoto: string | null;
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProductoModel } from 'src/app/models/producto-model';
 import { TipoProductoModel } from 'src/app/models/tipo-producto';
 import { TipoProductoService } from 'src/app/services/tipo-producto.service';
@@ -24,10 +25,16 @@ export class AgregarEditarComponent implements OnInit {
       prdFoto:null,
       pdrVisible:true
     };
-  constructor(private servicioTipoProducto: TipoProductoService) { }
+    
+  constructor(
+    private servicioTipoProducto: TipoProductoService,
+    private ruta: Router,
+    private route: ActivatedRoute,
+    ) { }
 
   ngOnInit(): void {
     this.listaTipoProductoFiltrado();
+    const parametroId = this.route.snapshot.paramMap.get('id');
   }
 
   archivo(evento: any) {

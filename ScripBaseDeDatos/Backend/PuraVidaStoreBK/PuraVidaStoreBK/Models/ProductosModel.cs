@@ -10,7 +10,8 @@
         public int? PrdUnidadesMinimas { get; set; }
         public int PrdIdTipoProducto { get; set; }
         public string? PrdCodigoProvedor { get; set; }
-        public byte[]? PrdFoto { get; set; }
         public bool? PdrVisible { get; set; }
+        public string? PdrFoto { get; set; }
+
     }
 }
