@@ -15,22 +15,23 @@ export class AgregarEditarComponent implements OnInit {
   productoEditarAgregar: ProductoModel =
     {
       prdId: 0,
-      prdNombre:'',
-      prdPrecioVentaMayorista:0,
-      prdPrecioVentaMinorista:0,
-      prdCodigo:'',
-      prdUnidadesMinimas:0,
-      prdIdTipoProducto:0,
-      prdCodigoProvedor:'',
-      prdFoto:null,
-      pdrVisible:true
+      prdNombre: '',
+      prdPrecioVentaMayorista: 0,
+      prdPrecioVentaMinorista: 0,
+      prdCodigo: '',
+      prdUnidadesMinimas: 0,
+      prdIdTipoProducto: 0,
+      prdCodigoProvedor: '',
+      pdrVisible: true,
+      pdrFoto: null,
     };
-    
+  archivos: any = [];
+
   constructor(
     private servicioTipoProducto: TipoProductoService,
     private ruta: Router,
     private route: ActivatedRoute,
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     this.listaTipoProductoFiltrado();
@@ -39,12 +40,15 @@ export class AgregarEditarComponent implements OnInit {
 
   archivo(evento: any) {
     const archivo = <File>evento.currentFiles[0];
+    this.archivos.push(archivo);
 
     //Metodo para colocar en variable
-    this.productoEditarAgregar.prdFoto = new FormData();
-    this.productoEditarAgregar.prdFoto.append('imagen', archivo, archivo.name);
+
 
   }
+
+
+
 
   listaTipoProductoFiltrado() {
     this.servicioTipoProducto.listaTipoProductoFiltrado().subscribe((tp => {
