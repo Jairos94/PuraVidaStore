@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import {  timer } from 'rxjs';
+import { activo } from 'src/app/activo';
 import { PersonaModel } from 'src/app/models/persona-model';
 import { RolModel } from 'src/app/models/rol-model';
 import { UsuarioModel } from 'src/app/models/usuario-model';
@@ -42,8 +43,8 @@ export class EditarNuevoComponent implements OnInit {
     idPersona: 0,
     idRol: 0,
     persona: this.personaM,
-    Rol: this.rolM
-
+    Rol: this.rolM,
+    activo: true
   };
 
 

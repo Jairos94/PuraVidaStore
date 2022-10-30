@@ -20,6 +20,7 @@ namespace PuraVidaStoreBK.Models.DbContex
         public string? UsrEmail { get; set; }
         public int UsrIdRol { get; set; }
         public int UsrIdPersona { get; set; }
+        public bool? UsrActivo { get; set; }
 
         public virtual Persona UsrIdPersonaNavigation { get; set; } = null!;
         public virtual RolUsiario UsrIdRolNavigation { get; set; } = null!;

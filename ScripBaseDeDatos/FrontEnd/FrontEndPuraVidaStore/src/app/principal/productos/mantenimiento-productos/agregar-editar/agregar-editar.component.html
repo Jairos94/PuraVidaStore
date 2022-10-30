@@ -1,0 +1,80 @@
+<!-- ?Primera linea -->
+<div class="field grid">
+    <h3>Nombre del producto</h3>
+    <div class="p-inputgroup">
+        <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+        <input type="text" pInputText placeholder="Nombre del producto">
+    </div>
+</div>
+
+<!-- ?Seegunda linea-->
+<h3> Precios</h3>
+<div class="flied grid">
+
+    <!--! este formato va en una sola linea-->
+    <div class="formgroup-inline">
+
+        <div class="field">
+            <div class="p-inputgroup">
+                <span class="p-inputgroup-addon"><i class="pi pi-tags" style="line-height: 1.25;"></i></span>
+                <span class="p-inputgroup-addon"><i class="pi pi-shopping-cart" style="line-height: 1.25;"></i></span>
+                <input type="text" pInputText placeholder="Precio venta">
+                <span class="p-inputgroup-addon">¢</span>
+                <span class="p-inputgroup-addon">.00</span>
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="p-inputgroup">
+                <span class="p-inputgroup-addon"><i class="pi pi-tags" style="line-height: 1.25;"></i></span>
+                <span class="p-inputgroup-addon"><i class="pi pi-shopping-cart" style="line-height: 1.25;"></i></span>
+                <input type="text" pInputText placeholder="precio venta mayorista">
+                <span class="p-inputgroup-addon">¢</span>
+                <span class="p-inputgroup-addon">.00</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!--? tercera linea-->
+<div class="field grid">
+
+    <div class="formgroup-inline">
+        <div class="field">
+            <div class="p-inputgroup">
+                <h3>Código: </h3>
+                <h3>sdfsfsdfsd</h3>
+            </div>
+        </div>
+        <div class="field">
+            <div class="p-inputgroup">
+                <input type="text" pInputText placeholder="Código proveedor" />
+            </div>
+        </div>
+    </div>
+
+    <div class="field">
+        <div class="p-inputgroup">
+            <p-inputNumber mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0"
+                placeholder="Unidades mínimas">
+            </p-inputNumber>
+        </div>
+    </div>
+
+    <div class="field mx-3">
+        <p-dropdown [options]="listaTipoProductos" optionLabel="tppDescripcion" [filter]="true"
+            filterBy="tppDescripcion" [showClear]="true" placeholder="Tipo de producto">
+        </p-dropdown>
+    </div>
+
+</div>
+
+<div class="field">
+    <h2>Foto</h2>
+    <p-fileUpload chooseLabel="Subir" chooseIcon="pi pi-upload" name="myfile[]" accept="image/*" [auto]="true" (onSelect)="archivo($event)">
+        
+    </p-fileUpload>
+</div>
+
+<!--? Prevo Imagen-->

@@ -7,8 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: ProductosComponent,
-    children:[
-      {path:'tipo-producto',component:TipoProductoComponent}
+    children: [
+      { path: 'tipo-producto', component: TipoProductoComponent },
+      { path: 'productos', loadChildren: () => import('./mantenimiento-productos/mantenimiento-productos.module').then(m => m.MantenimientoProductosModule) },
+      { path: '**', redirectTo: 'productos' }
     ]
   },
 ];

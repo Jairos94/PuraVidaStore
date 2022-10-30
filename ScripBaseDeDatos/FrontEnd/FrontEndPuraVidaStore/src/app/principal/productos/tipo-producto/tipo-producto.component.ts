@@ -15,6 +15,7 @@ export class TipoProductoComponent implements OnInit {
   displayModal: boolean = false;
   esAdministrador: boolean = activo.esAministrador();
   listaTipoProductos: TipoProductoModel[] = [];
+  buscador: string = '';
 
   TipoProductoEditar: TipoProductoModel = {
     tppId: 0,
@@ -39,10 +40,10 @@ export class TipoProductoComponent implements OnInit {
   showModalDialog(id: number) {
     if (id > 0) {
       this.Encabezado = 'Editar';
-      this.TipoProductoEditar.tppId=id
-      this.listaTipoProductos.forEach(r=>{
-        if(r.tppId===this.TipoProductoEditar.tppId){
-          this.TipoProductoEditar.tppVisible=r.tppVisible
+      this.TipoProductoEditar.tppId = id
+      this.listaTipoProductos.forEach(r => {
+        if (r.tppId === this.TipoProductoEditar.tppId) {
+          this.TipoProductoEditar.tppVisible = r.tppVisible
         }
       });
     }
@@ -66,13 +67,13 @@ export class TipoProductoComponent implements OnInit {
     if (this.TipoProductoEditar.tppId === 0) {
       this.TipoProductoEditar.tppVisible = true;
     }
-   await this.servicio.guardarTipoUsuario(this.TipoProductoEditar).subscribe((x => 
-    {
-      this.TipoProductoEditar=x
-      this.inicio();}), (_e => { console.log(_e); }));
+    await this.servicio.guardarTipoUsuario(this.TipoProductoEditar).subscribe((x => {
+      this.TipoProductoEditar = x
+      this.inicio();
+    }), (_e => { console.log(_e); }));
     this.Exito(this.TipoProductoEditar.TppDescripcion);
-   
-    
+
+
     this.displayModal = false;
 
   }
@@ -90,8 +91,21 @@ export class TipoProductoComponent implements OnInit {
     this.messageService.add({ severity: 'success', summary: 'Se guardó con éxito el tipo de producto', detail: mensaje });
   }
 
-  cambio(parametro:TipoProductoModel){
-    this.servicio.guardarTipoUsuario(parametro).subscribe((x => {}), (_e => { console.log(_e); }));
+  cambio(parametro: TipoProductoModel) {
+    this.servicio.guardarTipoUsuario(parametro).subscribe((x => { }), (_e => { console.log(_e); }));
+  }
+
+  sujerencias(evento:any) {
+    console.log(evento);
+    this.servicio.sugerencias(evento).subscribe((x => {
+      this.listaTipoProductos=[];
+      this.listaTipoProductos =x;
+      this.reiniciarEditable();
+    }), (_e =>{
+
+      this.inicio()
+      console.log(_e)
+    } ))
   }
 
 }

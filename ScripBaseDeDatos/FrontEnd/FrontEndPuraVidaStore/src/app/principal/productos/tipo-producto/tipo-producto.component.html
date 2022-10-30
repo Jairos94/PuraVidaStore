@@ -14,14 +14,14 @@
 <p-card>
     <button pButton type="button" icon="pi pi-plus" class="p-button-rounded p-button-info mx-2"
         (click)="showModalDialog(0)" [disabled]="!esAdministrador"></button>
-    <input type="text" pInputText placeholder="Buscar">
+  <input type="text" pInputText placeholder="Buscar" [(ngModel)]="buscador" (change)="sujerencias(buscador)" (input)="sujerencias(buscador)">
 
 </p-card>
 
 
 
 <div class="my-2">
-    <p-table [value]="listaTipoProductos" responsiveLayout="scroll">
+    <p-table [value]="listaTipoProductos" responsiveLayout="scroll" [paginator]="true" [rows]="4">
         <ng-template pTemplate="header">
             <tr>
                 <th>#</th>
@@ -38,7 +38,9 @@
                     <button pButton pRipple type="button" icon="pi pi-pencil"
                         class="p-button-rounded p-button-warning mx-2" [disabled]="!esAdministrador"
                         (click)="showModalDialog(tipoProducto.tppId)"></button>
+                     
                     <p-inputSwitch [(ngModel)]="tipoProducto.tppVisible" [disabled]="!esAdministrador" (onChange)="cambio(tipoProducto)"></p-inputSwitch>
+                    <label class="mx-1">Visible</label>
                 </td>
 
             </tr>
@@ -46,4 +48,6 @@
     </p-table>
 
 </div>
+
+
 <p-toast position="top-right"></p-toast>

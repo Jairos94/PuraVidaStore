@@ -44,8 +44,9 @@ export class ListaUsuariosComponent implements OnInit {
   llenarUsuarios() {
     this.servicio.listaUsuarios().subscribe(
       (lista => {
-        
-        this.listaUsuario=[];
+        console.log(lista);
+
+        this.listaUsuario = [];
         this.listaUsuario = lista;
       }),
       (_e => { console.log(_e); }));
@@ -104,14 +105,17 @@ export class ListaUsuariosComponent implements OnInit {
 
   async onConfirm() {
     this.messageService.clear('c');
-    await this.servicio.EliminarUsuario(this.idUsarioBorrar).subscribe((x => {
-      this.showError('Usuario eliminado', `se eliminó a  ${x.usuario}`)
-      this.llenarUsuarios();
-    }), (_error => {
-      console.log(_error);
 
-    }));
-   
+    this.servicio.usuarioPorId(this.idUsarioBorrar).subscribe((x => {
+      let usuarioeliminar: UsuarioModel;
+      usuarioeliminar = x;
+      usuarioeliminar.activo = false;
+      this.servicio.GuardarUsuario(usuarioeliminar, false).subscribe((x => {
+        this.showError("Se Eliminó al usuario ", usuarioeliminar.persona.psrNombre);
+        this.llenarUsuarios();
+      }), (_e => console.log(_e)));
+    }), (_e => console.error));
+
   }
 
   onReject() {
