@@ -21,7 +21,7 @@ export class AgregarEditarComponent implements OnInit {
       prdPrecioVentaMinorista: 0,
       prdCodigo: '',
       prdUnidadesMinimas: 0,
-      prdIdTipoProducto: 1002,
+      prdIdTipoProducto: 0,
       prdCodigoProvedor: '',
       pdrVisible: true,
       pdrFoto: null,
