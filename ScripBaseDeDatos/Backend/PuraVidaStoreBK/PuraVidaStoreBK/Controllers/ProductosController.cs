@@ -17,6 +17,21 @@ namespace PuraVidaStoreBK.Controllers
             return Ok("");
 
         }
+        [HttpGet("ObtenerProductoPorId")]
+        public async Task<IActionResult> ObtenerProductoPorId(int id) 
+        {
+            try
+            {
+                ProductosModel producto = (ProductosModel)ejecuta.ObtenerProductoPorId(id);
+                return Ok(producto);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex);
+            }
+        }
+        
 
         [HttpPost("GuardarProducto"), Authorize(Roles = "1")]
         public async Task<IActionResult> GuardarProducto([FromBody] ProductosModel model) 

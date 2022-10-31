@@ -6,6 +6,7 @@ import { MantenimientoProductosComponent } from './mantenimiento-productos.compo
 import { ListaProductosComponent } from './lista-productos/lista-productos.component';
 import { AgregarEditarComponent } from './agregar-editar/agregar-editar.component';
 import { PrimeNgPrincipalModule } from '../../prime-ng-principal.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { PrimeNgPrincipalModule } from '../../prime-ng-principal.module';
   imports: [
     CommonModule,
     MantenimientoProductosRoutingModule,
-    PrimeNgPrincipalModule
+    PrimeNgPrincipalModule,
+    ReactiveFormsModule
   ]
 })
 export class MantenimientoProductosModule { }
