@@ -1,8 +1,8 @@
 
   CREATE PROCEDURE IngresarUsuario
-  @Usuario varchar(15),
+   @Usuario varchar(15),
   @Pass VARCHAR(256),
-  @Email Varchar(50),
+  @Email Varchar(100),
   @IdRol int,
   @IdPersona int
   AS
@@ -13,13 +13,16 @@
            ,[UsrPass]
            ,[UsrEmail]
            ,[UsrIdRol]
-           ,[UsrIdPersona])
+           ,[UsrIdPersona],
+		   [UsrActivo])
      VALUES
            (@Usuario
            ,EncryptByPassPhrase('password',@Pass )
            ,@Email
            ,@IdRol
-           ,@IdPersona)
+           ,@IdPersona
+		   ,1
+		   )
 GO
 
 EXEC IngresarUsuario 'Admin','GzPfpnFb7HWhQeP0wnV0+g==','jairo.ri.ce@gmail.com',1,1
@@ -35,7 +38,8 @@ CREATE PROCEDURE EditarUsuario
 	@Email  varchar(100),
 	@Rol int,
 	@idPersona int,
-	@idUsuario int
+	@idUsuario int,
+	@activo bit
 	
 
 
@@ -50,6 +54,7 @@ BEGIN
 		  ,[UsrEmail] = @Email
 		  ,[UsrIdRol] = @Rol
 		  ,[UsrIdPersona] = @idPersona
+		  ,[UsrActivo] = @activo
 	 WHERE [UsrID] = @idUsuario
 END
 GO

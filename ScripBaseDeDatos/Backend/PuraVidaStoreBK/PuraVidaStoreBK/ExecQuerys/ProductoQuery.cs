@@ -1,18 +1,38 @@
-﻿using PuraVidaStoreBK.Models.DbContex;
+﻿using PuraVidaStoreBK.Models;
+using PuraVidaStoreBK.Models.DbContex;
 
 namespace PuraVidaStoreBK.ExecQuerys
 {
     public class ProductoQuery
     {
-        public object IngresarProducto(Producto producto) 
+        public object Guardar(ProductosModel producto) 
         {
             try
             {
                 using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
                 {
-                   var dato= db.Productos.Add(producto);
+                    var foto= new object();
+                    var productoGuardar = new Producto
+                    {
+                        PrdId = producto.PrdId,
+                        PrdCodigo = producto.PrdCodigo,
+                        PdrVisible = producto.PdrVisible,
+                        PrdCodigoProvedor = producto.PrdCodigoProvedor,
+                        //PrdFoto = Convert.ToByte.(producto.PrdFoto.ToArray());
+                        PrdIdTipoProducto = producto.PrdIdTipoProducto,
+                        PrdNombre=producto.PrdNombre,
+                        PrdPrecioVentaMayorista=producto.PrdPrecioVentaMayorista,
+                        PrdPrecioVentaMinorista=producto.PrdPrecioVentaMinorista,
+                        PrdUnidadesMinimas=producto.PrdUnidadesMinimas,
+                    };
+                    if (producto.PrdId>0) 
+                    {
+                        db.Productos.Update(productoGuardar);
+                    }
+                    else { db.Add(productoGuardar); }
                     db.SaveChanges();
-                    return dato;
+                    producto.PrdId = productoGuardar.PrdId;
+                    return producto;
                 };
             }
             catch (Exception ex)

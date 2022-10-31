@@ -32,7 +32,7 @@ namespace PuraVidaStoreBK.Controllers
         }
 
         [HttpGet("ListaTipoProducto"),Authorize]
-       public async Task<IActionResult> ListaTipoProducto() 
+        public async Task<IActionResult> ListaTipoProducto() 
         {
             List<TipoProducto> listaTipoProducto = new List<TipoProducto>();
             try
@@ -56,7 +56,31 @@ namespace PuraVidaStoreBK.Controllers
             
         }
 
-        [HttpGet("ObtenerTipoProductoPorId")]
+        [HttpGet("ListaTipoProductoFiltrado"),Authorize]
+        public async Task<IActionResult> ListaTipoProductoFiltrado()
+        {
+            List<TipoProducto> listaTipoProducto = new List<TipoProducto>();
+            try
+            {
+                var listaModelo = new List<TipoProductoModel>();
+                listaTipoProducto = (List<TipoProducto>)ejecuta.ListaProductoFiltrado();
+                listaTipoProducto.ForEach(tp =>
+                {
+                    var tipoModelo = new TipoProductoModel();
+                    tipoModelo.TppId = tp.TppId;
+                    tipoModelo.TppDescripcion = tp.TppDescripcion;
+                    tipoModelo.TppVisible = tp.TppVisible;
+                    listaModelo.Add(tipoModelo);
+                });
+                return Ok(listaModelo);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpGet("ObtenerTipoProductoPorId"), Authorize(Roles ="1")]
         public async Task<IActionResult> ObtenerTipoProductoPorId(int id) 
         {
             try
@@ -77,5 +101,24 @@ namespace PuraVidaStoreBK.Controllers
             }
           
         }
+
+        [HttpGet("BuscarTipoProductoPorDescripcion"),Authorize]
+        public async Task<IActionResult> BuscarTipoProductoPorDescripcion(string dato) 
+        {
+            try
+            {
+                List<TipoProductoModel> lista = new List<TipoProductoModel>();
+                lista = (List<TipoProductoModel>)ejecuta.BuscarTipoProductoPorDescripcion(dato);
+                return Ok(lista);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex);
+            }
+        }
+
+       
+        
     }
 }

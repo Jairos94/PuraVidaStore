@@ -422,6 +422,8 @@ namespace PuraVidaStoreBK.Models.DbContex
                 entity.HasKey(e => e.PrdId)
                     .HasName("PK__Producto__7168B164F60755CE");
 
+                entity.Property(e => e.PdrFoto).IsUnicode(false);
+
                 entity.Property(e => e.PrdCodigo)
                     .HasMaxLength(100)
                     .IsUnicode(false);
@@ -429,8 +431,6 @@ namespace PuraVidaStoreBK.Models.DbContex
                 entity.Property(e => e.PrdCodigoProvedor)
                     .HasMaxLength(50)
                     .IsUnicode(false);
-
-                entity.Property(e => e.PrdFoto).HasColumnType("image");
 
                 entity.Property(e => e.PrdNombre)
                     .HasMaxLength(50)
@@ -440,7 +440,7 @@ namespace PuraVidaStoreBK.Models.DbContex
                     .WithMany(p => p.Productos)
                     .HasForeignKey(d => d.PrdIdTipoProducto)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Productos__PrdId__2E1BDC42");
+                    .HasConstraintName("FK__Productos__PrdId__6166761E");
             });
 
             modelBuilder.Entity<Proveedore>(entity =>

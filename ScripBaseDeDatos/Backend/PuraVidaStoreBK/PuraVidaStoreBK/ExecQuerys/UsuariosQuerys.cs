@@ -44,20 +44,21 @@ namespace PuraVidaStoreBK.ExecQuerys
                             u.email = "";
                         }
                         u.IdRol = reader.GetInt32(3);
-                        u.IdPersona = reader.GetInt32(4);
+                        u.Activo = reader.GetBoolean(4);
+                        u.IdPersona = reader.GetInt32(5);
 
                         PersonaModel p = new PersonaModel();
                         p.PsrId= u.IdPersona;
-                        p.PsrIdentificacion = reader.GetString(5);
-                        p.PsrNombre= reader.GetString(6);
-                        p.PsrApellido1= reader.GetString(7);
-                        p.PsrApellido2=reader.GetString(8);
+                        p.PsrIdentificacion = reader.GetString(6);
+                        p.PsrNombre= reader.GetString(7);
+                        p.PsrApellido1= reader.GetString(8);
+                        p.PsrApellido2=reader.GetString(9);
                         u.persona= p;
 
 
                         RolModel r = new RolModel();
-                        r.RluID= reader.GetInt32(9);
-                        r.RluDescripcion= reader.GetString(10);
+                        r.RluID= reader.GetInt32(10);
+                        r.RluDescripcion= reader.GetString(11);
                         u.Rol= r;
                         Usu = u;
                     }
@@ -114,18 +115,18 @@ namespace PuraVidaStoreBK.ExecQuerys
                         
                         u.IdRol = reader.GetInt32(3);
                         u.IdPersona = reader.GetInt32(4);
-
+                        u.Activo =reader.GetBoolean(5);
                         
-                        r.RluID = reader.GetInt32(5);
-                        r.RluDescripcion = reader.GetString(6);
+                        r.RluID = reader.GetInt32(6);
+                        r.RluDescripcion = reader.GetString(7);
                         u.Rol = r;
 
                         
-                        p.PsrId = reader.GetInt32(7);
-                        p.PsrIdentificacion= reader.GetString(8);
-                        p.PsrNombre = reader.GetString(9);
-                        p.PsrApellido1= reader.GetString(10);
-                        p.PsrApellido2= reader.GetString(11);
+                        p.PsrId = reader.GetInt32(8);
+                        p.PsrIdentificacion= reader.GetString(9);
+                        p.PsrNombre = reader.GetString(10);
+                        p.PsrApellido1= reader.GetString(11);
+                        p.PsrApellido2= reader.GetString(12);
                         u.persona = p;
                         ListaUsuarios.Add(u); 
                 }
@@ -158,6 +159,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                 command.Parameters.Add("@Email", SqlDbType.VarChar, 100).Value = usuario.email;
                 command.Parameters.Add("@IdRol", SqlDbType.Int).Value = usuario.IdRol;
                 command.Parameters.Add("@IdPersona", SqlDbType.Int).Value = usuario.IdPersona;
+
                 reader = command.ExecuteReader();
                 return true;
             }
@@ -189,6 +191,8 @@ namespace PuraVidaStoreBK.ExecQuerys
                 command.Parameters.Add("@Rol", SqlDbType.Int).Value = usuario.IdRol;
                 command.Parameters.Add("@idPersona", SqlDbType.Int).Value = usuario.IdPersona;
                 command.Parameters.Add("@idUsuario", SqlDbType.Int).Value = usuario.IdUsuario;
+                command.Parameters.Add("@activo", SqlDbType.Int).Value = usuario.Activo;
+
                 reader = command.ExecuteReader();
                 return true;
             }
@@ -280,35 +284,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             }
         }
 
-        //elimina al usuario
-        public object EliminarUsuario(int idUsuario) 
-        {
-            try
-            {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
-                {
-                    var usuario = db.Usuarios.Find(idUsuario);
-                    db.Usuarios.Remove(usuario);
-                    db.SaveChanges();
-
-                    var usuMo = new UsuarioModel 
-                    {
-                        IdUsuario= usuario.UsrId,
-                        Usuario = usuario.UsrUser,
-
-
-                    };
-                    return usuMo;
-                }
-               
-            }
-            catch (Exception ex)
-            {
-
-                return ex.Message;
-            }
-            
-        }
+     
 
         private string ocpv(int idUsuario) 
         {
