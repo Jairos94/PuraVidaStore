@@ -44,7 +44,6 @@ export class ListaUsuariosComponent implements OnInit {
   llenarUsuarios() {
     this.servicio.listaUsuarios().subscribe(
       (lista => {
-        console.log(lista);
 
         this.listaUsuario = [];
         this.listaUsuario = lista;

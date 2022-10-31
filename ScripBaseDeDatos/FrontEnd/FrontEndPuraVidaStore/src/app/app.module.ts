@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { PrimeNGModule } from './prime-ng.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { Base64 } from 'js-base64';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -26,7 +26,7 @@ import { Interceptor } from './services/interceptor';
     HttpClientModule,
     PrimeNGModule,
     BrowserAnimationsModule,
-    Base64
+  
 
   ],
   exports:[
