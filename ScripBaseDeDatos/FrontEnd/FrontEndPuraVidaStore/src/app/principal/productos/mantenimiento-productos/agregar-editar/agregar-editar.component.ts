@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProductoModel } from 'src/app/models/producto-model';
 import { TipoProductoModel } from 'src/app/models/tipo-producto';
 import { TipoProductoService } from 'src/app/services/tipo-producto.service';
+import { Archivo } from 'src/app/utils/Archivos';
 
 @Component({
   selector: 'app-agregar-editar',
@@ -11,7 +12,7 @@ import { TipoProductoService } from 'src/app/services/tipo-producto.service';
   styleUrls: ['./agregar-editar.component.css']
 })
 export class AgregarEditarComponent implements OnInit {
-   base64Image: any='';
+  base64Image: any ;
   listaTipoProductos: TipoProductoModel[] = []
   productoEditarAgregar: ProductoModel =
     {
@@ -54,19 +55,17 @@ export class AgregarEditarComponent implements OnInit {
 
   archivo(evento: any) {
     const archivo = <File>evento.currentFiles[0];
-    var myReader: FileReader = new FileReader();
-    myReader.onloadend = (e) => {
-      this.base64Image = myReader.result;
-      console.log(this.base64Image);
-    }
-    myReader.readAsDataURL(archivo);
+    this.base64Image = Archivo.convertFile(archivo).subscribe(x=>{
+console.log(x);
 
-
+    });
+  
+    
   }
 
   guardar() {
     console.log(this.productoForm.value);
-    
+
   }
 
 
