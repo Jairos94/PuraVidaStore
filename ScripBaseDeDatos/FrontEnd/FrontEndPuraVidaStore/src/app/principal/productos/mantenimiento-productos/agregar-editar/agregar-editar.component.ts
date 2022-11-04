@@ -11,7 +11,7 @@ import { TipoProductoService } from 'src/app/services/tipo-producto.service';
   styleUrls: ['./agregar-editar.component.css']
 })
 export class AgregarEditarComponent implements OnInit {
-
+   base64Image: any='';
   listaTipoProductos: TipoProductoModel[] = []
   productoEditarAgregar: ProductoModel =
     {
@@ -21,7 +21,7 @@ export class AgregarEditarComponent implements OnInit {
       prdPrecioVentaMinorista: 0,
       prdCodigo: '',
       prdUnidadesMinimas: 0,
-      prdIdTipoProducto: 1002,
+      prdIdTipoProducto: 0,
       prdCodigoProvedor: '',
       pdrVisible: true,
       pdrFoto: null,
@@ -54,9 +54,12 @@ export class AgregarEditarComponent implements OnInit {
 
   archivo(evento: any) {
     const archivo = <File>evento.currentFiles[0];
-    this.archivos.push(archivo);
-
-    //Metodo para colocar en variable
+    var myReader: FileReader = new FileReader();
+    myReader.onloadend = (e) => {
+      this.base64Image = myReader.result;
+      console.log(this.base64Image);
+    }
+    myReader.readAsDataURL(archivo);
 
 
   }
