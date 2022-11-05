@@ -12,7 +12,9 @@ import { Archivo } from 'src/app/utils/Archivos';
   styleUrls: ['./agregar-editar.component.css']
 })
 export class AgregarEditarComponent implements OnInit {
+
   EsImagen:boolean =false
+  HayImagen:boolean = false
   base64Image: any;
   imagen: string = '';
   listaTipoProductos: TipoProductoModel[] = []
@@ -29,7 +31,6 @@ export class AgregarEditarComponent implements OnInit {
       pdrVisible: true,
       pdrFoto: null,
     };
-  archivos: any = [];
 
   productoForm = this.fb.group({
     NombreProducto: [this.productoEditarAgregar.prdNombre, [Validators.required]],
@@ -52,6 +53,7 @@ export class AgregarEditarComponent implements OnInit {
   ngOnInit(): void {
     this.listaTipoProductoFiltrado();
     const parametroId = this.route.snapshot.paramMap.get('id');
+    this.imagen = Archivo.lectorImagen(this.imagen);
   }
 
   archivo(evento: any) {
@@ -60,15 +62,19 @@ export class AgregarEditarComponent implements OnInit {
     this.base64Image = Archivo.convertFile(archivo).subscribe(x => {
       ima = x.toString();
       this.productoEditarAgregar.pdrFoto = ima;
+      this.imagen = Archivo.lectorImagen(this.productoEditarAgregar.pdrFoto)
+      this.HayImagen = true;
     });
+    console.log(evento);
+    
   }
 
-  
+
   guardar() {
     console.log(this.productoForm.value);
     if(this.productoEditarAgregar.pdrFoto!=null){
 
-      this.imagen = Archivo.lectorImagen(this.productoEditarAgregar.pdrFoto)
+     
     }
   }
 
@@ -79,5 +85,13 @@ export class AgregarEditarComponent implements OnInit {
     }), (_e => console.log(_e)));
   }
 
+  
+
+  eliminarImagen(){
+    this.productoEditarAgregar.pdrFoto = null
+    this.imagen = ''
+    this.imagen = Archivo.lectorImagen(this.imagen);
+    this.HayImagen = false
+  }
   
 }

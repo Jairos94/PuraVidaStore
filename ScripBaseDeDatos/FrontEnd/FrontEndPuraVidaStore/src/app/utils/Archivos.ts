@@ -18,9 +18,15 @@ export class Archivo
 
       public static lectorImagen(imagenBase64:string):string
       {
-        let imagen : string ='data:image/png;base64,';
-        imagen = imagen+imagenBase64;
-        return imagen;
+        let imagen : string ='';
+        if(imagenBase64 != ''){
+          let imagen : string ='data:image/png;base64,';
+          imagen = imagen+imagenBase64;
+          return imagen;
+        }else{
+          imagen = '../../assets/no-fotos.png'
+        }
+      return imagen
       }
   
 }
