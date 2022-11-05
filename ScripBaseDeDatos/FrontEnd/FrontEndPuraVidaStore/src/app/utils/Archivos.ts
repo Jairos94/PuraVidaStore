@@ -15,5 +15,12 @@ export class Archivo
         result.next(btoa(event.target.result.toString()));
         return result;
       }
+
+      public static lectorImagen(imagenBase64:string):string
+      {
+        let imagen : string ='data:image/png;base64,';
+        imagen = imagen+imagenBase64;
+        return imagen;
+      }
   
 }

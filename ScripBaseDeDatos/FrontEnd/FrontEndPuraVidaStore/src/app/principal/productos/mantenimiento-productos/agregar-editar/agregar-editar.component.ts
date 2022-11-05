@@ -12,7 +12,9 @@ import { Archivo } from 'src/app/utils/Archivos';
   styleUrls: ['./agregar-editar.component.css']
 })
 export class AgregarEditarComponent implements OnInit {
-  base64Image: any ;
+  EsImagen:boolean =false
+  base64Image: any;
+  imagen: string = '';
   listaTipoProductos: TipoProductoModel[] = []
   productoEditarAgregar: ProductoModel =
     {
@@ -33,7 +35,6 @@ export class AgregarEditarComponent implements OnInit {
     NombreProducto: [this.productoEditarAgregar.prdNombre, [Validators.required]],
     PrecioVentaMayorista: [this.productoEditarAgregar.prdPrecioVentaMayorista, [Validators.required]],
     prcioVentaMinorista: [this.productoEditarAgregar.prdPrecioVentaMinorista, [Validators.required]],
-    //Codigo:[this.productoEditarAgregar.prdCodigo],
     UnidadesMinimas: [this.productoEditarAgregar.prdUnidadesMinimas, [Validators.required]],
     IdTipoProducto: [this.productoEditarAgregar.prdIdTipoProducto, [Validators.required]],
     CodigoProveedor: [this.productoEditarAgregar.prdCodigoProvedor, [Validators.required]],
@@ -54,18 +55,20 @@ export class AgregarEditarComponent implements OnInit {
   }
 
   archivo(evento: any) {
+    let ima: string = '';
     const archivo = <File>evento.currentFiles[0];
-    this.base64Image = Archivo.convertFile(archivo).subscribe(x=>{
-console.log(x);
-
+    this.base64Image = Archivo.convertFile(archivo).subscribe(x => {
+      ima = x.toString();
+      this.productoEditarAgregar.pdrFoto = ima;
     });
-  
-    
   }
 
   guardar() {
     console.log(this.productoForm.value);
+    if(this.productoEditarAgregar.pdrFoto!=null){
 
+      this.imagen = Archivo.lectorImagen(this.productoEditarAgregar.pdrFoto)
+    }
   }
 
 
@@ -74,4 +77,6 @@ console.log(x);
       this.listaTipoProductos = tp;
     }), (_e => console.log(_e)));
   }
+
+  
 }
