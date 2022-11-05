@@ -63,6 +63,7 @@ export class AgregarEditarComponent implements OnInit {
     });
   }
 
+  
   guardar() {
     console.log(this.productoForm.value);
     if(this.productoEditarAgregar.pdrFoto!=null){
