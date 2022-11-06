@@ -156,18 +156,29 @@ namespace PuraVidaStoreBK.Controllers
         [HttpGet("ListaUsuarios"), Authorize(Roles = "1")]
         public async Task<IActionResult> ListaUsuarios()
         {
-            object Usu = new object();
-            Usu = Ejecuta.listaUsuarios();
-            try
+            var ListaUsuarios = await _usuario.ListaUsuarios();
+            var UsuariosRetorno = _mapper.Map<List<UsuarioDto>>(ListaUsuarios);
+            if (ListaUsuarios != null || ListaUsuarios.Count > 0) 
             {
-                return Ok(Usu);
+                ListaUsuarios.ForEach(lu =>
+                {
+                    UsuariosRetorno.ForEach(ur =>
+                    {
+                        if (lu.UsrId == ur.UsrId)
+                        {
+                            ur.UsrPass = "";
+                            ur.Persona = _mapper.Map<PersonaDto>(lu.UsrIdPersonaNavigation);
+                            ur.Rol = _mapper.Map<RolUsuarioDto>(lu.UsrIdRolNavigation);
+                        }
+                    });
+                });
+                return Ok(UsuariosRetorno);
             }
-            catch (Exception)
+            else 
             {
-
-                return BadRequest(Usu);
+                return NoContent();
             }
-
+            
         }
 
         // GET api/<UsuarioController>/5

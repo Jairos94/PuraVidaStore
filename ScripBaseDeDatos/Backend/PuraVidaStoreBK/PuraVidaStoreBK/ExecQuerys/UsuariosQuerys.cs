@@ -4,6 +4,8 @@ using System.Data;
 using PuraVidaStoreBK.Models;
 using PuraVidaStoreBK.Models.DbContex;
 using PuraVidaStoreBK.ExecQuerys.Interfaces;
+using Serilog;
+using Microsoft.EntityFrameworkCore;
 
 namespace PuraVidaStoreBK.ExecQuerys
 {
@@ -74,6 +76,7 @@ namespace PuraVidaStoreBK.ExecQuerys
 
             catch (Exception ex)
             {
+                Log.Information("Se presentó un error en Get Usuario\n"+ex);
                 return Usu;
             }
             finally
@@ -81,67 +84,25 @@ namespace PuraVidaStoreBK.ExecQuerys
         }
 
         //Obtiene a los usuarios
-        public object listaUsuarios()
+        public async Task<List<Usuario>> ListaUsuarios()
 
         {
-            SqlConnection conn = data.GetConnection();
+            List<Usuario> usuarios = new List<Usuario>();
             try
             {
-                SqlDataReader reader;
-                SqlCommand command = conn.CreateCommand();
-                conn.Open();
-                command.CommandType = CommandType.StoredProcedure;
-                command.CommandText = "ObtenerUsuarios";
-                //command.ExecuteNonQuery();
-                reader = command.ExecuteReader();
-                List<UsuarioModel> ListaUsuarios= new List<UsuarioModel>();
-          
-                while (reader.Read())
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
                 {
-                    UsuarioModel u = new UsuarioModel();
-                    RolModel r = new RolModel();
-                    PersonaModel p = new PersonaModel();
-
-                    u.IdUsuario = reader.GetInt32(0);
-                        u.Usuario = reader.GetString(1);
-                    try
-                    {
-                        u.email = reader.GetString(2);
-                    }
-                    catch (Exception)
-                    {
-
-                        u.email ="";
-                    }
-                        
-                        u.IdRol = reader.GetInt32(3);
-                        u.IdPersona = reader.GetInt32(4);
-                        u.Activo =reader.GetBoolean(5);
-                        
-                        r.RluID = reader.GetInt32(6);
-                        r.RluDescripcion = reader.GetString(7);
-                        u.Rol = r;
-
-                        
-                        p.PsrId = reader.GetInt32(8);
-                        p.PsrIdentificacion= reader.GetString(9);
-                        p.PsrNombre = reader.GetString(10);
-                        p.PsrApellido1= reader.GetString(11);
-                        p.PsrApellido2= reader.GetString(12);
-                        u.persona = p;
-                        ListaUsuarios.Add(u); 
+                    usuarios = await db.Usuarios
+                                       .Include(x=>x.UsrIdPersonaNavigation)
+                                       .Include(x=>x.UsrIdRolNavigation)
+                                       .ToListAsync();
                 }
-                return ListaUsuarios;
             }
-
             catch (Exception ex)
             {
-                return ex.Message;
-               
+                Log.Information("Se presentó un error en listaUsuarios\n"+ex);
             }
-
-            finally
-            { conn.Close(); }
+            return usuarios;
         }
 
         //Ingresa Usuarios
