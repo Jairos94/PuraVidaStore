@@ -1,11 +1,15 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using PuraVidaStoreBK.ExecQuerys;
+using PuraVidaStoreBK.ExecQuerys.Interfaces;
 using PuraVidaStoreBK.Models;
 using PuraVidaStoreBK.Models.DbContex;
+using PuraVidaStoreBK.Models.DTOS;
 using PuraVidaStoreBK.Models.Respuesta;
 using PuraVidaStoreBK.Utilitarios;
+using Serilog;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -19,34 +23,45 @@ namespace PuraVidaStoreBK.Controllers
     [ApiController]
     public class UsuarioController : ControllerBase
     {
+        private readonly IMapper _mapper;
+        private readonly IUsuariosQuerys _usuario;
+        private IConfiguration Configuracion { get; }
+
+        
         UsuariosQuerys Ejecuta = new UsuariosQuerys();
         personaQuery EjecutaPersona = new personaQuery();
-
-        public IConfiguration Configuracion { get; }
-
-        public UsuarioController(IConfiguration configuracion) 
+        public UsuarioController(IConfiguration configuracion, IMapper mapper,IUsuariosQuerys usuario)
         {
             Configuracion = configuracion;
+            _mapper = mapper;
+           _usuario = usuario;
         }
+
+
 
         #region peteciones
         // GET: UsuarioController
         [HttpGet("GetUsuario")]
         public async Task<IActionResult> GetUsuario(string user, string password)
         {
-            object Usu = new object();
-            Usu = Ejecuta.GetUsuario(user, password);
+
+            var usuario = _usuario.GetUsuario(user, password);
             try
             {
+                var UsuarioCaptura = new Usuario();
+                UsuarioCaptura = (Usuario)usuario;
                 usuarioRespuesta ur = new usuarioRespuesta();
-                ur.usuario = (UsuarioModel)Usu;
-                ur.token = CrearToken((UsuarioModel)Usu);
+                var Usuarioretorno = _mapper.Map<UsuarioDto>(UsuarioCaptura);
+                Usuarioretorno.Persona = _mapper.Map<PersonaDto>(UsuarioCaptura.UsrIdPersonaNavigation);
+                Usuarioretorno.Rol = _mapper.Map<RolUsuarioDto>(UsuarioCaptura.UsrIdRolNavigation);
+                ur.usuario = Usuarioretorno;
+                ur.token = CrearToken(Usuarioretorno);
                 return Ok(ur);
             }
             catch (Exception)
             {
-
-                return BadRequest(Usu);
+               
+                return BadRequest(usuario);
             }
 
         }
@@ -191,12 +206,12 @@ namespace PuraVidaStoreBK.Controllers
 
         #region Metodos privados
         //este metodo genera los tokens
-        private string CrearToken(UsuarioModel Usuario) 
+        private string CrearToken(UsuarioDto Usuario) 
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name,Usuario.Usuario),
-                new Claim(ClaimTypes.Role,Usuario.IdRol.ToString())
+                new Claim(ClaimTypes.Name,Usuario.UsrUser),
+                new Claim(ClaimTypes.Role,Usuario.UsrIdRol.ToString())
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(

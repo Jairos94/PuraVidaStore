@@ -3,10 +3,11 @@ using System.Data.SqlClient;
 using System.Data;
 using PuraVidaStoreBK.Models;
 using PuraVidaStoreBK.Models.DbContex;
+using PuraVidaStoreBK.ExecQuerys.Interfaces;
 
 namespace PuraVidaStoreBK.ExecQuerys
 {
-    public class UsuariosQuerys
+    public class UsuariosQuerys:IUsuariosQuerys
     {
         
         DataBase data= new DataBase();
@@ -31,35 +32,35 @@ namespace PuraVidaStoreBK.ExecQuerys
                 {
                     try
                     {
-                        UsuarioModel u = new UsuarioModel();
-                        u.IdUsuario = reader.GetInt32(0);
-                        u.Usuario = reader.GetString(1);
+                        Usuario u = new Usuario();
+                        u.UsrId = reader.GetInt32(0);
+                        u.UsrUser = reader.GetString(1);
                         try
                         {
-                            u.email = reader.GetString(2);
+                            u.UsrEmail = reader.GetString(2);
                         }
                         catch (Exception)
                         {
 
-                            u.email = "";
+                            u.UsrEmail = "";
                         }
-                        u.IdRol = reader.GetInt32(3);
-                        u.Activo = reader.GetBoolean(4);
-                        u.IdPersona = reader.GetInt32(5);
+                        u.UsrIdRol = reader.GetInt32(3);
+                        u.UsrActivo = reader.GetBoolean(4);
+                        u.UsrIdPersona = reader.GetInt32(5);
 
-                        PersonaModel p = new PersonaModel();
-                        p.PsrId= u.IdPersona;
+                        Persona p = new Persona();
+                        p.PsrId= u.UsrIdPersona;
                         p.PsrIdentificacion = reader.GetString(6);
                         p.PsrNombre= reader.GetString(7);
                         p.PsrApellido1= reader.GetString(8);
                         p.PsrApellido2=reader.GetString(9);
-                        u.persona= p;
+                        u.UsrIdPersonaNavigation= p;
 
 
-                        RolModel r = new RolModel();
-                        r.RluID= reader.GetInt32(10);
+                        RolUsiario r = new RolUsiario();
+                        r.RluId= reader.GetInt32(10);
                         r.RluDescripcion= reader.GetString(11);
-                        u.Rol= r;
+                        u.UsrIdRolNavigation= r;
                         Usu = u;
                     }
                     catch (Exception)
