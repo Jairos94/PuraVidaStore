@@ -4,7 +4,7 @@
     {
         public int UsrId { get; set; }
         public string UsrUser { get; set; } = null!;
-        public string UsrPass { get; set; } = null!;
+        public string Clave { get; set; } = null!;
         public string? UsrEmail { get; set; }
         public int UsrIdRol { get; set; }
         public int UsrIdPersona { get; set; }
