@@ -1,5 +1,6 @@
 ﻿using PuraVidaStoreBK.Models;
 using PuraVidaStoreBK.Models.DbContex;
+using Serilog;
 using System.Linq;
 
 namespace PuraVidaStoreBK.ExecQuerys
@@ -32,7 +33,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             }
             catch (Exception ex)
             {
-
+                Log.Information("Se prersentó un error en Guardar\n" + ex);
                 return ex.Message;
             }
         }

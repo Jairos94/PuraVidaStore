@@ -17,7 +17,7 @@ namespace PuraVidaStoreBK.Controllers
         private readonly IPersonaQuery _persona;
         private readonly IMapper _mapper;
 
-        public PersonaController(IPersonaQuery persona, IMapper mapper)
+        private PersonaController(IPersonaQuery persona, IMapper mapper)
         {
             _persona = persona;
             _mapper = mapper;

@@ -65,6 +65,8 @@ builder.Services.AddAutoMapper(typeof(Program));
 #region Inyeccion de dependencias
 builder.Services.AddSingleton<IPersonaQuery, PersonaQuery>();
 builder.Services.AddSingleton<IUsuariosQuerys,UsuariosQuerys>();
+builder.Services.AddSingleton<IRolQuery, RolesQuerys>();
+
 #endregion
 
 //Serilog
