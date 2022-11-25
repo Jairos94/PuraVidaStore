@@ -18,6 +18,9 @@ namespace PuraVidaStoreBK.Models
             CreateMap<Usuario, UsuarioDto>();
             CreateMap<UsuarioDto, Usuario>();
 
+            CreateMap<TipoProducto, TipoProductoDTO>();
+            CreateMap<TipoProductoDTO, TipoProducto>();
+
         }
     }
 }

@@ -66,6 +66,9 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddSingleton<IPersonaQuery, PersonaQuery>();
 builder.Services.AddSingleton<IUsuariosQuerys,UsuariosQuerys>();
 builder.Services.AddSingleton<IRolQuery, RolesQuerys>();
+builder.Services.AddSingleton<ITipoProductoQuery, TipoProductoQuery>();
+
+
 
 #endregion
 

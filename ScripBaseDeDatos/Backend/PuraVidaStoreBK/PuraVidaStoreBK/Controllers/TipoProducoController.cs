@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PuraVidaStoreBK.ExecQuerys;
-using PuraVidaStoreBK.Models;
-using PuraVidaStoreBK.Models.DbContex;
+using PuraVidaStoreBK.ExecQuerys.Interfaces;
+using PuraVidaStoreBK.Models.DTOS;
+using System.Data;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace PuraVidaStoreBK.Controllers
 {
@@ -11,114 +12,48 @@ namespace PuraVidaStoreBK.Controllers
     [ApiController]
     public class TipoProducoController : ControllerBase
     {
-        private TipoProductoQuery ejecuta = new TipoProductoQuery();
+        private readonly ITipoProductoQuery _tipoProductoQuery;
 
+        public TipoProducoController(ITipoProductoQuery tipoProductoQuery)
+        {
+            this._tipoProductoQuery = tipoProductoQuery;
+        }
+        //[HttpPost("GuardarTipoProducto"), Authorize(Roles = "1")]
+        //[HttpGet("ListaTipoProducto"),Authorize]
+        // [HttpGet("ListaTipoProductoFiltrado"),Authorize]
+        // [HttpGet("ObtenerTipoProductoPorId"), Authorize(Roles = "1")]
+        //[HttpGet("BuscarTipoProductoPorDescripcion"),Authorize]
+
+        // GET: api/<TipoProducoController>
         [HttpPost("GuardarTipoProducto"), Authorize(Roles = "1")]
-        public async Task<IActionResult> GuardarTipoProducto([FromBody] TipoProducto TipoProducto)
+        public async Task<IActionResult> GuardarTipoProducto(TipoProductoDTO tipoProducto)
         {
-            try
-            {
-                //var Tipo = (TipoProductoModel);
-                
-                return Ok(ejecuta.Guardar(TipoProducto));
-            }
-            catch (Exception ex)
-            {
-
-                return BadRequest( ex);
-            }
-
-
+            return Ok();
         }
 
-        [HttpGet("ListaTipoProducto"),Authorize]
-        public async Task<IActionResult> ListaTipoProducto() 
+        // GET api/<TipoProducoController>/5
+        [HttpGet("{id}")]
+        public string Get(int id)
         {
-            List<TipoProducto> listaTipoProducto = new List<TipoProducto>();
-            try
-            {
-                var listaModelo = new List<TipoProductoModel>();
-                listaTipoProducto=(List<TipoProducto>) ejecuta.ListaTipoProducto();
-                listaTipoProducto.ForEach(tp => 
-                {
-                    var tipoModelo = new TipoProductoModel();
-                    tipoModelo.TppId = tp.TppId;
-                    tipoModelo.TppDescripcion = tp.TppDescripcion;
-                    tipoModelo.TppVisible = tp.TppVisible;
-                    listaModelo.Add(tipoModelo);
-                });
-                return Ok(listaModelo);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
-            
+            return "value";
         }
 
-        [HttpGet("ListaTipoProductoFiltrado"),Authorize]
-        public async Task<IActionResult> ListaTipoProductoFiltrado()
+        // POST api/<TipoProducoController>
+        [HttpPost]
+        public void Post([FromBody] string value)
         {
-            List<TipoProducto> listaTipoProducto = new List<TipoProducto>();
-            try
-            {
-                var listaModelo = new List<TipoProductoModel>();
-                listaTipoProducto = (List<TipoProducto>)ejecuta.ListaProductoFiltrado();
-                listaTipoProducto.ForEach(tp =>
-                {
-                    var tipoModelo = new TipoProductoModel();
-                    tipoModelo.TppId = tp.TppId;
-                    tipoModelo.TppDescripcion = tp.TppDescripcion;
-                    tipoModelo.TppVisible = tp.TppVisible;
-                    listaModelo.Add(tipoModelo);
-                });
-                return Ok(listaModelo);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
         }
 
-        [HttpGet("ObtenerTipoProductoPorId"), Authorize(Roles ="1")]
-        public async Task<IActionResult> ObtenerTipoProductoPorId(int id) 
+        // PUT api/<TipoProducoController>/5
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] string value)
         {
-            try
-            {
-                TipoProducto data = (TipoProducto)ejecuta.TipoProductoPorId(id);
-                var retorno = new TipoProductoModel 
-                {
-                    TppId=data.TppId,
-                    TppDescripcion=data.TppDescripcion,
-                    TppVisible= data.TppVisible
-                };
-                return Ok(retorno);
-            }
-            catch (Exception ex)
-            {
-
-                return BadRequest(ex);
-            }
-          
         }
 
-        [HttpGet("BuscarTipoProductoPorDescripcion"),Authorize]
-        public async Task<IActionResult> BuscarTipoProductoPorDescripcion(string dato) 
+        // DELETE api/<TipoProducoController>/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
         {
-            try
-            {
-                List<TipoProductoModel> lista = new List<TipoProductoModel>();
-                lista = (List<TipoProductoModel>)ejecuta.BuscarTipoProductoPorDescripcion(dato);
-                return Ok(lista);
-            }
-            catch (Exception ex)
-            {
-
-                return BadRequest(ex);
-            }
         }
-
-       
-        
     }
 }
