@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PuraVidaStoreBK.ExecQuerys.Interfaces;
+using PuraVidaStoreBK.Models.DbContex;
 using PuraVidaStoreBK.Models.DTOS;
 using System.Data;
 
@@ -13,10 +15,12 @@ namespace PuraVidaStoreBK.Controllers
     public class TipoProducoController : ControllerBase
     {
         private readonly ITipoProductoQuery _tipoProductoQuery;
+        private readonly IMapper _mapper;
 
-        public TipoProducoController(ITipoProductoQuery tipoProductoQuery)
+        public TipoProducoController(ITipoProductoQuery tipoProductoQuery,IMapper mapper)
         {
-            this._tipoProductoQuery = tipoProductoQuery;
+            _tipoProductoQuery = tipoProductoQuery;
+            _mapper = mapper;
         }
         //[HttpPost("GuardarTipoProducto"), Authorize(Roles = "1")]
         //[HttpGet("ListaTipoProducto"),Authorize]
@@ -28,7 +32,18 @@ namespace PuraVidaStoreBK.Controllers
         [HttpPost("GuardarTipoProducto"), Authorize(Roles = "1")]
         public async Task<IActionResult> GuardarTipoProducto(TipoProductoDTO tipoProducto)
         {
-            return Ok();
+            var tipoProductoGuardar = _mapper.Map<TipoProducto>(tipoProducto);
+            tipoProductoGuardar =await _tipoProductoQuery.Guardar(tipoProductoGuardar);
+            tipoProducto = _mapper.Map<TipoProductoDTO>(tipoProductoGuardar);
+            if (tipoProducto!=null) 
+            {
+                return Ok(tipoProducto);
+            }
+            else 
+            {
+                return BadRequest(tipoProducto);
+            }
+            
         }
 
         // GET api/<TipoProducoController>/5
