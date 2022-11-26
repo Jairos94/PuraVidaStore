@@ -19,7 +19,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             {
                 using (PuraVidaStoreContext db = new PuraVidaStoreContext())
                 {
-                    if (producto.TppId > 0)
+                    if (producto.TppId == 0)
                     {
                        await db.AddAsync(producto);
                     }

@@ -14,5 +14,7 @@ namespace PuraVidaStoreBK.Models.DTOS
         public string? PrdCodigoProvedor { get; set; }
         public bool? PdrVisible { get; set; }
         public string? PdrFoto { get; set; }
+
+        public virtual TipoProductoDTO PrdIdTipoProductoNavigation { get; set; } = null!;
     }
 }

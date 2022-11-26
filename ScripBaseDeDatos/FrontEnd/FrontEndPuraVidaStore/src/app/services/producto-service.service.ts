@@ -12,6 +12,9 @@ export class ProductoServiceService {
   constructor(private http: HttpClient) { }
 
   GuardarProducto(Producto:ProductoModel):Observable<ProductoModel>{
-    return this.http.post<ProductoModel>(`${this.baseUrl}TipoProduco/GuardarTipoProducto`,Producto);
+    return this.http.post<ProductoModel>(`${this.baseUrl}Productos/GuardarProducto`,Producto);
+  }
+  ListaProductoService():Observable<ProductoModel[]>{
+    return this.http.get<ProductoModel[]>(`${this.baseUrl}Productos/ListaProductos`);
   }
 }

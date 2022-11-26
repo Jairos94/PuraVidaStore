@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, MinValidator, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+
 import { ProductoModel } from 'src/app/models/producto-model';
 import { TipoProductoModel } from 'src/app/models/tipo-producto';
+import { ProductoServiceService } from 'src/app/services/producto-service.service';
 import { TipoProductoService } from 'src/app/services/tipo-producto.service';
 import { Archivo } from 'src/app/utils/Archivos';
 
@@ -13,8 +15,8 @@ import { Archivo } from 'src/app/utils/Archivos';
 })
 export class AgregarEditarComponent implements OnInit {
 
-  EsImagen:boolean =false
-  HayImagen:boolean = false
+  EsImagen: boolean = false
+  HayImagen: boolean = false
   base64Image: any;
   imagen: string = '';
   listaTipoProductos: TipoProductoModel[] = []
@@ -30,6 +32,7 @@ export class AgregarEditarComponent implements OnInit {
       prdCodigoProvedor: '',
       pdrVisible: true,
       pdrFoto: null,
+      PrdIdTipoProductoNavigation:null
     };
 
   productoForm = this.fb.group({
@@ -43,16 +46,23 @@ export class AgregarEditarComponent implements OnInit {
 
   });
 
+  parametroId: any;
+
   constructor(
+    //private messageService: MessageService,
     private servicioTipoProducto: TipoProductoService,
     private ruta: Router,
     private route: ActivatedRoute,
     private fb: FormBuilder,
+    private servicioProducto: ProductoServiceService,
+
   ) { }
 
   ngOnInit(): void {
     this.listaTipoProductoFiltrado();
-    const parametroId = this.route.snapshot.paramMap.get('id');
+    this.parametroId = this.route.snapshot.paramMap.get('id');
+
+
     this.imagen = Archivo.lectorImagen(this.imagen);
   }
 
@@ -65,17 +75,37 @@ export class AgregarEditarComponent implements OnInit {
       this.imagen = Archivo.lectorImagen(this.productoEditarAgregar.pdrFoto)
       this.HayImagen = true;
     });
-    console.log(evento);
-    
+
+
   }
 
 
   guardar() {
-    console.log(this.productoForm.value);
-    if(this.productoEditarAgregar.pdrFoto!=null){
 
-     
-    }
+    this.productoEditarAgregar.prdId = parseInt(this.parametroId);
+    this.productoEditarAgregar.prdNombre = this.productoForm.get('NombreProducto')?.value!;
+    this.productoEditarAgregar.prdPrecioVentaMayorista = this.productoForm.get('PrecioVentaMayorista')?.value!;
+    this.productoEditarAgregar.prdPrecioVentaMinorista = this.productoForm.get('prcioVentaMinorista')?.value!;
+    this.productoEditarAgregar.prdUnidadesMinimas = this.productoForm.get('UnidadesMinimas')?.value!;
+    this.productoEditarAgregar.prdIdTipoProducto = this.productoForm.get('IdTipoProducto')?.value!;
+    this.productoEditarAgregar.prdCodigoProvedor = this.productoForm.get('CodigoProveedor')?.value!;
+    
+    this.listaTipoProductos.forEach(x=>{
+      if(x.tppId=== this.productoEditarAgregar.prdIdTipoProducto){
+        this.productoEditarAgregar.PrdIdTipoProductoNavigation = x
+      }
+    });
+
+    this.servicioProducto.GuardarProducto(this.productoEditarAgregar).subscribe((x => {
+      console.log(x);
+      //this.showSuccess(); 
+      this.ruta.navigate(['./principal/productos/'])
+
+    }),
+      (_e => {
+        console.log(_e);
+      }));
+
   }
 
 
@@ -85,13 +115,15 @@ export class AgregarEditarComponent implements OnInit {
     }), (_e => console.log(_e)));
   }
 
-  
 
-  eliminarImagen(){
+
+  eliminarImagen() {
     this.productoEditarAgregar.pdrFoto = null
     this.imagen = ''
     this.imagen = Archivo.lectorImagen(this.imagen);
     this.HayImagen = false
   }
-  
+  showSuccess() {
+    //this.messageService.add({severity:'success', summary: 'Success', detail: 'Message Content'});
+  }
 }

@@ -9,6 +9,7 @@ namespace PuraVidaStoreBK.ExecQuerys
     {
         public async Task<Producto> GuardarProducto(Producto producto)
         {
+            producto.PrdIdTipoProductoNavigation = null;
             try
             {
                 using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
@@ -23,7 +24,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                         db.Add(producto);
                         await db.SaveChangesAsync();
 
-                        producto.PrdCodigo = "PV" + producto.PrdIdTipoProducto.ToString() + "C" + producto.PrdId.ToString();
+                        producto.PrdCodigo = "PVS" + producto.PrdIdTipoProducto.ToString() + "C" + producto.PrdId.ToString();
                         db.Productos.Update(producto);
                         
                     }
@@ -49,6 +50,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                 {
                     listaProducto = await db.Productos
                         .Where(x=>x.PdrVisible==true)
+                        .Include(x=>x.PrdIdTipoProductoNavigation)
                         .ToListAsync();
                     return listaProducto;
                 }
