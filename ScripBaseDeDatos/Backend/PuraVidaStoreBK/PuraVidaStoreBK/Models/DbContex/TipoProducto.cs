@@ -15,10 +15,5 @@ namespace PuraVidaStoreBK.Models.DbContex
         public bool? TppVisible { get; set; }
 
         public virtual ICollection<Producto> Productos { get; set; }
-
-        public static implicit operator TipoProducto(List<TipoProducto> v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

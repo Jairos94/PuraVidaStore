@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { activo } from 'src/app/activo';
 import { ProductoModel } from 'src/app/models/producto-model';
 import { TipoProductoModel } from 'src/app/models/tipo-producto';
 import { ProductoServiceService } from 'src/app/services/producto-service.service';
@@ -33,7 +34,7 @@ export class ListaProductosComponent implements OnInit {
     this.servicioProducto.ProductoPorID(id).subscribe((x => {
 
       x.pdrVisible = false;
-      this.servicioProducto.GuardarProducto(x).subscribe((z => {
+      this.servicioProducto.GuardarProducto(x,activo.usuarioPrograma.usrId).subscribe((z => {
         this.CargarLista();
       }), (_e => console.log(_e)));
     }), (_e => console.log(_e)));

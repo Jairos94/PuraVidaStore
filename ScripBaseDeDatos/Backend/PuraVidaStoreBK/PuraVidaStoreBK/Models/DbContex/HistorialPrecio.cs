@@ -11,6 +11,8 @@ namespace PuraVidaStoreBK.Models.DbContex
         public int HlpIdUsuario { get; set; }
         public double? HlpPrecioMayorista { get; set; }
         public double? HlpPrecioMinorista { get; set; }
+        public double? HlpPrecioMayoristaAnterior { get; set; }
+        public double? HlpPrecioMinoristaAnterior { get; set; }
 
         public virtual Producto HlpIdProductoNavigation { get; set; } = null!;
         public virtual Usuario HlpIdUsuarioNavigation { get; set; } = null!;

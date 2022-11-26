@@ -2,21 +2,25 @@
 using PuraVidaStoreBK.ExecQuerys.Interfaces;
 using PuraVidaStoreBK.Models.DbContex;
 using Serilog;
+using XAct.Library.Settings;
 
 namespace PuraVidaStoreBK.ExecQuerys
 {
     public class ProductoQuery : IProductoQuery
     {
-        public async Task<Producto> GuardarProducto(Producto producto)
+        public async Task<Producto> GuardarProducto(Producto producto, int idUsuario)
         {
-            producto.PrdIdTipoProductoNavigation = null;
+          await  GuardarHistorial(producto, idUsuario);
+
             try
             {
                 using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
                 {
                     if (producto.PrdId>0) 
                     {
+
                         db.Productos.Update(producto);
+
                    
                     }
                     else 
@@ -105,6 +109,45 @@ namespace PuraVidaStoreBK.ExecQuerys
                 Log.Error("Se presentó un error en ProductoPorId\n" + ex.StackTrace);
             }
             return productoRetorno;
+        }
+
+        private async Task<bool>  GuardarHistorial(Producto producto,int IdUsuario) 
+        {
+            try
+            {
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
+                {
+                    var productoConsulta = await db.Productos.FindAsync(producto.PrdId);
+
+
+                    if (productoConsulta.PrdPrecioVentaMayorista != producto.PrdPrecioVentaMayorista ||
+                        productoConsulta.PrdPrecioVentaMinorista != producto.PrdPrecioVentaMinorista)
+                    {
+                        var Historial = new HistorialPrecio
+                        {
+                            HlpIdProducto = producto.PrdId,
+                            HlpFecha = DateTime.Now,
+                            HlpIdUsuario = IdUsuario,
+                            HlpPrecioMayorista = producto.PrdPrecioVentaMayorista,
+                            HlpPrecioMinorista = producto.PrdPrecioVentaMinorista,
+                            HlpPrecioMayoristaAnterior = productoConsulta.PrdPrecioVentaMayorista,
+                            HlpPrecioMinoristaAnterior = productoConsulta.PrdPrecioVentaMinorista
+
+                        };
+                        db.HistorialPrecios.Add(Historial);
+                        await db.SaveChangesAsync();
+                        
+                    }
+                    return true;
+                }
+                    
+            }
+            catch (Exception ex)
+            {
+                return false;
+                Log.Error("Se presentó un error en GuardarHistorial\n" + ex.Message);
+            }
+            
         }
     }
 }

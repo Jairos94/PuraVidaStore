@@ -11,8 +11,11 @@ export class ProductoServiceService {
   private baseUrl: string = environment.urlBase;
   constructor(private http: HttpClient) { }
 
-  GuardarProducto(Producto:ProductoModel):Observable<ProductoModel>{
-    return this.http.post<ProductoModel>(`${this.baseUrl}Productos/GuardarProducto`,Producto);
+  GuardarProducto(Producto:ProductoModel,idUsuario:number):Observable<ProductoModel>{
+    //idUsuario
+    const params = new HttpParams()
+    .set('idUsuario', idUsuario);
+    return this.http.post<ProductoModel>(`${this.baseUrl}Productos/GuardarProducto`,Producto,{params});
   }
   ListaProductoService():Observable<ProductoModel[]>{
     return this.http.get<ProductoModel[]>(`${this.baseUrl}Productos/ListaProductos`);
