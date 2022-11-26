@@ -1,15 +1,16 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using PuraVidaStoreBK.ExecQuerys;
+using PuraVidaStoreBK.ExecQuerys.Interfaces;
 using PuraVidaStoreBK.Models;
 using PuraVidaStoreBK.Models.DbContex;
+using PuraVidaStoreBK.Models.DTOS;
 using PuraVidaStoreBK.Models.Respuesta;
-using PuraVidaStoreBK.Utilitarios;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using System.Text;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,149 +20,177 @@ namespace PuraVidaStoreBK.Controllers
     [ApiController]
     public class UsuarioController : ControllerBase
     {
+        private readonly IMapper _mapper;
+        private readonly IUsuariosQuerys _usuario;
+        private readonly IPersonaQuery _persona;
+
+        private IConfiguration Configuracion { get; }
+
+        
         UsuariosQuerys Ejecuta = new UsuariosQuerys();
-        personaQuery EjecutaPersona = new personaQuery();
-
-        public IConfiguration Configuracion { get; }
-
-        public UsuarioController(IConfiguration configuracion) 
+        //personaQuery EjecutaPersona = new personaQuery();
+        public UsuarioController(IConfiguration configuracion, 
+            IMapper mapper,
+            IUsuariosQuerys usuario,
+            IPersonaQuery persona
+            )
         {
             Configuracion = configuracion;
+            _mapper = mapper;
+            _usuario = usuario;
+            _persona = persona;
         }
+
+
 
         #region peteciones
         // GET: UsuarioController
         [HttpGet("GetUsuario")]
         public async Task<IActionResult> GetUsuario(string user, string password)
         {
-            object Usu = new object();
-            Usu = Ejecuta.GetUsuario(user, password);
+
+            var usuario = _usuario.GetUsuario(user, password);
             try
             {
+                var UsuarioCaptura = new Usuario();
+                UsuarioCaptura = (Usuario)usuario;
                 usuarioRespuesta ur = new usuarioRespuesta();
-                ur.usuario = (UsuarioModel)Usu;
-                ur.token = CrearToken((UsuarioModel)Usu);
+                var Usuarioretorno = _mapper.Map<UsuarioDto>(UsuarioCaptura);
+                Usuarioretorno.Persona = _mapper.Map<PersonaDto>(UsuarioCaptura.UsrIdPersonaNavigation);
+                Usuarioretorno.Rol = _mapper.Map<RolUsuarioDto>(UsuarioCaptura.UsrIdRolNavigation);
+                ur.usuario = Usuarioretorno;
+                ur.token = CrearToken(Usuarioretorno);
                 return Ok(ur);
             }
             catch (Exception)
             {
-
-                return BadRequest(Usu);
+               
+                return BadRequest(usuario);
             }
 
         }
         [HttpPost("GuardarUsario"), Authorize(Roles = "1")]
-        public ActionResult GuardarUsuario([FromBody] UsuarioModel usuarioM, bool agregar)
+        public async Task<IActionResult> GuardarUsuario([FromBody] UsuarioDto UsuarioParametro, bool agregar)
         {
-            Usuario u = new Usuario();
-            Persona p = new Persona();
-            PersonaModel pm1 = new PersonaModel();
+            var PersonaIngreso = _mapper.Map<Persona>(UsuarioParametro.Persona);
+            var ListaPersonasPorCedula =await _persona.ObtenerPersonaPorCedula(PersonaIngreso.PsrIdentificacion);
+            bool HuboError = false;
+            string MensajeError="";
+            var UsuarioIngreso = _mapper.Map<Usuario>(UsuarioParametro);
+            
 
-            pm1.PsrIdentificacion = p.PsrIdentificacion = usuarioM.persona.PsrIdentificacion;
-            pm1.PsrNombre = p.PsrNombre = usuarioM.persona.PsrNombre;
-            pm1.PsrApellido1 = p.PsrApellido1 = usuarioM.persona.PsrApellido1;
-            pm1.PsrApellido2 = p.PsrApellido2 = usuarioM.persona.PsrApellido2;
-
-            //Guarda o actualiza a la persona desde el usuario
-            if (usuarioM.IdPersona == 0)
+            //Valida si esta agregdo
+            if (ListaPersonasPorCedula.Count == 0 || ListaPersonasPorCedula == null)
             {
-                List<PersonaModel> p2 = new List<PersonaModel>();
-                p2 = (List<PersonaModel>)EjecutaPersona.obtenerPersonaPorCedula(p.PsrIdentificacion);
+                UsuarioIngreso.UsrIdPersonaNavigation = await _persona
+                    .IngresarPersona(PersonaIngreso);
 
-                //valida la cèdula que no sean usuarios
-                if (p2.Count > 0)
+                UsuarioIngreso.UsrIdPersona = PersonaIngreso.PsrId;
+            }
+            UsuarioIngreso.UsrIdPersonaNavigation = PersonaIngreso;
+
+            if (agregar) 
+            {
+                //Valida si es una persona por usuario 
+                if (ValidarPersonaPorUsuario(ListaPersonasPorCedula)&& ListaPersonasPorCedula!=null) 
                 {
-                    if (p2[0].PsrIdentificacion == p.PsrIdentificacion && p2 != null)
-                    {
-                        Usuario u2 = new Usuario();
-                        u2 = (Usuario)Ejecuta.UsuarioIdPersona(p2[0].PsrId);
-                        if (p2[0].PsrId == u2.UsrIdPersona)
-                        {
-                            return BadRequest("No se puede guardar el usuario porque otro usuario tiene la misma cédula");
-                        }
+                    HuboError = true;
+                    MensajeError = "No se puede agregar el usuario porque esta persona ya tiene otro usuario";
+                }
 
+                //valida si el usuario ya se ingreso
+                var UsuarioExiste = await ValidarUsuarioPorUsuario(UsuarioIngreso.UsrUser);
+                if (UsuarioExiste) 
+                {
+                    HuboError = true;
+                    MensajeError = "No se puede agregar al usuario porque el usuario escrito ya existe";
+                }
+
+                //Si no hubo errores en las vadicaciones se ingresa el usuario
+                if (!HuboError) 
+                {
+                    
+                    _usuario.IngresarUsario(UsuarioIngreso, UsuarioParametro.Clave);
+                }
+            }
+            else 
+            {
+                var UsuarioBD =await _usuario.UsuarioPorId(UsuarioIngreso.UsrId);
+                
+
+                //valida si el usuario es diferente
+                if (UsuarioIngreso.UsrUser != UsuarioBD.UsrUser) 
+                {
+                    //valida si el usuario cambiado y si otro usuario lo tiene 
+                    var ExisteUsuario = await ValidarUsuarioPorUsuario(UsuarioIngreso.UsrUser);
+                    if (ExisteUsuario) 
+                    {
+                        HuboError = true;
+                        MensajeError = "No se puede editar al usuario porque el usuario escrito ya existe";
                     }
 
                 }
-                pm1 = (PersonaModel)EjecutaPersona.ingresarPersona(pm1);
-                p.PsrId = pm1.PsrId;
+
+                if (!HuboError) 
+                {
+                   await _persona.EditarPersona(PersonaIngreso);
+                    _usuario.EditarUsuario(UsuarioIngreso, UsuarioParametro.UsrUser);
+                   
+                }
+
             }
-            else
+
+            if (!HuboError) 
             {
-                p.PsrId = usuarioM.IdPersona;
-                p = (Persona)EjecutaPersona.EditarPersona(p);
+                return Ok(true);
             }
-            //Valida si es agregar usuario
-            if (agregar)
+            else 
             {
-                try
-                {
-                    u = (Usuario)Ejecuta.UsuarioPorUsuario(usuarioM.Usuario);
-                }
-                catch (Exception)
-                {
-
-                    u = null;
-                }
-                if (u != null)
-                {
-                    if (u.UsrUser == usuarioM.Usuario)
-                    {
-                        return BadRequest("No se puede guardar a este usuario debido que ya existe");
-                    }
-                }
-                usuarioM.IdPersona = p.PsrId;
-                Ejecuta.IngresarUsario(usuarioM);
-            }
-            //Valida se es editar
-            else
-            {
-                UsuarioModel um = new UsuarioModel();
-                PersonaModel pm = new PersonaModel();
-
-                um = (UsuarioModel)Ejecuta.UsuarioPorId((int)usuarioM.IdUsuario);
-
-                //valida si el usuario cambio existe
-                if (usuarioM.IdUsuario == um.IdUsuario && usuarioM.Usuario != um.Usuario)
-                {
-                    u = (Usuario)Ejecuta.UsuarioPorUsuario(usuarioM.Usuario);
-                    if (u.UsrUser == usuarioM.Usuario)
-                    {
-                        return BadRequest("No se puede guardar a este usuario debido que ya existe");
-                    }
-                }
-                Ejecuta.EditarUsuario(usuarioM);
-
-            }
-
-
-
-            return Ok(usuarioM);
+                return BadRequest(MensajeError);
+            };
+            
         }
         [HttpGet("ListaUsuarios"), Authorize(Roles = "1")]
         public async Task<IActionResult> ListaUsuarios()
         {
-            object Usu = new object();
-            Usu = Ejecuta.listaUsuarios();
-            try
+            var ListaUsuarios = await _usuario.ListaUsuarios();
+            var UsuariosRetorno = _mapper.Map<List<UsuarioDto>>(ListaUsuarios);
+            if (ListaUsuarios != null || ListaUsuarios.Count > 0) 
             {
-                return Ok(Usu);
+                ListaUsuarios.ForEach(lu =>
+                {
+                    UsuariosRetorno.ForEach(ur =>
+                    {
+                        if (lu.UsrId == ur.UsrId)
+                        {
+                            ur.Clave = "";
+                            ur.Persona = _mapper.Map<PersonaDto>(lu.UsrIdPersonaNavigation);
+                            ur.Rol = _mapper.Map<RolUsuarioDto>(lu.UsrIdRolNavigation);
+                        }
+                    });
+                });
+                return Ok(UsuariosRetorno);
             }
-            catch (Exception)
+            else 
             {
-
-                return BadRequest(Usu);
+                return BadRequest("Se presento un error");
             }
-
+            
         }
 
         // GET api/<UsuarioController>/5
         [HttpGet("UsuarioPorId"), Authorize]
-        public ActionResult UsuarioPorId(int id)
+        public async Task<IActionResult> UsuarioPorId(int id)
         {
             try
             {
-                return Ok(Ejecuta.UsuarioPorId(id));
+                var UsuarioData =await _usuario.UsuarioPorId(id);
+                var UsuarioRetorno = _mapper.Map<UsuarioDto>(UsuarioData);
+                UsuarioRetorno.Clave = _usuario.ocpv(UsuarioRetorno.UsrId);
+                UsuarioRetorno.Persona = _mapper.Map<PersonaDto>(UsuarioData.UsrIdPersonaNavigation);
+                UsuarioRetorno.Rol = _mapper.Map<RolUsuarioDto>(UsuarioData.UsrIdRolNavigation);
+
+                return Ok(UsuarioRetorno);           
             }
             catch (Exception ex)
             {
@@ -171,32 +200,17 @@ namespace PuraVidaStoreBK.Controllers
 
         }
 
-        // GET api/<UsuarioController>/5
-        [HttpGet("UsuarioPorId2"), Authorize(Roles = "1")]
-        public ActionResult UsuarioPorId2(int id)
-        {
-            try
-            {
-                return Ok(Ejecuta.UsuarioPorId2(id));
-            }
-            catch (Exception ex)
-            {
-
-                return BadRequest(ex.Message);
-            }
-
-        }
 
         #endregion
 
         #region Metodos privados
         //este metodo genera los tokens
-        private string CrearToken(UsuarioModel Usuario) 
+        private string CrearToken(UsuarioDto Usuario) 
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name,Usuario.Usuario),
-                new Claim(ClaimTypes.Role,Usuario.IdRol.ToString())
+                new Claim(ClaimTypes.Name,Usuario.UsrUser),
+                new Claim(ClaimTypes.Role,Usuario.UsrIdRol.ToString())
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
@@ -235,6 +249,35 @@ namespace PuraVidaStoreBK.Controllers
 
             };
             Response.Cookies.Append("actualizarToken",nuevaActualizacionToken.Token, cookieOptions);
+        }
+
+        private bool ValidarPersonaPorUsuario(List<Persona> PersonaExiste) 
+        {
+            bool Existe = false;
+            //valida si la persona es usuario
+            PersonaExiste.ForEach(x =>
+            {
+              
+                var PersonaUsuario = _usuario.UsuarioIdPersona(x.PsrId);
+                if (PersonaUsuario != null)
+                {
+                    Existe=   true;
+                }
+            });
+
+            return Existe;
+        }
+
+        private async Task <bool> ValidarUsuarioPorUsuario(string UsuarioBusqueda) 
+        {
+            var Igual = false;
+            var usuario = new Usuario();
+            usuario = await _usuario.UsuarioPorUsuario(UsuarioBusqueda);
+            if (usuario != null && usuario.UsrUser== UsuarioBusqueda) 
+            {
+                Igual = true;
+            }
+            return Igual;
         }
 
         #endregion

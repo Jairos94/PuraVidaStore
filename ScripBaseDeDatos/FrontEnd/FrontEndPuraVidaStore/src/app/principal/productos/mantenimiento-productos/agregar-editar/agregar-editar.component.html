@@ -29,8 +29,9 @@
                     <span class="p-inputgroup-addon">¢</span>
                 </div>
                 <span> Precio de venta Mayorista</span>
-                <span *ngIf="productoForm.controls.prcioVentaMinorista.invalid && productoForm.controls.prcioVentaMinorista.touched"
-                class="error">Campo requerido</span>
+                <span
+                    *ngIf="productoForm.controls.prcioVentaMinorista.invalid && productoForm.controls.prcioVentaMinorista.touched"
+                    class="error">Campo requerido</span>
             </div>
 
             <div class="field">
@@ -83,16 +84,54 @@
 
     </div>
 
-    <div class="field">
+    <div class="field" *ngIf="!HayImagen">
         <h2>Foto</h2>
         <p-fileUpload chooseLabel="Subir" chooseIcon="pi pi-upload" name="myfile[]" accept="image/*" [auto]="true"
-            (onSelect)="archivo($event)">
+            (onSelect)="archivo($event)" (onRemove)="eliminarImagen()">
 
         </p-fileUpload>
+    </div>
+
+    <div class="flied grid">
+        <div class="formgroup-inline">
+            <div class="field">
+
+            </div>
+            <div class="field" *ngIf="HayImagen">
+
+                <div class="flex align-items-stretch flex-wrap card-container green-container"
+                    style="min-height: 200px">
+                    <div class="flex align-items-center justify-content-center "
+                        style="min-width: 200px; min-height: 50px">
+                        <img [src]="imagen" class="img">
+
+                    </div>
+                    <div class="align-self-center flex align-items-center justify-content-center">
+                     
+
+                        <div class="field">
+                            <button pButton pRipple type="button" label="Cambiar imagen"
+                            class="p-button-secondary"></button>
+
+                            <div class="field mt-2">
+                            
+                                <button pButton pRipple type="button" label="Eliminar Imagen" class="p-button-danger" (click)="eliminarImagen()" [disabled]="!HayImagen"></button>
+                            </div>
+                        </div>
+                      
+                       
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
     </div>
 
     <button pButton pRipple type="submit" label="Guardar" [disabled]="productoForm.invalid"
         class="p-button-success"></button>
     <!--? Prevo Imagen-->
+
+
+
 </form>
-<!-- ?Primera linea -->

@@ -1,4 +1,4 @@
 export interface RolModel {
-    rluID: number;
+    rluId: number;
     rluDescripcion: string;
 }

@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PuraVidaStoreBK.ExecQuerys;
-using PuraVidaStoreBK.Models;
+using PuraVidaStoreBK.ExecQuerys.Interfaces;
 using PuraVidaStoreBK.Models.DbContex;
+using PuraVidaStoreBK.Models.DTOS;
+using System.Data;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace PuraVidaStoreBK.Controllers
 {
@@ -11,114 +14,72 @@ namespace PuraVidaStoreBK.Controllers
     [ApiController]
     public class TipoProducoController : ControllerBase
     {
-        private TipoProductoQuery ejecuta = new TipoProductoQuery();
+        private readonly ITipoProductoQuery _tipoProductoQuery;
+        private readonly IMapper _mapper;
 
-        [HttpPost("GuardarTipoProducto"), Authorize(Roles = "1")]
-        public async Task<IActionResult> GuardarTipoProducto([FromBody] TipoProducto TipoProducto)
+        public TipoProducoController(ITipoProductoQuery tipoProductoQuery,IMapper mapper)
         {
-            try
+            _tipoProductoQuery = tipoProductoQuery;
+            _mapper = mapper;
+        }
+       
+        
+        // GET: api/<TipoProducoController>
+        [HttpPost("GuardarTipoProducto"), Authorize(Roles = "1")]
+        public async Task<IActionResult> GuardarTipoProducto(TipoProductoDTO tipoProducto)
+        {
+            var tipoProductoGuardar = _mapper.Map<TipoProducto>(tipoProducto);
+            tipoProductoGuardar =await _tipoProductoQuery.Guardar(tipoProductoGuardar);
+            tipoProducto = _mapper.Map<TipoProductoDTO>(tipoProductoGuardar);
+            if (tipoProducto!=null) 
             {
-                //var Tipo = (TipoProductoModel);
-                
-                return Ok(ejecuta.Guardar(TipoProducto));
+                return Ok(tipoProducto);
             }
-            catch (Exception ex)
+            else 
             {
-
-                return BadRequest( ex);
+                return BadRequest(tipoProducto);
             }
+            
+        }
 
-
+        // GET api/<TipoProducoController>/5
+        [HttpGet("ObtenerTipoProductoPorId"), Authorize]
+        public async Task<IActionResult> ObtenerTipoProductoPorId(int id)
+        {
+            var Producto = await _tipoProductoQuery.ProductoPorId(id);
+            var tipoProducto = _mapper.Map<TipoProductoDTO>(Producto);
+            if (tipoProducto != null) 
+            {
+                return Ok(tipoProducto);
+            }
+            else 
+            {
+                return NoContent();
+            }
         }
 
         [HttpGet("ListaTipoProducto"),Authorize]
         public async Task<IActionResult> ListaTipoProducto() 
         {
-            List<TipoProducto> listaTipoProducto = new List<TipoProducto>();
-            try
-            {
-                var listaModelo = new List<TipoProductoModel>();
-                listaTipoProducto=(List<TipoProducto>) ejecuta.ListaTipoProducto();
-                listaTipoProducto.ForEach(tp => 
-                {
-                    var tipoModelo = new TipoProductoModel();
-                    tipoModelo.TppId = tp.TppId;
-                    tipoModelo.TppDescripcion = tp.TppDescripcion;
-                    tipoModelo.TppVisible = tp.TppVisible;
-                    listaModelo.Add(tipoModelo);
-                });
-                return Ok(listaModelo);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
-            
+            var listaProducto = await _tipoProductoQuery.ListaTipoProducto();
+            var lIstProductoRetorno = _mapper.Map<List<TipoProductoDTO>>(listaProducto);
+            return Ok(lIstProductoRetorno);
         }
 
         [HttpGet("ListaTipoProductoFiltrado"),Authorize]
-        public async Task<IActionResult> ListaTipoProductoFiltrado()
+        public async Task<IActionResult> ListaTipoProductoFiltrado() 
         {
-            List<TipoProducto> listaTipoProducto = new List<TipoProducto>();
-            try
-            {
-                var listaModelo = new List<TipoProductoModel>();
-                listaTipoProducto = (List<TipoProducto>)ejecuta.ListaProductoFiltrado();
-                listaTipoProducto.ForEach(tp =>
-                {
-                    var tipoModelo = new TipoProductoModel();
-                    tipoModelo.TppId = tp.TppId;
-                    tipoModelo.TppDescripcion = tp.TppDescripcion;
-                    tipoModelo.TppVisible = tp.TppVisible;
-                    listaModelo.Add(tipoModelo);
-                });
-                return Ok(listaModelo);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
-        }
-
-        [HttpGet("ObtenerTipoProductoPorId"), Authorize(Roles ="1")]
-        public async Task<IActionResult> ObtenerTipoProductoPorId(int id) 
-        {
-            try
-            {
-                TipoProducto data = (TipoProducto)ejecuta.TipoProductoPorId(id);
-                var retorno = new TipoProductoModel 
-                {
-                    TppId=data.TppId,
-                    TppDescripcion=data.TppDescripcion,
-                    TppVisible= data.TppVisible
-                };
-                return Ok(retorno);
-            }
-            catch (Exception ex)
-            {
-
-                return BadRequest(ex);
-            }
-          
+            var listaProducto = await _tipoProductoQuery.ListaProductoFiltrado();
+            var lIstProductoRetorno = _mapper.Map<List<TipoProductoDTO>>(listaProducto);
+            return Ok(lIstProductoRetorno);
         }
 
         [HttpGet("BuscarTipoProductoPorDescripcion"),Authorize]
-        public async Task<IActionResult> BuscarTipoProductoPorDescripcion(string dato) 
+        public async Task<IActionResult> BuscarTipoProductoPorDescripcion(string Descripcion) 
         {
-            try
-            {
-                List<TipoProductoModel> lista = new List<TipoProductoModel>();
-                lista = (List<TipoProductoModel>)ejecuta.BuscarTipoProductoPorDescripcion(dato);
-                return Ok(lista);
-            }
-            catch (Exception ex)
-            {
-
-                return BadRequest(ex);
-            }
+            var listaProducto = await _tipoProductoQuery.BuscarTipoProductoPorDescripcion(Descripcion);
+            var lIstProductoRetorno = _mapper.Map<List<TipoProductoDTO>>(listaProducto);
+            return Ok(lIstProductoRetorno);
         }
-
-       
-        
     }
 }

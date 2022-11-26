@@ -14,7 +14,7 @@ export class activo {
     }
 
     public static esAministrador() {
-        if (activo.usuarioPrograma.idRol === 1) {
+        if (activo.usuarioPrograma.usrIdRol === 1) {
             return true;
         } else {
             return false;

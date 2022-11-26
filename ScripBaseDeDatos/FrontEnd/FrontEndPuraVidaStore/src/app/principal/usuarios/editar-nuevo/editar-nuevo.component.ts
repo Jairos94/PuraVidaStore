@@ -31,20 +31,20 @@ export class EditarNuevoComponent implements OnInit {
   };
 
   rolM: RolModel = {
-    rluID: 0,
+    rluId: 0,
     rluDescripcion: ''
   }
 
   usuarioEdtitar: UsuarioModel = {
-    idUsuario: 0,
-    password: '',
-    usuario: '',
-    email: '',
-    idPersona: 0,
-    idRol: 0,
+    usrId: 0,
+    clave: '',
+    usrUser: '',
+    usrEmail: '',
+    usrIdPersona: 0,
+    usrIdRol: 0,
     persona: this.personaM,
-    Rol: this.rolM,
-    activo: true
+    rol: this.rolM,
+    usrActivo: true
   };
 
 
@@ -90,19 +90,27 @@ export class EditarNuevoComponent implements OnInit {
     if (parametro > 0) {
       await this.servicio.usuarioPorId(parametro).pipe().subscribe((usuario => {
         this.usuarioEdtitar = usuario
-        this.personaM = usuario.persona
-        this.rolM = usuario.Rol
+
+        if(usuario.persona!=null){
+          this.personaM = usuario.persona
+        }
+
+        if(usuario.rol!=null){
+          this.rolM = usuario.rol
+        }
+        
+        
         this.usuarioForm.patchValue({
           cedula: this.personaM.psrIdentificacion,
           nombre: this.personaM.psrNombre,
           apellido1: this.personaM.psrApellido1,
           apellido2: this.personaM.psrApellido2,
-          usuario: this.usuarioEdtitar.usuario,
-          correo: this.usuarioEdtitar.email,
-          rol: this.usuarioEdtitar.idRol,
+          usuario: this.usuarioEdtitar.usrUser,
+          correo: this.usuarioEdtitar.usrEmail,
+          rol: this.usuarioEdtitar.usrIdRol,
         })
 
-        var password = EncripDesencrip.decryptUsingAES256(this.usuarioEdtitar.password).replace('"', '').replace('"', '')
+        var password = EncripDesencrip.decryptUsingAES256(this.usuarioEdtitar.clave).replace('"', '').replace('"', '')
 
 
         this.usuarioForm.patchValue({ clave: password })
@@ -111,7 +119,7 @@ export class EditarNuevoComponent implements OnInit {
         (_error => console.log(_error)));
 
     } else {
-      this.usuarioEdtitar.idUsuario = 0;
+      this.usuarioEdtitar.usrId = 0;
       this.personaM.psrId = 0;
       this.rolM = this.listaRoles[1]
     }
@@ -141,18 +149,18 @@ export class EditarNuevoComponent implements OnInit {
     this.personaM.psrApellido1 = this.usuarioForm.get('apellido1')?.value!;
     this.personaM.psrApellido2 = this.usuarioForm.get('apellido2')?.value!;
 
-    this.usuarioEdtitar.usuario = this.usuarioForm.get('usuario')?.value!;
-    this.usuarioEdtitar.password = EncripDesencrip.encryptUsingAES256(this.usuarioForm.get('clave')?.value!);
-    this.usuarioEdtitar.email = this.usuarioForm.get('correo')?.value!;
-    this.usuarioEdtitar.idRol = this.usuarioForm.get('rol')?.value!;
+    this.usuarioEdtitar.usrUser = this.usuarioForm.get('usuario')?.value!;
+    this.usuarioEdtitar.clave = EncripDesencrip.encryptUsingAES256(this.usuarioForm.get('clave')?.value!);
+    this.usuarioEdtitar.usrEmail = this.usuarioForm.get('correo')?.value!;
+    this.usuarioEdtitar.usrIdRol = this.usuarioForm.get('rol')?.value!;
 
-    this.usuarioEdtitar.idPersona = this.personaM.psrId
+    this.usuarioEdtitar.usrIdPersona = this.personaM.psrId
     this.usuarioEdtitar.persona = this.personaM;
 
 
     this.servicio.GuardarUsuario(this.usuarioEdtitar, this.esAgregar).subscribe((x => {
       this.transacionExitosa = true;
-      this.showOk('Se guardó con exitó al usuario', x.usuario);
+      this.showOk('Se guardó con exitó al usuario', x.usrUser);
       timer(3000).subscribe(n => {
         this.irUsuarios()
       });

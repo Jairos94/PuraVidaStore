@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { activo } from '../activo';
+import { PersonaModel } from '../models/persona-model';
 import { UsuarioModel } from '../models/usuario-model';
 
 @Component({
@@ -10,11 +11,24 @@ import { UsuarioModel } from '../models/usuario-model';
 })
 export class PrincipalComponent implements OnInit {
   items: MenuItem[] = [];
-  usuario:UsuarioModel=activo.usuarioPrograma;
+  NombreUsuario: PersonaModel = {
+    psrId: 0,
+    psrIdentificacion: "",
+    psrNombre: "",
+    psrApellido1: "",
+    psrApellido2: "",
+  }
+
+  usuario: UsuarioModel = activo.usuarioPrograma;
+
   constructor() {
   }
 
   ngOnInit(): void {
+
+    if (this.usuario.persona != null) {
+      this.NombreUsuario =this.usuario.persona ;
+    }
     this.items = [
       {
         label: 'ventas',

@@ -2,13 +2,13 @@ import { PersonaModel } from "./persona-model";
 import { RolModel } from "./rol-model";
 
 export interface UsuarioModel {
-    idUsuario: number | null;
-    usuario: string;
-    password: string;
-    email: string;
-    idRol: number;
-    idPersona: number;
-    activo: boolean | null;
-    persona: PersonaModel
-    Rol: RolModel
+    usrId: number;
+    usrUser: string;
+    clave: string;
+    usrEmail: string | null;
+    usrIdRol: number;
+    usrIdPersona: number;
+    usrActivo: boolean | null;
+    persona: PersonaModel 
+    rol: RolModel 
 }

@@ -1,93 +1,109 @@
-﻿using PuraVidaStoreBK.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PuraVidaStoreBK.ExecQuerys.Interfaces;
 using PuraVidaStoreBK.Models.DbContex;
+using Serilog;
 
 namespace PuraVidaStoreBK.ExecQuerys
 {
-    public class ProductoQuery
+    public class ProductoQuery : IProductoQuery
     {
-        public object Guardar(ProductosModel producto) 
+        public async Task<Producto> GuardarProducto(Producto producto)
         {
+            producto.PrdIdTipoProductoNavigation = null;
             try
             {
                 using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
                 {
-                    var foto= new object();
-                    var productoGuardar = new Producto
-                    {
-                        PrdId = producto.PrdId,
-                        PrdCodigo = producto.PrdCodigo,
-                        PdrVisible = producto.PdrVisible,
-                        PrdCodigoProvedor = producto.PrdCodigoProvedor,
-                        //PrdFoto = Convert.ToByte.(producto.PrdFoto.ToArray());
-                        PrdIdTipoProducto = producto.PrdIdTipoProducto,
-                        PrdNombre=producto.PrdNombre,
-                        PrdPrecioVentaMayorista=producto.PrdPrecioVentaMayorista,
-                        PrdPrecioVentaMinorista=producto.PrdPrecioVentaMinorista,
-                        PrdUnidadesMinimas=producto.PrdUnidadesMinimas,
-                        PdrFoto = producto.PdrFoto
-                    };
                     if (producto.PrdId>0) 
                     {
-                        db.Productos.Update(productoGuardar);
-                        db.SaveChanges();
+                        db.Productos.Update(producto);
+                   
                     }
                     else 
-                    { 
-                        db.Productos.Add(productoGuardar);
-                        db.SaveChanges();
+                    {
+                        db.Add(producto);
+                        await db.SaveChangesAsync();
 
-                        productoGuardar.PrdCodigo = "PVS" + productoGuardar.PrdIdTipoProducto.ToString() + "C" + productoGuardar.PrdId.ToString();
-                        db.Productos.Update(productoGuardar);
-                        db.SaveChanges();
-
-                        producto.PrdCodigo = productoGuardar.PrdCodigo;
+                        producto.PrdCodigo = "PVS" + producto.PrdIdTipoProducto.ToString() + "C" + producto.PrdId.ToString();
+                        db.Productos.Update(producto);
+                        
                     }
+                    await db.SaveChangesAsync();
 
-                    producto.PrdId = productoGuardar.PrdId;
-                    
-                  
-                    return producto;
-                };
+                }
+                return producto;
             }
             catch (Exception ex)
             {
-
-                return ex;
+                //retornoProducto = null;
+                Log.Error("Se presentó un error en GuardarProducto\n"+ex.Source);
             }
+            return producto;
         }
 
-        public object ObtenerProductoPorId(int id) 
+        public async Task<List<Producto>> ListaProductos()
         {
+            var listaProducto = new List<Producto>();
             try
             {
-                ProductosModel ProductoRetorno = new ProductosModel();
                 using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
                 {
-
-                    var Producto =db.Productos.Find(id);
-                    if(Producto != null) 
-                    {
-                        ProductoRetorno.PrdId = Producto.PrdId;
-                        ProductoRetorno.PrdNombre= Producto.PrdNombre;
-                        ProductoRetorno.PrdPrecioVentaMayorista = Producto.PrdPrecioVentaMinorista;
-                        ProductoRetorno.PrdPrecioVentaMinorista =Producto.PrdPrecioVentaMinorista;
-                        ProductoRetorno.PrdCodigo = Producto.PrdCodigo;
-                        ProductoRetorno.PrdCodigoProvedor = Producto.PrdCodigoProvedor;
-                        ProductoRetorno.PrdIdTipoProducto = Producto.PrdIdTipoProducto;
-                        ProductoRetorno.PrdUnidadesMinimas = Producto.PrdUnidadesMinimas;  
-                        ProductoRetorno.PdrFoto = Producto.PdrFoto;
-                        ProductoRetorno.PdrVisible = Producto.PdrVisible;
-
-                    }
-                  
+                    listaProducto = await db.Productos
+                        .Where(x=>x.PdrVisible==true)
+                        .Include(x=>x.PrdIdTipoProductoNavigation)
+                        .ToListAsync();
+                    return listaProducto;
                 }
-                return ProductoRetorno;
             }
             catch (Exception ex)
             {
 
-                return ex;
+                Log.Error(ex.Message);
             }
+            return listaProducto;
+        }
+
+        public async Task<List<Producto>> ProductoPorDescripcion(string Descripcion)
+        {
+            var listaProducto = new List<Producto>();
+            try
+            {
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
+                {
+                    listaProducto = await db.Productos
+                        .Where(x=>x.PrdNombre.Contains(Descripcion)||
+                                  x.PrdCodigo.Contains(Descripcion)||
+                                  x.PrdIdTipoProductoNavigation.TppDescripcion.Contains(Descripcion)
+                                  )
+                        .ToListAsync();
+                    return listaProducto;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Log.Error("Se presentó un error en ProductoPorDescripcion\n" + ex.Message);
+            }
+            return listaProducto;
+        }
+
+        public async Task<Producto> ProductoPorId(int id)
+        {
+            var productoRetorno = new Producto();
+            try
+            {
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
+                {
+                    productoRetorno = await db.Productos.FindAsync(id);
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Log.Error("Se presentó un error en ProductoPorId\n" + ex.StackTrace);
+            }
+            return productoRetorno;
         }
     }
 }

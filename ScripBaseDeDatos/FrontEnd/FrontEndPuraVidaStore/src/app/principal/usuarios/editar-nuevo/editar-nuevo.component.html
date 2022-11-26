@@ -58,13 +58,13 @@
         <div class="col-12 md:col-4">
             <div class="p-inputgroup">
                 <span class="p-inputgroup-addon"><i class="pi pi-envelope"></i></span>
-                <input type="email" id="correo" pInputText placeholder="Correo" formControlName="correo" [disabled]="usuarioEdtitar.idRol!=1">
+                <input type="email" id="correo" pInputText placeholder="Correo" formControlName="correo" [disabled]="usuarioEdtitar.usrIdRol!=1">
             </div>
         </div>
 
         <div class="col-12 md:col-4">
             <p-dropdown [options]="listaRoles" formControlName="rol" placeholder="Tipo de rol"
-                optionLabel="rluDescripcion" optionValue="rluID" (onChange)="cambioRol()"></p-dropdown>
+                optionLabel="rluDescripcion" optionValue="rluId" (onChange)="cambioRol()"></p-dropdown>
 
         </div>
 
