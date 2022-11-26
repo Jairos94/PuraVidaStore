@@ -1,8 +1,10 @@
-﻿namespace PuraVidaStoreBK.Models.Respuesta
+﻿using PuraVidaStoreBK.Models.DTOS;
+
+namespace PuraVidaStoreBK.Models.Respuesta
 {
     public class usuarioRespuesta
     {
-        public UsuarioModel usuario { get; set; }
+        public UsuarioDto usuario { get; set; }
         public string token { get; set; }
     }
 }

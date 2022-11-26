@@ -1,115 +1,91 @@
-﻿using PuraVidaStoreBK.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PuraVidaStoreBK.ExecQuerys.Interfaces;
+using PuraVidaStoreBK.Models;
 using PuraVidaStoreBK.Models.DbContex;
+using Serilog;
 using System.Linq;
 
 namespace PuraVidaStoreBK.ExecQuerys
 {
-    public class TipoProductoQuery
+    public class TipoProductoQuery: ITipoProductoQuery
     {
-        public object Guardar(TipoProducto tipoProducto) 
-        {
-            try
-            {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
-                {
-                    var dato = new object();
-                    if (tipoProducto.TppId==0) 
-                    {
-                        dato = db.TipoProductos.Add(tipoProducto);
-                    }
-                    else 
-                    {
-                        dato = db.TipoProductos.Update(tipoProducto);
-                    }
-                    
-                    db.SaveChanges();
-                    var retorno = new TipoProductoModel();
-                    retorno.TppId = tipoProducto.TppId;
-                    retorno.TppDescripcion = tipoProducto.TppDescripcion;
-                    retorno.TppVisible = tipoProducto.TppVisible;
-                    return retorno;
-                }
-            }
-            catch (Exception ex)
-            {
+        
+       
 
-                return ex.Message;
-            }
-        }
-        //cambio
-        public object ListaTipoProducto() 
+        public async Task<TipoProducto> Guardar(TipoProducto producto)
         {
-            try
-            {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
-                {
-                    return db.TipoProductos.ToList();
-                }
-            }
-            catch (Exception ex)
-            {
-
-                return ex;
-            }
-        }
-        public object ListaProductoFiltrado() 
-        {
-            try
-            {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
-                {
-                    return db.TipoProductos.Where(tp=>tp.TppVisible==true).ToList();
-                }
-            }
-            catch (Exception ex)
-            {
-
-                return ex;
-            }
-        }
-
-        public object TipoProductoPorId(int id)
-        {
+            
             try
             {
                 using (PuraVidaStoreContext db = new PuraVidaStoreContext())
                 {
-                    return db.TipoProductos.FindAsync(id);
+                    if (producto.TppId == 0)
+                    {
+                       await db.AddAsync(producto);
+                    }
+                    else 
+                    {
+                         db.Update(producto);
+                    }
+                    await db.SaveChangesAsync();
+                    
                 }
+                   
             }
             catch (Exception ex)
             {
 
-                return ex;
+                Log.Error("Se presentó unn error en Guardar producto\n"+ex.StackTrace);
+                producto = null;
+            }
+            return producto;
+        }
+
+        public async Task<List<TipoProducto>> ListaTipoProducto()
+        {
+            using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
+            {
+                var lista = await db.TipoProductos.ToListAsync();
+                return lista;
             }
         }
 
-        public object BuscarTipoProductoPorDescripcion(string descripcion) 
+        public async Task<List<TipoProducto>> ListaProductoFiltrado()
         {
-            try
+            using (PuraVidaStoreContext db = new PuraVidaStoreContext())
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
-                {
-                    var listaTipoProductos = db.TipoProductos.Where(x => x.TppDescripcion.Contains(descripcion)).ToList();
-                    var productosRetorno = new List<TipoProductoModel>();
-                    foreach (var dato in listaTipoProductos) 
-                    {
-                        var tipoProducto = new TipoProductoModel 
-                        {
-                            TppId=dato.TppId,
-                            TppDescripcion=dato.TppDescripcion,
-                            TppVisible=dato.TppVisible,
-                        };
-                        productosRetorno.Add(tipoProducto);
-                    }
-                    return productosRetorno;
-                }
+                var lista = await db.TipoProductos
+                    .Where(x=>x.TppVisible==true)
+                    .ToListAsync();
+                return lista;
             }
-            catch (Exception ex)
-            {
+        }
 
-                return ex;
+        public async Task<TipoProducto> ProductoPorId(int id) 
+        {
+            using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
+            {
+                var tipoProducto = await db.TipoProductos.FindAsync(id);
+                return tipoProducto;
             }
+        }
+
+        public async Task<List<TipoProducto>> BuscarTipoProductoPorDescripcion(string busqueda)
+        {
+            var listaSugerencias = new TipoProducto();
+            
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
+                {
+                    var lista = await db.TipoProductos
+                        .Where(x => x.TppDescripcion.Contains(busqueda) ||
+                               x.TppId.ToString().Contains(busqueda))
+                        .ToListAsync();
+                    return lista;
+                }
+
+            }
+
+            
         }
     }
-}
+

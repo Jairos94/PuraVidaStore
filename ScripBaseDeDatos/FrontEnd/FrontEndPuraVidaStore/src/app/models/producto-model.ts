@@ -1,3 +1,5 @@
+import { TipoProductoModel } from "./tipo-producto";
+
 export interface ProductoModel {
     prdId: number;
     prdNombre: string;
@@ -9,4 +11,5 @@ export interface ProductoModel {
     prdCodigoProvedor: string | null;
     pdrVisible: boolean | null;
     pdrFoto: string | null;
+    PrdIdTipoProductoNavigation:TipoProductoModel  | null;
 }

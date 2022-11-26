@@ -21,7 +21,7 @@
 
 
 <div class="my-2">
-    <p-table [value]="listaTipoProductos" responsiveLayout="scroll" [paginator]="true" [rows]="4">
+    <p-table [value]="listaTipoProductos" responsiveLayout="scroll" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10,20,30]">
         <ng-template pTemplate="header">
             <tr>
                 <th>#</th>

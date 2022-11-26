@@ -3,10 +3,13 @@ using System.Data.SqlClient;
 using System.Data;
 using PuraVidaStoreBK.Models;
 using PuraVidaStoreBK.Models.DbContex;
+using PuraVidaStoreBK.ExecQuerys.Interfaces;
+using Serilog;
+using Microsoft.EntityFrameworkCore;
 
 namespace PuraVidaStoreBK.ExecQuerys
 {
-    public class UsuariosQuerys
+    public class UsuariosQuerys:IUsuariosQuerys
     {
         
         DataBase data= new DataBase();
@@ -31,35 +34,35 @@ namespace PuraVidaStoreBK.ExecQuerys
                 {
                     try
                     {
-                        UsuarioModel u = new UsuarioModel();
-                        u.IdUsuario = reader.GetInt32(0);
-                        u.Usuario = reader.GetString(1);
+                        Usuario u = new Usuario();
+                        u.UsrId = reader.GetInt32(0);
+                        u.UsrUser = reader.GetString(1);
                         try
                         {
-                            u.email = reader.GetString(2);
+                            u.UsrEmail = reader.GetString(2);
                         }
                         catch (Exception)
                         {
 
-                            u.email = "";
+                            u.UsrEmail = "";
                         }
-                        u.IdRol = reader.GetInt32(3);
-                        u.Activo = reader.GetBoolean(4);
-                        u.IdPersona = reader.GetInt32(5);
+                        u.UsrIdRol = reader.GetInt32(3);
+                        u.UsrActivo = reader.GetBoolean(4);
+                        u.UsrIdPersona = reader.GetInt32(5);
 
-                        PersonaModel p = new PersonaModel();
-                        p.PsrId= u.IdPersona;
+                        Persona p = new Persona();
+                        p.PsrId= u.UsrIdPersona;
                         p.PsrIdentificacion = reader.GetString(6);
                         p.PsrNombre= reader.GetString(7);
                         p.PsrApellido1= reader.GetString(8);
                         p.PsrApellido2=reader.GetString(9);
-                        u.persona= p;
+                        u.UsrIdPersonaNavigation= p;
 
 
-                        RolModel r = new RolModel();
-                        r.RluID= reader.GetInt32(10);
+                        RolUsiario r = new RolUsiario();
+                        r.RluId= reader.GetInt32(10);
                         r.RluDescripcion= reader.GetString(11);
-                        u.Rol= r;
+                        u.UsrIdRolNavigation= r;
                         Usu = u;
                     }
                     catch (Exception)
@@ -73,6 +76,7 @@ namespace PuraVidaStoreBK.ExecQuerys
 
             catch (Exception ex)
             {
+                Log.Information("Se presentó un error en Get Usuario\n"+ex);
                 return Usu;
             }
             finally
@@ -80,71 +84,30 @@ namespace PuraVidaStoreBK.ExecQuerys
         }
 
         //Obtiene a los usuarios
-        public object listaUsuarios()
+        public async Task<List<Usuario>> ListaUsuarios()
 
         {
-            SqlConnection conn = data.GetConnection();
+            List<Usuario> usuarios = new List<Usuario>();
             try
             {
-                SqlDataReader reader;
-                SqlCommand command = conn.CreateCommand();
-                conn.Open();
-                command.CommandType = CommandType.StoredProcedure;
-                command.CommandText = "ObtenerUsuarios";
-                //command.ExecuteNonQuery();
-                reader = command.ExecuteReader();
-                List<UsuarioModel> ListaUsuarios= new List<UsuarioModel>();
-          
-                while (reader.Read())
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
                 {
-                    UsuarioModel u = new UsuarioModel();
-                    RolModel r = new RolModel();
-                    PersonaModel p = new PersonaModel();
-
-                    u.IdUsuario = reader.GetInt32(0);
-                        u.Usuario = reader.GetString(1);
-                    try
-                    {
-                        u.email = reader.GetString(2);
-                    }
-                    catch (Exception)
-                    {
-
-                        u.email ="";
-                    }
-                        
-                        u.IdRol = reader.GetInt32(3);
-                        u.IdPersona = reader.GetInt32(4);
-                        u.Activo =reader.GetBoolean(5);
-                        
-                        r.RluID = reader.GetInt32(6);
-                        r.RluDescripcion = reader.GetString(7);
-                        u.Rol = r;
-
-                        
-                        p.PsrId = reader.GetInt32(8);
-                        p.PsrIdentificacion= reader.GetString(9);
-                        p.PsrNombre = reader.GetString(10);
-                        p.PsrApellido1= reader.GetString(11);
-                        p.PsrApellido2= reader.GetString(12);
-                        u.persona = p;
-                        ListaUsuarios.Add(u); 
+                    usuarios = await db.Usuarios
+                                       .Where(x=>x.UsrActivo ==true)
+                                       .Include(x=>x.UsrIdPersonaNavigation)
+                                       .Include(x=>x.UsrIdRolNavigation)
+                                       .ToListAsync();
                 }
-                return ListaUsuarios;
             }
-
             catch (Exception ex)
             {
-                return ex.Message;
-               
+                Log.Information("Se presentó un error en listaUsuarios\n"+ex);
             }
-
-            finally
-            { conn.Close(); }
+            return usuarios;
         }
 
         //Ingresa Usuarios
-        public bool IngresarUsario(UsuarioModel usuario)
+        public bool IngresarUsario(Usuario usuario,string clave)
         {
             SqlConnection conn = data.GetConnection();
             try
@@ -154,11 +117,11 @@ namespace PuraVidaStoreBK.ExecQuerys
                 conn.Open();
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "IngresarUsuario";
-                command.Parameters.Add("@Usuario", SqlDbType.VarChar, 15).Value = usuario.Usuario; ;
-                command.Parameters.Add("@Pass", SqlDbType.VarChar, 256).Value = usuario.password;
-                command.Parameters.Add("@Email", SqlDbType.VarChar, 100).Value = usuario.email;
-                command.Parameters.Add("@IdRol", SqlDbType.Int).Value = usuario.IdRol;
-                command.Parameters.Add("@IdPersona", SqlDbType.Int).Value = usuario.IdPersona;
+                command.Parameters.Add("@Usuario", SqlDbType.VarChar, 15).Value = usuario.UsrUser; ;
+                command.Parameters.Add("@Pass", SqlDbType.VarChar, 256).Value = clave;
+                command.Parameters.Add("@Email", SqlDbType.VarChar, 100).Value = usuario.UsrEmail;
+                command.Parameters.Add("@IdRol", SqlDbType.Int).Value = usuario.UsrIdRol;
+                command.Parameters.Add("@IdPersona", SqlDbType.Int).Value = usuario.UsrIdPersona;
 
                 reader = command.ExecuteReader();
                 return true;
@@ -175,7 +138,7 @@ namespace PuraVidaStoreBK.ExecQuerys
         }
 
         //edita a un usuario por Id
-        public bool EditarUsuario(UsuarioModel usuario)
+        public bool EditarUsuario(Usuario usuario,string clave)
         {
             SqlConnection conn = data.GetConnection();
             try
@@ -185,19 +148,20 @@ namespace PuraVidaStoreBK.ExecQuerys
                 conn.Open();
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "EditarUsuario";
-                command.Parameters.Add("@UsrUser", SqlDbType.VarChar, 15).Value = usuario.Usuario; ;
-                command.Parameters.Add("@UsrPass", SqlDbType.VarChar, 256).Value = usuario.password;
-                command.Parameters.Add("@Email", SqlDbType.VarChar, 100).Value = usuario.email;
-                command.Parameters.Add("@Rol", SqlDbType.Int).Value = usuario.IdRol;
-                command.Parameters.Add("@idPersona", SqlDbType.Int).Value = usuario.IdPersona;
-                command.Parameters.Add("@idUsuario", SqlDbType.Int).Value = usuario.IdUsuario;
-                command.Parameters.Add("@activo", SqlDbType.Int).Value = usuario.Activo;
+                command.Parameters.Add("@UsrUser", SqlDbType.VarChar, 15).Value = usuario.UsrUser; ;
+                command.Parameters.Add("@UsrPass", SqlDbType.VarChar, 256).Value = clave;
+                command.Parameters.Add("@Email", SqlDbType.VarChar, 100).Value = usuario.UsrEmail;
+                command.Parameters.Add("@Rol", SqlDbType.Int).Value = usuario.UsrIdRol;
+                command.Parameters.Add("@idPersona", SqlDbType.Int).Value = usuario.UsrIdPersona;
+                command.Parameters.Add("@idUsuario", SqlDbType.Int).Value = usuario.UsrId;
+                command.Parameters.Add("@activo", SqlDbType.Int).Value = usuario.UsrActivo;
 
                 reader = command.ExecuteReader();
                 return true;
             }
             catch (Exception ex)
             {
+                Log.Error(ex.StackTrace);
                 Console.WriteLine(ex.Message);
                 return false;
             }
@@ -206,87 +170,55 @@ namespace PuraVidaStoreBK.ExecQuerys
             finally
             { conn.Close(); }
         }
-        public object UsuarioPorId(int id) 
+        public async Task<Usuario>  UsuarioPorId(int id) 
         {
+            var UsuarioRetorno = new Usuario();
             try
             {
                 using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
                 {
-                   
-                    var u= db.Usuarios.Find(id);
-                    var r=db.RolUsiarios.Find(u.UsrIdRol);
-                    var p = db.Personas.Find(u.UsrIdPersona);
-
-                    //carga models
-                    UsuarioModel um = new UsuarioModel();
-                  
-                    um.IdUsuario = u.UsrId;
-                    um.Usuario = u.UsrUser;
-                    um.password = ocpv(u.UsrId);
-                    um.email=u.UsrEmail;
-                    um.IdRol=u.UsrIdRol;
-                    um.IdPersona = u.UsrIdPersona;
-
-                    PersonaModel pm = new PersonaModel();
-                    pm.PsrId = p.PsrId;
-                    pm.PsrIdentificacion = p.PsrIdentificacion;
-                    pm.PsrNombre = p.PsrNombre;
-                    pm.PsrApellido1 = p.PsrApellido1;
-                    pm.PsrApellido2 = p.PsrApellido2;
-                    um.persona = pm;
-                    RolModel rm = new RolModel();
-                    rm.RluID = r.RluId;
-                    rm.RluDescripcion = r.RluDescripcion;
-                    um.Rol = rm;
-                    return um;
-                    
+                    UsuarioRetorno = await db.Usuarios
+                        .Include(x=>x.UsrIdPersonaNavigation)
+                        .Include(x=>x.UsrIdRolNavigation)
+                        .FirstOrDefaultAsync(x=>x.UsrId == id);
                 }
             }
             catch (Exception ex)
             {
 
-                return ex.Message;
+                Log.Information("Se presentó un error en UsuarioPorId\n"+ex);
             }
+            return UsuarioRetorno;
         }
 
-        //devuelve el password
-        public object UsuarioPorId2(int id)
+       
+
+        public async Task< Usuario> UsuarioPorUsuario(string usuario) 
         {
-            try
-            {
+            var usuarioRetorno = new Usuario();
+            
                 using (PuraVidaStoreContext db = new PuraVidaStoreContext())
                 {
-
-                    return db.Usuarios.Find(id).UsrPass;
-
+                    usuarioRetorno = await db.Usuarios.Where(x => x.UsrUser == usuario).FirstOrDefaultAsync();
                 }
-            }
-            catch (Exception ex)
-            {
-
-                return ex.Message;
-            }
+            
+           
+            return usuarioRetorno;
         }
 
-        public object UsuarioPorUsuario(string usuario) 
-        {
-            using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
-            {
-                return db.Usuarios.Where(x=>x.UsrUser == usuario);
-            }
-        }
-
-        public object UsuarioIdPersona(int idPersona) 
+        public async Task<Usuario> UsuarioIdPersona(int idPersona) 
         {
             using (PuraVidaStoreContext db = new PuraVidaStoreContext())
             {
-                return db.Usuarios.Where(x => x.UsrIdPersona == idPersona).First();
+                return await db.Usuarios.Where(x => x.UsrIdPersona == idPersona).FirstAsync();
             }
         }
 
+   
+
      
 
-        private string ocpv(int idUsuario) 
+        public string ocpv(int idUsuario) 
         {
             SqlConnection conn = data.GetConnection();
             string dato = "";
