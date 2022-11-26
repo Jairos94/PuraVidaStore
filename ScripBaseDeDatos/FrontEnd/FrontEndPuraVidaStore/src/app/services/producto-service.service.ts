@@ -23,4 +23,10 @@ export class ProductoServiceService {
     .set('id', id);
     return this.http.get<ProductoModel>(`${this.baseUrl}Productos/ObtenerProductoPorId`,{params});
   }
+
+  BuscarPorPalabra(buscador:string):Observable<ProductoModel[]>{
+    const params = new HttpParams()
+    .set('Descripcion', buscador);
+    return this.http.get<ProductoModel[]>(`${this.baseUrl}Productos/ListaProductosPorDescripcion`,{params});
+  }
 }

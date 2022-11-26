@@ -75,6 +75,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                                   x.PrdCodigo.Contains(Descripcion)||
                                   x.PrdIdTipoProductoNavigation.TppDescripcion.Contains(Descripcion)
                                   )
+                        .Include(x=>x.PrdIdTipoProductoNavigation)
                         .ToListAsync();
                     return listaProducto;
                 }
