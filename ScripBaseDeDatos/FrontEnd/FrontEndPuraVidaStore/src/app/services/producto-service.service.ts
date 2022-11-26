@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -16,5 +16,11 @@ export class ProductoServiceService {
   }
   ListaProductoService():Observable<ProductoModel[]>{
     return this.http.get<ProductoModel[]>(`${this.baseUrl}Productos/ListaProductos`);
+  }
+
+  ProductoPorID(id:number):Observable<ProductoModel>{
+    const params = new HttpParams()
+    .set('id', id);
+    return this.http.get<ProductoModel>(`${this.baseUrl}Productos/ObtenerProductoPorId`,{params});
   }
 }

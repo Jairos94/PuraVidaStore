@@ -32,7 +32,7 @@ export class AgregarEditarComponent implements OnInit {
       prdCodigoProvedor: '',
       pdrVisible: true,
       pdrFoto: null,
-      PrdIdTipoProductoNavigation:null
+      PrdIdTipoProductoNavigation: null
     };
 
   productoForm = this.fb.group({
@@ -61,9 +61,9 @@ export class AgregarEditarComponent implements OnInit {
   ngOnInit(): void {
     this.listaTipoProductoFiltrado();
     this.parametroId = this.route.snapshot.paramMap.get('id');
-
-
-    this.imagen = Archivo.lectorImagen(this.imagen);
+    if (this.parametroId > 0) {
+      this.obtenerProducto();
+    }
   }
 
   archivo(evento: any) {
@@ -72,8 +72,8 @@ export class AgregarEditarComponent implements OnInit {
     this.base64Image = Archivo.convertFile(archivo).subscribe(x => {
       ima = x.toString();
       this.productoEditarAgregar.pdrFoto = ima;
-      this.imagen = Archivo.lectorImagen(this.productoEditarAgregar.pdrFoto)
-      this.HayImagen = true;
+
+      
     });
 
 
@@ -89,9 +89,9 @@ export class AgregarEditarComponent implements OnInit {
     this.productoEditarAgregar.prdUnidadesMinimas = this.productoForm.get('UnidadesMinimas')?.value!;
     this.productoEditarAgregar.prdIdTipoProducto = this.productoForm.get('IdTipoProducto')?.value!;
     this.productoEditarAgregar.prdCodigoProvedor = this.productoForm.get('CodigoProveedor')?.value!;
-    
-    this.listaTipoProductos.forEach(x=>{
-      if(x.tppId=== this.productoEditarAgregar.prdIdTipoProducto){
+
+    this.listaTipoProductos.forEach(x => {
+      if (x.tppId === this.productoEditarAgregar.prdIdTipoProducto) {
         this.productoEditarAgregar.PrdIdTipoProductoNavigation = x
       }
     });
@@ -115,7 +115,25 @@ export class AgregarEditarComponent implements OnInit {
     }), (_e => console.log(_e)));
   }
 
-
+  obtenerProducto() {
+    this.servicioProducto.ProductoPorID(this.parametroId).subscribe((x => {
+      this.productoEditarAgregar = x;
+      if (this.productoEditarAgregar.pdrFoto != null) {
+        this.imagen = Archivo.lectorImagen(this.productoEditarAgregar.pdrFoto)
+        this.HayImagen = true;
+      }
+      this.productoForm = this.fb.group({
+        NombreProducto: [this.productoEditarAgregar.prdNombre, [Validators.required]],
+        PrecioVentaMayorista: [this.productoEditarAgregar.prdPrecioVentaMayorista, [Validators.required]],
+        prcioVentaMinorista: [this.productoEditarAgregar.prdPrecioVentaMinorista, [Validators.required]],
+        UnidadesMinimas: [this.productoEditarAgregar.prdUnidadesMinimas, [Validators.required]],
+        IdTipoProducto: [this.productoEditarAgregar.prdIdTipoProducto, [Validators.required]],
+        CodigoProveedor: [this.productoEditarAgregar.prdCodigoProvedor, [Validators.required]],
+        Foto: [this.productoEditarAgregar.pdrFoto]
+    
+      });
+    }), (_e => console.log(_e)));
+  }
 
   eliminarImagen() {
     this.productoEditarAgregar.pdrFoto = null
@@ -126,4 +144,5 @@ export class AgregarEditarComponent implements OnInit {
   showSuccess() {
     //this.messageService.add({severity:'success', summary: 'Success', detail: 'Message Content'});
   }
+
 }

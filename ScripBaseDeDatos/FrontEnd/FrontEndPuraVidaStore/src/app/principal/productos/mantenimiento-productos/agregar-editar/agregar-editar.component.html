@@ -84,7 +84,7 @@
 
     </div>
 
-    <div class="field">
+    <div class="field" *ngIf="!HayImagen">
         <h2>Foto</h2>
         <p-fileUpload chooseLabel="Subir" chooseIcon="pi pi-upload" name="myfile[]" accept="image/*" [auto]="true"
             (onSelect)="archivo($event)" (onRemove)="eliminarImagen()">
@@ -97,7 +97,7 @@
             <div class="field">
 
             </div>
-            <div class="field">
+            <div class="field" *ngIf="HayImagen">
 
                 <div class="flex align-items-stretch flex-wrap card-container green-container"
                     style="min-height: 200px">

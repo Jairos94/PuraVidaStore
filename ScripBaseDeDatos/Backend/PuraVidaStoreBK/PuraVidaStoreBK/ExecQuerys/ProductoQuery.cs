@@ -72,7 +72,8 @@ namespace PuraVidaStoreBK.ExecQuerys
                 {
                     listaProducto = await db.Productos
                         .Where(x=>x.PrdNombre.Contains(Descripcion)||
-                                  x.PrdCodigo.Contains(Descripcion)
+                                  x.PrdCodigo.Contains(Descripcion)||
+                                  x.PrdIdTipoProductoNavigation.TppDescripcion.Contains(Descripcion)
                                   )
                         .ToListAsync();
                     return listaProducto;
