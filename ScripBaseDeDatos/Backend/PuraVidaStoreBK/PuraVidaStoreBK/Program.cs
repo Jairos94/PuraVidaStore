@@ -64,6 +64,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 #region Inyeccion de dependencias
 builder.Services.AddSingleton<IPersonaQuery, PersonaQuery>();
+builder.Services.AddSingleton<IProductoQuery, ProductoQuery>();
 builder.Services.AddSingleton<IUsuariosQuerys,UsuariosQuerys>();
 builder.Services.AddSingleton<IRolQuery, RolesQuerys>();
 builder.Services.AddSingleton<ITipoProductoQuery, TipoProductoQuery>();

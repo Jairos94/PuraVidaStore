@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PuraVidaStoreBK.ExecQuerys;
-using PuraVidaStoreBK.Models;
+using PuraVidaStoreBK.ExecQuerys.Interfaces;
+using PuraVidaStoreBK.Models.DbContex;
+using PuraVidaStoreBK.Models.DTOS;
+using System.Data;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace PuraVidaStoreBK.Controllers
 {
@@ -10,42 +14,60 @@ namespace PuraVidaStoreBK.Controllers
     [ApiController]
     public class ProductosController : ControllerBase
     {
-        ProductoQuery ejecuta = new ProductoQuery();
+        private readonly IProductoQuery _productoQuery;
+        private readonly IMapper _mapper;
+
+        public ProductosController(IProductoQuery productoQuery,IMapper mapper)
+        {
+            _productoQuery = productoQuery;
+            _mapper = mapper;
+        }
         [HttpGet("ListaProductos"), Authorize]
         public async Task<IActionResult> ListaProductos()
         {
-            return Ok("");
 
+            var listaProductos = await _productoQuery.ListaProductos();
+            var listaRetorno = _mapper.Map<List<ProductoDTO>>(listaProductos);
+            return Ok(listaRetorno);
         }
-        [HttpGet("ObtenerProductoPorId")]
-        public async Task<IActionResult> ObtenerProductoPorId(int id) 
+
+
+        [HttpGet("ListaProductosPorDescripcion"), Authorize]
+        public async Task<IActionResult> ListaProductosPorDescripcion(string Descripcion)
         {
-            try
-            {
-                ProductosModel producto = (ProductosModel)ejecuta.ObtenerProductoPorId(id);
-                return Ok(producto);
-            }
-            catch (Exception ex)
-            {
 
-                return BadRequest(ex);
-            }
+            var listaProductos = await _productoQuery.ProductoPorDescripcion(Descripcion);
+            var listaRetorno = _mapper.Map<List<ProductoDTO>>(listaProductos);
+            return Ok(listaRetorno);
         }
-        
+        [HttpGet("ObtenerProductoPorId"), Authorize]
+        public async Task<IActionResult> ObtenerProductoPorId(int id)
+        {
+            var producto = await _productoQuery.ProductoPorId(id);
+            var productoRenorno = _mapper.Map<ProductoDTO>(producto);
+
+            if (productoRenorno != null)
+            {
+                return Ok(productoRenorno);
+            }
+            else { return NoContent(); }
+        }
+
 
         [HttpPost("GuardarProducto"), Authorize(Roles = "1")]
-        public async Task<IActionResult> GuardarProducto([FromBody] ProductosModel model) 
+        public async Task<IActionResult> GuardarProducto([FromBody] ProductoDTO model)
         {
-            try
+            var productoGuardar = _mapper.Map<Producto>(model);
+            productoGuardar = await _productoQuery.GuardarProducto(productoGuardar);
+            model = _mapper.Map<ProductoDTO>(productoGuardar);
+            if (model != null)
             {
-                model = (ProductosModel)ejecuta.Guardar(model);
                 return Ok(model);
             }
-            catch (Exception ex)
+            else
             {
-
-                return BadRequest(ex);
+                return BadRequest("Se presentó un error a la hora de guardar el producto");
             }
         }
-    } 
+    }
 }
