@@ -22,12 +22,8 @@ namespace PuraVidaStoreBK.Controllers
             _tipoProductoQuery = tipoProductoQuery;
             _mapper = mapper;
         }
-        //[HttpPost("GuardarTipoProducto"), Authorize(Roles = "1")]
-        //[HttpGet("ListaTipoProducto"),Authorize]
-        // [HttpGet("ListaTipoProductoFiltrado"),Authorize]
-        // [HttpGet("ObtenerTipoProductoPorId"), Authorize(Roles = "1")]
-        //[HttpGet("BuscarTipoProductoPorDescripcion"),Authorize]
-
+       
+        
         // GET: api/<TipoProducoController>
         [HttpPost("GuardarTipoProducto"), Authorize(Roles = "1")]
         public async Task<IActionResult> GuardarTipoProducto(TipoProductoDTO tipoProducto)
@@ -47,28 +43,43 @@ namespace PuraVidaStoreBK.Controllers
         }
 
         // GET api/<TipoProducoController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("ObtenerTipoProductoPorId"), Authorize]
+        public async Task<IActionResult> ObtenerTipoProductoPorId(int id)
         {
-            return "value";
+            var Producto = await _tipoProductoQuery.ProductoPorId(id);
+            var tipoProducto = _mapper.Map<TipoProductoDTO>(Producto);
+            if (tipoProducto != null) 
+            {
+                return Ok(tipoProducto);
+            }
+            else 
+            {
+                return NoContent();
+            }
         }
 
-        // POST api/<TipoProducoController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpGet("ListaTipoProducto"),Authorize]
+        public async Task<IActionResult> ListaTipoProducto() 
         {
+            var listaProducto = await _tipoProductoQuery.ListaTipoProducto();
+            var lIstProductoRetorno = _mapper.Map<List<TipoProductoDTO>>(listaProducto);
+            return Ok(lIstProductoRetorno);
         }
 
-        // PUT api/<TipoProducoController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpGet("ListaTipoProductoFiltrado"),Authorize]
+        public async Task<IActionResult> ListaTipoProductoFiltrado() 
         {
+            var listaProducto = await _tipoProductoQuery.ListaProductoFiltrado();
+            var lIstProductoRetorno = _mapper.Map<List<TipoProductoDTO>>(listaProducto);
+            return Ok(lIstProductoRetorno);
         }
 
-        // DELETE api/<TipoProducoController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpGet("BuscarTipoProductoPorDescripcion"),Authorize]
+        public async Task<IActionResult> BuscarTipoProductoPorDescripcion(string Descripcion) 
         {
+            var listaProducto = await _tipoProductoQuery.BuscarTipoProductoPorDescripcion(Descripcion);
+            var lIstProductoRetorno = _mapper.Map<List<TipoProductoDTO>>(listaProducto);
+            return Ok(lIstProductoRetorno);
         }
     }
 }
