@@ -10,15 +10,15 @@
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-usuario>
-        <tr *ngIf="!esVisible(usuario.idUsuario ) && usuario.activo">
-            <td>{{ usuario.idUsuario }}</td>
-            <td>{{ usuario.usuario }}</td>
-            <td>{{ usuario.persona.psrNombre }} {{ usuario.persona.psrApellido1 }} {{ usuario.persona.psrApellido }}</td>
+        <tr *ngIf="!esVisible(usuario.usrId ) && usuario.usrActivo">
+            <td>{{ usuario.usrId }}</td>
+            <td>{{ usuario.usrUser }}</td>
+            <td>{{ usuario.persona.psrNombre }} {{ usuario.persona.psrApellido1 }} {{ usuario.persona.psrApellido2 }}</td>
             <td>{{ usuario.rol.rluDescripcion }}</td>
             <td>
                 <span class="p-buttonset">
-                    <button pButton type="button" class="p-button-secondary m-1" label="Editar" icon="pi pi-user-edit" routerLink="../editar-nuevo/{{usuario.idUsuario}}"></button>
-                    <button pButton type="button" class="p-button-danger m-1" label="Eliminar" icon="pi pi-trash" (click)="showConfirm(usuario.persona.psrNombre,usuario.idUsuario)"></button>
+                    <button pButton type="button" class="p-button-secondary m-1" label="Editar" icon="pi pi-user-edit" routerLink="../editar-nuevo/{{usuario.usrId}}"></button>
+                    <button pButton type="button" class="p-button-danger m-1" label="Eliminar" icon="pi pi-trash" (click)="showConfirm(usuario.persona.psrNombre,usuario.usrId)"></button>
                 </span>
 
             </td>

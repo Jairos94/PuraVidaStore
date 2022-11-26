@@ -30,8 +30,8 @@ export class ListaUsuariosComponent implements OnInit {
   }
 
   esVisible(id: number) {
-    if (activo.usuarioPrograma.idUsuario != null) {
-      if (activo.usuarioPrograma.idUsuario === id) {
+    if (activo.usuarioPrograma.usrId != null) {
+      if (activo.usuarioPrograma.usrId === id) {
         return true
       }
       else { return false }
@@ -44,9 +44,10 @@ export class ListaUsuariosComponent implements OnInit {
   llenarUsuarios() {
     this.servicio.listaUsuarios().subscribe(
       (lista => {
-
         this.listaUsuario = [];
         this.listaUsuario = lista;
+        
+        
       }),
       (_e => { console.log(_e); }));
   }
@@ -108,10 +109,14 @@ export class ListaUsuariosComponent implements OnInit {
     this.servicio.usuarioPorId(this.idUsarioBorrar).subscribe((x => {
       let usuarioeliminar: UsuarioModel;
       usuarioeliminar = x;
-      usuarioeliminar.activo = false;
+      usuarioeliminar.usrActivo = false;
+
       this.servicio.GuardarUsuario(usuarioeliminar, false).subscribe((x => {
-        this.showError("Se Eliminó al usuario ", usuarioeliminar.persona.psrNombre);
-        this.llenarUsuarios();
+        if (usuarioeliminar.persona != null) {
+          this.llenarUsuarios();
+          this.showError("Se Eliminó al usuario ", usuarioeliminar.persona.psrNombre);
+        }
+        
       }), (_e => console.log(_e)));
     }), (_e => console.error));
 

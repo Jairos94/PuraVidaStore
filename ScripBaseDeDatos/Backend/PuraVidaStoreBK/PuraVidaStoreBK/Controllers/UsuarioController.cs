@@ -173,7 +173,7 @@ namespace PuraVidaStoreBK.Controllers
             }
             else 
             {
-                return NoContent();
+                return BadRequest("Se presento un error");
             }
             
         }

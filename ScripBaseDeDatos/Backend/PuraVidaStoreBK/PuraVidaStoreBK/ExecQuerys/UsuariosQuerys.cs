@@ -93,6 +93,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                 using (PuraVidaStoreContext db = new PuraVidaStoreContext())
                 {
                     usuarios = await db.Usuarios
+                                       .Where(x=>x.UsrActivo ==true)
                                        .Include(x=>x.UsrIdPersonaNavigation)
                                        .Include(x=>x.UsrIdRolNavigation)
                                        .ToListAsync();
@@ -148,7 +149,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "EditarUsuario";
                 command.Parameters.Add("@UsrUser", SqlDbType.VarChar, 15).Value = usuario.UsrUser; ;
-                command.Parameters.Add("@UsrPass", SqlDbType.VarChar, 256).Value = usuario.UsrPass;
+                command.Parameters.Add("@UsrPass", SqlDbType.VarChar, 256).Value = clave;
                 command.Parameters.Add("@Email", SqlDbType.VarChar, 100).Value = usuario.UsrEmail;
                 command.Parameters.Add("@Rol", SqlDbType.Int).Value = usuario.UsrIdRol;
                 command.Parameters.Add("@idPersona", SqlDbType.Int).Value = usuario.UsrIdPersona;
@@ -160,6 +161,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             }
             catch (Exception ex)
             {
+                Log.Error(ex.StackTrace);
                 Console.WriteLine(ex.Message);
                 return false;
             }
