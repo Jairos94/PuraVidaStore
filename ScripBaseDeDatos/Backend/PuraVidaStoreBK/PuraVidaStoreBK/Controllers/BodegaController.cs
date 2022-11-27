@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using PuraVidaStoreBK.ExecQuerys.Interfaces;
+using PuraVidaStoreBK.Models.DbContex;
+using PuraVidaStoreBK.Models.DTOS;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,36 +13,62 @@ namespace PuraVidaStoreBK.Controllers
     [ApiController]
     public class BodegaController : ControllerBase
     {
-        // GET: api/<BodegaController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly IMapper _maper;
+        private readonly IBodegaQuery _bodegaQuery;
+
+        public BodegaController(IMapper maper, IBodegaQuery bodegaQuery)
         {
-            return new string[] { "value1", "value2" };
+            _maper = maper;
+            _bodegaQuery = bodegaQuery;
+        }
+        // GET: api/<BodegaController>
+        [HttpGet("ListaBodegas"),Authorize]
+        public async Task<IActionResult> ListaBodegas()
+        {
+            var listaBodegas =_maper.Map<List<BodegaDTO>>(await _bodegaQuery.ListaBodegas()) ;
+            return Ok(listaBodegas);
+        }
+
+        [HttpGet("ListaBodegasPorDescripcion"), Authorize]
+        public async Task<IActionResult> ListaBodegasPorDescripcion(string Descripcion)
+        {
+            var listaBodegas = _maper.Map<List<BodegaDTO>>(await _bodegaQuery.ListaBodegasPorDescripcion(Descripcion));
+            if (listaBodegas != null) 
+            {
+                return Ok(listaBodegas);
+            }
+            else 
+            {
+                return NoContent();
+            }
+           
         }
 
         // GET api/<BodegaController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("BodegaPorId"),Authorize]
+        public async Task<IActionResult> BodegaPorId(int id)
         {
-            return "value";
+            var bodega = _maper.Map<BodegaDTO>(await _bodegaQuery.BodegaPorId(id));
+            if (bodega != null) { return Ok(bodega); }
+            else { return NoContent(); }
         }
 
         // POST api/<BodegaController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost("GuardarBodega"),Authorize(Roles ="1")]
+        public async Task<IActionResult> GuardarBodega([FromBody] BodegaDTO bodega)
         {
+            var bodegaGuardar =await _bodegaQuery.GuardarBodega(_maper.Map<Bodega>(bodega));
+
+            if (bodegaGuardar != null) 
+            { 
+                return Ok(_maper.Map<BodegaDTO>(bodegaGuardar));
+            }
+            else 
+            {
+                return NoContent();
+            }
         }
 
-        // PUT api/<BodegaController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<BodegaController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        
     }
 }

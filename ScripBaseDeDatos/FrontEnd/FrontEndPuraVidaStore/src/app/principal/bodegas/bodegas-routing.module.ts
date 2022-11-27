@@ -8,7 +8,9 @@ const routes: Routes = [{ path: '',
 component: BodegasComponent ,
 children:[
   {path:'lista-bodegas',component:ListaBodegasComponent},
-  {path:'Edtitar-Agregar/:id',component:AgregarEditarBodegaComponent}
+  {path:'Edtitar-Agregar/:id',component:AgregarEditarBodegaComponent},
+  {path:'**',redirectTo:'lista-bodega'}
+
 ]
 }];
 
