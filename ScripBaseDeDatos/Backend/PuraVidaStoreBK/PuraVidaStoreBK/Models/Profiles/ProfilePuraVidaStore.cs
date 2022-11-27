@@ -8,7 +8,9 @@ namespace PuraVidaStoreBK.Models
     {
         public ProfilePuraVidaStore()
         {
-            
+            CreateMap<Bodega, BodegaDTO>();
+            CreateMap<BodegaDTO, Bodega>();
+
             CreateMap<RolUsiario, RolUsuarioDto>();
             CreateMap<RolUsuarioDto, RolUsiario>();
 

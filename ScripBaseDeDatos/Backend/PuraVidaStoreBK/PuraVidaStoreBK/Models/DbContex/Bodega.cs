@@ -13,6 +13,7 @@ namespace PuraVidaStoreBK.Models.DbContex
 
         public int BdgId { get; set; }
         public string BdgDescripción { get; set; } = null!;
+        public bool? BdgVisible { get; set; }
 
         public virtual ICollection<Factura> Facturas { get; set; }
         public virtual ICollection<Movimiento> Movimientos { get; set; }

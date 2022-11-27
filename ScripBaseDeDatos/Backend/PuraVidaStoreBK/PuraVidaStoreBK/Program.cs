@@ -63,6 +63,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAutoMapper(typeof(Program));
 
 #region Inyeccion de dependencias
+builder.Services.AddSingleton<IBodegaQuery, BodegaQuery>();
 builder.Services.AddSingleton<IPersonaQuery, PersonaQuery>();
 builder.Services.AddSingleton<IProductoQuery, ProductoQuery>();
 builder.Services.AddSingleton<IUsuariosQuerys,UsuariosQuerys>();

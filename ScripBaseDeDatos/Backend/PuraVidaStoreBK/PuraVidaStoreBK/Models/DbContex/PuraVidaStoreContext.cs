@@ -64,6 +64,8 @@ namespace PuraVidaStoreBK.Models.DbContex
                     .HasMaxLength(30)
                     .IsUnicode(false)
                     .HasColumnName("bdgDescripción");
+
+                entity.Property(e => e.BdgVisible).HasColumnName("bdgVisible");
             });
 
             modelBuilder.Entity<ClientesMayorista>(entity =>

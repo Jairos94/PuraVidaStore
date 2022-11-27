@@ -51,6 +51,12 @@ export class PrincipalComponent implements OnInit {
         icon: 'pi pi-users',
         routerLink: 'usuarios',
         visible: activo.esAministrador(),
+      },
+      {
+        label: 'Bodega',
+        icon: 'pi pi-home',
+        routerLink: 'bodegas',
+        visible: activo.esAministrador(),
       }
     ];
   }
