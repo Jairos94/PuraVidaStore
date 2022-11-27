@@ -1,1 +1,18 @@
-<p>lista-bodegas works!</p>
+<p-table [value]="listaBodegas" [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>#</th>
+            <th>Descripcion</th>
+            <th>Acciones</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-bodega>
+        <tr>
+            <td>{{bodega.code}}</td>
+            <td>{{bodega.name}}</td>
+            <td>
+
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

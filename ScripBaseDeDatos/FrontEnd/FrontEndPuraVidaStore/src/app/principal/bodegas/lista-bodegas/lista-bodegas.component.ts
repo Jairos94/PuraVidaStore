@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BodegaModel } from 'src/app/models/bodega-model';
 import { BodegaService } from 'src/app/services/bodega.service';
 
 @Component({
@@ -7,6 +8,8 @@ import { BodegaService } from 'src/app/services/bodega.service';
   styleUrls: ['./lista-bodegas.component.css']
 })
 export class ListaBodegasComponent implements OnInit {
+
+  listaBodegas:BodegaModel[]=[];
 
   constructor(private ServicioBodega: BodegaService) { }
 
@@ -17,7 +20,8 @@ export class ListaBodegasComponent implements OnInit {
 
   ObtenerBodegas(){
     this.ServicioBodega.listaUsuarios().subscribe((x=>{
-      console.log(x);
+      this.listaBodegas=[];
+      this.listaBodegas=x;
       
     }),(_e=>console.error(_e)));
   }

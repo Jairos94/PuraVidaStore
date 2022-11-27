@@ -28,7 +28,7 @@
             <td>{{producto.prdUnidadesMinimas}}</td>
             <td>
                 <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning" routerLink="../agregar-editar/{{producto.prdId}}"></button>
-                <button pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-danger" (click)="EliminarProducto(producto.prdId,producto.PrdIdTipoProductoNavigation)" ></button>
+                <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="EliminarProducto(producto.prdId,producto.PrdIdTipoProductoNavigation)" ></button>
             </td>
            
         </tr>
