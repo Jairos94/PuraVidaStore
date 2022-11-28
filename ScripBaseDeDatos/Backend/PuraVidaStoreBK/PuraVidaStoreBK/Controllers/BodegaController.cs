@@ -22,7 +22,7 @@ namespace PuraVidaStoreBK.Controllers
             _bodegaQuery = bodegaQuery;
         }
         // GET: api/<BodegaController>
-        [HttpGet("ListaBodegas"),Authorize]
+        [HttpGet("ListaBodegas")]
         public async Task<IActionResult> ListaBodegas()
         {
             var listaBodegas =_maper.Map<List<BodegaDTO>>(await _bodegaQuery.ListaBodegas()) ;

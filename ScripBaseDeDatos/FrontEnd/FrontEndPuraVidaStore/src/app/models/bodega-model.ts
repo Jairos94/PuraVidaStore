@@ -1,5 +1,5 @@
 export interface BodegaModel {
     bdgId: number;
-    bdgDescripción: string;
+    bdgDescripcion: string;
     bdgVisible: boolean | null;
 }

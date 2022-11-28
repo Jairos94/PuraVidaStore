@@ -18,16 +18,16 @@ export class PrincipalComponent implements OnInit {
     psrApellido1: "",
     psrApellido2: "",
   }
-
+  bodegaActiva = activo.bodegaIngreso;
   usuario: UsuarioModel = activo.usuarioPrograma;
 
   constructor() {
   }
 
   ngOnInit(): void {
-
+    console.log(this.bodegaActiva);
     if (this.usuario.persona != null) {
-      this.NombreUsuario =this.usuario.persona ;
+      this.NombreUsuario = this.usuario.persona;
     }
     this.items = [
       {

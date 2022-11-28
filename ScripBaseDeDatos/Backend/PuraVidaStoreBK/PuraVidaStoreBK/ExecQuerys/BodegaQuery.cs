@@ -77,7 +77,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                 using (PuraVidaStoreContext db = new PuraVidaStoreContext())
                 {
                     lista = await db.Bodegas
-                        .Where(x => x.BdgVisible == true && x.BdgDescripción.Contains(Descripcion))
+                        .Where(x => x.BdgVisible == true && x.BdgDescripcion.Contains(Descripcion))
                         .ToListAsync();
                 }
             }
