@@ -7,16 +7,29 @@
                 <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
                 <input type="text" pInputText placeholder="Usuario" [(ngModel)]="Usuario">
             </div>
-            <div class="p-inputgroup">
+            <div class="p-inputgroup my-2 mb-2">
                 <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
-                <input type="password" pInputText placeholder="Contraseña" (keyup.enter)="validar()" [(ngModel)]="Contrasena">
+                <input type="password" pInputText placeholder="Contraseña" (keyup.enter)="validar()"
+                    [(ngModel)]="Contrasena">
             </div>
+
+            <span style="width: 100%">
+                <p-dropdown [lazy]="true" [options]="listaBodegas" [(ngModel)]="bodegaSeleccionada"
+                optionLabel="bdgDescripcion" [style]="{'minWidth':'100%'}"></p-dropdown>
+            </span>
+
+            
+           
+
         </div>
 
     </div>
-    
+    <div class="field">
+
+
+    </div>
 
     <button pButton pRipple type="button" label="Ingresar"
-    class="p-button-raised p-button-secondary col-6 justify-content-center" (click)="validar()"></button>
+        class="p-button-raised p-button-secondary col-6 justify-content-center" (click)="validar()"></button>
 </div>
 <p-toast position="top-right"></p-toast>

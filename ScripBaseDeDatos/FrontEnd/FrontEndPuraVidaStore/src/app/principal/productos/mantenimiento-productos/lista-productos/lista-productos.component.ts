@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { activo } from 'src/app/activo';
 import { ProductoModel } from 'src/app/models/producto-model';
+import { TipoProductoModel } from 'src/app/models/tipo-producto';
 import { ProductoServiceService } from 'src/app/services/producto-service.service';
 import { Archivo } from 'src/app/utils/Archivos';
 
@@ -10,30 +12,54 @@ import { Archivo } from 'src/app/utils/Archivos';
 })
 export class ListaProductosComponent implements OnInit {
 
-  constructor(private servicioProducto: ProductoServiceService) { }
   listaProductos: ProductoModel[] = [];
+  buscador: string = "";
+  constructor(private servicioProducto: ProductoServiceService) { }
 
   ngOnInit(): void {
     this.CargarLista();
-    
+
   }
 
   CargarLista() {
     this.servicioProducto.ListaProductoService().subscribe((x => {
-      this.listaProductos= [];
+      this.listaProductos = [];
       this.listaProductos = x;
-      console.log(this.listaProductos);
-      
-    }), (_e => {console.log(_e);}));
+
+    }), (_e => { console.log(_e); }));
   }
 
+  EliminarProducto(id: number, tipoProducto: TipoProductoModel) {
 
-  leerArchivo(imagen:any):string{
+    this.servicioProducto.ProductoPorID(id).subscribe((x => {
 
-    if(imagen == null)
-    {
-      imagen ='';
+      x.pdrVisible = false;
+      this.servicioProducto.GuardarProducto(x,activo.usuarioPrograma.usrId).subscribe((z => {
+        this.CargarLista();
+      }), (_e => console.log(_e)));
+    }), (_e => console.log(_e)));
+  }
+  FiltrarPorBuscador() {
+if(this.buscador!="")
+{    this.servicioProducto.BuscarPorPalabra(this.buscador).subscribe((x => {
+      
+  if (x.length >0 ) {
+    this.listaProductos = [];
+    this.listaProductos = x;
+  } else { this.CargarLista(); }
+
+}), (_e => { console.error(_e) })); }else{
+  this.CargarLista();
+}
+
+
+  }
+
+  leerArchivo(imagen: any): string {
+
+    if (imagen == null) {
+      imagen = '';
     }
-   return Archivo.lectorImagen(imagen);
+    return Archivo.lectorImagen(imagen);
   }
 }

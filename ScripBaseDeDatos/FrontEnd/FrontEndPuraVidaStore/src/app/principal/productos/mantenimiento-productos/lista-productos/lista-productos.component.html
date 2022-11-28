@@ -1,3 +1,4 @@
+<input type="text" placeholder="Buscar" pInputText [(ngModel)]="buscador" (input)="FiltrarPorBuscador()" > 
 <p-table [value]="listaProductos" [tableStyle]="{'min-width': '60rem'}" [rows]="10"  [paginator]="true" [rowsPerPageOptions]="[10,25,50]">
    
     <ng-template pTemplate="header">
@@ -27,7 +28,7 @@
             <td>{{producto.prdUnidadesMinimas}}</td>
             <td>
                 <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning" routerLink="../agregar-editar/{{producto.prdId}}"></button>
-                <button pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-danger"></button>
+                <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="EliminarProducto(producto.prdId,producto.PrdIdTipoProductoNavigation)" ></button>
             </td>
            
         </tr>

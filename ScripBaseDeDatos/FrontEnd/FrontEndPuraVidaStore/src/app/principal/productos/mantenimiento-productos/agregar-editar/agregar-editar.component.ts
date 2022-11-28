@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, MinValidator, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { activo } from 'src/app/activo';
 
 import { ProductoModel } from 'src/app/models/producto-model';
 import { TipoProductoModel } from 'src/app/models/tipo-producto';
@@ -96,7 +97,7 @@ export class AgregarEditarComponent implements OnInit {
       }
     });
 
-    this.servicioProducto.GuardarProducto(this.productoEditarAgregar).subscribe((x => {
+    this.servicioProducto.GuardarProducto(this.productoEditarAgregar,activo.usuarioPrograma.usrId).subscribe((x => {
       console.log(x);
       //this.showSuccess(); 
       this.ruta.navigate(['./principal/productos/'])

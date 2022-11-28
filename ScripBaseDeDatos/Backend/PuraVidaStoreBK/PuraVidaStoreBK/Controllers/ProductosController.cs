@@ -55,10 +55,10 @@ namespace PuraVidaStoreBK.Controllers
 
 
         [HttpPost("GuardarProducto"), Authorize(Roles = "1")]
-        public async Task<IActionResult> GuardarProducto([FromBody] ProductoDTO model)
+        public async Task<IActionResult> GuardarProducto([FromBody] ProductoDTO model,int idUsuario)
         {
             var productoGuardar = _mapper.Map<Producto>(model);
-            productoGuardar = await _productoQuery.GuardarProducto(productoGuardar);
+            productoGuardar = await _productoQuery.GuardarProducto(productoGuardar, idUsuario);
             model = _mapper.Map<ProductoDTO>(productoGuardar);
             if (model != null)
             {

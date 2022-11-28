@@ -18,16 +18,16 @@ export class PrincipalComponent implements OnInit {
     psrApellido1: "",
     psrApellido2: "",
   }
-
+  bodegaActiva = activo.bodegaIngreso;
   usuario: UsuarioModel = activo.usuarioPrograma;
 
   constructor() {
   }
 
   ngOnInit(): void {
-
+    console.log(this.bodegaActiva);
     if (this.usuario.persona != null) {
-      this.NombreUsuario =this.usuario.persona ;
+      this.NombreUsuario = this.usuario.persona;
     }
     this.items = [
       {
@@ -50,6 +50,12 @@ export class PrincipalComponent implements OnInit {
         label: 'Usuarios',
         icon: 'pi pi-users',
         routerLink: 'usuarios',
+        visible: activo.esAministrador(),
+      },
+      {
+        label: 'Bodega',
+        icon: 'pi pi-home',
+        routerLink: 'bodegas',
         visible: activo.esAministrador(),
       }
     ];

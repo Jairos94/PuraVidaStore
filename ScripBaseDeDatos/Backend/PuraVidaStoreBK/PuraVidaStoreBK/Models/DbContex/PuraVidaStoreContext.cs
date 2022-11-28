@@ -60,10 +60,12 @@ namespace PuraVidaStoreBK.Models.DbContex
                 entity.HasKey(e => e.BdgId)
                     .HasName("PK__Bodegas__522D12A51FBC787E");
 
-                entity.Property(e => e.BdgDescripción)
+                entity.Property(e => e.BdgDescripcion)
                     .HasMaxLength(30)
                     .IsUnicode(false)
-                    .HasColumnName("bdgDescripción");
+                    .HasColumnName("bdgDescripcion");
+
+                entity.Property(e => e.BdgVisible).HasColumnName("bdgVisible");
             });
 
             modelBuilder.Entity<ClientesMayorista>(entity =>
