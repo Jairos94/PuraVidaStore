@@ -4,7 +4,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 //prime ng
 import { AccordionModule } from 'primeng/accordion';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
+import {DropdownModule} from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { PanelMenuModule } from 'primeng/panelmenu';
@@ -18,8 +20,10 @@ import { SidebarModule } from 'primeng/sidebar';
   ],
   exports: [
     AccordionModule,
+    AutoCompleteModule,
     BrowserAnimationsModule,
     ButtonModule,
+    DropdownModule,
     InputTextModule,
     MessageModule,
     PanelMenuModule,

@@ -10,7 +10,12 @@ namespace PuraVidaStoreBK.ExecQuerys
     {
         public async Task<Producto> GuardarProducto(Producto producto, int idUsuario)
         {
-          await  GuardarHistorial(producto, idUsuario);
+            producto.PrdIdTipoProductoNavigation = null;
+            if (producto.PrdId>0) 
+            {
+                await GuardarHistorial(producto, idUsuario);
+
+            }
 
             try
             {
@@ -25,7 +30,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                     }
                     else 
                     {
-                        db.Add(producto);
+                        db.Productos.Add(producto);
                         await db.SaveChangesAsync();
 
                         producto.PrdCodigo = "PVS" + producto.PrdIdTipoProducto.ToString() + "C" + producto.PrdId.ToString();
@@ -77,7 +82,8 @@ namespace PuraVidaStoreBK.ExecQuerys
                     listaProducto = await db.Productos
                         .Where(x=>x.PrdNombre.Contains(Descripcion)||
                                   x.PrdCodigo.Contains(Descripcion)||
-                                  x.PrdIdTipoProductoNavigation.TppDescripcion.Contains(Descripcion)
+                                  x.PrdIdTipoProductoNavigation.TppDescripcion.Contains(Descripcion)&&
+                                  x.PdrVisible == true
                                   )
                         .Include(x=>x.PrdIdTipoProductoNavigation)
                         .ToListAsync();
@@ -121,7 +127,7 @@ namespace PuraVidaStoreBK.ExecQuerys
 
 
                     if (productoConsulta.PrdPrecioVentaMayorista != producto.PrdPrecioVentaMayorista ||
-                        productoConsulta.PrdPrecioVentaMinorista != producto.PrdPrecioVentaMinorista)
+                        productoConsulta.PrdPrecioVentaMinorista != producto.PrdPrecioVentaMinorista&&productoConsulta!=null)
                     {
                         var Historial = new HistorialPrecio
                         {

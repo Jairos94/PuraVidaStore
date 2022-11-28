@@ -1,3 +1,4 @@
+import { BodegaModel } from "./models/bodega-model";
 import { PersonaModel } from "./models/persona-model";
 import { UsuarioModel } from "./models/usuario-model"
 
@@ -5,7 +6,7 @@ export class activo {
     public static usuarioPrograma: UsuarioModel;
     public static personaInteractiva: PersonaModel;
     public static token: string;
-
+    public static bodegaIngreso: BodegaModel;
     public static ConsultaIdPersona: number;//? valida cuando hay una persona por editar
 
     //!valida si es usuario está logeado con el fin de validar en los componentes sino devolver al login
