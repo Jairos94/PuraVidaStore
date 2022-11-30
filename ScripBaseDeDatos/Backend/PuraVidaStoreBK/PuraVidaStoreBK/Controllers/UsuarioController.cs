@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using PuraVidaStoreBK.ExecQuerys;
 using PuraVidaStoreBK.ExecQuerys.Interfaces;
 using PuraVidaStoreBK.Models;
 using PuraVidaStoreBK.Models.DbContex;
