@@ -17,11 +17,6 @@ export class BodegasComponent implements OnInit {
           icon: 'pi pi-home',
           routerLink:'lista-bodegas',
       },
-      {
-          label: 'Agregar Bodega',
-          icon: 'pi pi-home',
-          routerLink:'Edtitar-Agregar/0',
-      },
   ];
   }
 

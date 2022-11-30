@@ -26,9 +26,6 @@ namespace PuraVidaStoreBK.Controllers
 
         private IConfiguration Configuracion { get; }
 
-        
-        UsuariosQuerys Ejecuta = new UsuariosQuerys();
-        //personaQuery EjecutaPersona = new personaQuery();
         public UsuarioController(IConfiguration configuracion, 
             IMapper mapper,
             IUsuariosQuerys usuario,
