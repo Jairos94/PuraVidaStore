@@ -27,6 +27,23 @@ INSERT INTO [dbo].[Bodegas]
 GO
 
 
+
+INSERT INTO [dbo].[TipoMovimiento]
+           ([TpmDescripcion])
+     VALUES
+           ('Positivo'),('Negativo')
+GO
+
+
+INSERT INTO [dbo].[MotivosMovimientos]
+           ([MtmDescripcion]
+           ,[MtmIdTipoMovimiento])
+     VALUES
+           ('Ingreso por compra'
+           ,1)
+GO
+
+
 EXEC IngresarUsuario 'Admin','GzPfpnFb7HWhQeP0wnV0+g==','jairo.ri.ce@gmail.com',1,1
 go
 
