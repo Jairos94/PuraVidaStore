@@ -15,6 +15,7 @@ export class ListaBodegasComponent implements OnInit {
   listaBodegas: BodegaModel[] = [];
   display: boolean = false;
   header: string = '';
+  buscar: string = '';
 
   bodega: BodegaModel = {
     bdgId: 0,
@@ -89,6 +90,24 @@ export class ListaBodegasComponent implements OnInit {
 
   }
 
+
+  buscarPorDescription() {
+    if(this.buscar!=''){
+
+      this.ServicioBodega.listaUsuariosPorDescripcion(this.buscar).subscribe((x => {
+        if(x.length>0 )
+        {
+          this.listaBodegas=[];
+          this.listaBodegas=x;      
+        }else{
+          this.ObtenerBodegas()
+        }
+        }), (_e => console.error(_e)));
+    }else{
+      this.ObtenerBodegas()
+    }
+
+  }
 
   mensajeExito() {
     this.messageService.add({ severity: 'success', summary: 'Éxito al guardar', detail: 'Se guardó con éxito al guargar' });

@@ -2,7 +2,7 @@
 <div class="grid my-3">
     <button pButton pRipple type="button" icon="pi pi-plus" class="col-1 p-button-rounded" (click)="AgregarBodega()"></button>
     <span class="col p-float-label">
-        <input id="float-input" type="text" pInputText> 
+        <input id="float-input" type="text" [(ngModel)]="buscar" pInputText (input)="buscarPorDescription()"> 
         <label for="float-input">Buscar</label>
     </span>
 </div>
