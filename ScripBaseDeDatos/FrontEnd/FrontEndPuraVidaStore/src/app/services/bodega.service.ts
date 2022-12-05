@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -15,4 +15,22 @@ export class BodegaService {
   listaUsuarios(): Observable<BodegaModel[]> {
     return this.http.get<BodegaModel[]>(`${this.baseUrl}Bodega/ListaBodegas`);
   }
+
+  listaUsuariosPorDescripcion(descripcion:string): Observable<BodegaModel[]> {
+    const params = new HttpParams()
+    .set('Descripcion', descripcion);
+    return this.http.get<BodegaModel[]>(`${this.baseUrl}Bodega/ListaBodegasPorDescripcion`,{params});
+  }
+
+  bodegaPorId(id:number): Observable<BodegaModel> {
+    const params = new HttpParams()
+    .set('id', id);
+    return this.http.get<BodegaModel>(`${this.baseUrl}Bodega/BodegaPorId`,{params});
+  }
+
+  guardarBodega(bodega:BodegaModel): Observable<BodegaModel> {
+    return this.http.post<BodegaModel>(`${this.baseUrl}Bodega/GuardarBodega`,bodega);
+  }
+
 }
+

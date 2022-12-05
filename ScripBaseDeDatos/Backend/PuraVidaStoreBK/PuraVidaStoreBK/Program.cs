@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Prometheus;
 using PuraVidaStoreBK.ExecQuerys;
 using PuraVidaStoreBK.ExecQuerys.Interfaces;
 using Serilog;
@@ -57,12 +59,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience=false
         };
     });
-    
+
+//Promethius
+builder.Services.AddHttpClient(Options.DefaultName)
+    .UseHttpClientMetrics();
 
 //AutoMapper
 builder.Services.AddAutoMapper(typeof(Program));
 
 #region Inyeccion de dependencias
+builder.Services.AddSingleton<IDataBase, DataBase>();
 builder.Services.AddSingleton<IBodegaQuery, BodegaQuery>();
 builder.Services.AddSingleton<IPersonaQuery, PersonaQuery>();
 builder.Services.AddSingleton<IProductoQuery, ProductoQuery>();
@@ -96,6 +102,22 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseHttpMetrics(options => 
+{
+    options.ReduceStatusCodeCardinality();
+    options.AddCustomLabel("host", context => context.Request.Host.Host);
+});
+
+//app.UseEndpoints(endpoints =>
+//{
+//    // ...
+
+//    // Assumes that you have previously configured the "ReadMetrics" policy (not shown).
+//    endpoints.MapMetrics().RequireAuthorization("ReadMetrics");
+//});
+
+app.UseGrpcMetrics();
 
 app.Run();
 

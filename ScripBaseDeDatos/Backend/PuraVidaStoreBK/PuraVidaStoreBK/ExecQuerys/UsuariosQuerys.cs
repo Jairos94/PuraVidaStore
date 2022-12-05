@@ -11,13 +11,18 @@ namespace PuraVidaStoreBK.ExecQuerys
 {
     public class UsuariosQuerys:IUsuariosQuerys
     {
-        
-        DataBase data= new DataBase();
+        private readonly IDataBase _data;
+
+        public UsuariosQuerys(IDataBase conexion)
+        {
+            _data = conexion;
+        }
+        //DataBase data= new DataBase();
         //Hace Login
         public object GetUsuario(string Usuario, string Contrasena )
 
         {
-            SqlConnection conn=data.GetConnection();
+            SqlConnection conn=_data.GetConnection();
             object Usu = new object();
             try
             {
@@ -109,7 +114,7 @@ namespace PuraVidaStoreBK.ExecQuerys
         //Ingresa Usuarios
         public bool IngresarUsario(Usuario usuario,string clave)
         {
-            SqlConnection conn = data.GetConnection();
+            SqlConnection conn = _data.GetConnection();
             try
             {
                 SqlDataReader reader;
@@ -140,7 +145,7 @@ namespace PuraVidaStoreBK.ExecQuerys
         //edita a un usuario por Id
         public bool EditarUsuario(Usuario usuario,string clave)
         {
-            SqlConnection conn = data.GetConnection();
+            SqlConnection conn = _data.GetConnection();
             try
             {
                 SqlDataReader reader;
@@ -220,7 +225,7 @@ namespace PuraVidaStoreBK.ExecQuerys
 
         public string ocpv(int idUsuario) 
         {
-            SqlConnection conn = data.GetConnection();
+            SqlConnection conn = _data.GetConnection();
             string dato = "";
 
             try

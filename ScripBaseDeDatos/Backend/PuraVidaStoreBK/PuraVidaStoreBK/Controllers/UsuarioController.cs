@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using PuraVidaStoreBK.ExecQuerys;
 using PuraVidaStoreBK.ExecQuerys.Interfaces;
 using PuraVidaStoreBK.Models;
 using PuraVidaStoreBK.Models.DbContex;
@@ -26,9 +25,6 @@ namespace PuraVidaStoreBK.Controllers
 
         private IConfiguration Configuracion { get; }
 
-        
-        UsuariosQuerys Ejecuta = new UsuariosQuerys();
-        //personaQuery EjecutaPersona = new personaQuery();
         public UsuarioController(IConfiguration configuracion, 
             IMapper mapper,
             IUsuariosQuerys usuario,
