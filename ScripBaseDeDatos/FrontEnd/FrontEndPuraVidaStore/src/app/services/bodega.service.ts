@@ -29,7 +29,7 @@ export class BodegaService {
   }
 
   guardarBodega(bodega:BodegaModel): Observable<BodegaModel> {
-    return this.http.post<BodegaModel>(`${this.baseUrl}Bodega/BodegaPorId`,bodega);
+    return this.http.post<BodegaModel>(`${this.baseUrl}Bodega/GuardarBodega`,bodega);
   }
 
 }

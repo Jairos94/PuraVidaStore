@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MessageService } from 'primeng/api';
 import { activo } from 'src/app/activo';
 import { BodegaModel } from 'src/app/models/bodega-model';
 import { BodegaService } from 'src/app/services/bodega.service';
@@ -6,7 +7,8 @@ import { BodegaService } from 'src/app/services/bodega.service';
 @Component({
   selector: 'app-lista-bodegas',
   templateUrl: './lista-bodegas.component.html',
-  styleUrls: ['./lista-bodegas.component.css']
+  styleUrls: ['./lista-bodegas.component.css'],
+  providers: [MessageService]
 })
 export class ListaBodegasComponent implements OnInit {
 
@@ -21,7 +23,7 @@ export class ListaBodegasComponent implements OnInit {
   }
 
 
-  constructor(private ServicioBodega: BodegaService,) { }
+  constructor(private ServicioBodega: BodegaService, private messageService: MessageService) { }
 
   ngOnInit(): void {
     this.ObtenerBodegas();
@@ -62,13 +64,39 @@ export class ListaBodegasComponent implements OnInit {
   }
 
   GuardarBodega() {
+    this.ServicioBodega.guardarBodega(this.bodega).subscribe((x => {
+      this.ObtenerBodegas();
+      this.display = false;
+      this.mensajeExito();
+
+    }), (_e => console.error(_e)));
+
     if (this.bodega.bdgId > 0 && this.bodega.bdgId == activo.bodegaIngreso.bdgId) {
       activo.bodegaIngreso = this.bodega;
     }
-    this.ServicioBodega.guardarBodega(this.bodega).subscribe((x => {
- 
-    }), (_e => console.error(_e)));
+
+
   }
 
+  borrarBodega(bodegaParametro: BodegaModel) {
+    bodegaParametro.bdgVisible = false;
+    this.ServicioBodega.guardarBodega(bodegaParametro).subscribe((x => {
+
+      this.mensajeError();
+      this.ObtenerBodegas();
+
+    }), (_e => console.error(_e)));
+
+  }
+
+
+  mensajeExito() {
+    this.messageService.add({ severity: 'success', summary: 'Éxito al guardar', detail: 'Se guardó con éxito al guargar' });
+  }
+
+  mensajeError() {
+    this.messageService.add({ severity: 'error', summary: 'Bodega de eliminada', detail: 'Se eliminó la bodega seleccionada' });
+
+  }
 
 }

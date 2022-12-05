@@ -1,3 +1,4 @@
+<p-toast position="top-left"></p-toast>
 <div class="grid my-3">
     <button pButton pRipple type="button" icon="pi pi-plus" class="col-1 p-button-rounded" (click)="AgregarBodega()"></button>
     <span class="col p-float-label">
@@ -22,7 +23,7 @@
             <td>{{bodega.bdgDescripcion}}</td>
             <td>
                 <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning" (click)="EditarBodega(bodega.bdgId)"></button>
-                <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" [disabled]="deshabilitarEliminarBodegaActual(bodega.bdgId)"></button>
+                <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" [disabled]="deshabilitarEliminarBodegaActual(bodega.bdgId)" (click)="borrarBodega(bodega)"></button>
             </td>
         </tr>
     </ng-template>
@@ -37,7 +38,7 @@
         <label for="float-input">Nombre de la bodega</label>
     </span>
         <ng-template pTemplate="footer">
-        <button icon="pi pi-check" pButton type="button" label="Guardar" ></button>
+        <button icon="pi pi-check" pButton type="button" label="Guardar" (click)="GuardarBodega()"></button>
         <button icon="pi pi-times" pButton type="button" label="Cancelar" (click)="display=false"></button>
 
         </ng-template>
