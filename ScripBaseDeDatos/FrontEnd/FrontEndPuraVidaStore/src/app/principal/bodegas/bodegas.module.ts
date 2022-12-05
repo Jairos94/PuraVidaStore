@@ -15,7 +15,7 @@ import { ListaBodegasComponent } from './lista-bodegas/lista-bodegas.component';
   imports: [
     CommonModule,
     BodegasRoutingModule,
-    PrimeNgPrincipalModule
+    PrimeNgPrincipalModule,
   ]
 })
 export class BodegasModule { }

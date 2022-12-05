@@ -6,8 +6,7 @@ import { ListaBodegasComponent } from './lista-bodegas/lista-bodegas.component';
 const routes: Routes = [{ path: '', 
 component: BodegasComponent ,
 children:[
-  {path:'lista-bodegas',component:ListaBodegasComponent},
-  {path:'**',redirectTo:'lista-bodega'}
+  {path:'',component:ListaBodegasComponent}
 
 ]
 }];
