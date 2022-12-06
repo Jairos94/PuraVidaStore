@@ -17,7 +17,7 @@
 	INNER JOIN Movimientos M ON M.MvmIdProducto=P.PrdId
 	INNER JOIN MotivosMovimientos MM ON M.MvmIdMotivoMovimiento = MM.MtmId
 
-	WHERE M.MvmIdBodega = 1 
+	WHERE M.MvmIdBodega = 1 and MM.MtmIdTipoMovimiento=1
 	GROUP BY P.PrdId,MM.MtmIdTipoMovimiento,M.MvmIdProducto
 
 	--select * from MotivosMovimientos 
