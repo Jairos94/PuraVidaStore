@@ -1,4 +1,4 @@
-use <Base de datos Creada>
+use <nombre de la base de datos>
 INSERT INTO RolUsiario(RluDescripcion) VALUES('Administrador'),('Vendedor')
 go
 
