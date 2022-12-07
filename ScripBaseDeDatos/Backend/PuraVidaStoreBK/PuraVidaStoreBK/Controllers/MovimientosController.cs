@@ -43,7 +43,7 @@ namespace PuraVidaStoreBK.Controllers
 
         // POST api/<MovimientosController>
         [HttpPost("IngresarPorCompra"), Authorize(Roles = "1")]
-        public async Task<IActionResult> IngresarPorCompra(MovimientosDTO movimientos)
+        public async Task<IActionResult> IngresarPorCompra( MovimientosDTO movimientos)
         {
             try
             {
@@ -60,8 +60,26 @@ namespace PuraVidaStoreBK.Controllers
             
         }
 
-        
+        [HttpPost("IngresarPorCompraEnLista"), Authorize(Roles = "1")]
+        public async Task<IActionResult> IngresarPorCompraEnLista(List<MovimientosDTO> movimientos)
+        {
+            try
+            {
+                var cambioMovimiento = _mapper.Map<List<Movimiento>>(movimientos);
+                foreach (var ingreso in cambioMovimiento) 
+                {
+                    await _movimientosQuery.IngresoDeProductosPorCompra(ingreso);
+                }
+                return Ok("Ingreso con éxito");
+            }
+            catch (Exception)
+            {
 
-       
+                return BadRequest("No se pudo ingresar el movimiento");
+            }
+
+        }
+
+
     }
 }
