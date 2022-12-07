@@ -22,14 +22,24 @@ namespace PuraVidaStoreBK.Controllers
             _movimientosQuery = movimientosQuery;
             _mapper = mapper;
         }
-        // GET: api/<MovimientosController>
-        //[HttpGet("Inventarios"), Authorize(Roles = "1")]
-        //public async Task<IActionResult> Inventarios()
-        //{
-            
-        //}
+        //GET: api/<MovimientosController>
+        [HttpGet("Inventarios"), Authorize]
+        public async Task<IActionResult> Inventarios(int IdBodega)
+        {
+            try
+            {
+                var ListaProductos = await _movimientosQuery.ListaInventarios(IdBodega);
+                var retorno = _mapper.Map<List<InventariosDTO>>(ListaProductos);
+                return Ok(retorno);
+            }
+            catch (Exception)
+            {
 
-        
+                return BadRequest("Se presentó un error favor revisar los logs");
+            }
+        }
+
+
 
         // POST api/<MovimientosController>
         [HttpPost("IngresarPorCompra"), Authorize(Roles = "1")]

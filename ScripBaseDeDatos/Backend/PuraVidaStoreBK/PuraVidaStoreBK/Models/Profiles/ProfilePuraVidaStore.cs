@@ -11,6 +11,9 @@ namespace PuraVidaStoreBK.Models
             CreateMap<Bodega, BodegaDTO>();
             CreateMap<BodegaDTO, Bodega>();
 
+            CreateMap<Inventarios, InventariosDTO>();
+            CreateMap<InventariosDTO, Inventarios>();
+
             CreateMap<Movimiento, MovimientosDTO>();
             CreateMap<MovimientosDTO, Movimiento>();
 
