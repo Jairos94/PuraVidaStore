@@ -19,6 +19,7 @@ namespace PuraVidaStoreBK.Models.DbContex
         public int FtrEstatusId { get; set; }
         public int FtrBodega { get; set; }
         public int FtrFormaPago { get; set; }
+        public bool? FtrEsFacturaNula { get; set; }
 
         public virtual Bodega FtrBodegaNavigation { get; set; } = null!;
         public virtual EstatusFactura FtrEstatus { get; set; } = null!;

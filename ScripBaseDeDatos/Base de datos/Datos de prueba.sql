@@ -1,4 +1,4 @@
-use <Base de datos Creada>
+use <nombre de la base de datos>
 INSERT INTO RolUsiario(RluDescripcion) VALUES('Administrador'),('Vendedor')
 go
 
@@ -23,6 +23,23 @@ INSERT INTO [dbo].[Bodegas]
            ,[bdgVisible])
      VALUES
            ('Central'
+           ,1)
+GO
+
+
+
+INSERT INTO [dbo].[TipoMovimiento]
+           ([TpmDescripcion])
+     VALUES
+           ('Positivo'),('Negativo')
+GO
+
+
+INSERT INTO [dbo].[MotivosMovimientos]
+           ([MtmDescripcion]
+           ,[MtmIdTipoMovimiento])
+     VALUES
+           ('Ingreso por compra'
            ,1)
 GO
 
