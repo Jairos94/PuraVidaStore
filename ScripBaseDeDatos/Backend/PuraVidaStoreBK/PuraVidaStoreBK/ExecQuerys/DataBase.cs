@@ -1,18 +1,21 @@
-﻿using System.Data.SqlClient;
+﻿using PuraVidaStoreBK.ExecQuerys.Interfaces;
+using System.Data.SqlClient;
 
 namespace PuraVidaStoreBK.ExecQuerys
 {
-    public class DataBase
+    public class DataBase:IDataBase
     {
-        //Data Source=DESKTOP-4FJOI9V;Initial Catalog=PuraVidaStore;User ID=pvs;Password=***********
-        private const string server = "DESKTOP-4FJOI9V";
-        private const string user = "pvs";
-        private const string password = "$psv2022$";
-        private const string dataBase = "PuraVidaStore";
-        private const string conexion = "Data Source=" + server + "; Initial Catalog= " + dataBase + "; User ID=" + user + "; Password=" + password;
+        private readonly IConfiguration _configuration;
+        private  string conexion = "";
 
+        public DataBase(IConfiguration configuration)
+        {
+            _configuration = configuration;
+            conexion = _configuration["ConnectionStrings:sqlServer"];
+        }
         public SqlConnection GetConnection()
         {
+            
             return new SqlConnection(conexion);
         }
     }

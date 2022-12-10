@@ -14,11 +14,12 @@ export class ListaProductosComponent implements OnInit {
 
   listaProductos: ProductoModel[] = [];
   buscador: string = "";
+  esAdministrador: boolean = false;
   constructor(private servicioProducto: ProductoServiceService) { }
 
   ngOnInit(): void {
     this.CargarLista();
-
+    this.esAdministrador = activo.esAministrador();
   }
 
   CargarLista() {
@@ -34,23 +35,24 @@ export class ListaProductosComponent implements OnInit {
     this.servicioProducto.ProductoPorID(id).subscribe((x => {
 
       x.pdrVisible = false;
-      this.servicioProducto.GuardarProducto(x,activo.usuarioPrograma.usrId).subscribe((z => {
+      this.servicioProducto.GuardarProducto(x, activo.usuarioPrograma.usrId).subscribe((z => {
         this.CargarLista();
       }), (_e => console.log(_e)));
     }), (_e => console.log(_e)));
   }
   FiltrarPorBuscador() {
-if(this.buscador!="")
-{    this.servicioProducto.BuscarPorPalabra(this.buscador).subscribe((x => {
-      
-  if (x.length >0 ) {
-    this.listaProductos = [];
-    this.listaProductos = x;
-  } else { this.CargarLista(); }
+    if (this.buscador != "") {
+      this.servicioProducto.BuscarPorPalabra(this.buscador).subscribe((x => {
 
-}), (_e => { console.error(_e) })); }else{
-  this.CargarLista();
-}
+        if (x.length > 0) {
+          this.listaProductos = [];
+          this.listaProductos = x;
+        } else { this.CargarLista(); }
+
+      }), (_e => { console.error(_e) }));
+    } else {
+      this.CargarLista();
+    }
 
 
   }

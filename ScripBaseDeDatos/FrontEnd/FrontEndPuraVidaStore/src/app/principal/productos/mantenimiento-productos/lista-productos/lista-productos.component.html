@@ -11,7 +11,7 @@
             <th>Precio</th>
             <th>Precio Mayorista</th>
             <th>Unidades Mínimas</th>
-            <th>Acciones</th>
+            <th *ngIf="esAdministrador">Acciones</th>
         </tr>
     </ng-template>
     
@@ -26,7 +26,7 @@
             <td>{{producto.prdPrecioVentaMinorista | currency:'CRC'}}</td>
             <td>{{producto.prdPrecioVentaMayorista | currency:'CRC'}}</td>
             <td>{{producto.prdUnidadesMinimas}}</td>
-            <td>
+            <td *ngIf="esAdministrador">
                 <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning" routerLink="../agregar-editar/{{producto.prdId}}"></button>
                 <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="EliminarProducto(producto.prdId,producto.PrdIdTipoProductoNavigation)" ></button>
             </td>

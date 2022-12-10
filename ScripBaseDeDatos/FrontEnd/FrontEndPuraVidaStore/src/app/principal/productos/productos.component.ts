@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { activo } from 'src/app/activo';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class ProductosComponent implements OnInit {
             label: 'Agregar',
             icon: 'pi pi-pw pi-file',
             routerLink: 'productos/agregar-editar/0',
+            visible:activo.esAministrador()
           },
           {
             label: 'Lista de productos',
