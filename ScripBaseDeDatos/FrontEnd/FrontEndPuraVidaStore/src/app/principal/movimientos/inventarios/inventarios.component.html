@@ -2,9 +2,13 @@
 <div class="card">
     <p-table id="Inventarios" [value]="listaArticulos" [tableStyle]="{'min-width': '50rem'}" [rows]="10"  [paginator]="true" [rowsPerPageOptions]="[10,25,50]">
         <ng-template pTemplate="caption">
-            <button pButton pRipple type="button" icon="pi pi-check" class="p-button-rounded" (click)="exportarExcel()"></button>
-            <button pButton pRipple type="button" icon="pi pi-edit" class="p-button-rounded" (click)="exportarPDF()"></button>
 
+                <button pButton pRipple type="button" icon="pi pi-file-excel" class="p-button-rounded p-button-outlined mx-3" (click)="exportarExcel()"></button>
+                <button pButton pRipple type="button" icon="pi pi-file-pdf" class="p-button-rounded p-button-warning p-button-outlined mx-3" (click)="exportarPDF()"></button>
+
+
+
+                <p-autoComplete [(ngModel)]="buscardor" [suggestions]="listaArticulos" (completeMethod)="sugerencias()" field="producto.prdNombre"></p-autoComplete>
         </ng-template>
         <ng-template pTemplate="header" let-columns>
             <tr>

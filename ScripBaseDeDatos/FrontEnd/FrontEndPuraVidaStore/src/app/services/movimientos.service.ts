@@ -19,4 +19,14 @@ export class MovimientosService {
       .set('IdBodega', idBodega);
     return this.http.get<InventariosModel[]>(`${this.baseUrl}Movimientos/Inventarios`, { params });
   }
+
+
+  Sugerencias(idBodega:number,buscador:string):Observable<InventariosModel[]>
+  {
+    const params = new HttpParams()
+      .set('IdBodega', idBodega)
+      .set('Buscador', buscador)
+      ;
+    return this.http.get<InventariosModel[]>(`${this.baseUrl}Movimientos/Busqueda`, { params });
+  }
 }

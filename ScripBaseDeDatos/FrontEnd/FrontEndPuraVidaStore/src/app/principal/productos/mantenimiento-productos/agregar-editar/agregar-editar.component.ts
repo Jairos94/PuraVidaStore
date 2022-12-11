@@ -33,6 +33,7 @@ export class AgregarEditarComponent implements OnInit {
       prdCodigoProvedor: '',
       pdrVisible: true,
       pdrFoto: null,
+      pdrTieneExistencias : false,
       prdIdTipoProductoNavigation: null
     };
 

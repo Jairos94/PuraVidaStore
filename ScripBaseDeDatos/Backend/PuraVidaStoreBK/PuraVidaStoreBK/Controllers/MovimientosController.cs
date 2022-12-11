@@ -39,6 +39,22 @@ namespace PuraVidaStoreBK.Controllers
             }
         }
 
+        [HttpGet("Busqueda"), Authorize]
+        public async Task<IActionResult> Busqueda(int IdBodega,string Buscador)
+        {
+            try
+            {
+                var ListaProductos = await _movimientosQuery.PorBusqueda(IdBodega,Buscador);
+                var retorno = _mapper.Map<List<InventariosDTO>>(ListaProductos);
+                return Ok(retorno);
+            }
+            catch (Exception)
+            {
+
+                return BadRequest("Se presentó un error favor revisar los logs");
+            }
+        }
+
 
 
         // POST api/<MovimientosController>

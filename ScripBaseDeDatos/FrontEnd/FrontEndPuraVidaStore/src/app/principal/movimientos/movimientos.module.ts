@@ -6,6 +6,7 @@ import { MovimientosRoutingModule } from './movimientos-routing.module';
 import { MovimientosComponent } from './movimientos.component';
 import { IngresosComponent } from './ingresos/ingresos.component';
 import { InventariosComponent } from './inventarios/inventarios.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { InventariosComponent } from './inventarios/inventarios.component';
   imports: [
     CommonModule,
     MovimientosRoutingModule,
-    PrimeNgPrincipalModule
+    PrimeNgPrincipalModule,
+    FormsModule
   ]
 })
 export class MovimientosModule { }

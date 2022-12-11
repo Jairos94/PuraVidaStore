@@ -17,8 +17,9 @@ export class InventariosComponent implements OnInit {
   cols: any[] = [];
   listaArticulos: InventariosModel[] = [];
   exportColumns: any[] = [];
+  buscardor: string = '';
 
-  constructor(private servio: MovimientosService) {}
+  constructor(private servicio: MovimientosService) {}
 
   ngOnInit() {
     this.existencias();
@@ -50,17 +51,15 @@ export class InventariosComponent implements OnInit {
     doc.text('Lista de articulos en existencia', 10, 10);
 
     this.listaArticulos.forEach((x) => {
-
-      var tipo:TipoProductoModel={
-        tppId:0,
-        tppDescripcion:'',
-        tppVisible:true
+      var tipo: TipoProductoModel = {
+        tppId: 0,
+        tppDescripcion: '',
+        tppVisible: true,
       };
 
-      if(x.producto.prdIdTipoProductoNavigation!=null){
-         tipo = x.producto.prdIdTipoProductoNavigation;
+      if (x.producto.prdIdTipoProductoNavigation != null) {
+        tipo = x.producto.prdIdTipoProductoNavigation;
       }
-
 
       autoTable(doc, {
         head: [titulos],
@@ -69,7 +68,7 @@ export class InventariosComponent implements OnInit {
             x.producto.prdNombre,
             x.producto.prdCodigo,
             x.producto.prdCodigoProvedor || '',
-            tipo.tppDescripcion||'',
+            tipo.tppDescripcion || '',
             x.cantidadExistencia,
           ],
         ],
@@ -81,12 +80,31 @@ export class InventariosComponent implements OnInit {
   }
 
   existencias() {
-    this.servio.ProductosExistencias(activo.bodegaIngreso.bdgId).subscribe({
+    this.servicio.ProductosExistencias(activo.bodegaIngreso.bdgId).subscribe({
       next: (x) => {
         this.listaArticulos = [];
         this.listaArticulos = x;
       },
       error: (_e) => console.error(_e),
     });
+  }
+
+  sugerencias() {
+    this.servicio
+      .Sugerencias(activo.bodegaIngreso.bdgId, this.buscardor)
+      .subscribe({
+        next: (x) => {
+          if (x.length > 0) {
+            this.listaArticulos = [];
+            this.listaArticulos = x;
+          } else {
+            this.existencias();
+          }
+        },
+        error: (_e) =>{
+          console.error(_e);
+          this.existencias();
+        }
+      });
   }
 }

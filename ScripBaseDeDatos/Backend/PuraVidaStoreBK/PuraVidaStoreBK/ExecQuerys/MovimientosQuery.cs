@@ -75,7 +75,43 @@ namespace PuraVidaStoreBK.ExecQuerys
            
         }
 
+        public async Task<List<Inventarios>> PorBusqueda(int IdBodega, string buscador)
+        {
+            var listaIds = await listaIdProductos(IdBodega);
+            var ListaProductos = new List<Inventarios>();
+            try
+            {
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
+                {
+                    foreach (var ProductoCantidad in listaIds)
+                    {
+                        var producto = await db.Productos.Where(x => 
+                                                                x.PrdId == ProductoCantidad.idProducto && (
+                                                                x.PrdNombre.Contains(buscador) ||
+                                                                x.PrdCodigo.Contains(buscador)||
+                                                                x.PrdCodigoProvedor.Contains(buscador)||
+                                                                x.PrdIdTipoProductoNavigation.TppDescripcion.Contains(buscador)
+                                                                ))
+                                                         .Include(x => x.PrdIdTipoProductoNavigation)
+                                                         .FirstOrDefaultAsync();
+                        var inventario = new Inventarios();
+                        inventario.producto = producto;
+                        inventario.CantidadExistencia = ProductoCantidad.Cantidad;
+                        if (inventario.CantidadExistencia != 0)
+                        {
+                            ListaProductos.Add(inventario);
+                        }
+                    }
+                }
 
+            }
+            catch (Exception ex)
+            {
+
+                Log.Error(ex.StackTrace);
+            }
+            return ListaProductos;
+        }
 
         private async Task<Movimiento> ingresarMovimmiento(Movimiento movimiento) 
         {
