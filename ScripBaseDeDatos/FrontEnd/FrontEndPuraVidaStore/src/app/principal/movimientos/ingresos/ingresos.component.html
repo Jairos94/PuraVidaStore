@@ -1,1 +1,33 @@
-<p>ingresos works!</p>
+<p-table [value]="listaIngresoInventarios" [tableStyle]="{'min-width': '60rem'}">
+    <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+            Products
+            <p-button icon="pi pi-refresh"></p-button>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Nombre</th>
+            <th>Imagen</th>
+            <th>Código</th>
+            <th>Código proveedor</th>
+            <th>Categoria</th>
+            <th>Cantidad</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-producto>
+        <tr>
+            <td>{{producto.producto.prdNombre}}</td>
+            <td><img [src]="leerArchivo(producto.pdrFoto)" [alt]="producto.name" width="100" class="shadow-4" /></td>
+            <td>{{producto.producto.prdCodigo}}</td>
+            <td>{{producto.producto.prdCodigoProvedor}}</td>
+            <td>{{producto.producto.prdIdTipoProductoNavigation.tppDescripcion}}</td>
+            <td><span [class]="'product-badge status-' + producto.inventoryStatus.toLowerCase()">{{producto.inventoryStatus}}</span></td>
+        </tr>
+    </ng-template>
+<!--     <ng-template pTemplate="summary">
+        <div class="flex align-items-center justify-content-between">
+            In total there are {{products ? products.length : 0 }} products.
+        </div>
+    </ng-template> -->
+</p-table>

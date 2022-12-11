@@ -16,6 +16,47 @@ namespace PuraVidaStoreBK.ExecQuerys
         {
             _conexion = conexion;
         }
+
+        public async Task<bool> IngresarProductosAlInventario(List<Inventarios> Inventarios, int IdBodega, int IdUsuario, int Motivo)
+        {
+            var retorno = false;
+            try
+            {
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
+                {
+                    Inventarios.ForEach(async x =>
+                    {
+
+                        x.producto.PdrVisible = true;
+                        x.producto.PdrTieneExistencias = true;
+
+                        db.Productos.Update(x.producto);
+                        await db.SaveChangesAsync();
+                        
+                        var movimiento = new Movimiento 
+                        {
+                            MvmIdProducto = x.producto.PrdId,
+                            MvmCantidad = x.CantidadExistencia,
+                            MvmFecha = DateTime.Now,
+                            MvmIdMotivoMovimiento = Motivo,
+                            MvmIdUsuario = IdUsuario,
+                            MvmIdBodega = IdBodega,
+                        };
+
+                        await ingresarMovimmiento(movimiento);
+                    });
+                    retorno = true;
+                }
+                    
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return retorno;
+        }
+
         public async Task<Movimiento> IngresoDeProductosPorCompra(Movimiento movimiento)
         {
 
@@ -55,12 +96,28 @@ namespace PuraVidaStoreBK.ExecQuerys
                         var producto = await db.Productos.Where(x=>x.PrdId==ProductoCantidad.idProducto)
                                                          .Include(x=>x.PrdIdTipoProductoNavigation)
                                                          .FirstOrDefaultAsync();
+                       
                         var inventario = new Inventarios();
                         inventario.producto = producto;
                         inventario.CantidadExistencia = ProductoCantidad.Cantidad;
-                        if (inventario.CantidadExistencia!=0) 
+                        if (inventario.CantidadExistencia != 0)
                         {
+                            if (producto.PdrTieneExistencias == false || producto.PdrTieneExistencias == null || producto.PdrVisible == false || producto.PdrVisible == null)
+                            {
+                                producto.PdrVisible = true;
+                                producto.PdrTieneExistencias = true;
+
+                                db.Productos.Update(producto);
+                                await db.SaveChangesAsync();
+                            }
                             ListaProductos.Add(inventario);
+                        }
+                        else 
+                        {
+                            producto.PdrTieneExistencias = false;
+
+                            db.Productos.Update(producto);
+                            await db.SaveChangesAsync();
                         }
                     }
                 }

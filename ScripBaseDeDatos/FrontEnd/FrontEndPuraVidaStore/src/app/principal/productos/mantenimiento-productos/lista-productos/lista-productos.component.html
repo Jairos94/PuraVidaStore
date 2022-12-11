@@ -23,8 +23,8 @@
             <td><img [src]="leerArchivo(producto.pdrFoto)" [alt]="producto.prdNombre" width="100" class="shadow-4" /></td>
             <td>{{producto.prdCodigo}}</td>
             <td>{{producto.prdCodigoProvedor}}</td>
-            <td>{{producto.prdPrecioVentaMinorista | currency:'CRC'}}</td>
-            <td>{{producto.prdPrecioVentaMayorista | currency:'CRC'}}</td>
+            <td>{{producto.prdPrecioVentaMinorista | currency:'CRC':'symbol-narrow' }}</td>
+            <td>{{producto.prdPrecioVentaMayorista | currency:'CRC':'symbol-narrow' }}</td>
             <td>{{producto.prdUnidadesMinimas}}</td>
             <td *ngIf="esAdministrador">
                 <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning" routerLink="../agregar-editar/{{producto.prdId}}"></button>

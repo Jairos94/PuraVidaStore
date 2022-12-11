@@ -4,10 +4,10 @@ namespace PuraVidaStoreBK.ExecQuerys.Interfaces
 {
     public interface IMovimientosQuery
     {
-        public Task<Movimiento> IngresoDeProductosPorCompra(Movimiento movimiento);
         public Task<List<Inventarios>> ListaInventarios(int IdBodega);
 
         public Task<List<Inventarios>> PorBusqueda(int IdBodega,string buscador);
+        public Task<bool> IngresarProductosAlInventario(List<Inventarios> Inventarios, int IdBodega, int idUsuario, int Motivo);
 
     }
 }

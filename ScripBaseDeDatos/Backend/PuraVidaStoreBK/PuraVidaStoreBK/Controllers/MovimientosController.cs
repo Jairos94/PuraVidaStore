@@ -44,7 +44,7 @@ namespace PuraVidaStoreBK.Controllers
         {
             try
             {
-                var ListaProductos = await _movimientosQuery.PorBusqueda(IdBodega,Buscador);
+                  var ListaProductos = await _movimientosQuery.ListaInventarios(IdBodega);
                 var retorno = _mapper.Map<List<InventariosDTO>>(ListaProductos);
                 return Ok(retorno);
             }
@@ -56,45 +56,21 @@ namespace PuraVidaStoreBK.Controllers
         }
 
 
-
-        // POST api/<MovimientosController>
-        [HttpPost("IngresarPorCompra"), Authorize(Roles = "1")]
-        public async Task<IActionResult> IngresarPorCompra( MovimientosDTO movimientos)
+        [HttpPost("IngresarProductosAlInventario")]
+        public async Task<IActionResult> IngresarProductosAlInventario([FromBody] List<InventariosDTO> InventariosAgregar, int IdBodega, int IdUsuario, int Motivo)
         {
             try
             {
-                var cambioMovimiento = _mapper.Map<Movimiento>(movimientos);
-                var ingresoMovimiento = await _movimientosQuery.IngresoDeProductosPorCompra(cambioMovimiento);
-                movimientos = _mapper.Map<MovimientosDTO>(ingresoMovimiento);
-                return Ok(movimientos);
+                var seGuardoDatos = await _movimientosQuery.IngresarProductosAlInventario(_mapper.Map<List<Inventarios>>(InventariosAgregar), IdBodega, IdUsuario, Motivo);
+                return Ok(seGuardoDatos);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                return BadRequest("No se pudo ingresar el movimiento");
+                return BadRequest("Se presentó un error favor revisar los logs");
             }
-            
         }
 
-        [HttpPost("IngresarPorCompraEnLista"), Authorize(Roles = "1")]
-        public async Task<IActionResult> IngresarPorCompraEnLista(List<MovimientosDTO> movimientos)
-        {
-            try
-            {
-                var cambioMovimiento = _mapper.Map<List<Movimiento>>(movimientos);
-                foreach (var ingreso in cambioMovimiento) 
-                {
-                    await _movimientosQuery.IngresoDeProductosPorCompra(ingreso);
-                }
-                return Ok("Ingreso con éxito");
-            }
-            catch (Exception)
-            {
-
-                return BadRequest("No se pudo ingresar el movimiento");
-            }
-
-        }
 
 
     }
