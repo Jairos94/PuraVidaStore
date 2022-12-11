@@ -1,5 +1,5 @@
 export interface TipoProductoModel {
     tppId: number;
-    TppDescripcion: string;
+    tppDescripcion: string;
     tppVisible: boolean | null;
 }

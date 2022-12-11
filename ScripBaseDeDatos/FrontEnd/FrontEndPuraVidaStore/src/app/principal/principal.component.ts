@@ -25,7 +25,8 @@ export class PrincipalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.bodegaActiva);
+
+
     if (this.usuario.persona != null) {
       this.NombreUsuario = this.usuario.persona;
     }

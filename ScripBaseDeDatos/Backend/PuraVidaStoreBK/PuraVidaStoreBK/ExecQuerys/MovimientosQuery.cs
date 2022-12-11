@@ -58,10 +58,10 @@ namespace PuraVidaStoreBK.ExecQuerys
                         var inventario = new Inventarios();
                         inventario.producto = producto;
                         inventario.CantidadExistencia = ProductoCantidad.Cantidad;
-                        ListaProductos.Add(inventario);
-
-
-
+                        if (inventario.CantidadExistencia!=0) 
+                        {
+                            ListaProductos.Add(inventario);
+                        }
                     }
                 }
                    

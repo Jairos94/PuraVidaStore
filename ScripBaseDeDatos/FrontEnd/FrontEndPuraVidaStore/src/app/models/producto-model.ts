@@ -11,5 +11,5 @@ export interface ProductoModel {
     prdCodigoProvedor: string | null;
     pdrVisible: boolean | null;
     pdrFoto: string | null;
-    PrdIdTipoProductoNavigation:TipoProductoModel  | null;
+    prdIdTipoProductoNavigation:TipoProductoModel  | null;
 }

@@ -1,3 +1,4 @@
+import { TipoProductoModel } from 'src/app/models/tipo-producto';
 import { activo } from 'src/app/activo';
 import { MovimientosService } from './../../../services/movimientos.service';
 import { Component, OnInit } from '@angular/core';
@@ -44,33 +45,31 @@ export class InventariosComponent implements OnInit {
       'Existencias',
     ];
 
-    const listaExistencia: string[] = [];
-
-    this.listaArticulos.forEach((x) => {
-      var datoAGuardar: any = {
-        prdNombre: x.producto.prdNombre,
-        prdCodigo: x.producto.prdCodigo,
-        prdCodigoProvedor: x.producto.prdCodigoProvedor,
-        Tipo: x.producto.PrdIdTipoProductoNavigation?.TppDescripcion.toString,
-        cantidadExistencia: x.cantidadExistencia.toString,
-      };
-      listaExistencia.push(datoAGuardar);
-    });
-
     const doc = new jsPDF();
 
-    autoTable(doc, {
-      head: [titulos],
-    });
+    doc.text('Lista de articulos en existencia', 10, 10);
 
     this.listaArticulos.forEach((x) => {
+
+      var tipo:TipoProductoModel={
+        tppId:0,
+        tppDescripcion:'',
+        tppVisible:true
+      };
+
+      if(x.producto.prdIdTipoProductoNavigation!=null){
+         tipo = x.producto.prdIdTipoProductoNavigation;
+      }
+
+
       autoTable(doc, {
+        head: [titulos],
         body: [
           [
             x.producto.prdNombre,
             x.producto.prdCodigo,
             x.producto.prdCodigoProvedor || '',
-            x.producto.PrdIdTipoProductoNavigation?.TppDescripcion || '',
+            tipo.tppDescripcion||'',
             x.cantidadExistencia,
           ],
         ],
