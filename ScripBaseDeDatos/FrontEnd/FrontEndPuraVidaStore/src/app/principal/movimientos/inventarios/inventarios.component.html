@@ -1,25 +1,27 @@
 
 <div class="card">
-    <p-table [value]="listaArticulos" [tableStyle]="{'min-width': '50rem'}" [rows]="10"  [paginator]="true" [rowsPerPageOptions]="[10,25,50]">
+    <p-table id="Inventarios" [value]="listaArticulos" [tableStyle]="{'min-width': '50rem'}" [rows]="10"  [paginator]="true" [rowsPerPageOptions]="[10,25,50]">
         <ng-template pTemplate="caption">
-          buscador y botones
+            <button pButton pRipple type="button" icon="pi pi-check" class="p-button-rounded" (click)="exportarExcel()"></button>
+            <button pButton pRipple type="button" icon="pi pi-edit" class="p-button-rounded" (click)="exportarPDF()"></button>
+
         </ng-template>
         <ng-template pTemplate="header" let-columns>
             <tr>
-                <th>Nombre del artículo </th>
+                <th>Nombre del artículo</th>
                 <th>Código</th>
                 <th>Código del proveedor</th>
-                <th>TipoProducto</th>
+                <th>Tipo producto</th>
                 <th>Existencias</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-producto let-columns="columns">
             <tr>
-                <td>{{producto.producto.PrdNombre}}</td>
-                <td>{{producto.producto.PrdCodigo}}</td>
-                <td>{{producto.producto.PrdCodigoProvedor}}</td>
-                <td>{{producto.producto.PrdIdTipoProductoNavigation.TppDescripcion}}</td>
-                <td>{{producto.producto.CantidadExistencia}}</td>
+                <td>{{producto.producto.prdNombre}}</td>
+                <td>{{producto.producto.prdCodigo}}</td>
+                <td>{{producto.producto.prdCodigoProvedor}}</td>
+                <td>{{producto.producto.prdIdTipoProductoNavigation.tppDescripcion}}</td>
+                <td>{{producto.cantidadExistencia}}</td>
             </tr>
         </ng-template>
     </p-table>
