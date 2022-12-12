@@ -32,4 +32,9 @@ export class ProductoServiceService {
     .set('Descripcion', buscador);
     return this.http.get<ProductoModel[]>(`${this.baseUrl}Productos/ListaProductosPorDescripcion`,{params});
   }
+  ObtenerProductoPorCodigo(codigo:string):Observable<ProductoModel>{
+    const params = new HttpParams()
+    .set('codigo', codigo);
+    return this.http.get<ProductoModel>(`${this.baseUrl}Productos/BusquedaPorCodigo`,{params});
+  }
 }

@@ -8,6 +8,8 @@ namespace PuraVidaStoreBK.ExecQuerys
 {
     public class ProductoQuery : IProductoQuery
     {
+       
+
         public async Task<Producto> GuardarProducto(Producto producto, int idUsuario)
         {
             producto.PrdIdTipoProductoNavigation = null;
@@ -49,7 +51,16 @@ namespace PuraVidaStoreBK.ExecQuerys
             }
             return producto;
         }
-
+        public async Task<Producto> BuscarProductoPorCodigo(string codigo)
+        {
+            using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
+            {
+             return await  db.Productos
+                    .Where(x=>x.PrdCodigo== codigo || x.PrdCodigoProvedor == codigo)
+                    .Include(x=>x.PrdIdTipoProductoNavigation)
+                    .FirstAsync();
+            }
+        }
         public async Task<List<Producto>> ListaProductos()
         {
             var listaProducto = new List<Producto>();

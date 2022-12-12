@@ -16,7 +16,7 @@ export class MovimientosComponent implements OnInit {
 
     this.items = [
       {
-        label: 'Inventarioss',
+        label: 'Inventarios',
         icon: 'pi pi-pw pi-file',
         routerLink: 'inventarios'
       },

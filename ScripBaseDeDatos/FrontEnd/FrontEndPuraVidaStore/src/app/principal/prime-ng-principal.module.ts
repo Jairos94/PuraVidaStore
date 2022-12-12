@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 //prime ng
 import { AccordionModule } from 'primeng/accordion';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { AutoFocusModule } from 'primeng/autofocus';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { CardModule } from 'primeng/card';
@@ -37,6 +38,7 @@ import { SlideMenuModule } from 'primeng/slidemenu';
 
     AccordionModule,
     AutoCompleteModule,
+    AutoFocusModule,
     ButtonModule,
     CalendarModule,
     CardModule,

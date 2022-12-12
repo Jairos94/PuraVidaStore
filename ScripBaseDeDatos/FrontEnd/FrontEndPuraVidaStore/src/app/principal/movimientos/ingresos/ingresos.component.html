@@ -2,7 +2,16 @@
     <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between">
             Products
-            <p-button icon="pi pi-refresh"></p-button>
+            <div class="mx-3">
+                <label>Buscar por codigo</label>
+                <input type="text" pAutoFocus [autofocus]="true" pInputText [(ngModel)]="codigo" (keyup.enter)="buscarProductoPorCodigo()"/>
+            </div>
+
+            <div class="mx-3">
+                <label>Buscar por descripción</label>
+                <input type="text" pInputText />
+            </div>
+            <!-- <p-button icon="pi pi-refresh"></p-button> -->
         </div>
     </ng-template>
     <ng-template pTemplate="header">
@@ -18,11 +27,24 @@
     <ng-template pTemplate="body" let-producto>
         <tr>
             <td>{{producto.producto.prdNombre}}</td>
-            <td><img [src]="leerArchivo(producto.pdrFoto)" [alt]="producto.name" width="100" class="shadow-4" /></td>
+            <td><img [src]="leerArchivo(producto.producto.pdrFoto)" [alt]="producto.name" width="100" class="shadow-4" /></td>
             <td>{{producto.producto.prdCodigo}}</td>
             <td>{{producto.producto.prdCodigoProvedor}}</td>
-            <td>{{producto.producto.prdIdTipoProductoNavigation.tppDescripcion}}</td>
-            <td><span [class]="'product-badge status-' + producto.inventoryStatus.toLowerCase()">{{producto.inventoryStatus}}</span></td>
+            <td>{{producto.producto.prdIdTipoProductoNavigation?.tppDescripcion}}</td>
+            <td pEditableColumn>
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <div class="field col-12 md:col-3">
+                            <label for="minmax-buttons">Unidades</label>
+                            <p-inputNumber [(ngModel)]="producto.cantidadExistencia" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="100">
+                            </p-inputNumber>
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{producto.cantidadExistencia}}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
         </tr>
     </ng-template>
 <!--     <ng-template pTemplate="summary">

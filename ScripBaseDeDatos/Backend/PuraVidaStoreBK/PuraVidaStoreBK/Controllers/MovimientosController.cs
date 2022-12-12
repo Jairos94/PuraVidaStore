@@ -56,7 +56,7 @@ namespace PuraVidaStoreBK.Controllers
         }
 
 
-        [HttpPost("IngresarProductosAlInventario")]
+        [HttpPost("IngresarProductosAlInventario"),Authorize(Roles ="1")]
         public async Task<IActionResult> IngresarProductosAlInventario([FromBody] List<InventariosDTO> InventariosAgregar, int IdBodega, int IdUsuario, int Motivo)
         {
             try
