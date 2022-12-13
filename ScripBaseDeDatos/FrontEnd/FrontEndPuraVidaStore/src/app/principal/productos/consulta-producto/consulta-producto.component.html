@@ -1,0 +1,32 @@
+<div class="field">
+  <input
+    id="firstname1"
+    type="text"
+    placeholder="Buscar por codigo"
+    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+  />
+</div>
+
+<p-card>
+  <ng-template pTemplate="header">
+    <div class="flex justify-content-center flex-wrap card-container col">
+      <div class="flex align-items-center justify-content-center col">
+        <div class="field">
+          <h1>Nombre del producto</h1>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <div class="flex justify-content-center flex-wrap card-container col">
+    <div class="flex align-items-center justify-content-center col">
+      <div class="field">
+        <img
+          src="../../../../assets/no-pictures.png"
+          [style]="{ width: '15rem', 'margin-bottom': '2em' }"
+        />
+      </div>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer"> tppDescripcion </ng-template>
+</p-card>

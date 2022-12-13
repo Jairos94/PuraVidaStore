@@ -1,3 +1,4 @@
+import { ProductoModel } from 'src/app/models/producto-model';
 import { ProductoServiceService } from 'src/app/services/producto-service.service';
 import { InventariosModel } from 'src/app/models/inventarios-model';
 import { Component, OnInit } from '@angular/core';
@@ -11,6 +12,24 @@ import { Archivo } from 'src/app/utils/Archivos';
 export class IngresosComponent implements OnInit {
   listaIngresoInventarios: InventariosModel[] = [];
   codigo: string = '';
+
+  producto: ProductoModel = {
+    prdId: 0,
+    prdNombre: '',
+    prdPrecioVentaMayorista: 0,
+    prdPrecioVentaMinorista: 0,
+    prdCodigo: '',
+    prdUnidadesMinimas: 0,
+    prdIdTipoProducto: 0,
+    prdCodigoProvedor: null,
+    pdrVisible: true,
+    pdrFoto: null,
+    pdrTieneExistencias: true,
+    prdIdTipoProductoNavigation: null,
+  };
+
+  productos: ProductoModel[] = [];
+
   constructor(private servicioProducto: ProductoServiceService) {}
 
   ngOnInit(): void {}
@@ -30,11 +49,11 @@ export class IngresosComponent implements OnInit {
           cantidadExistencia: 1,
         };
 
-        if (! this.validarIngreso(inventario)) {
+        if (!this.validarIngreso(inventario)) {
           this.listaIngresoInventarios.push(inventario);
         }
 
-        this.codigo=''
+        this.codigo = '';
       },
       error: (_e) => {
         console.log(_e);
@@ -42,18 +61,23 @@ export class IngresosComponent implements OnInit {
     });
   }
 
+  buscarPorDescripcion(inventario: InventariosModel) {
+    if (!this.validarIngreso(inventario)) {
+      this.listaIngresoInventarios.push(inventario);
+    }
+  }
+
   validarIngreso(inventario: InventariosModel): boolean {
     var retorno = false;
     var hayAlgo = false;
 
-    hayAlgo =this.listaIngresoInventarios.length > 0;
-    if(hayAlgo){
-      this.listaIngresoInventarios.forEach(x=>{
-        if(x.producto.prdId === inventario.producto.prdId){
-
-          x.cantidadExistencia = x.cantidadExistencia+ inventario.cantidadExistencia
-          retorno = true
-
+    hayAlgo = this.listaIngresoInventarios.length > 0;
+    if (hayAlgo) {
+      this.listaIngresoInventarios.forEach((x) => {
+        if (x.producto.prdId === inventario.producto.prdId) {
+          x.cantidadExistencia =
+            x.cantidadExistencia + inventario.cantidadExistencia;
+          retorno = true;
         }
       });
     }

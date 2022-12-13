@@ -38,6 +38,12 @@ export class ProductosComponent implements OnInit {
         icon: 'pi pi-pw pi-file',
         routerLink: 'tipo-producto',
       },
+      {
+
+        label: 'Consultar producta',
+        icon: 'pi pi-pw pi-file',
+        routerLink: 'consulta-producto',
+      },
 
     ];
   }

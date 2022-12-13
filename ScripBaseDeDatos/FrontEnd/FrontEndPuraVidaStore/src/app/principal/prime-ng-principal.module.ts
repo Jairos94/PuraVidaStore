@@ -18,12 +18,14 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { MegaMenuModule } from 'primeng/megamenu';
 import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
 import { PaginatorModule } from 'primeng/paginator';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { TableModule } from 'primeng/table';
+import { TieredMenuModule } from 'primeng/tieredmenu';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { RadioButtonModule } from 'primeng/radiobutton';
@@ -32,10 +34,8 @@ import { RippleModule } from 'primeng/ripple';
 import { SidebarModule } from 'primeng/sidebar';
 import { SlideMenuModule } from 'primeng/slidemenu';
 
-
 @NgModule({
   exports: [
-
     AccordionModule,
     AutoCompleteModule,
     AutoFocusModule,
@@ -53,19 +53,21 @@ import { SlideMenuModule } from 'primeng/slidemenu';
     InputTextModule,
     InputSwitchModule,
     MultiSelectModule,
+    MegaMenuModule,
     MenuModule,
     MenubarModule,
     PaginatorModule,
     PanelMenuModule,
     ProgressBarModule,
     TableModule,
+    TieredMenuModule,
     ToastModule,
     ToolbarModule,
     RadioButtonModule,
     RatingModule,
     RippleModule,
     SidebarModule,
-    SlideMenuModule
-  ]
+    SlideMenuModule,
+  ],
 })
-export class PrimeNgPrincipalModule { }
+export class PrimeNgPrincipalModule {}
