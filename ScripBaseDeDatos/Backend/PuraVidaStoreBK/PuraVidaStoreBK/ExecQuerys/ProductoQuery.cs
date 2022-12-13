@@ -69,7 +69,6 @@ namespace PuraVidaStoreBK.ExecQuerys
                 using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
                 {
                     listaProducto = await db.Productos
-                        .Where(x=>x.PdrVisible==true)
                         .Include(x=>x.PrdIdTipoProductoNavigation)
                         .ToListAsync();
                     return listaProducto;
@@ -165,6 +164,28 @@ namespace PuraVidaStoreBK.ExecQuerys
                 Log.Error("Se presentó un error en GuardarHistorial\n" + ex.Message);
             }
             
+        }
+
+        public async Task<List<Producto>> ListaProductosFiltrada()
+        {
+            var listaProducto = new List<Producto>();
+            try
+            {
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
+                {
+                    listaProducto = await db.Productos
+                        .Where(x => x.PdrVisible == true)
+                        .Include(x => x.PrdIdTipoProductoNavigation)
+                        .ToListAsync();
+                    return listaProducto;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Log.Error(ex.Message);
+            }
+            return listaProducto;
         }
     }
 }

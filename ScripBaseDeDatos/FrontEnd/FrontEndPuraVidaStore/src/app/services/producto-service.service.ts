@@ -21,6 +21,11 @@ export class ProductoServiceService {
     return this.http.get<ProductoModel[]>(`${this.baseUrl}Productos/ListaProductos`);
   }
 
+  ObtenerTodosLosProductos():Observable<ProductoModel[]>{
+    return this.http.get<ProductoModel[]>(`${this.baseUrl}Productos/ObtenerTodosLosProductos`);
+  }
+
+
   ProductoPorID(id:number):Observable<ProductoModel>{
     const params = new HttpParams()
     .set('id', id);
