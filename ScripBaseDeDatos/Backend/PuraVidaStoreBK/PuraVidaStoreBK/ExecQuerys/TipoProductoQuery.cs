@@ -35,7 +35,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             catch (Exception ex)
             {
 
-                Log.Error("Se presentó unn error en Guardar producto\n"+ex.StackTrace);
+                Log.Error("Se presentó unn error en Guardar _producto\n"+ex.StackTrace);
                 producto = null;
             }
             return producto;

@@ -1,3 +1,4 @@
+import { activo } from './../activo';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -29,4 +30,17 @@ export class MovimientosService {
       ;
     return this.http.get<InventariosModel[]>(`${this.baseUrl}Movimientos/Busqueda`, { params });
   }
+
+
+  GuardarSinOrden(ProductosAIngresar:InventariosModel[]): Observable<InventariosModel[]>
+  {
+    const params = new HttpParams()
+      .set('IdBodega', activo.bodegaIngreso.bdgId)
+      .set('IdUsuario', activo.usuarioPrograma.usrId)
+      .set('Motivo', 1)
+
+      ;
+     return this.http.post<InventariosModel[]>(`${this.baseUrl}Movimientos/IngresarProductosAlInventario`, ProductosAIngresar,{params});
+  }
+
 }

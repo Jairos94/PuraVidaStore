@@ -90,7 +90,7 @@ namespace PuraVidaStoreBK.Controllers
             }
             else
             {
-                return BadRequest("Se presentó un error a la hora de guardar el producto");
+                return BadRequest("Se presentó un error a la hora de guardar el _producto");
             }
         }
     }

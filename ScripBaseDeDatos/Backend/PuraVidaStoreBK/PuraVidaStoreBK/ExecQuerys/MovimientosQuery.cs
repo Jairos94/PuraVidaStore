@@ -11,10 +11,12 @@ namespace PuraVidaStoreBK.ExecQuerys
     public class MovimientosQuery : IMovimientosQuery
     {
         private readonly IDataBase _conexion;
+        private readonly IProductoQuery _producto;
 
-        public MovimientosQuery(IDataBase conexion)
+        public MovimientosQuery(IDataBase conexion,IProductoQuery producto)
         {
             _conexion = conexion;
+            _producto = producto;
         }
 
         public async Task<bool> IngresarProductosAlInventario(List<Inventarios> Inventarios, int IdBodega, int IdUsuario, int Motivo)
@@ -30,8 +32,8 @@ namespace PuraVidaStoreBK.ExecQuerys
                         x.producto.PdrVisible = true;
                         x.producto.PdrTieneExistencias = true;
 
-                        db.Productos.Update(x.producto);
-                        await db.SaveChangesAsync();
+
+                        await _producto.GuardarProducto(x.producto,IdUsuario);
                         
                         var movimiento = new Movimiento 
                         {

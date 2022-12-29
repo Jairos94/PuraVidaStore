@@ -1,12 +1,22 @@
+<p-toast position="top-right"></p-toast>
 <p-table
   [value]="listaIngresoInventarios"
   [tableStyle]="{ 'min-width': '60rem' }"
+  [rows]="10"
+  [paginator]="true"
+  [rowsPerPageOptions]="[10, 25, 50]"
 >
   <ng-template pTemplate="caption">
     <div class="flex align-items-center justify-content-between">
-      Products
-      <div class="mx-3">
-        <label>Buscar por codigo</label>
+      <div class="grid">
+        <div class="col">Productos</div>
+        <div class="col">
+          <p-button icon="pi pi-save" (onClick)="guardar()"></p-button>
+        </div>
+      </div>
+
+      <div class="my-2">
+        <label class="mx-3">Buscar por codigo</label>
         <input
           type="text"
           pAutoFocus
@@ -16,29 +26,6 @@
           (keyup.enter)="buscarProductoPorCodigo()"
         />
       </div>
-
-  <!--     <div class="mx-3">
-        <p-autoComplete
-          [(ngModel)]="producto"
-          [group]="true"
-          [suggestions]="filteredGroups"
-          (completeMethod)="filterGroupedCity($event)"
-          field="label"
-          [dropdown]="true"
-        >
-          <ng-template let-group pTemplate="group">
-            <div class="flex align-items-center">
-              <img
-                src="assets/showcase/images/demo/flag/flag_placeholder.png"
-                [class]="'mr-2 flag flag-' + group.value"
-                style="width: 20px"
-              />
-              <span>{{ group.label }}</span>
-            </div>
-          </ng-template>
-        </p-autoComplete>
-      </div> -->
-      <!-- <p-button icon="pi pi-refresh"></p-button> -->
     </div>
   </ng-template>
   <ng-template pTemplate="header">
@@ -90,9 +77,5 @@
       </td>
     </tr>
   </ng-template>
-  <!--     <ng-template pTemplate="summary">
-        <div class="flex align-items-center justify-content-between">
-            In total there are {{products ? products.length : 0 }} products.
-        </div>
-    </ng-template> -->
 </p-table>
+

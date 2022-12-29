@@ -50,7 +50,9 @@ export class InventariosComponent implements OnInit {
 
     doc.text('Lista de articulos en existencia', 10, 10);
 
-    this.listaArticulos.forEach((x) => {
+
+
+    this.listaArticulos.forEach((x,i) => {
       var tipo: TipoProductoModel = {
         tppId: 0,
         tppDescripcion: '',
@@ -61,18 +63,37 @@ export class InventariosComponent implements OnInit {
         tipo = x.producto.prdIdTipoProductoNavigation;
       }
 
-      autoTable(doc, {
-        head: [titulos],
-        body: [
-          [
-            x.producto.prdNombre,
-            x.producto.prdCodigo,
-            x.producto.prdCodigoProvedor || '',
-            tipo.tppDescripcion || '',
-            x.cantidadExistencia,
+i
+
+     if(i===0){
+        autoTable(doc, {
+          head: [titulos],
+          body: [
+            [
+              x.producto.prdNombre,
+              x.producto.prdCodigo,
+              x.producto.prdCodigoProvedor || '',
+              tipo.tppDescripcion || '',
+              x.cantidadExistencia,
+            ],
           ],
-        ],
-      });
+        });
+      }
+      else{
+        autoTable(doc, {
+
+          body: [
+            [
+              x.producto.prdNombre,
+              x.producto.prdCodigo,
+              x.producto.prdCodigoProvedor || '',
+              tipo.tppDescripcion || '',
+              x.cantidadExistencia,
+            ],
+          ],
+        });
+      }
+
     });
     // Or use javascript directly:
 
@@ -101,10 +122,10 @@ export class InventariosComponent implements OnInit {
             this.existencias();
           }
         },
-        error: (_e) =>{
+        error: (_e) => {
           console.error(_e);
           this.existencias();
-        }
+        },
       });
   }
 }

@@ -3,11 +3,16 @@ import { ProductoServiceService } from 'src/app/services/producto-service.servic
 import { InventariosModel } from 'src/app/models/inventarios-model';
 import { Component, OnInit } from '@angular/core';
 import { Archivo } from 'src/app/utils/Archivos';
+import { MovimientosService } from 'src/app/services/movimientos.service';
+import { MessageService, PrimeNGConfig } from 'primeng/api';
+import { timer } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-ingresos',
   templateUrl: './ingresos.component.html',
   styleUrls: ['./ingresos.component.css'],
+  providers: [MessageService],
 })
 export class IngresosComponent implements OnInit {
   listaIngresoInventarios: InventariosModel[] = [];
@@ -30,9 +35,17 @@ export class IngresosComponent implements OnInit {
 
   productos: ProductoModel[] = [];
 
-  constructor(private servicioProducto: ProductoServiceService) {}
+  constructor(
+    private servicioProducto: ProductoServiceService,
+    private servicioMovimiento: MovimientosService,
+    private messageService: MessageService,
+    private primengConfig: PrimeNGConfig,
+    private ruta: Router,
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.primengConfig.ripple = true;
+  }
 
   leerArchivo(imagen: any): string {
     if (imagen == null) {
@@ -84,4 +97,25 @@ export class IngresosComponent implements OnInit {
 
     return retorno;
   }
+
+  guardar() {
+    this.servicioMovimiento
+      .GuardarSinOrden(this.listaIngresoInventarios)
+      .subscribe({
+        next: (x) => {
+          this.addSingle();
+          timer(5000).subscribe(x=>{
+            this.ruta.navigate(['./principal/movimientos'])
+          });
+
+        },
+        error: (_e) => {
+          console.log(_e);
+        },
+      });
+  }
+
+  addSingle() {
+    this.messageService.add({severity:'success', summary:'Service Message', detail:'Ingreso de productos correctamente'});
+}
 }
