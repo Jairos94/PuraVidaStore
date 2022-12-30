@@ -1,3 +1,4 @@
+import { ConsultaProductoComponent } from './consulta-producto/consulta-producto.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ProductosComponent } from './productos.component';
@@ -9,6 +10,7 @@ const routes: Routes = [
     component: ProductosComponent,
     children: [
       { path: 'tipo-producto', component: TipoProductoComponent },
+      { path: 'consulta-producto', component: ConsultaProductoComponent },
       { path: 'productos', loadChildren: () => import('./mantenimiento-productos/mantenimiento-productos.module').then(m => m.MantenimientoProductosModule) },
       { path: '**', redirectTo: 'productos' }
     ]

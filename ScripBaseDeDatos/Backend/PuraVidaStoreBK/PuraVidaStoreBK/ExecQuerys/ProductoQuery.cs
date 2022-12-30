@@ -8,6 +8,8 @@ namespace PuraVidaStoreBK.ExecQuerys
 {
     public class ProductoQuery : IProductoQuery
     {
+       
+
         public async Task<Producto> GuardarProducto(Producto producto, int idUsuario)
         {
             producto.PrdIdTipoProductoNavigation = null;
@@ -49,7 +51,16 @@ namespace PuraVidaStoreBK.ExecQuerys
             }
             return producto;
         }
-
+        public async Task<Producto> BuscarProductoPorCodigo(string codigo)
+        {
+            using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
+            {
+             return await  db.Productos
+                    .Where(x=>x.PrdCodigo== codigo || x.PrdCodigoProvedor == codigo)
+                    .Include(x=>x.PrdIdTipoProductoNavigation)
+                    .FirstAsync();
+            }
+        }
         public async Task<List<Producto>> ListaProductos()
         {
             var listaProducto = new List<Producto>();
@@ -58,7 +69,6 @@ namespace PuraVidaStoreBK.ExecQuerys
                 using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
                 {
                     listaProducto = await db.Productos
-                        .Where(x=>x.PdrVisible==true)
                         .Include(x=>x.PrdIdTipoProductoNavigation)
                         .ToListAsync();
                     return listaProducto;
@@ -154,6 +164,28 @@ namespace PuraVidaStoreBK.ExecQuerys
                 Log.Error("Se presentó un error en GuardarHistorial\n" + ex.Message);
             }
             
+        }
+
+        public async Task<List<Producto>> ListaProductosFiltrada()
+        {
+            var listaProducto = new List<Producto>();
+            try
+            {
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
+                {
+                    listaProducto = await db.Productos
+                        .Where(x => x.PdrVisible == true)
+                        .Include(x => x.PrdIdTipoProductoNavigation)
+                        .ToListAsync();
+                    return listaProducto;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Log.Error(ex.Message);
+            }
+            return listaProducto;
         }
     }
 }

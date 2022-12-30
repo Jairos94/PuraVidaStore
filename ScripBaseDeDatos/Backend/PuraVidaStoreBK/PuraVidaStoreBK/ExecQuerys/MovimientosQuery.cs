@@ -11,11 +11,54 @@ namespace PuraVidaStoreBK.ExecQuerys
     public class MovimientosQuery : IMovimientosQuery
     {
         private readonly IDataBase _conexion;
+        private readonly IProductoQuery _producto;
 
-        public MovimientosQuery(IDataBase conexion)
+        public MovimientosQuery(IDataBase conexion,IProductoQuery producto)
         {
             _conexion = conexion;
+            _producto = producto;
         }
+
+        public async Task<bool> IngresarProductosAlInventario(List<Inventarios> Inventarios, int IdBodega, int IdUsuario, int Motivo)
+        {
+            var retorno = false;
+            try
+            {
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
+                {
+                    Inventarios.ForEach(async x =>
+                    {
+
+                        x.producto.PdrVisible = true;
+                        x.producto.PdrTieneExistencias = true;
+
+
+                        await _producto.GuardarProducto(x.producto,IdUsuario);
+                        
+                        var movimiento = new Movimiento 
+                        {
+                            MvmIdProducto = x.producto.PrdId,
+                            MvmCantidad = x.CantidadExistencia,
+                            MvmFecha = DateTime.Now,
+                            MvmIdMotivoMovimiento = Motivo,
+                            MvmIdUsuario = IdUsuario,
+                            MvmIdBodega = IdBodega,
+                        };
+
+                        await ingresarMovimmiento(movimiento);
+                    });
+                    retorno = true;
+                }
+                    
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return retorno;
+        }
+
         public async Task<Movimiento> IngresoDeProductosPorCompra(Movimiento movimiento)
         {
 
@@ -55,13 +98,29 @@ namespace PuraVidaStoreBK.ExecQuerys
                         var producto = await db.Productos.Where(x=>x.PrdId==ProductoCantidad.idProducto)
                                                          .Include(x=>x.PrdIdTipoProductoNavigation)
                                                          .FirstOrDefaultAsync();
+                       
                         var inventario = new Inventarios();
                         inventario.producto = producto;
                         inventario.CantidadExistencia = ProductoCantidad.Cantidad;
-                        ListaProductos.Add(inventario);
+                        if (inventario.CantidadExistencia != 0)
+                        {
+                            if (producto.PdrTieneExistencias == false || producto.PdrTieneExistencias == null || producto.PdrVisible == false || producto.PdrVisible == null)
+                            {
+                                producto.PdrVisible = true;
+                                producto.PdrTieneExistencias = true;
 
+                                db.Productos.Update(producto);
+                                await db.SaveChangesAsync();
+                            }
+                            ListaProductos.Add(inventario);
+                        }
+                        else 
+                        {
+                            producto.PdrTieneExistencias = false;
 
-
+                            db.Productos.Update(producto);
+                            await db.SaveChangesAsync();
+                        }
                     }
                 }
                    
@@ -75,7 +134,43 @@ namespace PuraVidaStoreBK.ExecQuerys
            
         }
 
+        public async Task<List<Inventarios>> PorBusqueda(int IdBodega, string buscador)
+        {
+            var listaIds = await listaIdProductos(IdBodega);
+            var ListaProductos = new List<Inventarios>();
+            try
+            {
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
+                {
+                    foreach (var ProductoCantidad in listaIds)
+                    {
+                        var producto = await db.Productos.Where(x => 
+                                                                x.PrdId == ProductoCantidad.idProducto && (
+                                                                x.PrdNombre.Contains(buscador) ||
+                                                                x.PrdCodigo.Contains(buscador)||
+                                                                x.PrdCodigoProvedor.Contains(buscador)||
+                                                                x.PrdIdTipoProductoNavigation.TppDescripcion.Contains(buscador)
+                                                                ))
+                                                         .Include(x => x.PrdIdTipoProductoNavigation)
+                                                         .FirstOrDefaultAsync();
+                        var inventario = new Inventarios();
+                        inventario.producto = producto;
+                        inventario.CantidadExistencia = ProductoCantidad.Cantidad;
+                        if (inventario.CantidadExistencia != 0)
+                        {
+                            ListaProductos.Add(inventario);
+                        }
+                    }
+                }
 
+            }
+            catch (Exception ex)
+            {
+
+                Log.Error(ex.StackTrace);
+            }
+            return ListaProductos;
+        }
 
         private async Task<Movimiento> ingresarMovimmiento(Movimiento movimiento) 
         {
