@@ -1,7 +1,7 @@
 <p-dialog header="{{Encabezado}}" [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}"
     [baseZIndex]="10000" [draggable]="false" [resizable]="false">
     <label>Descripción: </label>
-    <input type="text" pInputText [(ngModel)]="TipoProductoEditar.TppDescripcion" placeholder="Descripción" />
+    <input type="text" pInputText [(ngModel)]="TipoProductoEditar.tppDescripcion" placeholder="Descripción" />
     <ng-template pTemplate="footer">
         <p-button icon="pi pi-check" (click)="guardar()" label="Guardar" class="p-button-text"></p-button>
         <p-button icon="pi pi-times" (click)="displayModal=false" label="Cancelar"></p-button>
@@ -38,7 +38,7 @@
                     <button pButton pRipple type="button" icon="pi pi-pencil"
                         class="p-button-rounded p-button-warning mx-2" [disabled]="!esAdministrador"
                         (click)="showModalDialog(tipoProducto.tppId)"></button>
-                     
+
                     <p-inputSwitch [(ngModel)]="tipoProducto.tppVisible" [disabled]="!esAdministrador" (onChange)="cambio(tipoProducto)"></p-inputSwitch>
                     <label class="mx-1">Visible</label>
                 </td>

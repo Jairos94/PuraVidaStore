@@ -21,6 +21,11 @@ export class ProductoServiceService {
     return this.http.get<ProductoModel[]>(`${this.baseUrl}Productos/ListaProductos`);
   }
 
+  ObtenerTodosLosProductos():Observable<ProductoModel[]>{
+    return this.http.get<ProductoModel[]>(`${this.baseUrl}Productos/ObtenerTodosLosProductos`);
+  }
+
+
   ProductoPorID(id:number):Observable<ProductoModel>{
     const params = new HttpParams()
     .set('id', id);
@@ -31,5 +36,10 @@ export class ProductoServiceService {
     const params = new HttpParams()
     .set('Descripcion', buscador);
     return this.http.get<ProductoModel[]>(`${this.baseUrl}Productos/ListaProductosPorDescripcion`,{params});
+  }
+  ObtenerProductoPorCodigo(codigo:string):Observable<ProductoModel>{
+    const params = new HttpParams()
+    .set('codigo', codigo);
+    return this.http.get<ProductoModel>(`${this.baseUrl}Productos/BusquedaPorCodigo`,{params});
   }
 }

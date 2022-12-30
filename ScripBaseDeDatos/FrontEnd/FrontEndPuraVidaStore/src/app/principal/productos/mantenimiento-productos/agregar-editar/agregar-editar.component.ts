@@ -33,7 +33,8 @@ export class AgregarEditarComponent implements OnInit {
       prdCodigoProvedor: '',
       pdrVisible: true,
       pdrFoto: null,
-      PrdIdTipoProductoNavigation: null
+      pdrTieneExistencias : false,
+      prdIdTipoProductoNavigation: null
     };
 
   productoForm = this.fb.group({
@@ -74,7 +75,7 @@ export class AgregarEditarComponent implements OnInit {
       ima = x.toString();
       this.productoEditarAgregar.pdrFoto = ima;
 
-      
+
     });
 
 
@@ -93,13 +94,13 @@ export class AgregarEditarComponent implements OnInit {
 
     this.listaTipoProductos.forEach(x => {
       if (x.tppId === this.productoEditarAgregar.prdIdTipoProducto) {
-        this.productoEditarAgregar.PrdIdTipoProductoNavigation = x
+        this.productoEditarAgregar.prdIdTipoProductoNavigation = x
       }
     });
 
     this.servicioProducto.GuardarProducto(this.productoEditarAgregar,activo.usuarioPrograma.usrId).subscribe((x => {
       console.log(x);
-      //this.showSuccess(); 
+      //this.showSuccess();
       this.ruta.navigate(['./principal/productos/'])
 
     }),
@@ -131,7 +132,7 @@ export class AgregarEditarComponent implements OnInit {
         IdTipoProducto: [this.productoEditarAgregar.prdIdTipoProducto, [Validators.required]],
         CodigoProveedor: [this.productoEditarAgregar.prdCodigoProvedor, [Validators.required]],
         Foto: [this.productoEditarAgregar.pdrFoto]
-    
+
       });
     }), (_e => console.log(_e)));
   }

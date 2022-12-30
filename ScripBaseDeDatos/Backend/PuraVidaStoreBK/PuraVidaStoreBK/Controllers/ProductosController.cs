@@ -17,13 +17,22 @@ namespace PuraVidaStoreBK.Controllers
         private readonly IProductoQuery _productoQuery;
         private readonly IMapper _mapper;
 
-        public ProductosController(IProductoQuery productoQuery,IMapper mapper)
+        public ProductosController(IProductoQuery productoQuery, IMapper mapper)
         {
             _productoQuery = productoQuery;
             _mapper = mapper;
         }
         [HttpGet("ListaProductos"), Authorize]
         public async Task<IActionResult> ListaProductos()
+        {
+
+            var listaProductos = await _productoQuery.ListaProductosFiltrada();
+            var listaRetorno = _mapper.Map<List<ProductoDTO>>(listaProductos);
+            return Ok(listaRetorno);
+        }
+
+        [HttpGet("ObtenerTodosLosProductos"), Authorize]
+        public async Task<IActionResult> ObtenerTodosLosProductos()
         {
 
             var listaProductos = await _productoQuery.ListaProductos();
@@ -53,6 +62,21 @@ namespace PuraVidaStoreBK.Controllers
             else { return NoContent(); }
         }
 
+        [HttpGet("BusquedaPorCodigo")]
+        public async Task<IActionResult> BusquedaPorCodigo(string codigo) 
+        {
+            var resultado = await _productoQuery.BuscarProductoPorCodigo(codigo);
+            if (resultado != null)
+            {
+                return Ok(_mapper.Map<ProductoDTO>(resultado));
+            }
+            else
+            {
+                return NoContent();
+            }
+
+          
+        }
 
         [HttpPost("GuardarProducto"), Authorize(Roles = "1")]
         public async Task<IActionResult> GuardarProducto([FromBody] ProductoDTO model,int idUsuario)
@@ -66,7 +90,7 @@ namespace PuraVidaStoreBK.Controllers
             }
             else
             {
-                return BadRequest("Se presentó un error a la hora de guardar el producto");
+                return BadRequest("Se presentó un error a la hora de guardar el _producto");
             }
         }
     }

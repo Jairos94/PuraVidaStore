@@ -19,7 +19,7 @@ export class TipoProductoComponent implements OnInit {
 
   TipoProductoEditar: TipoProductoModel = {
     tppId: 0,
-    TppDescripcion: '',
+    tppDescripcion: '',
     tppVisible: false,
   };
 
@@ -58,7 +58,7 @@ export class TipoProductoComponent implements OnInit {
   reiniciarEditable() {
     this.TipoProductoEditar = {
       tppId: 0,
-      TppDescripcion: '',
+      tppDescripcion: '',
       tppVisible: false,
     };
   }
@@ -71,7 +71,7 @@ export class TipoProductoComponent implements OnInit {
       this.TipoProductoEditar = x
       this.inicio();
     }), (_e => { console.log(_e); }));
-    this.Exito(this.TipoProductoEditar.TppDescripcion);
+    this.Exito(this.TipoProductoEditar.tppDescripcion);
 
 
     this.displayModal = false;

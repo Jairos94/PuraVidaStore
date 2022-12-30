@@ -23,6 +23,7 @@ namespace PuraVidaStoreBK.Models.DbContex
         public string? PrdCodigoProvedor { get; set; }
         public bool? PdrVisible { get; set; }
         public string? PdrFoto { get; set; }
+        public bool? PdrTieneExistencias { get; set; }
 
         public virtual TipoProducto PrdIdTipoProductoNavigation { get; set; } = null!;
         public virtual ICollection<DetalleFactura> DetalleFacturas { get; set; }
