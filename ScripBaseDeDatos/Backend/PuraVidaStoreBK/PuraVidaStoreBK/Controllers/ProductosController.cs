@@ -49,6 +49,15 @@ namespace PuraVidaStoreBK.Controllers
             var listaRetorno = _mapper.Map<List<ProductoDTO>>(listaProductos);
             return Ok(listaRetorno);
         }
+
+        [HttpGet("ListaProductosPorDescripcionNoFiltrada"), Authorize]
+        public async Task<IActionResult> ListaProductosPorDescripcionNoFiltrada(string Descripcion)
+        {
+
+            var listaProductos = await _productoQuery.ProductoPorDescripcionNoFiltrado(Descripcion);
+            var listaRetorno = _mapper.Map<List<ProductoDTO>>(listaProductos);
+            return Ok(listaRetorno);
+        }
         [HttpGet("ObtenerProductoPorId"), Authorize]
         public async Task<IActionResult> ObtenerProductoPorId(int id)
         {
