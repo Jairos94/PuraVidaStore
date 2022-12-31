@@ -26,6 +26,10 @@ export class ProductoServiceService {
   }
 
 
+  ObtenerTodosLosProductosNoFiltrada():Observable<ProductoModel[]>{
+    return this.http.get<ProductoModel[]>(`${this.baseUrl}Productos/ObtenerTodosLosProductosNoFiltrada`);
+  }
+
   ProductoPorID(id:number):Observable<ProductoModel>{
     const params = new HttpParams()
     .set('id', id);
@@ -36,6 +40,12 @@ export class ProductoServiceService {
     const params = new HttpParams()
     .set('Descripcion', buscador);
     return this.http.get<ProductoModel[]>(`${this.baseUrl}Productos/ListaProductosPorDescripcion`,{params});
+  }
+
+  BuscarPorPalabraNoFiltrada(buscador:string):Observable<ProductoModel[]>{
+    const params = new HttpParams()
+    .set('Descripcion', buscador);
+    return this.http.get<ProductoModel[]>(`${this.baseUrl}Productos/ListaProductosPorDescripcionNoFiltrada`,{params});
   }
   ObtenerProductoPorCodigo(codigo:string):Observable<ProductoModel>{
     const params = new HttpParams()
