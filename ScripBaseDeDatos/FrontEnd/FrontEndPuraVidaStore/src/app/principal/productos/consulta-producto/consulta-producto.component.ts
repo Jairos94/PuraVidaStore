@@ -59,6 +59,7 @@ export class ConsultaProductoComponent implements OnInit {
         next: (x) => {
           this.producto = x;
           this.foto = this.leerArchivo(this.producto.pdrFoto);
+          this.buscadorCodigoDeBarras='';
         },
         error: (_e) => {
           this.showError()
@@ -68,7 +69,7 @@ export class ConsultaProductoComponent implements OnInit {
   }
 
   limpiar() {
-    this.buscadorCodigoDeBarras = '';
+
     this.tipoProducto = {
       tppId: 0,
       tppDescripcion: '',
@@ -90,7 +91,8 @@ export class ConsultaProductoComponent implements OnInit {
       prdIdTipoProductoNavigation: this.tipoProducto,
     };
     this.foto = this.leerArchivo(this.producto.pdrFoto);
-    this.enfoque = true;
+
+    this.buscadorCodigoDeBarras = '';
   }
 
   leerArchivo(imagen: any): string {

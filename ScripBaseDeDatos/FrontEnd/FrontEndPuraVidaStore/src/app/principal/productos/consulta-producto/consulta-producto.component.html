@@ -6,12 +6,18 @@
         placeholder="Buscar por código"
         [(ngModel)]="buscadorCodigoDeBarras"
         (keyup.enter)="obtenerPorCodigoDeBarras()"
-        pAutoFocus [autofocus]="enfoque"
+        pAutoFocus
+        [autofocus]="enfoque"
         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
       />
     </div>
 
     <div class="col">
+      <p-button
+        class="mx-1"
+        icon="pi pi-search"
+        (onClick)="obtenerPorCodigoDeBarras()"
+      ></p-button>
       <p-button
         (click)="showModalDialog()"
         icon="pi pi-external-link"
