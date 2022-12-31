@@ -1,16 +1,17 @@
 <div class="my-2">
   <div class="grid">
-    <div class="col-10">
+    <div class="col-9">
       <input
         type="text"
-        placeholder="Buscar por codigo"
+        placeholder="Buscar por código"
         [(ngModel)]="buscadorCodigoDeBarras"
         (keyup.enter)="obtenerPorCodigoDeBarras()"
+        pAutoFocus [autofocus]="enfoque"
         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
       />
     </div>
 
-    <div class="col-2">
+    <div class="col">
       <p-button
         (click)="showModalDialog()"
         icon="pi pi-external-link"
@@ -43,6 +44,14 @@
           ></p-button>
         </ng-template>
       </p-dialog>
+
+      <p-button
+        class="mx-1"
+        label="Limpiar"
+        icon="pi pi-eraser"
+        iconPos="right"
+        (onClick)="limpiar()"
+      ></p-button>
     </div>
   </div>
 
@@ -51,7 +60,7 @@
       <div class="flex justify-content-center flex-wrap card-container col">
         <div class="flex align-items-center justify-content-center col">
           <div class="field">
-            <h1>{{producto.prdNombre}}</h1>
+            <h1>{{ producto.prdNombre }}</h1>
           </div>
         </div>
       </div>
@@ -61,14 +70,32 @@
       <div class="flex align-items-center justify-content-center col">
         <div class="field">
           <img
-            src="../../../../assets/no-pictures.png"
+            [src]="foto"
             [style]="{ width: '15rem', 'margin-bottom': '2em' }"
           />
         </div>
       </div>
     </div>
-    Nombre categoria
+    <div class="field">Código: {{ producto.prdCodigo }}</div>
+    <div class="field">
+      Código del provedor: {{ producto.prdCodigoProvedor }}
+    </div>
+    <div class="field">
+      Categoria: {{ producto.prdIdTipoProductoNavigation?.tppDescripcion }}
+    </div>
 
-    <ng-template pTemplate="footer"> tppDescripcion </ng-template>
+    <ng-template pTemplate="footer">
+      <div class="field">Estado</div>
+      <div class="field">
+        Inactivo
+        <p-inputSwitch
+          [(ngModel)]="producto.pdrVisible"
+          [disabled]="!esAdministrador"
+          (onChange)="activarProducto()"
+        ></p-inputSwitch>
+        Activo
+      </div>
+    </ng-template>
   </p-card>
 </div>
+<p-toast position="top-right"></p-toast>
