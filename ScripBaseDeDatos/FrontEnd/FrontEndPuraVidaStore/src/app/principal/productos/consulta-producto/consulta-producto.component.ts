@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { TipoProductoModel } from 'src/app/models/tipo-producto';
 import { Archivo } from 'src/app/utils/Archivos';
 import { MessageService } from 'primeng/api';
+import { __exportStar } from 'tslib';
 
 @Component({
   selector: 'app-consulta-producto',
@@ -14,6 +15,7 @@ import { MessageService } from 'primeng/api';
 })
 export class ConsultaProductoComponent implements OnInit {
   buscadorCodigoDeBarras: string = '';
+  buscadorPorDescripcion: string = '';
   displayModal: boolean = false;
   esAdministrador: boolean = activo.esAministrador();
   enfoque: boolean = true;
@@ -49,7 +51,40 @@ export class ConsultaProductoComponent implements OnInit {
   ngOnInit(): void {}
 
   showModalDialog() {
+    this.obtenerLista();
     this.displayModal = true;
+  }
+
+  obtenerLista() {
+    this.servicio.ObtenerTodosLosProductosNoFiltrada().subscribe({
+      next: (x) => {
+        this.listaProductos = [];
+        this.listaProductos = x;
+      },
+      error: (_e) => {
+        console.log(_e);
+      },
+    });
+  }
+
+  seleccionar(productoSeleccionado: ProductoModel) {
+    this.producto = productoSeleccionado;
+    this.foto = this.leerArchivo(this.producto.pdrFoto);
+    this.buscadorCodigoDeBarras = '';
+    this.displayModal = false;
+  }
+
+  buscarPorDescripcion() {
+    this.servicio.BuscarPorPalabraNoFiltrada(this.buscadorPorDescripcion).subscribe({
+      next:x=>{
+        if(x.length>0){this.listaProductos = x}else{this.obtenerLista()}
+      },
+      error:_e=>{
+        this.obtenerLista();
+        console.log(_e);
+
+      }
+    })
   }
 
   obtenerPorCodigoDeBarras() {
@@ -59,17 +94,16 @@ export class ConsultaProductoComponent implements OnInit {
         next: (x) => {
           this.producto = x;
           this.foto = this.leerArchivo(this.producto.pdrFoto);
-          this.buscadorCodigoDeBarras='';
+          this.buscadorCodigoDeBarras = '';
         },
         error: (_e) => {
-          this.showError()
+          this.showError();
           console.log(_e);
         },
       });
   }
 
   limpiar() {
-
     this.tipoProducto = {
       tppId: 0,
       tppDescripcion: '',
