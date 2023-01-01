@@ -121,7 +121,7 @@
         Inactivo
         <p-inputSwitch
           [(ngModel)]="producto.pdrVisible"
-          [disabled]="!esAdministrador"
+          [disabled]="esDeshabilitado"
           (onChange)="activarProducto()"
         ></p-inputSwitch>
         Activo

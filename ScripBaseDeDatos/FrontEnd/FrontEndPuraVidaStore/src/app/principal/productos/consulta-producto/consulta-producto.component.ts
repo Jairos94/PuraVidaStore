@@ -18,6 +18,7 @@ export class ConsultaProductoComponent implements OnInit {
   buscadorPorDescripcion: string = '';
   displayModal: boolean = false;
   esAdministrador: boolean = activo.esAministrador();
+  esDeshabilitado:boolean = !this.esAdministrador;
   enfoque: boolean = true;
 
   tipoProducto: TipoProductoModel = {
@@ -71,6 +72,7 @@ export class ConsultaProductoComponent implements OnInit {
     this.producto = productoSeleccionado;
     this.foto = this.leerArchivo(this.producto.pdrFoto);
     this.buscadorCodigoDeBarras = '';
+    this.cambiarEstadoDeshabilitado();
     this.displayModal = false;
   }
 
@@ -95,12 +97,19 @@ export class ConsultaProductoComponent implements OnInit {
           this.producto = x;
           this.foto = this.leerArchivo(this.producto.pdrFoto);
           this.buscadorCodigoDeBarras = '';
+          this.cambiarEstadoDeshabilitado();
         },
         error: (_e) => {
           this.showError();
           console.log(_e);
         },
       });
+  }
+
+  cambiarEstadoDeshabilitado(){
+    if(this.esAdministrador){
+      this.esDeshabilitado= this.producto.pdrTieneExistencias || false;
+    }
   }
 
   limpiar() {
@@ -127,6 +136,7 @@ export class ConsultaProductoComponent implements OnInit {
     this.foto = this.leerArchivo(this.producto.pdrFoto);
 
     this.buscadorCodigoDeBarras = '';
+    this.cambiarEstadoDeshabilitado();
   }
 
   leerArchivo(imagen: any): string {
