@@ -26,7 +26,12 @@ export class MovimientosComponent implements OnInit {
         routerLink: 'ingreso-productos',
         visible: activo.esAministrador()
       },
-
+      {
+        label: 'Ajustes',
+        icon: 'pi pi-pw pi-file',
+        routerLink: 'ajustes',
+        visible: activo.esAministrador()
+      },
     ];
 
 
