@@ -28,7 +28,7 @@ namespace PuraVidaStoreBK.Controllers
         [HttpPost("GuardarTipoProducto"), Authorize(Roles = "1")]
         public async Task<IActionResult> GuardarTipoProducto(TipoProductoDTO tipoProducto)
         {
-            var tipoProductoGuardar = _mapper.Map<TipoProducto>(tipoProducto);
+            var tipoProductoGuardar = _mapper.Map<TipoMovimientos>(tipoProducto);
             tipoProductoGuardar =await _tipoProductoQuery.Guardar(tipoProductoGuardar);
             tipoProducto = _mapper.Map<TipoProductoDTO>(tipoProductoGuardar);
             if (tipoProducto!=null) 

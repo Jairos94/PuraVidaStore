@@ -12,7 +12,7 @@ namespace PuraVidaStoreBK.ExecQuerys
         
        
 
-        public async Task<TipoProducto> Guardar(TipoProducto producto)
+        public async Task<TipoMovimientos> Guardar(TipoMovimientos producto)
         {
             
             try
@@ -41,7 +41,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             return producto;
         }
 
-        public async Task<List<TipoProducto>> ListaTipoProducto()
+        public async Task<List<TipoMovimientos>> ListaTipoProducto()
         {
             using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
             {
@@ -50,7 +50,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             }
         }
 
-        public async Task<List<TipoProducto>> ListaProductoFiltrado()
+        public async Task<List<TipoMovimientos>> ListaProductoFiltrado()
         {
             using (PuraVidaStoreContext db = new PuraVidaStoreContext())
             {
@@ -61,7 +61,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             }
         }
 
-        public async Task<TipoProducto> ProductoPorId(int id) 
+        public async Task<TipoMovimientos> ProductoPorId(int id) 
         {
             using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
             {
@@ -70,9 +70,9 @@ namespace PuraVidaStoreBK.ExecQuerys
             }
         }
 
-        public async Task<List<TipoProducto>> BuscarTipoProductoPorDescripcion(string busqueda)
+        public async Task<List<TipoMovimientos>> BuscarTipoProductoPorDescripcion(string busqueda)
         {
-            var listaSugerencias = new TipoProducto();
+            var listaSugerencias = new TipoMovimientos();
             
                 using (PuraVidaStoreContext db = new PuraVidaStoreContext())
                 {

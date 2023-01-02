@@ -35,8 +35,8 @@ namespace PuraVidaStoreBK.Models
             CreateMap<TipoMovimiento, TipoMovimientoDTO>();
             CreateMap<TipoMovimientoDTO, TipoMovimiento>();
 
-            CreateMap<TipoProducto, TipoProductoDTO>();
-            CreateMap<TipoProductoDTO, TipoProducto>();
+            CreateMap<TipoMovimientos, TipoProductoDTO>();
+            CreateMap<TipoProductoDTO, TipoMovimientos>();
 
         }
     }

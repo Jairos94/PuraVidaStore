@@ -72,6 +72,97 @@ namespace PuraVidaStoreBK.Controllers
         }
 
 
+        [HttpPost("GuardarAjuste"), Authorize(Roles = "1")]
+        public async Task<IActionResult> GuardarAjuste([FromBody] InventariosDTO Inventario, int IdBodega, int IdUsuario, int Motivo)
+        {
+            try
+            {
+                var seGuardoDatos = await _movimientosQuery.GuardarAjuste(_mapper.Map<Inventarios>(Inventario), IdBodega, IdUsuario, Motivo);
+                return Ok(seGuardoDatos);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest("Se presentó un error favor revisar los logs");
+            }
+        }
+
+        [HttpPost("GuardarMotivo"), Authorize(Roles = "1")]
+        public async Task<IActionResult> GuardarMotivo([FromBody] MotivosMovimientoDTO motivo)
+        {
+            try
+            {
+                var movimientoRetorno =_mapper.Map<MotivosMovimientoDTO>( await _movimientosQuery.GuardarMotivoMovimiento(_mapper.Map<MotivosMovimiento>(motivo)));
+                return Ok(movimientoRetorno);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest("Se presentó un error favor revisar los logs");
+            }
+        }
+
+
+        [HttpGet("ObtenerMotivos"), Authorize(Roles = "1")]
+        public async Task<IActionResult> ObtenerMotivos()
+        {
+            try
+            {
+                var movimientoRetorno = _mapper.Map<List<MotivosMovimientoDTO>>( await _movimientosQuery.ObtenerListaMotivosMovimiento());
+                return Ok(movimientoRetorno);
+            }
+            catch (Exception )
+            {
+
+                return BadRequest("Se presentó un error favor revisar los logs");
+            }
+        }
+
+        [HttpGet("ObtenerMotivosPorDescripcion"), Authorize(Roles = "1")]
+        public async Task<IActionResult> ObtenerMotivosPorDescripcion(string motivos)
+        {
+            try
+            {
+                var movimientoRetorno = _mapper.Map<MotivosMovimientoDTO>( await _movimientosQuery.ObtenerListaMotivoMovimientoPorDescripcion(motivos));
+                return Ok(movimientoRetorno);
+            }
+            catch (Exception)
+            {
+
+                return BadRequest("Se presentó un error favor revisar los logs");
+            }
+        }
+
+        [HttpGet("ObtenerMotivoPorId"), Authorize(Roles = "1")]
+        public async Task<IActionResult> ObtenerMotivoPorId(int id)
+        {
+            try
+            {
+                var movimientoRetorno =_mapper.Map<MotivosMovimientoDTO>( await _movimientosQuery.ObtenerMotivoMovmientoPorId(id));
+                return Ok(movimientoRetorno);
+            }
+            catch (Exception)
+            {
+
+                return BadRequest("Se presentó un error favor revisar los logs");
+            }
+        }
+
+        [HttpGet("ObtenerTipoMovimiento"), Authorize(Roles = "1")]
+        public async Task<IActionResult> ObtenerTipoMovimiento()
+        {
+            try
+            {
+               
+                return Ok(_mapper.Map<List<TipoMovimientoDTO>>(_movimientosQuery.ObtenerListaTipoMovimiento()));
+            }
+            catch (Exception)
+            {
+
+                return BadRequest("Se presentó un error favor revisar los logs");
+            }
+        }
+
 
     }
 }

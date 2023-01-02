@@ -8,6 +8,11 @@ namespace PuraVidaStoreBK.ExecQuerys.Interfaces
 
         public Task<List<Inventarios>> PorBusqueda(int IdBodega,string buscador);
         public Task<bool> IngresarProductosAlInventario(List<Inventarios> Inventarios, int IdBodega, int idUsuario, int Motivo);
-
+        public Task<MotivosMovimiento> GuardarMotivoMovimiento(MotivosMovimiento motivosMovimiento);
+        public Task<List<MotivosMovimiento>> ObtenerListaMotivosMovimiento();
+        public Task<List<MotivosMovimiento>> ObtenerListaMotivoMovimientoPorDescripcion(string descripcion);
+        public Task<MotivosMovimiento> ObtenerMotivoMovmientoPorId(int id);
+        public Task<bool> GuardarAjuste(Inventarios inventario, int IdBodega, int idUsuario, int Motivo);
+        public Task<List<TipoMovimiento>> ObtenerListaTipoMovimiento(); 
     }
 }
