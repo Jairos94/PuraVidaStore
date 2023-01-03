@@ -5,13 +5,14 @@ import { ListaProductosComponent } from './lista-productos/lista-productos.compo
 import { MantenimientoProductosComponent } from './mantenimiento-productos.component';
 
 const routes: Routes = [
-  { 
+  {
     path: '', component: MantenimientoProductosComponent,
     children:[
       {path:'agregar-editar/:id',component:AgregarEditarComponent},
       {path:'lista-productos',component:ListaProductosComponent},
-      {path:'**',redirectTo:'lista-productos'}
-    ] 
+      {path:'',component:ListaProductosComponent},
+      {path:'**',redirectTo:'/'}
+    ]
   }
 ];
 

@@ -4,15 +4,28 @@ import { RouterModule, Routes } from '@angular/router';
 import { IngresosComponent } from './ingresos/ingresos.component';
 import { MovimientosComponent } from './movimientos.component';
 
-const routes: Routes = [{ path: '', component: MovimientosComponent,children:[
-  {path:'ingreso-productos',component:IngresosComponent},
-  {path:'inventarios',component:InventariosComponent},
+const routes: Routes = [
+  {
+    path: '',
+    component: MovimientosComponent,
+    children: [
+      { path: 'ingreso-productos', component: IngresosComponent },
+      { path: 'inventarios', component: InventariosComponent },
+      {
+        path: 'ajustes',
+        loadChildren: () =>
+          import('./ajustes/ajustes.module').then((m) => m.AjustesModule),
+      },
 
-  {path:'**',redirectTo:'inventarios'}
-] }];
+      { path: '', component: InventariosComponent },
+      { path: '**', redirectTo:'/'},
+
+    ],
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class MovimientosRoutingModule { }
+export class MovimientosRoutingModule {}
