@@ -17,7 +17,9 @@ const routes: Routes = [
           import('./ajustes/ajustes.module').then((m) => m.AjustesModule),
       },
 
-      { path: '**', redirectTo: 'inventarios' },
+      { path: '', component: InventariosComponent },
+      { path: '**', redirectTo:'/'},
+
     ],
   },
 ];

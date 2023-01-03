@@ -223,6 +223,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                 using (PuraVidaStoreContext db = new PuraVidaStoreContext())
                 {
                     return await db.MotivosMovimientos
+                           .Where(x=>x.MtmId!=1)
                            .Include(x => x.MtmIdTipoMovimientoNavigation)
                            .ToListAsync();
                 }
