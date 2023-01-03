@@ -25,7 +25,7 @@ namespace PuraVidaStoreBK.Models.DbContex
         public string? PdrFoto { get; set; }
         public bool? PdrTieneExistencias { get; set; }
 
-        public virtual TipoMovimientos PrdIdTipoProductoNavigation { get; set; } = null!;
+        public virtual TipoProducto PrdIdTipoProductoNavigation { get; set; } = null!;
         public virtual ICollection<DetalleFactura> DetalleFacturas { get; set; }
         public virtual ICollection<DetalleProductoPedido> DetalleProductoPedidos { get; set; }
         public virtual ICollection<HistorialPrecio> HistorialPrecios { get; set; }

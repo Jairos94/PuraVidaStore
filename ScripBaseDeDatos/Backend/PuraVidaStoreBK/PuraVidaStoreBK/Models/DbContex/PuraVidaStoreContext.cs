@@ -38,7 +38,7 @@ namespace PuraVidaStoreBK.Models.DbContex
         public virtual DbSet<Proveedore> Proveedores { get; set; } = null!;
         public virtual DbSet<RolUsiario> RolUsiarios { get; set; } = null!;
         public virtual DbSet<TipoMovimiento> TipoMovimientos { get; set; } = null!;
-        public virtual DbSet<TipoMovimientos> TipoProductos { get; set; } = null!;
+        public virtual DbSet<TipoProducto> TipoProductos { get; set; } = null!;
         public virtual DbSet<Trackin> Trackins { get; set; } = null!;
         public virtual DbSet<TrackinsAsociado> TrackinsAsociados { get; set; } = null!;
         public virtual DbSet<UsuaiosEnvioCorreo> UsuaiosEnvioCorreos { get; set; } = null!;
@@ -489,12 +489,12 @@ namespace PuraVidaStoreBK.Models.DbContex
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<TipoMovimientos>(entity =>
+            modelBuilder.Entity<TipoProducto>(entity =>
             {
                 entity.HasKey(e => e.TppId)
                     .HasName("PK__TipoProd__028B0F70D32FC76B");
 
-                entity.ToTable("TipoMovimientos");
+                entity.ToTable("TipoProducto");
 
                 entity.Property(e => e.TppDescripcion)
                     .HasMaxLength(50)

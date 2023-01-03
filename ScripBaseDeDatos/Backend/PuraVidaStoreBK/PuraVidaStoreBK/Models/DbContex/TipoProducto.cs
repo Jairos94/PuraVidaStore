@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace PuraVidaStoreBK.Models.DbContex
 {
-    public partial class TipoMovimientos
+    public partial class TipoProducto
     {
-        public TipoMovimientos()
+        public TipoProducto()
         {
             Productos = new HashSet<Producto>();
         }
