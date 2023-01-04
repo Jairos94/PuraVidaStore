@@ -56,9 +56,9 @@ namespace PuraVidaStoreBK.ExecQuerys
             {
                 using (PuraVidaStoreContext db = new PuraVidaStoreContext())
                 {
-                    if (motivosMovimiento.MtmId>0) 
+                    if (motivosMovimiento.MtmId==0) 
                     {
-                        await db.MotivosMovimientos.AddAsync(motivosMovimiento);
+                         db.MotivosMovimientos.Add(motivosMovimiento);
                     } else 
                     { 
                          db.MotivosMovimientos.Update(motivosMovimiento);

@@ -1,3 +1,4 @@
+import { MessageService } from 'primeng/api';
 import { TipoMovimientoModel } from './../../../../models/tipo-movimiento-model';
 import { MovimientosService } from './../../../../services/movimientos.service';
 import { Component, OnInit } from '@angular/core';
@@ -7,9 +8,13 @@ import { MotivoMovimientoModel } from 'src/app/models/motivo-movimiento-model';
   selector: 'app-razon-ajustes',
   templateUrl: './razon-ajustes.component.html',
   styleUrls: ['./razon-ajustes.component.css'],
+  providers: [MessageService],
 })
 export class RazonAjustesComponent implements OnInit {
-  constructor(private servicio: MovimientosService) {}
+  constructor(
+    private servicio: MovimientosService,
+    private messageService: MessageService
+  ) {}
 
   listaMotivosMovimientos: MotivoMovimientoModel[] = [];
   encabezado: string = '';
@@ -30,6 +35,11 @@ export class RazonAjustesComponent implements OnInit {
     this.obtenerListaARazonesAjuste();
     this.ObtenerListaTipoAjuste();
   }
+
+
+  showSuccess() {
+    this.messageService.add({severity:'success', summary: 'Éxito al guardar', detail: 'Se guardó la razón del ajuste satisfactoriamente'});
+}
 
   obtenerListaARazonesAjuste() {
     this.servicio.obtenerMotivosMovimientos().subscribe({
@@ -88,5 +98,23 @@ export class RazonAjustesComponent implements OnInit {
     this.TipoMovimientoSeleccionado =
       this.motivo.mtmIdTipoMovimientoNavigation!;
     this.displayModal = true;
+  }
+
+  GuardarMotivoMovimiento() {
+    this.motivo.mtmIdTipoMovimientoNavigation = null;
+    this.motivo.mtmIdTipoMovimiento = this.TipoMovimientoSeleccionado.tpmId;
+    this.servicio.GuardarMotivoMovimiento(this.motivo).subscribe({
+      next: (x) => {
+        this.showSuccess()
+        this.limpiar();
+        this.obtenerListaARazonesAjuste();
+
+        this.displayModal = false;
+      },
+      error: (_e) => {
+        console.log(_e);
+      },
+    });
+
   }
 }

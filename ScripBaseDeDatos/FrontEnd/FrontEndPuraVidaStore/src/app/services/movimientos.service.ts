@@ -1,3 +1,4 @@
+import { MotivoMovimientoModel } from 'src/app/models/motivo-movimiento-model';
 import { TipoMovimientoModel } from './../models/tipo-movimiento-model';
 import { activo } from './../activo';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -5,7 +6,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { InventariosModel } from '../models/inventarios-model';
-import { MotivoMovimientoModel } from '../models/motivo-movimiento-model';
 
 @Injectable({
   providedIn: 'root',
@@ -51,18 +51,24 @@ export class MovimientosService {
     );
   }
 
+  GuardarMotivoMovimiento(
+    MotivoMovimiento: MotivoMovimientoModel
+  ): Observable<MotivoMovimientoModel> {
+    return this.http.post<MotivoMovimientoModel>(
+      `${this.baseUrl}Movimientos/GuardarMotivo`,
+      MotivoMovimiento
+    );
+  }
+
   obtenerMotivosMovimientos(): Observable<MotivoMovimientoModel[]> {
     return this.http.get<MotivoMovimientoModel[]>(
       `${this.baseUrl}Movimientos/ObtenerMotivos`
     );
   }
 
-
-
   obtenerTipoMovimiento(): Observable<TipoMovimientoModel[]> {
     return this.http.get<TipoMovimientoModel[]>(
       `${this.baseUrl}Movimientos/ObtenerTipoMovimiento`
     );
   }
-
 }
