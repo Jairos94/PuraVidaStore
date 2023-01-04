@@ -154,7 +154,7 @@ namespace PuraVidaStoreBK.Controllers
             try
             {
                
-                return Ok(_mapper.Map<List<TipoMovimientoDTO>>(_movimientosQuery.ObtenerListaTipoMovimiento()));
+                return Ok(_mapper.Map<List<TipoMovimientoDTO>>(await _movimientosQuery.ObtenerListaTipoMovimiento()));
             }
             catch (Exception)
             {

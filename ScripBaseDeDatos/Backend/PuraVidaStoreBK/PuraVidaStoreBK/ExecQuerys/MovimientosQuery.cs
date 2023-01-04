@@ -242,7 +242,8 @@ namespace PuraVidaStoreBK.ExecQuerys
             {
                 using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
                 {
-                    return await db.TipoMovimientos.ToListAsync();
+                    var retorno = await db.TipoMovimientos.ToListAsync();
+                    return retorno;
                 }
             }
             catch (Exception ex)

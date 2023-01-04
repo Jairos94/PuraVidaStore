@@ -1,3 +1,4 @@
+import { TipoMovimientoModel } from './../models/tipo-movimiento-model';
 import { activo } from './../activo';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -53,6 +54,14 @@ export class MovimientosService {
   obtenerMotivosMovimientos(): Observable<MotivoMovimientoModel[]> {
     return this.http.get<MotivoMovimientoModel[]>(
       `${this.baseUrl}Movimientos/ObtenerMotivos`
+    );
+  }
+
+
+
+  obtenerTipoMovimiento(): Observable<TipoMovimientoModel[]> {
+    return this.http.get<TipoMovimientoModel[]>(
+      `${this.baseUrl}Movimientos/ObtenerTipoMovimiento`
     );
   }
 
