@@ -18,7 +18,7 @@
         </div>
         <div class="col">
           <div class="p-inputgroup">
-            <input type="text" pInputText placeholder="Buscar" />
+            <input type="text" [(ngModel)]="buscador" (input)="sujerencias()" pInputText placeholder="Buscar" />
           </div>
         </div>
       </div>

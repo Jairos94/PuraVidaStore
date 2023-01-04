@@ -198,13 +198,14 @@ namespace PuraVidaStoreBK.ExecQuerys
             {
                 using (PuraVidaStoreContext db = new PuraVidaStoreContext())
                 {
-                    return await db.MotivosMovimientos
-                           .Where(x => x.MtmId != 1)
+                    var retorno = await db.MotivosMovimientos
                            .Where(x =>
-                           x.MtmDescripcion.Contains(descripcion) ||
-                           x.MtmIdTipoMovimientoNavigation.TpmDescripcion.Contains(descripcion))
+                           x.MtmId != 1 &&
+                           (x.MtmDescripcion.Contains(descripcion) ||
+                           x.MtmIdTipoMovimientoNavigation.TpmDescripcion.Contains(descripcion)))
                            .Include(x => x.MtmIdTipoMovimientoNavigation)
                            .ToListAsync();
+                    return retorno;
                 }
             }
             catch (Exception ex)

@@ -18,6 +18,7 @@ export class RazonAjustesComponent implements OnInit {
 
   listaMotivosMovimientos: MotivoMovimientoModel[] = [];
   encabezado: string = '';
+  buscador: string = '';
   displayModal: boolean = false;
   listaTipoMovimiento: TipoMovimientoModel[] = [];
   TipoMovimientoSeleccionado: TipoMovimientoModel = {
@@ -36,10 +37,30 @@ export class RazonAjustesComponent implements OnInit {
     this.ObtenerListaTipoAjuste();
   }
 
-
   showSuccess() {
-    this.messageService.add({severity:'success', summary: 'Éxito al guardar', detail: 'Se guardó la razón del ajuste satisfactoriamente'});
-}
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Éxito al guardar',
+      detail: 'Se guardó la razón del ajuste satisfactoriamente',
+    });
+  }
+
+  sujerencias() {
+    this.servicio.SugerenciasMotivoMovimientos(this.buscador).subscribe({
+      next: (x) => {
+        if (x.length > 0) {
+          this.listaMotivosMovimientos = [];
+          this.listaMotivosMovimientos = x;
+        } else {
+          this.obtenerListaARazonesAjuste();
+        }
+      },
+      error: (_e) => {
+        this.obtenerListaARazonesAjuste();
+        console.log(_e);
+      },
+    });
+  }
 
   obtenerListaARazonesAjuste() {
     this.servicio.obtenerMotivosMovimientos().subscribe({
@@ -105,7 +126,7 @@ export class RazonAjustesComponent implements OnInit {
     this.motivo.mtmIdTipoMovimiento = this.TipoMovimientoSeleccionado.tpmId;
     this.servicio.GuardarMotivoMovimiento(this.motivo).subscribe({
       next: (x) => {
-        this.showSuccess()
+        this.showSuccess();
         this.limpiar();
         this.obtenerListaARazonesAjuste();
 
@@ -115,6 +136,5 @@ export class RazonAjustesComponent implements OnInit {
         console.log(_e);
       },
     });
-
   }
 }

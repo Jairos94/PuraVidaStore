@@ -36,6 +36,17 @@ export class MovimientosService {
     );
   }
 
+  SugerenciasMotivoMovimientos(
+    buscador: string
+  ): Observable<MotivoMovimientoModel[]> {
+    const params = new HttpParams()
+      .set('motivos', buscador);
+    return this.http.get<MotivoMovimientoModel[]>(
+      `${this.baseUrl}Movimientos/ObtenerMotivosPorDescripcion`,
+      { params }
+    );
+  }
+
   GuardarSinOrden(
     ProductosAIngresar: InventariosModel[]
   ): Observable<InventariosModel[]> {
