@@ -187,5 +187,51 @@ namespace PuraVidaStoreBK.ExecQuerys
             }
             return listaProducto;
         }
+
+        public async Task<List<Producto>> ListaProductosNoFiltrada()
+        {
+            var listaProducto = new List<Producto>();
+            try
+            {
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
+                {
+                    listaProducto = await db.Productos
+                        .Include(x => x.PrdIdTipoProductoNavigation)
+                        .ToListAsync();
+                    return listaProducto;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Log.Error(ex.Message);
+            }
+            return listaProducto;
+        }
+
+        public async Task<List<Producto>> ProductoPorNoFiltradaDescripcion(string Descripcion)
+        {
+            var listaProducto = new List<Producto>();
+            try
+            {
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
+                {
+                    listaProducto = await db.Productos
+                        .Where(x => x.PrdNombre.Contains(Descripcion) ||
+                                  x.PrdCodigo.Contains(Descripcion) ||
+                                  x.PrdIdTipoProductoNavigation.TppDescripcion.Contains(Descripcion)
+                                  )
+                        .Include(x => x.PrdIdTipoProductoNavigation)
+                        .ToListAsync();
+                    return listaProducto;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Log.Error("Se presentó un error en ProductoPorDescripcion\n" + ex.Message);
+            }
+            return listaProducto;
+        }
     }
 }

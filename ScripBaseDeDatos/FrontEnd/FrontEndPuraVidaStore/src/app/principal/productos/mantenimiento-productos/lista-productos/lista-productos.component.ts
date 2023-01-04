@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MessageService } from 'primeng/api';
 import { activo } from 'src/app/activo';
 import { ProductoModel } from 'src/app/models/producto-model';
 import { TipoProductoModel } from 'src/app/models/tipo-producto';
@@ -8,14 +9,15 @@ import { Archivo } from 'src/app/utils/Archivos';
 @Component({
   selector: 'app-lista-productos',
   templateUrl: './lista-productos.component.html',
-  styleUrls: ['./lista-productos.component.css']
+  styleUrls: ['./lista-productos.component.css'],
+  providers: [MessageService]
 })
 export class ListaProductosComponent implements OnInit {
 
   listaProductos: ProductoModel[] = [];
   buscador: string = "";
   esAdministrador: boolean = false;
-  constructor(private servicioProducto: ProductoServiceService) { }
+  constructor(private servicioProducto: ProductoServiceService,private messageService: MessageService) { }
 
   ngOnInit(): void {
     this.CargarLista();
@@ -37,6 +39,7 @@ export class ListaProductosComponent implements OnInit {
       x.pdrVisible = false;
       this.servicioProducto.GuardarProducto(x, activo.usuarioPrograma.usrId).subscribe((z => {
         this.CargarLista();
+        this.showError();
       }), (_e => console.log(_e)));
     }), (_e => console.log(_e)));
   }
@@ -64,4 +67,11 @@ export class ListaProductosComponent implements OnInit {
     }
     return Archivo.lectorImagen(imagen);
   }
+
+
+
+
+  showError() {
+    this.messageService.add({severity:'error', summary: 'Inactivo', detail: 'Cambió de estado a inactivo'});
+}
 }

@@ -6,6 +6,7 @@ import { InventariosModel } from 'src/app/models/inventarios-model';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { InventariosVisualizarModels } from 'src/app/models/inventarios-visualizar-models';
 
 @Component({
   selector: 'app-inventarios',
@@ -48,11 +49,16 @@ export class InventariosComponent implements OnInit {
 
     const doc = new jsPDF();
 
-    doc.text('Lista de articulos en existencia', 10, 10);
+    doc.text('Lista de articulos en existencia',70, 10);
+    doc.setFontSize(12);
+    var fecha =Date.now();
+    var fechaHoy = new Date(fecha);
+    doc.text(fechaHoy.toLocaleDateString(),150, 10);
 
 
+    let lista: any[] = [];
 
-    this.listaArticulos.forEach((x,i) => {
+    this.listaArticulos.forEach((x, i) => {
       var tipo: TipoProductoModel = {
         tppId: 0,
         tppDescripcion: '',
@@ -61,41 +67,25 @@ export class InventariosComponent implements OnInit {
 
       if (x.producto.prdIdTipoProductoNavigation != null) {
         tipo = x.producto.prdIdTipoProductoNavigation;
+
+        let data: InventariosVisualizarModels={
+          nombreProducto: x.producto.prdNombre,
+          codigoProducto: x.producto.prdCodigo||'',
+          codigoProvedor: x.producto.prdCodigoProvedor || '',
+          descripcion : tipo.tppDescripcion || '',
+          cantidadExistencia : x.cantidadExistencia
+        };
+
+        lista.push([x.producto.prdNombre,x.producto.prdCodigo||'',x.producto.prdCodigoProvedor || '',tipo.tppDescripcion || '',x.cantidadExistencia]);
       }
 
-i
-
-     if(i===0){
-        autoTable(doc, {
-          head: [titulos],
-          body: [
-            [
-              x.producto.prdNombre,
-              x.producto.prdCodigo,
-              x.producto.prdCodigoProvedor || '',
-              tipo.tppDescripcion || '',
-              x.cantidadExistencia,
-            ],
-          ],
-        });
-      }
-      else{
-        autoTable(doc, {
-
-          body: [
-            [
-              x.producto.prdNombre,
-              x.producto.prdCodigo,
-              x.producto.prdCodigoProvedor || '',
-              tipo.tppDescripcion || '',
-              x.cantidadExistencia,
-            ],
-          ],
-        });
-      }
 
     });
     // Or use javascript directly:
+    autoTable(doc, {
+      head: [titulos],
+      body: lista,
+    })
 
     doc.save(this.fileName + '.pdf');
   }

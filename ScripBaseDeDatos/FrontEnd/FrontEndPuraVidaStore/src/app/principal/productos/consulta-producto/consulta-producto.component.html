@@ -1,39 +1,72 @@
 <div class="my-2">
   <div class="grid">
-    <div class="col-10">
+    <div class="col-9">
       <input
         type="text"
-        placeholder="Buscar por codigo"
+        placeholder="Buscar por código"
         [(ngModel)]="buscadorCodigoDeBarras"
         (keyup.enter)="obtenerPorCodigoDeBarras()"
+        pAutoFocus
+        [autofocus]="enfoque"
         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
       />
     </div>
 
-    <div class="col-2">
+    <div class="col">
+      <p-button
+        class="mx-1"
+        icon="pi pi-search"
+        (onClick)="obtenerPorCodigoDeBarras()"
+      ></p-button>
       <p-button
         (click)="showModalDialog()"
         icon="pi pi-external-link"
         label="Ver productos"
       ></p-button>
       <p-dialog
-        header="Header"
+        header="Lista de productos"
         [(visible)]="displayModal"
         [modal]="true"
-        [style]="{ width: '50vw' }"
-        [draggable]="false"
-        [resizable]="false"
+        [style]="{ width: '70vw' }"
+        [maximizable]="true"
       >
-        <p class="m-0">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
-        </p>
+        <div class="field">
+          <label for="buscarDescripcion">Buscar por descripción</label>
+          <input
+            id="buscarDescripcion"
+            type="text"
+            [(ngModel)]="buscadorPorDescripcion"
+            (input)="buscarPorDescripcion()"
+            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+          />
+        </div>
+        <div class="field">
+          <p-table [value]="listaProductos" [tableStyle]="{'min-width': '50rem'}"
+          [rows]="5"  [paginator]="true" [rowsPerPageOptions]="[5,7,10]">
 
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Imagen</th>
+                    <th>Codigo</th>
+                    <th>Código proveedor</th>
+                    <th>Categoria</th>
+                    <th>Acciones</th>
+
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-producto let-columns="columns">
+                <tr>
+                    <td>{{producto.prdNombre}}</td>
+                    <td><img [src]="leerArchivo(producto.pdrFoto)" [alt]="producto.prdNombre" width="100" class="shadow-4" /></td>
+                    <td>{{producto.prdCodigo}}</td>
+                    <td>{{producto.prdCodigoProvedor}}</td>
+                    <td>{{producto.prdIdTipoProductoNavigation?.tppDescripcion}}</td>
+                    <td><p-button label="Seleccionar" icon="pi pi-check" (click)="seleccionar(producto)"></p-button></td>
+                </tr>
+            </ng-template>
+        </p-table>
+        </div>
         <ng-template pTemplate="footer">
           <p-button
             icon="pi pi-check"
@@ -43,6 +76,13 @@
           ></p-button>
         </ng-template>
       </p-dialog>
+
+      <p-button
+        class="mx-1"
+        icon="pi pi-eraser"
+        iconPos="right"
+        (onClick)="limpiar()"
+      ></p-button>
     </div>
   </div>
 
@@ -51,7 +91,7 @@
       <div class="flex justify-content-center flex-wrap card-container col">
         <div class="flex align-items-center justify-content-center col">
           <div class="field">
-            <h1>{{producto.prdNombre}}</h1>
+            <h1>{{ producto.prdNombre }}</h1>
           </div>
         </div>
       </div>
@@ -61,14 +101,32 @@
       <div class="flex align-items-center justify-content-center col">
         <div class="field">
           <img
-            src="../../../../assets/no-pictures.png"
+            [src]="foto"
             [style]="{ width: '15rem', 'margin-bottom': '2em' }"
           />
         </div>
       </div>
     </div>
-    Nombre categoria
+    <div class="field">Código: {{ producto.prdCodigo }}</div>
+    <div class="field">
+      Código del provedor: {{ producto.prdCodigoProvedor }}
+    </div>
+    <div class="field">
+      Categoria: {{ producto.prdIdTipoProductoNavigation?.tppDescripcion }}
+    </div>
 
-    <ng-template pTemplate="footer"> tppDescripcion </ng-template>
+    <ng-template pTemplate="footer">
+      <div class="field">Estado</div>
+      <div class="field">
+        Inactivo
+        <p-inputSwitch
+          [(ngModel)]="producto.pdrVisible"
+          [disabled]="esDeshabilitado"
+          (onChange)="activarProducto()"
+        ></p-inputSwitch>
+        Activo
+      </div>
+    </ng-template>
   </p-card>
 </div>
+<p-toast position="top-right"></p-toast>

@@ -19,12 +19,70 @@ namespace PuraVidaStoreBK.ExecQuerys
             _producto = producto;
         }
 
+        public async Task<bool> GuardarAjuste(Inventarios inventario, int IdBodega, int idUsuario, int Motivo)
+        {
+            var retorno = false;
+            try
+            {
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
+                {
+                    var movimiento = new Movimiento
+                    {
+                        MvmIdProducto = inventario.producto.PrdId,
+                        MvmCantidad = inventario.CantidadExistencia,
+                        MvmFecha = DateTime.Now,
+                        MvmIdMotivoMovimiento = Motivo,
+                        MvmIdUsuario = idUsuario,
+                        MvmIdBodega = IdBodega,
+                    };
+
+                    await IngresarMotimoMovimiento(movimiento);
+                   
+                    retorno = true;
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return retorno;
+        }
+
+        public async Task<MotivosMovimiento> GuardarMotivoMovimiento(MotivosMovimiento motivosMovimiento)
+        {
+            try
+            {
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
+                {
+                    if (motivosMovimiento.MtmId>0) 
+                    {
+                        await db.MotivosMovimientos.AddAsync(motivosMovimiento);
+                    } else 
+                    { 
+                         db.MotivosMovimientos.Update(motivosMovimiento);
+
+                    }
+
+                    await db.SaveChangesAsync();
+                    return motivosMovimiento;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.StackTrace);
+                return new MotivosMovimiento();
+            }
+            
+        }
+
         public async Task<bool> IngresarProductosAlInventario(List<Inventarios> Inventarios, int IdBodega, int IdUsuario, int Motivo)
         {
             var retorno = false;
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
                 {
                     Inventarios.ForEach(async x =>
                     {
@@ -33,9 +91,9 @@ namespace PuraVidaStoreBK.ExecQuerys
                         x.producto.PdrTieneExistencias = true;
 
 
-                        await _producto.GuardarProducto(x.producto,IdUsuario);
-                        
-                        var movimiento = new Movimiento 
+                        await _producto.GuardarProducto(x.producto, IdUsuario);
+
+                        var movimiento = new Movimiento
                         {
                             MvmIdProducto = x.producto.PrdId,
                             MvmCantidad = x.CantidadExistencia,
@@ -45,11 +103,11 @@ namespace PuraVidaStoreBK.ExecQuerys
                             MvmIdBodega = IdBodega,
                         };
 
-                        await ingresarMovimmiento(movimiento);
+                        await IngresarMotimoMovimiento(movimiento);
                     });
                     retorno = true;
                 }
-                    
+
             }
             catch (Exception)
             {
@@ -73,7 +131,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                     movimiento.MvmFecha = DateTime.Now;
                     movimiento.MvmIdMotivoMovimiento = MotivosMovimiento.MtmId;
 
-                    return await ingresarMovimmiento(movimiento);
+                    return await IngresarMotimoMovimiento(movimiento);
                 }
             }
             catch (Exception ex)
@@ -134,6 +192,88 @@ namespace PuraVidaStoreBK.ExecQuerys
            
         }
 
+        public async Task<List<MotivosMovimiento>> ObtenerListaMotivoMovimientoPorDescripcion(string descripcion)
+        {
+            try
+            {
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
+                {
+                    return await db.MotivosMovimientos
+                           .Where(x => x.MtmId != 1)
+                           .Where(x =>
+                           x.MtmDescripcion.Contains(descripcion) ||
+                           x.MtmIdTipoMovimientoNavigation.TpmDescripcion.Contains(descripcion))
+                           .Include(x => x.MtmIdTipoMovimientoNavigation)
+                           .ToListAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Log.Error(ex.StackTrace);
+                return new List<MotivosMovimiento>();
+            }
+          
+        }
+
+        public async Task<List<MotivosMovimiento>> ObtenerListaMotivosMovimiento()
+        {
+            try
+            {
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
+                {
+                    return await db.MotivosMovimientos
+                           .Where(x=>x.MtmId!=1)
+                           .Include(x => x.MtmIdTipoMovimientoNavigation)
+                           .ToListAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Log.Error(ex.StackTrace);
+                return new List<MotivosMovimiento>();
+            }
+        }
+
+        public async Task<List<TipoMovimiento>> ObtenerListaTipoMovimiento()
+        {
+            try
+            {
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
+                {
+                    return await db.TipoMovimientos.ToListAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.StackTrace);
+                throw;
+            }
+        }
+
+        public async Task<MotivosMovimiento> ObtenerMotivoMovmientoPorId(int id)
+        {
+            try
+            {
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
+                {
+                    return await db.MotivosMovimientos
+                         .Where(x => x.MtmId == id)
+                         .Include(x=>x.MtmIdTipoMovimientoNavigation)
+                         .FirstOrDefaultAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Log.Error(ex.StackTrace);
+                return new MotivosMovimiento();
+            }
+       
+        }
+
+
         public async Task<List<Inventarios>> PorBusqueda(int IdBodega, string buscador)
         {
             var listaIds = await listaIdProductos(IdBodega);
@@ -172,7 +312,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             return ListaProductos;
         }
 
-        private async Task<Movimiento> ingresarMovimmiento(Movimiento movimiento) 
+        private async Task<Movimiento> IngresarMotimoMovimiento(Movimiento movimiento) 
         {
             try
             {
@@ -225,5 +365,6 @@ namespace PuraVidaStoreBK.ExecQuerys
             finally
             { conn.Close(); }
         }
+
     }
 }
