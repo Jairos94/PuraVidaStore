@@ -79,17 +79,17 @@ namespace PuraVidaStoreBK.Controllers
             else { return NoContent(); }
         }
 
-        [HttpGet("BusquedaPorCodigo")]
+        [HttpGet("BusquedaPorCodigo"), Authorize]
         public async Task<IActionResult> BusquedaPorCodigo(string codigo) 
         {
             var resultado = await _productoQuery.BuscarProductoPorCodigo(codigo);
-            if (resultado != null)
+            if (resultado.PrdId > 0)
             {
                 return Ok(_mapper.Map<ProductoDTO>(resultado));
             }
             else
             {
-                return NoContent();
+                return BadRequest();
             }
 
           

@@ -20,6 +20,7 @@ import { FormsModule } from '@angular/forms';
     AjustesRoutingModule,
     PrimeNgPrincipalModule,
     FormsModule,
-  ]
+  ],
+  exports:[FormsModule]
 })
 export class AjustesModule { }

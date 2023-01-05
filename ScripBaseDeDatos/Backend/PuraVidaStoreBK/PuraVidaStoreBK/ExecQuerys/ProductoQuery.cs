@@ -53,13 +53,23 @@ namespace PuraVidaStoreBK.ExecQuerys
         }
         public async Task<Producto> BuscarProductoPorCodigo(string codigo)
         {
-            using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
+            try
             {
-             return await  db.Productos
-                    .Where(x=>x.PrdCodigo== codigo || x.PrdCodigoProvedor == codigo)
-                    .Include(x=>x.PrdIdTipoProductoNavigation)
-                    .FirstAsync();
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
+                {
+                    var retorno = db.Productos
+                           .Where(x => x.PrdCodigo == codigo || x.PrdCodigoProvedor == codigo)
+                           .Include(x => x.PrdIdTipoProductoNavigation)
+                           .FirstAsync();
+                    return await retorno;
+                }
             }
+            catch (Exception ex)
+            {
+                Log.Error(ex.StackTrace);
+                return new Producto();
+            }
+            
         }
         public async Task<List<Producto>> ListaProductos()
         {
