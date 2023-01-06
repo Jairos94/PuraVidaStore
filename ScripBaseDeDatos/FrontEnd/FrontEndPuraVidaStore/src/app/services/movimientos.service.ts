@@ -62,6 +62,25 @@ export class MovimientosService {
     );
   }
 
+
+  GuardarMovimiento(
+    AjusteAIngresar: InventariosModel,
+    Motivo:number
+  ): Observable<InventariosModel> {
+    const params = new HttpParams()
+      .set('IdBodega', activo.bodegaIngreso.bdgId)
+      .set('IdUsuario', activo.usuarioPrograma.usrId)
+      .set('Motivo', Motivo);
+
+    return this.http.post<InventariosModel>(
+      `${this.baseUrl}Movimientos/GuardarAjuste`,
+      AjusteAIngresar,
+      { params }
+    );
+  }
+
+
+
   GuardarMotivoMovimiento(
     MotivoMovimiento: MotivoMovimientoModel
   ): Observable<MotivoMovimientoModel> {

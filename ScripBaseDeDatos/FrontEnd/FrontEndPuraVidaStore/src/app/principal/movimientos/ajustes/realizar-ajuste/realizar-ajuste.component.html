@@ -3,13 +3,20 @@
   <div class="grid">
     <div class="col">
       <div class="p-inputgroup">
-        <input type="text" pInputText placeholder="Buscar por código" />
+        <input
+          type="text"
+          pInputText
+          placeholder="Buscar por código"
+          [(ngModel)]="buscador"
+          (keyup.enter)="buscarProductoPorCodigo()"
+        />
         <button
           type="button"
           pButton
           pRipple
           icon="pi pi-search"
           styleClass="p-button-warn"
+          (click)="buscarProductoPorCodigo()"
         ></button>
       </div>
     </div>
@@ -23,6 +30,10 @@
           class="mx-1"
           icon="pi pi-save"
           styleClass="p-button-warn"
+          (click)="guardarAjuste()"
+          [disabled]="
+            !(productoSeleccionado.prdId >0 && motivoSeleccionado.mtmId>0 && cantidad>0)
+          "
         ></button>
         <button
           type="button"
@@ -30,6 +41,7 @@
           pRipple
           icon="pi pi-eraser"
           styleClass="p-button-warn"
+          (click)="limpiar()"
         ></button>
       </div>
     </div>
@@ -39,7 +51,7 @@
     <div class="col">
       <p-card class="w-full">
         <ng-template pTemplate="header">
-          <h1>{{ productoSeleccionado.prdNombre }}</h1>
+          <h1>{{ productoSeleccionado.prdCodigo }}</h1>
         </ng-template>
         <img
           alt="Card"
@@ -58,8 +70,6 @@
     </div>
 
     <div class="col">
-
-
       <p-card class="w-full">
         <ng-template pTemplate="header">
           <h1>Parámetros de ingreso</h1>
@@ -75,7 +85,6 @@
           </p-inputNumber>
         </div>
 
-
         <div class="field">
           Motivo de ajuste
           <p-dropdown
@@ -90,12 +99,12 @@
           <div
             *ngIf="
               motivoSeleccionado.mtmIdTipoMovimiento > 00 &&
-              motivoSeleccionado.mtmIdTipoMovimientoNavigation?.tpmId === 1
+              motivoSeleccionado.mtmIdTipoMovimientoNavigation!.tpmId === 1
             "
           >
             <label class="text-green-500">
               {{
-                motivoSeleccionado.mtmIdTipoMovimientoNavigation?.tpmDescripcion
+                motivoSeleccionado.mtmIdTipoMovimientoNavigation!.tpmDescripcion
               }}
             </label>
           </div>
@@ -103,12 +112,12 @@
           <div
             *ngIf="
               motivoSeleccionado.mtmIdTipoMovimiento > 00 &&
-              motivoSeleccionado.mtmIdTipoMovimientoNavigation?.tpmId === 2
+              motivoSeleccionado.mtmIdTipoMovimientoNavigation!.tpmId === 2
             "
           >
             <label class="text-red-500">
               {{
-                motivoSeleccionado.mtmIdTipoMovimientoNavigation?.tpmDescripcion
+                motivoSeleccionado.mtmIdTipoMovimientoNavigation!.tpmDescripcion
               }}
             </label>
           </div>
