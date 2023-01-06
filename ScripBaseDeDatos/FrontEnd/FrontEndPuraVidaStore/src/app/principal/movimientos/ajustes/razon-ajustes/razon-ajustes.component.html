@@ -18,7 +18,7 @@
         </div>
         <div class="col">
           <div class="p-inputgroup">
-            <input type="text" pInputText placeholder="Buscar" />
+            <input type="text" [(ngModel)]="buscador" (input)="sujerencias()" pInputText placeholder="Buscar" />
           </div>
         </div>
       </div>
@@ -32,10 +32,21 @@
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-ajuste let-columns="columns">
-      <tr *ngIf="ajuste.mtmIdTipoMovimiento === 1" class="text-blue-500">
+      <tr *ngIf="ajuste.mtmIdTipoMovimiento === 1" class="text-green-500">
         <td>{{ ajuste.mtmId }}</td>
         <td>{{ ajuste.mtmDescripcion }}</td>
         <td>{{ ajuste.mtmIdTipoMovimientoNavigation.tpmDescripcion }}</td>
+        <td>
+          <button
+            pButton
+            pRipple
+            type="button"
+            icon="pi pi-pencil"
+            (click)="editarAjuste(ajuste)"
+            class="p-button-rounded p-button-warning"
+          ></button>
+        </td>
+
       </tr>
 
       <tr *ngIf="ajuste.mtmIdTipoMovimiento === 2" class="text-red-500">
@@ -93,9 +104,10 @@
       styleClass="p-button-text"
     ></p-button>
     <p-button
-      (click)="displayModal = false"
+      (click)="GuardarMotivoMovimiento()"
       label="Guardar"
       styleClass="p-button-text"
     ></p-button>
   </ng-template>
 </p-dialog>
+<p-toast></p-toast>

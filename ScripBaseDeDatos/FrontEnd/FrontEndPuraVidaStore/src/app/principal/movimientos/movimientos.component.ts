@@ -36,7 +36,7 @@ export class MovimientosComponent implements OnInit {
             routerLink: 'ajustes/realizar-ajuste',
           },
           {
-            label: 'Razon del ajuste',
+            label: 'Razón del ajuste',
             icon: 'pi pi-pw pi-file',
             routerLink: 'ajustes/razon-ajuste',
           },

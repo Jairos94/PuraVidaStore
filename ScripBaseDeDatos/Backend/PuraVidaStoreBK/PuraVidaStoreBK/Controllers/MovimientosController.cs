@@ -123,7 +123,7 @@ namespace PuraVidaStoreBK.Controllers
         {
             try
             {
-                var movimientoRetorno = _mapper.Map<MotivosMovimientoDTO>( await _movimientosQuery.ObtenerListaMotivoMovimientoPorDescripcion(motivos));
+                var movimientoRetorno = _mapper.Map<List< MotivosMovimientoDTO>>( await _movimientosQuery.ObtenerListaMotivoMovimientoPorDescripcion(motivos));
                 return Ok(movimientoRetorno);
             }
             catch (Exception)
