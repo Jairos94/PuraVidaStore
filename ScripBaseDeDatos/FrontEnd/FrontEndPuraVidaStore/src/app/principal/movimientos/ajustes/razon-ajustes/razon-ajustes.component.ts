@@ -96,7 +96,6 @@ export class RazonAjustesComponent implements OnInit {
   ObtenerListaTipoAjuste() {
     this.servicio.obtenerTipoMovimiento().subscribe({
       next: (x) => {
-        console.log(x);
 
         this.listaTipoMovimiento = [];
         this.listaTipoMovimiento = x;
