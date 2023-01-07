@@ -76,6 +76,7 @@ builder.Services.AddSingleton<IProductoQuery, ProductoQuery>();
 builder.Services.AddSingleton<IUsuariosQuerys,UsuariosQuerys>();
 builder.Services.AddSingleton<IRolQuery, RolesQuerys>();
 builder.Services.AddSingleton<ITipoProductoQuery, TipoProductoQuery>();
+builder.Services.AddSingleton<IVentasQuery, VentasQuery>();
 
 
 
