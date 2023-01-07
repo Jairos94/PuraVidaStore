@@ -1,1 +1,134 @@
-<p>facturacion works!</p>
+<div class="my-2">
+  <div class="field">
+    <div class="grid">
+      <div class="col">
+        <div class="p-inputgroup">
+          <input type="text" pInputText placeholder="Keyword" class="w-full" />
+          <button
+            type="button"
+            pButton
+            pRipple
+            icon="pi pi-search"
+            styleClass="p-button-warn"
+          ></button>
+        </div>
+      </div>
+
+      <div class="col-3">
+        <p-button
+          (click)="showResponsiveDialog()"
+          icon="pi pi-external-link"
+          label="Show"
+        ></p-button>
+        <p-dialog
+          header="Godfather I"
+          [(visible)]="verModal"
+          [modal]="true"
+          [style]="{ width: '50vw' }"
+          [maximizable]="true"
+          [draggable]="false"
+          [resizable]="false"
+        >
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+            culpa qui officia deserunt mollit anim id est laborum.
+          </p>
+          <ng-template pTemplate="footer">
+            <p-button
+              icon="pi pi-check"
+              (click)="verModal = false"
+              label="Ok"
+              styleClass="p-button-text"
+            ></p-button>
+          </ng-template>
+        </p-dialog>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="col-8">
+      <p-table [value]="listaDtealle">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th>Producto</th>
+            <th>Código</th>
+            <th>Imagen</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Acciones</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-detalle let-columns="columns">
+          <tr>
+            <td>{{ detalle.dtfIdProducto1.prdNombre }}</td>
+            <td>
+              {{ detalle.dtfIdProducto1.prdCodigo }} /
+              {{ detalle.dtfIdProducto1.prdCodigoProvedor }}
+            </td>
+            <td>
+              <img
+                [src]="leerArchivo(detalle.dtfIdProducto1.pdrFoto)"
+                width="100"
+                class="shadow-4"
+              />
+            </td>
+
+            <td
+              [pEditableColumn]="detalle.dtfCantidad"
+              pEditableColumnField="Cantidad"
+            >
+              <p-cellEditor>
+                <ng-template pTemplate="input">
+                  <input
+                    pInputText
+                    type="text"
+                    [(ngModel)]="detalle.dtfCantidad"
+                    required
+                  />
+                </ng-template>
+                <ng-template pTemplate="output">
+                  {{ detalle.dtfIdProducto1.prdNombre }}
+                </ng-template>
+              </p-cellEditor>
+            </td>
+            <td>
+              <button pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-danger"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <div class="col">
+      <div class="field">
+        <H1>Total: 50000</H1>
+      </div>
+
+      <div class="field">
+        <button
+          pButton
+          type="button"
+          label="Pagar"
+          class="p-button-success w-full"
+          icon="pi pi-wallet"
+        ></button>
+      </div>
+
+      <div class="field">
+        <button
+          pButton
+          type="button"
+          label="Cancelar"
+          class="p-button-danger w-full"
+          icon="pi pi-times"
+        ></button>
+      </div>
+    </div>
+  </div>
+</div>

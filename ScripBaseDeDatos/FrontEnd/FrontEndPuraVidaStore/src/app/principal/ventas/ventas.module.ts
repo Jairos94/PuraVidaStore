@@ -5,6 +5,7 @@ import { VentasRoutingModule } from './ventas-routing.module';
 import { VentasComponent } from './ventas.component';
 import { FacturacionComponent } from './facturacion/facturacion.component';
 import { PrimeNgPrincipalModule } from '../prime-ng-principal.module';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { PrimeNgPrincipalModule } from '../prime-ng-principal.module';
   imports: [
     CommonModule,
     VentasRoutingModule,
-    PrimeNgPrincipalModule
+    PrimeNgPrincipalModule,
+    FormsModule
   ]
 })
 export class VentasModule { }
