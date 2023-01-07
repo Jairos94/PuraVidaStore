@@ -28,7 +28,7 @@ namespace PuraVidaStoreBK.Models.DbContex
         public virtual DbSet<HistorialClienteMayoristum> HistorialClienteMayorista { get; set; } = null!;
         public virtual DbSet<HistorialFacturasAnulada> HistorialFacturasAnuladas { get; set; } = null!;
         public virtual DbSet<HistorialPrecio> HistorialPrecios { get; set; } = null!;
-        public virtual DbSet<Monedum> Moneda { get; set; } = null!;
+        public virtual DbSet<Moneda> Moneda { get; set; } = null!;
         public virtual DbSet<MotivosMovimiento> MotivosMovimientos { get; set; } = null!;
         public virtual DbSet<Movimiento> Movimientos { get; set; } = null!;
         public virtual DbSet<OtrosCargo> OtrosCargos { get; set; } = null!;
@@ -49,7 +49,7 @@ namespace PuraVidaStoreBK.Models.DbContex
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-4FJOI9V;Database=PuraVidaStore;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Data Source=DESKTOP-4FJOI9V;Initial Catalog=PuraVidaStore;Trusted_Connection=True");
             }
         }
 
@@ -97,7 +97,7 @@ namespace PuraVidaStoreBK.Models.DbContex
                 entity.HasKey(e => e.DtfId)
                     .HasName("PK__DetalleF__08270EDEE7FD8D53");
 
-                entity.ToTable("DetalleFacturaDTO");
+                entity.ToTable("DetalleFactura");
 
                 entity.HasOne(d => d.DtfIdProductoNavigation)
                     .WithMany(p => p.DetalleFacturas)
@@ -168,6 +168,8 @@ namespace PuraVidaStoreBK.Models.DbContex
                     .HasName("PK__Factura__2B314E1F3C0F686F");
 
                 entity.ToTable("Factura");
+
+                entity.Property(e => e.FtrCodigoFactura).HasMaxLength(350);
 
                 entity.Property(e => e.FtrFecha).HasColumnType("datetime");
 
@@ -283,7 +285,7 @@ namespace PuraVidaStoreBK.Models.DbContex
                     .HasConstraintName("FK__Historial__HlpId__1C873BEC");
             });
 
-            modelBuilder.Entity<Monedum>(entity =>
+            modelBuilder.Entity<Moneda>(entity =>
             {
                 entity.HasKey(e => e.MndId)
                     .HasName("PK__Moneda__D2906950D8649454");
