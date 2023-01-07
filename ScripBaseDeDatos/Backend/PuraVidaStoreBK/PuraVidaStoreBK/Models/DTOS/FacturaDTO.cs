@@ -18,9 +18,9 @@ namespace PuraVidaStoreBK.Models.DTOS
         public virtual EstatusFacturaDTO? FtrEstatus { get; set; } 
         public virtual FormaPagoDTO? FtrFormaPagoNavigation { get; set; }
         public virtual UsuarioDto? FtrIdUsuarioNavigation { get; set; }
-        public virtual ICollection<ImpuestosPorFacturaDTO>? ImpuestosPorFacturas { get; set; }
         public virtual ClienteMayoristaDTO? FtrMayoristaNavigation { get; set; }
         public virtual ICollection<DetalleFacturaDTO>? DetalleFacturas { get; set; }
         public virtual ICollection<FacturaResumenDTO>? FacturaResumen { get; set; }
+        public virtual ICollection<ImpuestosPorFacturaDTO>? ImpuestosPorFacturas { get; set; }
     }
 }

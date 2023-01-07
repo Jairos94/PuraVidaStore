@@ -21,7 +21,7 @@ namespace PuraVidaStoreBK.Models.DbContex
 
         public virtual EstadoPedido PddEstadoNavigation { get; set; } = null!;
         public virtual Usuario PddIdUsuarioNavigation { get; set; } = null!;
-        public virtual Proveedores PddProveedorNavigation { get; set; } = null!;
+        public virtual Proveedore PddProveedorNavigation { get; set; } = null!;
         public virtual ICollection<DetalleProductoPedido> DetalleProductoPedidos { get; set; }
         public virtual ICollection<OtrosCargo> OtrosCargos { get; set; }
         public virtual ICollection<Trackin> Trackins { get; set; }

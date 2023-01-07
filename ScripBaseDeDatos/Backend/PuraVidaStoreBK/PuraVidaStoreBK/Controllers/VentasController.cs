@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using PuraVidaStoreBK.ExecQuerys.Interfaces;
+using PuraVidaStoreBK.Models.DbContex;
 using PuraVidaStoreBK.Models.DTOS;
+using System.Data;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -9,6 +14,14 @@ namespace PuraVidaStoreBK.Controllers
     [ApiController]
     public class VentasController : ControllerBase
     {
+        private readonly IVentasQuery _ventas;
+        private readonly IMapper _mapper;
+
+        public VentasController(IVentasQuery ventas,IMapper mapper)
+        {
+            _ventas = ventas;
+            _mapper = mapper;
+        }
         // GET: api/<VentasController>
         [HttpGet]
         public IEnumerable<string> Get()
@@ -24,10 +37,19 @@ namespace PuraVidaStoreBK.Controllers
         }
 
         // POST api/<VentasController>
-        [HttpPost]
-        public void Post([FromBody] FacturaDTO factura )
+        [HttpPost("IngresarVenta"), Authorize(Roles = "1")]
+        public async Task<IActionResult> Post([FromBody] FacturaDTO factura )
         {
+            try
+            {
+               var retorno =  await _ventas.ingresarFactura(_mapper.Map<Factura>(factura));
+                return Ok(_mapper.Map<FacturaDTO>(retorno));
+            }
+            catch (Exception)
+            {
 
+                return BadRequest("Favor de revisar los logs");
+            }
         }
 
         // PUT api/<VentasController>/5
