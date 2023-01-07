@@ -3,15 +3,19 @@ import { CommonModule } from '@angular/common';
 
 import { VentasRoutingModule } from './ventas-routing.module';
 import { VentasComponent } from './ventas.component';
+import { FacturacionComponent } from './facturacion/facturacion.component';
+import { PrimeNgPrincipalModule } from '../prime-ng-principal.module';
 
 
 @NgModule({
   declarations: [
-    VentasComponent
+    VentasComponent,
+    FacturacionComponent
   ],
   imports: [
     CommonModule,
-    VentasRoutingModule
+    VentasRoutingModule,
+    PrimeNgPrincipalModule
   ]
 })
 export class VentasModule { }
