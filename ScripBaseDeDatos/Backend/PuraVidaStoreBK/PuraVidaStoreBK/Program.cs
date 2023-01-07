@@ -1,10 +1,14 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Prometheus;
 using PuraVidaStoreBK.ExecQuerys;
 using PuraVidaStoreBK.ExecQuerys.Interfaces;
+using PuraVidaStoreBK.Models.DbContex;
+using PuraVidaStoreBK.Utilitarios;
 using Serilog;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
@@ -67,6 +71,11 @@ builder.Services.AddHttpClient(Options.DefaultName)
 //AutoMapper
 builder.Services.AddAutoMapper(typeof(Program));
 
+var conexcion = builder.Configuration.GetConnectionString("sqlServer");
+
+//dbcontex
+Estaticas.SqlServerConexcion = builder.Configuration.GetConnectionString("sqlServer");
+
 #region Inyeccion de dependencias
 builder.Services.AddSingleton<IDataBase, DataBase>();
 builder.Services.AddSingleton<IBodegaQuery, BodegaQuery>();
@@ -89,11 +98,11 @@ Log.Logger = new LoggerConfiguration()
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 
 app.UseHttpsRedirection();
 

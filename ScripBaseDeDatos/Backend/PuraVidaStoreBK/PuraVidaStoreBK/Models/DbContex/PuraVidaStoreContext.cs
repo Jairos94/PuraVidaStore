@@ -2,18 +2,22 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using PuraVidaStoreBK.Utilitarios;
 
 namespace PuraVidaStoreBK.Models.DbContex
 {
     public partial class PuraVidaStoreContext : DbContext
     {
+        
+
         public PuraVidaStoreContext()
         {
         }
-
+      
         public PuraVidaStoreContext(DbContextOptions<PuraVidaStoreContext> options)
             : base(options)
         {
+            
         }
 
         public virtual DbSet<Bodega> Bodegas { get; set; } = null!;
@@ -51,7 +55,10 @@ namespace PuraVidaStoreBK.Models.DbContex
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-4FJOI9V;Initial Catalog=PuraVidaStore;Trusted_Connection=True");
+
+                var conexcion = Estaticas.SqlServerConexcion;
+                optionsBuilder.UseSqlServer(conexcion);
+                //optionsBuilder.UseSqlServer("Data Source=DESKTOP-4FJOI9V;Initial Catalog=PuraVidaStore;Trusted_Connection=True");
             }
         }
 
