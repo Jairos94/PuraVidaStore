@@ -29,6 +29,12 @@ namespace PuraVidaStoreBK.Models
             CreateMap<FormaPago, FormaPagoDTO>();
             CreateMap<FormaPagoDTO, FormaPago>();
 
+            CreateMap<Impuesto, ImpuestosDTO>();
+            CreateMap<ImpuestosDTO, Impuesto>();
+
+            CreateMap<ImpuestosPorFactura, ImpuestosPorFacturaDTO>();
+            CreateMap<ImpuestosPorFacturaDTO, ImpuestosPorFactura>();
+
             CreateMap<Inventarios, InventariosDTO>();
             CreateMap<InventariosDTO, Inventarios>();
 

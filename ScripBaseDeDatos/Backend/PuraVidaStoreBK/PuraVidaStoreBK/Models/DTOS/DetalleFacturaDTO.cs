@@ -10,7 +10,7 @@ namespace PuraVidaStoreBK.Models.DTOS
         public int DtfIdFactura { get; set; }
         public double DtfPrecio { get; set; }
         public int? DtfDescuento { get; set; }
-        public int? DtfCantidad { get; set; }
+        public int DtfCantidad { get; set; }
 
         public virtual ProductoDTO? DtfIdProducto1 { get; set; } 
         public virtual FacturaDTO? DtfIdProductoNavigation { get; set; } 

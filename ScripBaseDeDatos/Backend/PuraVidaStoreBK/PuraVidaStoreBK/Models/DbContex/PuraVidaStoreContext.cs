@@ -28,6 +28,8 @@ namespace PuraVidaStoreBK.Models.DbContex
         public virtual DbSet<HistorialClienteMayoristum> HistorialClienteMayorista { get; set; } = null!;
         public virtual DbSet<HistorialFacturasAnulada> HistorialFacturasAnuladas { get; set; } = null!;
         public virtual DbSet<HistorialPrecio> HistorialPrecios { get; set; } = null!;
+        public virtual DbSet<Impuesto> Impuestos { get; set; } = null!;
+        public virtual DbSet<ImpuestosPorFactura> ImpuestosPorFacturas { get; set; } = null!;
         public virtual DbSet<Moneda> Moneda { get; set; } = null!;
         public virtual DbSet<MotivosMovimiento> MotivosMovimientos { get; set; } = null!;
         public virtual DbSet<Movimiento> Movimientos { get; set; } = null!;
@@ -35,7 +37,7 @@ namespace PuraVidaStoreBK.Models.DbContex
         public virtual DbSet<Pedido> Pedidos { get; set; } = null!;
         public virtual DbSet<Persona> Personas { get; set; } = null!;
         public virtual DbSet<Producto> Productos { get; set; } = null!;
-        public virtual DbSet<Proveedore> Proveedores { get; set; } = null!;
+        public virtual DbSet<Proveedores> Proveedores { get; set; } = null!;
         public virtual DbSet<RolUsiario> RolUsiarios { get; set; } = null!;
         public virtual DbSet<TipoMovimiento> TipoMovimientos { get; set; } = null!;
         public virtual DbSet<TipoProducto> TipoProductos { get; set; } = null!;
@@ -285,6 +287,29 @@ namespace PuraVidaStoreBK.Models.DbContex
                     .HasConstraintName("FK__Historial__HlpId__1C873BEC");
             });
 
+            modelBuilder.Entity<Impuesto>(entity =>
+            {
+                entity.HasKey(e => e.ImpId)
+                    .HasName("PK__Impuesto__B6CB82B879ECD90F");
+
+                entity.Property(e => e.ImpDescripcion)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<ImpuestosPorFactura>(entity =>
+            {
+                entity.HasKey(e => e.IpfId)
+                    .HasName("PK__Impuesto__C85CA5DA9A0827A1");
+
+                entity.ToTable("ImpuestosPorFactura");
+
+                entity.HasOne(d => d.IpfIdFacturaNavigation)
+                    .WithMany(p => p.ImpuestosPorFacturas)
+                    .HasForeignKey(d => d.IpfIdFactura)
+                    .HasConstraintName("FK__Impuestos__IpfId__5B78929E");
+            });
+
             modelBuilder.Entity<Moneda>(entity =>
             {
                 entity.HasKey(e => e.MndId)
@@ -447,7 +472,7 @@ namespace PuraVidaStoreBK.Models.DbContex
                     .HasConstraintName("FK__Productos__PrdId__2704CA5F");
             });
 
-            modelBuilder.Entity<Proveedore>(entity =>
+            modelBuilder.Entity<Proveedores>(entity =>
             {
                 entity.HasKey(e => e.PvdId)
                     .HasName("PK__Proveedo__E82C8553DF048A19");

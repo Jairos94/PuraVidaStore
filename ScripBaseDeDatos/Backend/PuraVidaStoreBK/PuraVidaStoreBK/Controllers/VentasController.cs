@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PuraVidaStoreBK.Models.DTOS;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -24,8 +25,9 @@ namespace PuraVidaStoreBK.Controllers
 
         // POST api/<VentasController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] FacturaDTO factura )
         {
+
         }
 
         // PUT api/<VentasController>/5
