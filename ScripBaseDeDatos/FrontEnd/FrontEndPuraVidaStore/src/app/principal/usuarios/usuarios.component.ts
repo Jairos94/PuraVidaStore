@@ -15,7 +15,7 @@ export class UsuariosComponent implements OnInit {
       {
           label: 'Lista de usuarios',
           icon: 'pi pi-users',
-          routerLink:'lista-usuario',
+          routerLink:'lista-usuarios',
       },
       {
           label: 'Agregar usuario',

@@ -17,10 +17,10 @@
             <td>{{ usuario.rol.rluDescripcion }}</td>
             <td>
                 <span class="p-buttonset">
-                   
-                    <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning" routerLink="../editar-nuevo/{{usuario.usrId}}"></button>
+
+                    <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning" routerLink="editar-nuevo/{{usuario.usrId}}"></button>
                     <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="showConfirm(usuario.persona.psrNombre,usuario.usrId)"></button>
-                    
+
                 </span>
 
             </td>

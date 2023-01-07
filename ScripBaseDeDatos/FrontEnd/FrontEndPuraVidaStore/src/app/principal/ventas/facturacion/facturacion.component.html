@@ -3,7 +3,14 @@
     <div class="grid">
       <div class="col">
         <div class="p-inputgroup">
-          <input type="text" pInputText placeholder="Keyword" class="w-full" />
+          <input
+            type="text"
+            pInputText
+            placeholder="Buscar producto por código"
+            class="w-full"
+            [(ngModel)]="buscadorCodigoBarras"
+            (keyup.enter)="buscarProductoPorCodigodBarras()"
+          />
           <button
             type="button"
             pButton
@@ -18,7 +25,7 @@
         <p-button
           (click)="showResponsiveDialog()"
           icon="pi pi-external-link"
-          label="Show"
+          label="Ver productos"
         ></p-button>
         <p-dialog
           header="Godfather I"
@@ -51,6 +58,7 @@
     </div>
   </div>
 
+  <!-- Tabla de detalle producto -->
   <div class="grid">
     <div class="col-8">
       <p-table [value]="listaDtealle">
@@ -78,6 +86,9 @@
                 class="shadow-4"
               />
             </td>
+            <td>
+              {{detalle.dtfPrecio|currency: 'CRC':'symbol-narrow'}}
+            </td>
 
             <td
               [pEditableColumn]="detalle.dtfCantidad"
@@ -90,15 +101,22 @@
                     type="text"
                     [(ngModel)]="detalle.dtfCantidad"
                     required
+                    (input)="sumarTotal()"
                   />
                 </ng-template>
                 <ng-template pTemplate="output">
-                  {{ detalle.dtfIdProducto1.prdNombre }}
+                  {{ detalle.dtfCantidad}}
                 </ng-template>
               </p-cellEditor>
             </td>
             <td>
-              <button pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-danger"></button>
+              <button
+                pButton
+                pRipple
+                type="button"
+                icon="pi pi-times"
+                class="p-button-rounded p-button-danger"
+              ></button>
             </td>
           </tr>
         </ng-template>
@@ -107,7 +125,7 @@
 
     <div class="col">
       <div class="field">
-        <H1>Total: 50000</H1>
+        <H1>Total: {{total |currency: 'CRC':'symbol-narrow'}}</H1>
       </div>
 
       <div class="field">
@@ -127,6 +145,16 @@
           label="Cancelar"
           class="p-button-danger w-full"
           icon="pi pi-times"
+        ></button>
+      </div>
+
+      <div class="field">
+        <button
+          pButton
+          type="button"
+          label="Mayorista"
+          class="p-button-secondary w-full"
+          icon="pi pi-user"
         ></button>
       </div>
     </div>

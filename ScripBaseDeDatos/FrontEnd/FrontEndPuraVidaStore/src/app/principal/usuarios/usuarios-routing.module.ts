@@ -9,9 +9,9 @@ const routes: Routes = [
     path: '',
     component: UsuariosComponent,
     children: [
+      { path: '', component: ListaUsuariosComponent },
       { path: 'lista-usuarios', component: ListaUsuariosComponent },
       { path: 'editar-nuevo/:id', component: EditarNuevoComponent },
-      { path: '', component: ListaUsuariosComponent },
       { path: '**', redirectTo: '/' }
     ]
   }
