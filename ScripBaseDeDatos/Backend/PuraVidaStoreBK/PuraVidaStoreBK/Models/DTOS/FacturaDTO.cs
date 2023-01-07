@@ -14,11 +14,11 @@ namespace PuraVidaStoreBK.Models.DTOS
         public bool? FtrEsFacturaNula { get; set; }
 
    
-        public virtual EstatusFactura? FtrEstatus { get; set; } 
-        public virtual FormaPago? FtrFormaPagoNavigation { get; set; }
-        public virtual Usuario? FtrIdUsuarioNavigation { get; set; } 
-        public virtual ClientesMayorista? FtrMayoristaNavigation { get; set; }
-        public virtual ICollection<DetalleFactura>? DetalleFacturas { get; set; }
-        public virtual ICollection<FacturaResumen>? FacturaResumen { get; set; }
+        public virtual EstatusFacturaDTO? FtrEstatus { get; set; } 
+        public virtual FormaPagoDTO? FtrFormaPagoNavigation { get; set; }
+        public virtual UsuarioDto? FtrIdUsuarioNavigation { get; set; } 
+        public virtual ClienteMayoristaDTO? FtrMayoristaNavigation { get; set; }
+        public virtual ICollection<DetalleFacturaDTO>? DetalleFacturas { get; set; }
+        public virtual ICollection<FacturaResumenDTO>? FacturaResumen { get; set; }
     }
 }

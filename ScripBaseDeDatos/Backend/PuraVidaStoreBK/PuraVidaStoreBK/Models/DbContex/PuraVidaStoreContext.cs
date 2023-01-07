@@ -97,7 +97,7 @@ namespace PuraVidaStoreBK.Models.DbContex
                 entity.HasKey(e => e.DtfId)
                     .HasName("PK__DetalleF__08270EDEE7FD8D53");
 
-                entity.ToTable("DetalleFactura");
+                entity.ToTable("DetalleFacturaDTO");
 
                 entity.HasOne(d => d.DtfIdProductoNavigation)
                     .WithMany(p => p.DetalleFacturas)

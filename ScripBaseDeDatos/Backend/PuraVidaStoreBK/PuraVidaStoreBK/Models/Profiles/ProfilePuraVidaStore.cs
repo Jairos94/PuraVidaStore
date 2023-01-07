@@ -11,8 +11,23 @@ namespace PuraVidaStoreBK.Models
             CreateMap<Bodega, BodegaDTO>();
             CreateMap<BodegaDTO, Bodega>();
 
+            CreateMap<ClientesMayorista, ClienteMayoristaDTO>();
+            CreateMap<ClienteMayoristaDTO, ClientesMayorista>();
+
+            CreateMap<DetalleFactura, DetalleFacturaDTO>();
+            CreateMap<DetalleFacturaDTO, DetalleFactura>();
+
+            CreateMap<EstatusFactura, EstatusFacturaDTO>();
+            CreateMap<EstatusFacturaDTO, EstatusFactura>();
+
             CreateMap<Factura, FacturaDTO>();
             CreateMap<FacturaDTO, Factura>();
+
+            CreateMap<FacturaResumen, FacturaResumenDTO>();
+            CreateMap<FacturaResumenDTO, FacturaResumen>();
+
+            CreateMap<FormaPago, FormaPagoDTO>();
+            CreateMap<FormaPagoDTO, FormaPago>();
 
             CreateMap<Inventarios, InventariosDTO>();
             CreateMap<InventariosDTO, Inventarios>();
