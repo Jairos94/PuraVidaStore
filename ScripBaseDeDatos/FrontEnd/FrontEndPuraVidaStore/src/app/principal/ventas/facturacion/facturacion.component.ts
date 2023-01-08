@@ -5,11 +5,13 @@ import { MayoristaModel } from 'src/app/models/mayorista-model';
 import { ProductoModel } from 'src/app/models/producto-model';
 import { Archivo } from 'src/app/utils/Archivos';
 import { ProductoServiceService } from 'src/app/services/producto-service.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-facturacion',
   templateUrl: './facturacion.component.html',
   styleUrls: ['./facturacion.component.css'],
+  providers: [MessageService],
 })
 export class FacturacionComponent implements OnInit {
   total: number = 0;
@@ -60,7 +62,10 @@ export class FacturacionComponent implements OnInit {
     clmIdPersonaNavigation: this.personaMayorista,
   };
 
-  constructor(private servicioPorducto: ProductoServiceService) {}
+  constructor(
+    private servicioPorducto: ProductoServiceService,
+    private messageService: MessageService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -76,15 +81,27 @@ export class FacturacionComponent implements OnInit {
         },
         error: (_e) => {
           console.log(_e);
+          this.showError('No hay resultados','No se encontró resultados con los datos suministrados')
         },
       });
   }
 
   sumarTotal() {
-    this.total=0
-    this.listaDtealle.forEach(x=>{
-      this.total= this.total+(x.dtfCantidad*x.dtfPrecio)
+    this.total = 0;
+    this.listaDtealle.forEach((x) => {
+      this.total = this.total + x.dtfCantidad * x.dtfPrecio;
     });
+  }
+
+  eliminarDeLaLista(id: number) {
+    this.listaDtealle.forEach((x: DetalleFacturaModel, i: number) => {
+      if (x.dtfId === id) {
+        this.listaDtealle.splice(i, 1);
+      }
+    });
+
+    this.listaDtealle.sort();
+    this.sumarTotal();
   }
 
   cargarListaDetalle() {
@@ -157,5 +174,18 @@ export class FacturacionComponent implements OnInit {
 
   showResponsiveDialog() {
     this.verModal = true;
+  }
+
+  showError(encabezado:string,mensaje:string) {
+    this.messageService.add({severity:'error', summary: encabezado, detail: mensaje});
+}
+
+
+  showSuccess() {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: 'Message Content',
+    });
   }
 }

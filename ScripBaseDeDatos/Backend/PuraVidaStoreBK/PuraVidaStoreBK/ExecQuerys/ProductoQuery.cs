@@ -102,6 +102,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                     listaProducto = await db.Productos
                         .Where(x=>x.PrdNombre.Contains(Descripcion)||
                                   x.PrdCodigo.Contains(Descripcion)||
+                                  x.PrdCodigoProvedor.Contains(Descripcion)||
                                   x.PrdIdTipoProductoNavigation.TppDescripcion.Contains(Descripcion)&&
                                   x.PdrVisible == true
                                   )
@@ -113,7 +114,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             catch (Exception ex)
             {
 
-                Log.Error("Se presentó un error en ProductoPorDescripcion\n" + ex.Message);
+                Log.Error (ex.Message,ex);
             }
             return listaProducto;
         }
@@ -229,6 +230,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                     listaProducto = await db.Productos
                         .Where(x => x.PrdNombre.Contains(Descripcion) ||
                                   x.PrdCodigo.Contains(Descripcion) ||
+                                  x.PrdCodigoProvedor.Contains(Descripcion)||
                                   x.PrdIdTipoProductoNavigation.TppDescripcion.Contains(Descripcion)
                                   )
                         .Include(x => x.PrdIdTipoProductoNavigation)
