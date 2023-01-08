@@ -5,5 +5,6 @@ namespace PuraVidaStoreBK.ExecQuerys.Interfaces
     public interface IVentasQuery
     {
         public Task<Factura> ingresarFactura(Factura factura);
+        public Task<List<FormaPago>> listaFormaPago();
     }
 }

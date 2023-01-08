@@ -1,4 +1,5 @@
-﻿using PuraVidaStoreBK.ExecQuerys.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using PuraVidaStoreBK.ExecQuerys.Interfaces;
 using PuraVidaStoreBK.Models.DbContex;
 using Serilog;
 using XAct;
@@ -47,6 +48,22 @@ namespace PuraVidaStoreBK.ExecQuerys
                 
             }
             return factura;
+        }
+
+        public async Task<List<FormaPago>> listaFormaPago()
+        {
+			try
+			{
+				using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
+				{
+					return await db.FormaPagos.ToListAsync();
+				}
+			}
+			catch (Exception ex)
+			{
+				Log.Error(ex.Message, ex);
+				return new List<FormaPago>();
+			}
         }
     }
 }

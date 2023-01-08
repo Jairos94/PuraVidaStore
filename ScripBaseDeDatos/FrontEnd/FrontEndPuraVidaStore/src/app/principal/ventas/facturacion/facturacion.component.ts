@@ -6,6 +6,9 @@ import { ProductoModel } from 'src/app/models/producto-model';
 import { Archivo } from 'src/app/utils/Archivos';
 import { ProductoServiceService } from 'src/app/services/producto-service.service';
 import { MessageService } from 'primeng/api';
+import { FacturaModel } from 'src/app/models/factura-model';
+import { FormaPagoModel } from 'src/app/models/forma-pago-model';
+import { VentasService } from 'src/app/services/ventas.service';
 
 @Component({
   selector: 'app-facturacion',
@@ -14,10 +17,21 @@ import { MessageService } from 'primeng/api';
   providers: [MessageService],
 })
 export class FacturacionComponent implements OnInit {
+  pagoCon: number = 0;
+  cambio: number = 0;
+  totalCantidad: number = 0;
   total: number = 0;
   buscadorCodigoBarras: string = '';
+  mayoristaDeshabilitado: boolean = true;
   verModal: boolean = false;
+  verModalPago: boolean = false;
   listaDtealle: DetalleFacturaModel[] = [];
+  listaFormaPago: FormaPagoModel[] = [];
+
+  formaPagoSeleccionado: FormaPagoModel = {
+    frpId: 0,
+    frpDescripcion: '',
+  };
 
   productoBuscado: ProductoModel = {
     prdId: 0,
@@ -62,8 +76,28 @@ export class FacturacionComponent implements OnInit {
     clmIdPersonaNavigation: this.personaMayorista,
   };
 
+  facturaResumen: FacturaModel = {
+    ftrId: 0,
+    ftrFecha: '',
+    ftrIdUsuario: 0,
+    ftrMayorista: null,
+    ftrEstatusId: 0,
+    ftrBodega: 0,
+    ftrFormaPago: 0,
+    ftrEsFacturaNula: false,
+    ftrCodigoFactura: null,
+    ftrEstatus: null,
+    ftrFormaPagoNavigation: null,
+    ftrIdUsuarioNavigation: null,
+    ftrMayoristaNavigation: null,
+    detalleFacturas: null, //Array
+    facturaResumen: null, //Aray
+    impuestosPorFacturas: null, //Array
+  };
+
   constructor(
     private servicioPorducto: ProductoServiceService,
+    private servicioVenta: VentasService,
     private messageService: MessageService
   ) {}
 
@@ -81,15 +115,36 @@ export class FacturacionComponent implements OnInit {
         },
         error: (_e) => {
           console.log(_e);
-          this.showError('No hay resultados','No se encontró resultados con los datos suministrados')
+          this.showError(
+            'No hay resultados',
+            'No se encontró resultados con los datos suministrados'
+          );
         },
       });
   }
 
+  obtenerFormaPago() {
+    this.servicioVenta
+      .listaFormaPago()
+      .subscribe({ next: (x) =>
+        {
+         this.listaFormaPago=[];
+         this.listaFormaPago = x
+        }, error: (_e) => {console.log(_e);
+      } });
+  }
+
   sumarTotal() {
     this.total = 0;
+    this.totalCantidad = 0;
     this.listaDtealle.forEach((x) => {
       this.total = this.total + x.dtfCantidad * x.dtfPrecio;
+      this.totalCantidad = this.totalCantidad + x.dtfCantidad;
+      if (this.totalCantidad > 3) {
+        this.mayoristaDeshabilitado = false;
+      } else {
+        this.mayoristaDeshabilitado = true;
+      }
     });
   }
 
@@ -172,14 +227,26 @@ export class FacturacionComponent implements OnInit {
     return Archivo.lectorImagen(imagen);
   }
 
+  hacerCambio() {
+    if (this.pagoCon > this.total) {
+      this.cambio = this.pagoCon - this.total;
+    }
+  }
+  showResponsiveDialogPago() {
+    this.verModalPago = true;
+  }
+
   showResponsiveDialog() {
     this.verModal = true;
   }
 
-  showError(encabezado:string,mensaje:string) {
-    this.messageService.add({severity:'error', summary: encabezado, detail: mensaje});
-}
-
+  showError(encabezado: string, mensaje: string) {
+    this.messageService.add({
+      severity: 'error',
+      summary: encabezado,
+      detail: mensaje,
+    });
+  }
 
   showSuccess() {
     this.messageService.add({

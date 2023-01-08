@@ -22,22 +22,26 @@ namespace PuraVidaStoreBK.Controllers
             _ventas = ventas;
             _mapper = mapper;
         }
-        // GET: api/<VentasController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
 
         // GET api/<VentasController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("ObtenerFormasPago"),Authorize]
+        public async Task <IActionResult> ObtenerFormasPago()
         {
-            return "value";
+            
+            try
+            {
+                var retorno = _mapper.Map<List<FormaPagoDTO>>(await _ventas.listaFormaPago());
+                return Ok(retorno);
+            }
+            catch (Exception )
+            {
+
+                return BadRequest("Favor de revisar los logs");
+            }
         }
 
         // POST api/<VentasController>
-        [HttpPost("IngresarVenta"), Authorize(Roles = "1")]
+        [HttpPost("IngresarVenta"), Authorize]
         public async Task<IActionResult> Post([FromBody] FacturaDTO factura )
         {
             try

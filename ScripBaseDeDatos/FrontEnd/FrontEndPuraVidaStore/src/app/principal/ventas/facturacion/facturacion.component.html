@@ -63,7 +63,12 @@
   <!-- Tabla de detalle producto -->
   <div class="grid">
     <div class="col-8">
-      <p-table [value]="listaDtealle">
+      <p-table
+        [value]="listaDtealle"
+        [rows]="5"
+        [paginator]="true"
+        [rowsPerPageOptions]="[5, 7, 10]"
+      >
         <ng-template pTemplate="header" let-columns>
           <tr>
             <th>Producto</th>
@@ -89,7 +94,7 @@
               />
             </td>
             <td>
-              {{detalle.dtfPrecio|currency: 'CRC':'symbol-narrow'}}
+              {{ detalle.dtfPrecio | currency : "CRC" : "symbol-narrow" }}
             </td>
 
             <td
@@ -107,7 +112,7 @@
                   />
                 </ng-template>
                 <ng-template pTemplate="output">
-                  {{ detalle.dtfCantidad}}
+                  {{ detalle.dtfCantidad }}
                 </ng-template>
               </p-cellEditor>
             </td>
@@ -128,7 +133,7 @@
 
     <div class="col">
       <div class="field">
-        <H1>Total: {{total |currency: 'CRC':'symbol-narrow'}}</H1>
+        <H1>Total: {{ total | currency : "CRC" : "symbol-narrow" }}</H1>
       </div>
 
       <div class="field">
@@ -138,6 +143,7 @@
           label="Pagar"
           class="p-button-success w-full"
           icon="pi pi-wallet"
+          (click)="showResponsiveDialogPago()"
         ></button>
       </div>
 
@@ -158,8 +164,57 @@
           label="Mayorista"
           class="p-button-secondary w-full"
           icon="pi pi-user"
+          [disabled]="mayoristaDeshabilitado"
         ></button>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Modales -->
+<!-- todo pago -->
+<p-dialog
+  header="Realizar pago"
+  [(visible)]="verModalPago"
+  [breakpoints]="{ '960px': '75vw' }"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div class="grid my-2">
+    <div class="col">
+      <label for="moneda-CR">Paga con </label>
+
+      <p-inputNumber
+        [(ngModel)]="pagoCon"
+        inputId="moneda-CR"
+        mode="currency"
+        (keyup.enter)="hacerCambio()"
+        currency="CRC"
+        locale="es-CR"
+      >
+      </p-inputNumber>
+    </div>
+    <div class="col">
+      <div class="field">
+        Total a pagar : {{ total | currency : "CRC" : "symbol-narrow" }}
+      </div>
+      <div class="field">
+        Cambio: {{ cambio | currency : "CRC" : "symbol-narrow" }}
+      </div>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      (click)="verModalPago = false"
+      label="No"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      (click)="verModalPago = false"
+      label="Yes"
+      styleClass="p-button-text"
+    ></p-button>
+  </ng-template>
+</p-dialog>

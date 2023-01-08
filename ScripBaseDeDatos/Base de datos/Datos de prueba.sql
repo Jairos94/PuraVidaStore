@@ -43,6 +43,12 @@ INSERT INTO [dbo].[MotivosMovimientos]
            ,1)
 GO
 
+INSERT INTO [dbo].[FormaPago]
+           ([FrpDescripcion])
+     VALUES
+           ('Efectivo'),('Sinpe Movil'),('Transferencia Bancaria')
+go
+
 
 EXEC IngresarUsuario 'Admin','GzPfpnFb7HWhQeP0wnV0+g==','jairo.ri.ce@gmail.com',1,1
 go

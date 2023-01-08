@@ -80,6 +80,7 @@ Estaticas.SqlServerConexcion = builder.Configuration.GetConnectionString("sqlSer
 builder.Services.AddSingleton<IDataBase, DataBase>();
 builder.Services.AddSingleton<IBodegaQuery, BodegaQuery>();
 builder.Services.AddSingleton<IMovimientosQuery, MovimientosQuery>();
+builder.Services.AddSingleton<IMayoristaQuery, MayoristaQuery>();
 builder.Services.AddSingleton<IPersonaQuery, PersonaQuery>();
 builder.Services.AddSingleton<IProductoQuery, ProductoQuery>();
 builder.Services.AddSingleton<IUsuariosQuerys,UsuariosQuerys>();
@@ -93,16 +94,18 @@ builder.Services.AddSingleton<IVentasQuery, VentasQuery>();
 
 //Serilog
 Log.Logger = new LoggerConfiguration()
-    .WriteTo.File("C:\\_LogsPuraVidaStore\\ApiLog-.txt", rollingInterval:RollingInterval.Day).CreateLogger();
+    .WriteTo.Console()
+    .WriteTo.Seq(builder.Configuration["Serilog:seq"])
+    .WriteTo.File("C:\\_LogsPuraVidaStore\\ApiLog-.txt", rollingInterval:RollingInterval.Day)
+     .CreateLogger();
+
+
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-//}
+app.UseSwagger();
+app.UseSwaggerUI();
+
 
 app.UseHttpsRedirection();
 
@@ -119,15 +122,6 @@ app.UseHttpMetrics(options =>
     options.ReduceStatusCodeCardinality();
     options.AddCustomLabel("host", context => context.Request.Host.Host);
 });
-
-//app.UseEndpoints(endpoints =>
-//{
-//    // ...
-
-//    // Assumes that you have previously configured the "ReadMetrics" policy (not shown).
-//    endpoints.MapMetrics().RequireAuthorization("ReadMetrics");
-//});
-
 app.UseGrpcMetrics();
 
 app.Run();
