@@ -71,11 +71,13 @@ export class FacturacionComponent implements OnInit {
   mayorista: MayoristaModel = {
     clmId: 0,
     clmIdPersona: 0,
-    clmFechaCreacion: this.fecha,
-    clmFechaVencimiento: this.fecha,
+    clmFechaCreacion: this.fecha.toString(),
+    clmFechaVencimiento: this.fecha.toString(),
     clmCorreo: '',
     clmTelefono: '',
     clmIdPersonaNavigation: this.personaMayorista,
+    historialClienteMayorista: null,
+
   };
 
   factura: FacturaModel = {

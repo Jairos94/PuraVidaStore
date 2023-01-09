@@ -29,7 +29,7 @@ namespace PuraVidaStoreBK.Models.DbContex
         public virtual DbSet<Factura> Facturas { get; set; } = null!;
         public virtual DbSet<FacturaResumen> FacturaResumen { get; set; } = null!;
         public virtual DbSet<FormaPago> FormaPagos { get; set; } = null!;
-        public virtual DbSet<HistorialClienteMayoristum> HistorialClienteMayorista { get; set; } = null!;
+        public virtual DbSet<HistorialClienteMayorista> HistorialClienteMayorista { get; set; } = null!;
         public virtual DbSet<HistorialFacturasAnulada> HistorialFacturasAnuladas { get; set; } = null!;
         public virtual DbSet<HistorialPrecio> HistorialPrecios { get; set; } = null!;
         public virtual DbSet<Impuesto> Impuestos { get; set; } = null!;
@@ -236,7 +236,7 @@ namespace PuraVidaStoreBK.Models.DbContex
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<HistorialClienteMayoristum>(entity =>
+            modelBuilder.Entity<HistorialClienteMayorista>(entity =>
             {
                 entity.HasKey(e => e.HcmId)
                     .HasName("PK__Historia__3B25B7B814283FD2");

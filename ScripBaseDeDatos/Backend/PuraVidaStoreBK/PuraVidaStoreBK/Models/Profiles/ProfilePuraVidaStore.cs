@@ -35,6 +35,9 @@ namespace PuraVidaStoreBK.Models
             CreateMap<ImpuestosPorFactura, ImpuestosPorFacturaDTO>();
             CreateMap<ImpuestosPorFacturaDTO, ImpuestosPorFactura>();
 
+            CreateMap<HistorialClienteMayorista, HistorialClienteMayoristaDTO>();
+            CreateMap<HistorialClienteMayoristaDTO, HistorialClienteMayorista>();
+
             CreateMap<Inventarios, InventariosDTO>();
             CreateMap<InventariosDTO, Inventarios>();
 

@@ -100,10 +100,10 @@ namespace PuraVidaStoreBK.ExecQuerys
                 using (PuraVidaStoreContext db = new PuraVidaStoreContext())
                 {
                     listaProducto = await db.Productos
-                        .Where(x=>x.PrdNombre.Contains(Descripcion)||
-                                  x.PrdCodigo.Contains(Descripcion)||
-                                  x.PrdCodigoProvedor.Contains(Descripcion)||
-                                  x.PrdIdTipoProductoNavigation.TppDescripcion.Contains(Descripcion)&&
+                        .Where(x=>(x.PrdNombre.Contains(Descripcion)||
+                                  x.PrdCodigo==Descripcion||
+                                  x.PrdCodigoProvedor==Descripcion||
+                                  x.PrdIdTipoProductoNavigation.TppDescripcion.Contains(Descripcion))&&
                                   x.PdrVisible == true
                                   )
                         .Include(x=>x.PrdIdTipoProductoNavigation)
@@ -229,8 +229,8 @@ namespace PuraVidaStoreBK.ExecQuerys
                 {
                     listaProducto = await db.Productos
                         .Where(x => x.PrdNombre.Contains(Descripcion) ||
-                                  x.PrdCodigo.Contains(Descripcion) ||
-                                  x.PrdCodigoProvedor.Contains(Descripcion)||
+                                  x.PrdCodigo==Descripcion ||
+                                  x.PrdCodigoProvedor==Descripcion||
                                   x.PrdIdTipoProductoNavigation.TppDescripcion.Contains(Descripcion)
                                   )
                         .Include(x => x.PrdIdTipoProductoNavigation)

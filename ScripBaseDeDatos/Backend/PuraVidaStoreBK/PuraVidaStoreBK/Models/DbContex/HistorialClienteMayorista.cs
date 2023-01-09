@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PuraVidaStoreBK.Models.DbContex
 {
-    public partial class HistorialClienteMayoristum
+    public partial class HistorialClienteMayorista
     {
         public int HcmId { get; set; }
         public int HcmIdCliente { get; set; }

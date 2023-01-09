@@ -135,6 +135,7 @@
       <div class="field">
         <H1>Total: {{ total | currency : "CRC" : "symbol-narrow" }}</H1>
       </div>
+      <h3>Jairo Rivera Céspedes</h3>
 
       <div class="field">
         <button
@@ -183,16 +184,16 @@
   [draggable]="false"
   [resizable]="false"
 >
-<p>
-  Seleccione una forma de pago:
-  <p-dropdown
-    [options]="listaFormaPago"
-    [(ngModel)]="formaPagoSeleccionado"
-    placeholder="Forma de pago"
-    optionLabel="frpDescripcion"
-    [showClear]="true"
-  ></p-dropdown>
-</p>
+  <p>
+    Seleccione una forma de pago:
+    <p-dropdown
+      [options]="listaFormaPago"
+      [(ngModel)]="formaPagoSeleccionado"
+      placeholder="Forma de pago"
+      optionLabel="frpDescripcion"
+      [showClear]="true"
+    ></p-dropdown>
+  </p>
 
   <div class="grid my-2">
     <div class="col">
@@ -204,7 +205,7 @@
         (keyup.enter)="hacerCambio()"
         currency="CRC"
         locale="es-CR"
-        [disabled]="formaPagoSeleccionado.frpId>1"
+        [disabled]="formaPagoSeleccionado.frpId > 1"
       >
       </p-inputNumber>
     </div>

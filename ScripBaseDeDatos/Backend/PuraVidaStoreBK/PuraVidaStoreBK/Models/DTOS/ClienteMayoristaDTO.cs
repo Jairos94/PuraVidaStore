@@ -12,5 +12,6 @@ namespace PuraVidaStoreBK.Models.DTOS
         public string? ClmTelefono { get; set; }
 
         public virtual PersonaDto? ClmIdPersonaNavigation { get; set; }
+        public virtual ICollection<HistorialClienteMayoristaDTO>? HistorialClienteMayorista { get; set; }
     }
 }

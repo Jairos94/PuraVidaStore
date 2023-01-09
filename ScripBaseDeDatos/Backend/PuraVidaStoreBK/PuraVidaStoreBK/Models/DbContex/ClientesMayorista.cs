@@ -8,7 +8,7 @@ namespace PuraVidaStoreBK.Models.DbContex
         public ClientesMayorista()
         {
             Facturas = new HashSet<Factura>();
-            HistorialClienteMayorista = new HashSet<HistorialClienteMayoristum>();
+            HistorialClienteMayorista = new HashSet<HistorialClienteMayorista>();
         }
 
         public int ClmId { get; set; }
@@ -20,6 +20,6 @@ namespace PuraVidaStoreBK.Models.DbContex
 
         public virtual Persona ClmIdPersonaNavigation { get; set; } = null!;
         public virtual ICollection<Factura> Facturas { get; set; }
-        public virtual ICollection<HistorialClienteMayoristum> HistorialClienteMayorista { get; set; }
+        public virtual ICollection<HistorialClienteMayorista> HistorialClienteMayorista { get; set; }
     }
 }
