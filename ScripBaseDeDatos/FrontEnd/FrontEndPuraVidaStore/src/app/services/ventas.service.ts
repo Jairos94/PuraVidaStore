@@ -13,6 +13,6 @@ export class VentasService {
   constructor(private http: HttpClient) { }
 
   listaFormaPago(): Observable<FormaPagoModel[]> {
-    return this.http.get<FormaPagoModel[]>(`${this.baseUrl}Bodega/ListaBodegas`);
+    return this.http.get<FormaPagoModel[]>(`${this.baseUrl}Ventas/ObtenerFormasPago`);
   }
 }

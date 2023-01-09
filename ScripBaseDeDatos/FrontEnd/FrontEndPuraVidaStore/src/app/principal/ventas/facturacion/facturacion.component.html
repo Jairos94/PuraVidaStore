@@ -144,6 +144,7 @@
           class="p-button-success w-full"
           icon="pi pi-wallet"
           (click)="showResponsiveDialogPago()"
+          [disabled]="pagarDeshabilitado"
         ></button>
       </div>
 
@@ -152,6 +153,7 @@
           pButton
           type="button"
           label="Cancelar"
+          (click)="cancelar()"
           class="p-button-danger w-full"
           icon="pi pi-times"
         ></button>
@@ -181,10 +183,20 @@
   [draggable]="false"
   [resizable]="false"
 >
+<p>
+  Seleccione una forma de pago:
+  <p-dropdown
+    [options]="listaFormaPago"
+    [(ngModel)]="formaPagoSeleccionado"
+    placeholder="Forma de pago"
+    optionLabel="frpDescripcion"
+    [showClear]="true"
+  ></p-dropdown>
+</p>
+
   <div class="grid my-2">
     <div class="col">
       <label for="moneda-CR">Paga con </label>
-
       <p-inputNumber
         [(ngModel)]="pagoCon"
         inputId="moneda-CR"
@@ -192,6 +204,7 @@
         (keyup.enter)="hacerCambio()"
         currency="CRC"
         locale="es-CR"
+        [disabled]="formaPagoSeleccionado.frpId>1"
       >
       </p-inputNumber>
     </div>

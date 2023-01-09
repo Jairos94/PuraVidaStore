@@ -9,6 +9,7 @@ import { MessageService } from 'primeng/api';
 import { FacturaModel } from 'src/app/models/factura-model';
 import { FormaPagoModel } from 'src/app/models/forma-pago-model';
 import { VentasService } from 'src/app/services/ventas.service';
+import { FacturaResumenModel } from 'src/app/models/factura-resumen-model';
 
 @Component({
   selector: 'app-facturacion',
@@ -22,6 +23,7 @@ export class FacturacionComponent implements OnInit {
   totalCantidad: number = 0;
   total: number = 0;
   buscadorCodigoBarras: string = '';
+  pagarDeshabilitado:boolean=true;
   mayoristaDeshabilitado: boolean = true;
   verModal: boolean = false;
   verModalPago: boolean = false;
@@ -29,8 +31,8 @@ export class FacturacionComponent implements OnInit {
   listaFormaPago: FormaPagoModel[] = [];
 
   formaPagoSeleccionado: FormaPagoModel = {
-    frpId: 0,
-    frpDescripcion: '',
+    frpId: 1,
+    frpDescripcion: 'Efectivo',
   };
 
   productoBuscado: ProductoModel = {
@@ -76,7 +78,7 @@ export class FacturacionComponent implements OnInit {
     clmIdPersonaNavigation: this.personaMayorista,
   };
 
-  facturaResumen: FacturaModel = {
+  factura: FacturaModel = {
     ftrId: 0,
     ftrFecha: '',
     ftrIdUsuario: 0,
@@ -95,13 +97,26 @@ export class FacturacionComponent implements OnInit {
     impuestosPorFacturas: null, //Array
   };
 
+  facturaResumen:FacturaResumenModel={
+    ftrId: 0,
+    ftrFactura: 0,
+    ftrMontoTotal: 0,
+    ftrMontoPagado: 0,
+    ftrCambio: 0,
+    ftrFacturaNavigation:  null,
+  }
+
+
+
   constructor(
     private servicioPorducto: ProductoServiceService,
     private servicioVenta: VentasService,
     private messageService: MessageService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.obtenerFormaPago();
+  }
 
   buscarProductoPorCodigodBarras() {
     this.servicioPorducto
@@ -130,6 +145,8 @@ export class FacturacionComponent implements OnInit {
         {
          this.listaFormaPago=[];
          this.listaFormaPago = x
+         this.formaPagoSeleccionado
+
         }, error: (_e) => {console.log(_e);
       } });
   }
@@ -137,10 +154,11 @@ export class FacturacionComponent implements OnInit {
   sumarTotal() {
     this.total = 0;
     this.totalCantidad = 0;
+    this.pagarDeshabilitado=false;
     this.listaDtealle.forEach((x) => {
       this.total = this.total + x.dtfCantidad * x.dtfPrecio;
       this.totalCantidad = this.totalCantidad + x.dtfCantidad;
-      if (this.totalCantidad > 3) {
+      if (this.totalCantidad >= 3) {
         this.mayoristaDeshabilitado = false;
       } else {
         this.mayoristaDeshabilitado = true;
@@ -231,6 +249,50 @@ export class FacturacionComponent implements OnInit {
     if (this.pagoCon > this.total) {
       this.cambio = this.pagoCon - this.total;
     }
+  }
+  cancelar(){
+    this.pagoCon = 0;
+    this.cambio= 0;
+    this.pagarDeshabilitado=true;
+    this.totalCantidad= 0;
+    this.total= 0;
+    this.mayoristaDeshabilitado= true;
+    this.verModal= false;
+    this.verModalPago= false;
+    this.listaDtealle =[];
+    this.limpiarDetalle();
+
+    this.formaPagoSeleccionado = {
+      frpId: 1,
+      frpDescripcion: 'Efectivo',
+    };
+    this.personaMayorista = {
+      psrId: 0,
+      psrIdentificacion: '',
+      psrNombre: '',
+      psrApellido1: '',
+      psrApellido2: '',
+    };
+
+    this.factura = {
+      ftrId: 0,
+      ftrFecha: '',
+      ftrIdUsuario: 0,
+      ftrMayorista: null,
+      ftrEstatusId: 0,
+      ftrBodega: 0,
+      ftrFormaPago: 0,
+      ftrEsFacturaNula: false,
+      ftrCodigoFactura: null,
+      ftrEstatus: null,
+      ftrFormaPagoNavigation: null,
+      ftrIdUsuarioNavigation: null,
+      ftrMayoristaNavigation: null,
+      detalleFacturas: null, //Array
+      facturaResumen: null, //Aray
+      impuestosPorFacturas: null, //Array
+    };
+
   }
   showResponsiveDialogPago() {
     this.verModalPago = true;
