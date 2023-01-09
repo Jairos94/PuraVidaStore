@@ -192,6 +192,7 @@
       placeholder="Forma de pago"
       optionLabel="frpDescripcion"
       [showClear]="true"
+      (onChange)="deshabilitarCambio()"
     ></p-dropdown>
   </p>
 
@@ -205,7 +206,7 @@
         (keyup.enter)="hacerCambio()"
         currency="CRC"
         locale="es-CR"
-        [disabled]="formaPagoSeleccionado.frpId > 1"
+        [disabled]="cambioDeshabilitar"
       >
       </p-inputNumber>
     </div>
