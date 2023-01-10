@@ -9,13 +9,15 @@ namespace PuraVidaStoreBK.ExecQuerys
     {
         public async Task<ClientesMayorista> buscarClientePorCedulaOId(string buscador)
         {
-			var Cliente = new ClientesMayorista();
+			
+            var Cliente = new ClientesMayorista();
 			try
 			{
 				using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
 				{
-					Cliente= await db.ClientesMayoristas
-						.Where(x => x.ClmIdPersona.ToString()==buscador || x.ClmIdPersonaNavigation.PsrIdentificacion == buscador)
+					 
+					Cliente = await db.ClientesMayoristas
+						.Where(x => x.ClmId.ToString() == buscador || x.ClmIdPersonaNavigation.PsrIdentificacion == buscador)
 						.Include(x=>x.ClmIdPersonaNavigation)
 						.FirstOrDefaultAsync();
 				}

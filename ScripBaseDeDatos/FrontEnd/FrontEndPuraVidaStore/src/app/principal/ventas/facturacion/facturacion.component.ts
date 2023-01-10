@@ -1,3 +1,4 @@
+import { MayoristaService } from './../../../services/mayorista.service';
 import { PersonaModel } from 'src/app/models/persona-model';
 import { Component, OnInit } from '@angular/core';
 import { DetalleFacturaModel } from 'src/app/models/detalle-factura-model';
@@ -23,11 +24,13 @@ export class FacturacionComponent implements OnInit {
   totalCantidad: number = 0;
   total: number = 0;
   buscadorCodigoBarras: string = '';
+  buscadorCedulaOId: string = '';
   pagarDeshabilitado: boolean = true;
   cambioDeshabilitar: boolean = false;
   mayoristaDeshabilitado: boolean = true;
   verModal: boolean = false;
   verModalPago: boolean = false;
+  verMayoristaModal: boolean = false;
   listaDtealle: DetalleFacturaModel[] = [];
   listaFormaPago: FormaPagoModel[] = [];
 
@@ -69,6 +72,7 @@ export class FacturacionComponent implements OnInit {
     psrApellido1: '',
     psrApellido2: '',
   };
+
   mayorista: MayoristaModel = {
     clmId: 0,
     clmIdPersona: 0,
@@ -111,6 +115,7 @@ export class FacturacionComponent implements OnInit {
   constructor(
     private servicioPorducto: ProductoServiceService,
     private servicioVenta: VentasService,
+    private servicioMayorista: MayoristaService,
     private messageService: MessageService
   ) {}
 
@@ -151,28 +156,69 @@ export class FacturacionComponent implements OnInit {
     });
   }
 
+  obtenerClienteMayoristaporCedulaOId() {
+    this.servicioMayorista
+      .obtenerMayoristaPorCedula(this.buscadorCedulaOId)
+      .subscribe({
+        next: (x) => {
+          this.limpiarMayorista();
+          this.buscadorCedulaOId = '';
+          this.mayorista = x;
+          if (this.mayorista.clmIdPersonaNavigation != null) {
+            this.personaMayorista = this.mayorista.clmIdPersonaNavigation;
+          }
+          this.sumarTotal();
+          this.verMayoristaModal = false;
+        },
+        error: (_e) => {
+          console.log(_e);
+        },
+      });
+  }
+
   sumarTotal() {
     this.total = 0;
     this.totalCantidad = 0;
     this.pagarDeshabilitado = false;
-    this.listaDtealle.forEach((x) => {
+
+    this.listaDtealle.forEach((x, i) => {
+      if (x.dtfIdProducto1 != null) {
+        if (this.mayorista.clmId > 0) {
+          console.log('Entro al true de venta mayorista');
+
+          x.dtfPrecio = x.dtfIdProducto1.prdPrecioVentaMayorista;
+        } else {
+          console.log('Entro al false (venta regular)');
+
+          x.dtfPrecio = x.dtfIdProducto1.prdPrecioVentaMinorista;
+        }
+      }
+
       this.total = this.total + x.dtfCantidad * x.dtfPrecio;
       this.totalCantidad = this.totalCantidad + x.dtfCantidad;
+
       if (this.totalCantidad >= 3) {
         this.mayoristaDeshabilitado = false;
       } else {
         this.mayoristaDeshabilitado = true;
       }
     });
+
+if(this.mayoristaDeshabilitado){
+  this.limpiarMayorista();
+}
+
+    if (this.listaDtealle.length <= 0) {
+      this.cancelar();
+    }
   }
 
   deshabilitarCambio() {
-    if(this.formaPagoSeleccionado.frpId > 1){
-      this.cambio =0;
-      this.pagoCon=0;
+    if (this.formaPagoSeleccionado.frpId > 1) {
+      this.cambio = 0;
+      this.pagoCon = 0;
       this.cambioDeshabilitar = true;
-    }
-    else{
+    } else {
       this.cambioDeshabilitar = false;
     }
   }
@@ -221,6 +267,27 @@ export class FacturacionComponent implements OnInit {
     }
   }
 
+  limpiarMayorista() {
+    this.personaMayorista = {
+      psrId: 0,
+      psrIdentificacion: '',
+      psrNombre: '',
+      psrApellido1: '',
+      psrApellido2: '',
+    };
+
+    this.mayorista = {
+      clmId: 0,
+      clmIdPersona: 0,
+      clmFechaCreacion: this.fecha.toString(),
+      clmFechaVencimiento: this.fecha.toString(),
+      clmCorreo: '',
+      clmTelefono: '',
+      clmIdPersonaNavigation: this.personaMayorista,
+      historialClienteMayorista: null,
+    };
+  }
+
   limpiarDetalle() {
     this.productoBuscado = {
       prdId: 0,
@@ -263,6 +330,7 @@ export class FacturacionComponent implements OnInit {
   }
 
   cancelar() {
+    this.limpiarMayorista();
     this.pagoCon = 0;
     this.cambio = 0;
     this.pagarDeshabilitado = true;
@@ -309,6 +377,10 @@ export class FacturacionComponent implements OnInit {
 
   showResponsiveDialogPago() {
     this.verModalPago = true;
+  }
+
+  showResponsiveDialogMayorista() {
+    this.verMayoristaModal = true;
   }
 
   showResponsiveDialog() {
