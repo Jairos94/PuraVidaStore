@@ -50,6 +50,9 @@ namespace PuraVidaStoreBK.Models
             CreateMap<ParametrosEmail, ParametrosEmailDTO>();
             CreateMap<ParametrosEmailDTO, ParametrosEmail>();
 
+            CreateMap<ParametrosGlobales, ParametrosGlobalesDTO>();
+            CreateMap<ParametrosGlobalesDTO, ParametrosGlobales>();
+
             CreateMap<Persona, PersonaDto>();
             CreateMap<PersonaDto, Persona>();
 
