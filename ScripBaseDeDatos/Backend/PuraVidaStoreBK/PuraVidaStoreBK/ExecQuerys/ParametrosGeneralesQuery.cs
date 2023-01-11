@@ -1,6 +1,8 @@
-﻿using PuraVidaStoreBK.ExecQuerys.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using PuraVidaStoreBK.ExecQuerys.Interfaces;
 using PuraVidaStoreBK.Models.DbContex;
 using Serilog;
+using XAct;
 
 namespace PuraVidaStoreBK.ExecQuerys
 {
@@ -38,7 +40,18 @@ namespace PuraVidaStoreBK.ExecQuerys
             {
                 using (PuraVidaStoreContext db = new PuraVidaStoreContext())
                 {
-                   var retorno = await db.ParametrosGlobales.FindAsync(id);
+                    var retorno = await db.ParametrosGlobales
+                        .Where(x => x.PrgId == id)
+                        .Include(x=>x.ImpustosIncluidos)
+                        .FirstAsync();
+
+                    retorno.ImpustosIncluidos.ForEach(async x => 
+                    {
+                       
+                        var dato = await db.Impuestos.Where(z=>z.ImpId==x.IicIdImpuesto).FirstAsync();
+                        x.IicIdImpuestoNavigation = dato;
+                    });
+
                     return retorno;
                 }
             }
