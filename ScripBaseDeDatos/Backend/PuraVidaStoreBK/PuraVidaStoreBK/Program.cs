@@ -9,6 +9,7 @@ using PuraVidaStoreBK.ExecQuerys;
 using PuraVidaStoreBK.ExecQuerys.Interfaces;
 using PuraVidaStoreBK.Models.DbContex;
 using PuraVidaStoreBK.Utilitarios;
+using PuraVidaStoreBK.Utilitarios.Interfase;
 using Serilog;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
@@ -87,6 +88,9 @@ builder.Services.AddSingleton<IUsuariosQuerys,UsuariosQuerys>();
 builder.Services.AddSingleton<IRolQuery, RolesQuerys>();
 builder.Services.AddSingleton<ITipoProductoQuery, TipoProductoQuery>();
 builder.Services.AddSingleton<IVentasQuery, VentasQuery>();
+
+
+builder.Services.AddSingleton<IEnvioCorreo, EnvioCorreo>();
 
 
 
