@@ -8,6 +8,7 @@ namespace PuraVidaStoreBK.Models.DbContex
         public Impuesto()
         {
             ImpuestosPorFacturas = new HashSet<ImpuestosPorFactura>();
+            ImpustosIncluidos = new HashSet<ImpustosIncluido>();
         }
 
         public int ImpId { get; set; }
@@ -15,5 +16,6 @@ namespace PuraVidaStoreBK.Models.DbContex
         public double? ImpPorcentaje { get; set; }
 
         public virtual ICollection<ImpuestosPorFactura> ImpuestosPorFacturas { get; set; }
+        public virtual ICollection<ImpustosIncluido> ImpustosIncluidos { get; set; }
     }
 }

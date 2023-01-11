@@ -47,6 +47,9 @@ namespace PuraVidaStoreBK.Models
             CreateMap<MotivosMovimiento, MotivosMovimientoDTO>();
             CreateMap<MotivosMovimientoDTO, MotivosMovimiento>();
 
+            CreateMap<ParametrosEmail, ParametrosEmailDTO>();
+            CreateMap<ParametrosEmailDTO, ParametrosEmail>();
+
             CreateMap<Persona, PersonaDto>();
             CreateMap<PersonaDto, Persona>();
 

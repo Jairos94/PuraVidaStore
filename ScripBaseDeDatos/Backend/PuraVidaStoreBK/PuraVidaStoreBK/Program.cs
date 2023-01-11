@@ -88,6 +88,8 @@ builder.Services.AddSingleton<IUsuariosQuerys,UsuariosQuerys>();
 builder.Services.AddSingleton<IRolQuery, RolesQuerys>();
 builder.Services.AddSingleton<ITipoProductoQuery, TipoProductoQuery>();
 builder.Services.AddSingleton<IVentasQuery, VentasQuery>();
+builder.Services.AddSingleton<ICorreoQuery, CorreoQuery>();
+builder.Services.AddSingleton<IParametrosGeneralesQuery, ParametrosGeneralesQuery>();
 
 
 builder.Services.AddSingleton<IEnvioCorreo, EnvioCorreo>();
