@@ -6,12 +6,14 @@ import { PrincipalComponent } from './principal.component';
 import { PrimeNgPrincipalModule } from './prime-ng-principal.module';
 import { PipePrincipalPipe } from './pipes/pipe-principal.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ConfiguracionComponent } from './configuracion/configuracion.component';
 
 
 @NgModule({
   declarations: [
     PrincipalComponent,
     PipePrincipalPipe,
+    ConfiguracionComponent,
   ],
   imports: [
     CommonModule,

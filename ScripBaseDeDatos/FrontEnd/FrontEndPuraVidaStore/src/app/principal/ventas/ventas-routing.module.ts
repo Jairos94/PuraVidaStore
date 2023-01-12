@@ -1,3 +1,4 @@
+import { ImpuestosComponent } from './impuestos/impuestos.component';
 import { FacturacionComponent } from './facturacion/facturacion.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -10,6 +11,7 @@ const routes: Routes = [
     children: [
       { path: '', component: FacturacionComponent },
       { path: 'facturacion', component: FacturacionComponent },
+      { path: 'impuestos', component: ImpuestosComponent },
 
       {path:'**',redirectTo:'/'}
     ],

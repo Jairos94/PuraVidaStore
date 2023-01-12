@@ -16,6 +16,10 @@ export class VentasComponent implements OnInit {
         label: 'Facturación',
         icon: 'pi pi-fw pi-file',
         routerLink: 'facturacion',
+      }, {
+        label: 'Impuestos',
+        icon: 'pi pi-fw pi-file',
+        routerLink: 'impuestos',
       },
     ];
   }
