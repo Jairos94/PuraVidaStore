@@ -105,7 +105,7 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.File("C:\\_LogsPuraVidaStore\\ApiLog-.txt", rollingInterval:RollingInterval.Day)
      .CreateLogger();
 
-
+builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
@@ -122,6 +122,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHealthChecks("/health");
+
 
 app.UseHttpMetrics(options => 
 {
