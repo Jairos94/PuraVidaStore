@@ -33,6 +33,27 @@ namespace PuraVidaStoreBK.ExecQuerys
            
         }
 
+        public async Task<List<Impuesto>> ImpuestosPorDescripcion(string descripcion)
+        {
+            try
+            {
+                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
+                {
+                    var retorno =await  db.Impuestos.Where(x=>x.ImpDescripcion.Contains(descripcion)||
+                                                        x.ImpId.ToString().Contains(descripcion) || 
+                                                        x.ImpPorcentaje.ToString().Contains(descripcion)).ToListAsync();
+                    return retorno;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Log.Error(ex.Message, ex);
+                throw;
+            }
+          
+        }
+
         public async Task<Impuesto> ObtenerImpuestoPorId(int id)
         {
             try

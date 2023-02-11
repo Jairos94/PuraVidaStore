@@ -90,6 +90,7 @@ builder.Services.AddSingleton<ITipoProductoQuery, TipoProductoQuery>();
 builder.Services.AddSingleton<IVentasQuery, VentasQuery>();
 builder.Services.AddSingleton<ICorreoQuery, CorreoQuery>();
 builder.Services.AddSingleton<IParametrosGeneralesQuery, ParametrosGeneralesQuery>();
+builder.Services.AddSingleton<IImpuestosQuery, ImpuestosQuery>();
 
 
 builder.Services.AddSingleton<IEnvioCorreo, EnvioCorreo>();

@@ -7,5 +7,6 @@ namespace PuraVidaStoreBK.ExecQuerys.Interfaces
         Task<Impuesto> GuardarImpuesto(Impuesto impuesto);
         Task<Impuesto> ObtenerImpuestoPorId(int id);
         Task<List<Impuesto>> ObtenerListaImpuesto();
+        Task<List<Impuesto>> ImpuestosPorDescripcion(string descripcion);
     }
 }

@@ -54,14 +54,29 @@ namespace PuraVidaStoreBK.Controllers
             }
         }
 
+        [HttpGet("ObtenerImpuestosPorDescripcion"),Authorize]
+        public async Task<IActionResult> ObtenerImpuestosPorDescripcion(string descripcion) 
+        {
+            try
+            {
+                return Ok( _mapper.Map<List<ImpuestosDTO>>(  await _impuestos.ImpuestosPorDescripcion(descripcion)));
+            }
+            catch (Exception)
+            {
+
+                return BadRequest("Favor de revisar los logs");
+            }
+        }
+
         // POST api/<ImpuestoController>
         [HttpPost("GuardarImpuesto"), Authorize(Roles = "1")]
         public async Task<IActionResult> GuardarImpuesto([FromBody] ImpuestosDTO impuestos)
         {
             try
             {
-                var datoGuardar = await _impuestos.GuardarImpuesto(_mapper.Map<Impuesto>(impuestos));
-                return Ok(_mapper.Map<ImpuestosDTO>( datoGuardar));
+                var datoGuardar = _mapper.Map<Impuesto>(impuestos);
+                var retorno = await _impuestos.GuardarImpuesto(datoGuardar);
+                return Ok(_mapper.Map<ImpuestosDTO>(retorno));
             }
             catch (Exception)
             {

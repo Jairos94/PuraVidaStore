@@ -17,6 +17,13 @@ export class ImpuestoService {
     return this.http.get<ImpuestosModel[]>(`${this.baseUrl}Impuesto/ObtenerListaImpuestos`);
   }
 
+  listaImpuestosPorDescripcion(descripcion:string):Observable<ImpuestosModel[]>{
+    const params = new HttpParams()
+    .set('descripcion', descripcion);
+    return this.http.get<ImpuestosModel[]>(`${this.baseUrl}Impuesto/ObtenerImpuestosPorDescripcion`,{params});
+  }
+
+
   guardarImpuesto(impuesto:ImpuestosModel):Observable<ImpuestosModel>{
     return this.http.post<ImpuestosModel>(`${this.baseUrl}Impuesto/GuardarImpuesto`,impuesto);
   }
