@@ -39,9 +39,9 @@ namespace PuraVidaStoreBK.ExecQuerys
             {
                 using (PuraVidaStoreContext db = new PuraVidaStoreContext())
                 {
-                    var retorno =await  db.Impuestos.Where(x=>x.ImpDescripcion.Contains(descripcion)||
-                                                        x.ImpId.ToString().Contains(descripcion) || 
-                                                        x.ImpPorcentaje.ToString().Contains(descripcion)).ToListAsync();
+                    var retorno =await  db.Impuestos.Where(x=>x.ImpDescripcion.Contains(descripcion) && x.ImpActivo==true||
+                                                              x.ImpId.ToString().Contains(descripcion) && x.ImpActivo == true ||
+                                                              x.ImpActivo == true && x.ImpPorcentaje.ToString().Contains(descripcion)).ToListAsync() ;
                     return retorno;
                 }
             }

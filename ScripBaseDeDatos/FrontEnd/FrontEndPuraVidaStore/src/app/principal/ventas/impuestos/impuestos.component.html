@@ -43,20 +43,25 @@
   </div>
 
   <ng-template pTemplate="footer">
-    <p-button
-      icon="pi pi-times"
-      (click)="displayModal = false"
-      label="Cancelar"
-      styleClass="p-button-text"
-    ></p-button>
-
-    <p-button
+    <button
+      pButton
+      pRipple
+      type="button"
       icon="pi pi-save"
-      (click)="Guardar()"
-      [disabled]="deshabilitarBotonGuardar"
+      label="Cancelar"
+      class="p-button-text"
+      (click)="displayModal = false"
+    ></button>
+    <button
+      pButton
+      pRipple
+      type="button"
+      icon="pi pi-save"
       label="Guardar"
-      styleClass="p-button-text"
-    ></p-button>
+      [disabled]="deshabilitarBotonGuardar"
+      class="p-button-text"
+      (click)="Guardar()"
+    ></button>
   </ng-template>
 </p-dialog>
 
@@ -69,18 +74,20 @@
         type="button"
         icon="pi pi-plus"
         class="p-button-rounded"
+        [disabled]="!esAdministrador"
         (click)="showModalDialog()"
       ></button>
     </div>
     <div class="col">
       <div class="p-inputgroup">
-        <input type="text" pInputText placeholder="Buscar" />
+        <input type="text" pInputText placeholder="Buscar" [(ngModel)]="buscador" (input)="filtrar()" />
         <button
           type="button"
           pButton
           pRipple
           icon="pi pi-search"
           styleClass="p-button-warn"
+          (click)="filtrar()"
         ></button>
       </div>
     </div>
@@ -102,21 +109,9 @@
         <td>{{ impuesto.impDescripcion }}</td>
         <td>{{ impuesto.impPorcentaje }}%</td>
         <td>
-          <button
-            pButton
-            pRipple
-            type="button"
-            label="Info"
-            class="p-button-outlined p-button-rounded p-button-info"
-          ></button>
-          <button
-            pButton
-            pRipple
-            type="button"
-            label="Warning"
-            class="p-button-outlined p-button-rounded p-button-warning"
-          ></button>
-        </td>
+          <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning" [disabled]="!esAdministrador" (click)="editarUsuario(impuesto,false)"></button>
+          <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" [disabled]="!esAdministrador" (click)="editarUsuario(impuesto,true)" ></button>
+      </td>
       </tr>
     </ng-template>
   </p-table>
