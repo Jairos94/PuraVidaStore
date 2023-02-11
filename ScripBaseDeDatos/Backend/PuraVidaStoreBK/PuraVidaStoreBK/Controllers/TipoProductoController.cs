@@ -12,12 +12,12 @@ namespace PuraVidaStoreBK.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TipoProducoController : ControllerBase
+    public class TipoProductoController : ControllerBase
     {
         private readonly ITipoProductoQuery _tipoProductoQuery;
         private readonly IMapper _mapper;
 
-        public TipoProducoController(ITipoProductoQuery tipoProductoQuery,IMapper mapper)
+        public TipoProductoController(ITipoProductoQuery tipoProductoQuery,IMapper mapper)
         {
             _tipoProductoQuery = tipoProductoQuery;
             _mapper = mapper;
