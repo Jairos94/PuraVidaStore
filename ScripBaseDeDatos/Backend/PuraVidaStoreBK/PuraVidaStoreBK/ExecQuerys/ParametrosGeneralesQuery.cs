@@ -24,7 +24,33 @@ namespace PuraVidaStoreBK.ExecQuerys
 
                     }
                     await db.SaveChangesAsync();
-                    return parametros;
+
+                    if (parametros.ImpustosIncluidos.Count > 0)
+                    {
+
+                        foreach (var impuesto in parametros.ImpustosIncluidos)
+                        {
+                            var impuestoGuardar = new ImpustosIncluido
+                            {
+                                IicIdConfiguracion = parametros.PrgId,
+                                IicIdImpuesto = impuesto.IicId
+                            };
+
+                            if (impuesto.IicId == 0)
+                            {
+                                db.ImpustosIncluidos.Add(impuestoGuardar);
+                            }
+                            else
+                            {
+                                db.ImpustosIncluidos.Update(impuestoGuardar);
+
+                            }
+                            await db.SaveChangesAsync();
+                            parametros.ImpustosIncluidos.Add(impuestoGuardar);
+
+                        }
+                    }
+                        return parametros;
                 }
             }
             catch (Exception ex)
