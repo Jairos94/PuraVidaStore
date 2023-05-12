@@ -9,7 +9,7 @@ namespace PuraVidaStoreBK.Models.DbContex
         public int? IicIdImpuesto { get; set; }
         public int? IicIdConfiguracion { get; set; }
 
-        public virtual ParametrosGlobales? IicIdConfiguracionNavigation { get; set; }
+        public virtual ParametrosGlobale? IicIdConfiguracionNavigation { get; set; }
         public virtual Impuesto? IicIdImpuestoNavigation { get; set; }
     }
 }

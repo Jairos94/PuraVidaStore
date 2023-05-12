@@ -22,20 +22,20 @@ namespace PuraVidaStoreBK.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("GuardarParametrosGlobales"), Authorize]
-        public async Task<IActionResult> GuardarParametrosGlobales(ParametrosGlobalesDTO parametros)
-        {
-            try
-            {
-                var guardar = await _parametros.GuardarParametros(_mapper.Map<ParametrosGlobales>(parametros));
-                return Ok(_mapper.Map<ParametrosGlobalesDTO>(guardar));
-            }
-            catch (Exception )
-            {
+        //[HttpPost("GuardarParametrosGlobales"), Authorize]
+        //public async Task<IActionResult> GuardarParametrosGlobales(ParametrosGlobalesDTO parametros)
+        //{
+        //    try
+        //    {
+        //        var guardar = await _parametros.GuardarParametros(_mapper.Map<ParametrosGlobales>(parametros));
+        //        return Ok(_mapper.Map<ParametrosGlobalesDTO>(guardar));
+        //    }
+        //    catch (Exception )
+        //    {
 
-                return BadRequest("Favor de revisar los logs");
-            }
-        }
+        //        return BadRequest("Favor de revisar los logs");
+        //    }
+        //}
 
         // GET api/<ParametrosController>/5
         [HttpGet("{id}")]
