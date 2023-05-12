@@ -10,6 +10,6 @@ namespace PuraVidaStoreBK.Models.DTOS
         public bool PrgHabilitarImpuestos { get; set; }
         public bool PrgImpustosIncluidos { get; set; }
 
-        public virtual ICollection<ImpuestosDTO> ImpustosIncluidos { get; set; }
+        public virtual ICollection<ImpuestosDTO>? ImpustosIncluidos { get; set; }
     }
 }

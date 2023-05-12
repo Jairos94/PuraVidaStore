@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -78,22 +79,22 @@ var conexcion = builder.Configuration.GetConnectionString("sqlServer");
 Estaticas.SqlServerConexcion = builder.Configuration.GetConnectionString("sqlServer");
 
 #region Inyeccion de dependencias
-builder.Services.AddSingleton<IDataBase, DataBase>();
-builder.Services.AddSingleton<IBodegaQuery, BodegaQuery>();
-builder.Services.AddSingleton<IMovimientosQuery, MovimientosQuery>();
-builder.Services.AddSingleton<IMayoristaQuery, MayoristaQuery>();
-builder.Services.AddSingleton<IPersonaQuery, PersonaQuery>();
-builder.Services.AddSingleton<IProductoQuery, ProductoQuery>();
-builder.Services.AddSingleton<IUsuariosQuerys,UsuariosQuerys>();
-builder.Services.AddSingleton<IRolQuery, RolesQuerys>();
-builder.Services.AddSingleton<ITipoProductoQuery, TipoProductoQuery>();
-builder.Services.AddSingleton<IVentasQuery, VentasQuery>();
-builder.Services.AddSingleton<ICorreoQuery, CorreoQuery>();
+builder.Services.AddTransient<IDataBase, DataBase>();
+builder.Services.AddTransient<IBodegaQuery, BodegaQuery>();
+builder.Services.AddTransient<IMovimientosQuery, MovimientosQuery>();
+builder.Services.AddTransient<IMayoristaQuery, MayoristaQuery>();
+builder.Services.AddTransient<IPersonaQuery, PersonaQuery>();
+builder.Services.AddTransient<IProductoQuery, ProductoQuery>();
+builder.Services.AddTransient<IUsuariosQuerys,UsuariosQuerys>();
+builder.Services.AddTransient<IRolQuery, RolesQuerys>();
+builder.Services.AddTransient<ITipoProductoQuery, TipoProductoQuery>();
+builder.Services.AddTransient<IVentasQuery, VentasQuery>();
+builder.Services.AddTransient<ICorreoQuery, CorreoQuery>();
 builder.Services.AddTransient<IParametrosGeneralesQuery, ParametrosGeneralesQuery>();
-builder.Services.AddSingleton<IImpuestosQuery, ImpuestosQuery>();
+builder.Services.AddTransient<IImpuestosQuery, ImpuestosQuery>();
 
 
-builder.Services.AddSingleton<IEnvioCorreo, EnvioCorreo>();
+builder.Services.AddTransient<IEnvioCorreo, EnvioCorreo>();
 
 
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using PuraVidaStoreBK.Utilitarios;
 
 namespace PuraVidaStoreBK.Models.DbContex
 {
@@ -36,7 +37,7 @@ namespace PuraVidaStoreBK.Models.DbContex
         public virtual DbSet<Movimiento> Movimientos { get; set; } = null!;
         public virtual DbSet<OtrosCargo> OtrosCargos { get; set; } = null!;
         public virtual DbSet<ParametrosEmail> ParametrosEmails { get; set; } = null!;
-        public virtual DbSet<ParametrosGlobale> ParametrosGlobales { get; set; } = null!;
+        public virtual DbSet<ParametrosGlobales> ParametrosGlobales { get; set; } = null!;
         public virtual DbSet<Pedido> Pedidos { get; set; } = null!;
         public virtual DbSet<Persona> Personas { get; set; } = null!;
         public virtual DbSet<Producto> Productos { get; set; } = null!;
@@ -54,7 +55,8 @@ namespace PuraVidaStoreBK.Models.DbContex
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-4FJOI9V;Initial Catalog=PuraVidaStore;Trusted_Connection=True");
+                //optionsBuilder.UseSqlServer("Data Source=DESKTOP-4FJOI9V;Initial Catalog=PuraVidaStore;Trusted_Connection=True");
+                optionsBuilder.UseSqlServer(Estaticas.SqlServerConexcion);
             }
         }
 
@@ -439,7 +441,7 @@ namespace PuraVidaStoreBK.Models.DbContex
                     .HasColumnName("preUser");
             });
 
-            modelBuilder.Entity<ParametrosGlobale>(entity =>
+            modelBuilder.Entity<ParametrosGlobales>(entity =>
             {
                 entity.HasKey(e => e.PrgId)
                     .HasName("PK__Parametr__76A0837B7D4DBD06");
