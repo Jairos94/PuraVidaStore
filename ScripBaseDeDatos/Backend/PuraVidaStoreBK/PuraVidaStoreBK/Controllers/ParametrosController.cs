@@ -28,7 +28,9 @@ namespace PuraVidaStoreBK.Controllers
             try
             {
                 var guardar = await _parametros.GuardarParametros(_mapper.Map<ParametrosGlobales>(parametros));
-                return Ok(_mapper.Map<ParametrosGlobalesDTO>(guardar));
+                
+                
+                return Ok();
             }
             catch (Exception)
             {

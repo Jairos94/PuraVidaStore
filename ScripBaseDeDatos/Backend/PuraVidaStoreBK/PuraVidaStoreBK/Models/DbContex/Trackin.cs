@@ -27,7 +27,7 @@ namespace PuraVidaStoreBK.Models.DbContex
 
         public virtual EstadoPedido TrkEstadoNavigation { get; set; } = null!;
         public virtual Pedido? TrkIdPedidoNavigation { get; set; }
-        public virtual Moneda TrkMonedaNavigation { get; set; } = null!;
+        public virtual Monedam TrkMonedaNavigation { get; set; } = null!;
         public virtual Proveedore TrkProveedorNavigation { get; set; } = null!;
         public virtual ICollection<TrackinsAsociado> TrackinsAsociados { get; set; }
     }

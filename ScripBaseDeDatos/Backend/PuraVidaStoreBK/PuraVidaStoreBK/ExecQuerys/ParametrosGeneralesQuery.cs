@@ -2,7 +2,6 @@
 using PuraVidaStoreBK.ExecQuerys.Interfaces;
 using PuraVidaStoreBK.Models.DbContex;
 using Serilog;
-using XAct;
 
 namespace PuraVidaStoreBK.ExecQuerys
 {
@@ -16,7 +15,13 @@ namespace PuraVidaStoreBK.ExecQuerys
                 {
                     if (parametros.PrgId == 0)
                     {
-                        db.ParametrosGlobales.Add(parametros);
+                        db.ParametrosGlobales.Add(new ParametrosGlobales 
+                        {
+                            PrgUndsHabilitarMayorista= parametros.PrgUndsHabilitarMayorista,
+                            PrgUndsAgregarMayorista = parametros.PrgUndsAgregarMayorista,
+                            PrgHabilitarImpuestos =parametros.PrgHabilitarImpuestos,
+                            PrgImpustosIncluidos =parametros.PrgImpustosIncluidos
+                    });
                     }
                     else
                     {
@@ -25,32 +30,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                     }
                     await db.SaveChangesAsync();
 
-                    if (parametros.ImpustosIncluidos.Count > 0)
-                    {
-
-                        foreach (var impuesto in parametros.ImpustosIncluidos)
-                        {
-                            var impuestoGuardar = new ImpustosIncluido
-                            {
-                                IicIdConfiguracion = parametros.PrgId,
-                                IicIdImpuesto = impuesto.IicId
-                            };
-
-                            if (impuesto.IicId == 0)
-                            {
-                                db.ImpustosIncluidos.Add(impuestoGuardar);
-                            }
-                            else
-                            {
-                                db.ImpustosIncluidos.Update(impuestoGuardar);
-
-                            }
-                            await db.SaveChangesAsync();
-                            parametros.ImpustosIncluidos.Add(impuestoGuardar);
-
-                        }
-                    }
-                        return parametros;
+                    return parametros;
                 }
             }
             catch (Exception ex)
@@ -69,15 +49,8 @@ namespace PuraVidaStoreBK.ExecQuerys
                 {
                     var retorno = await db.ParametrosGlobales
                         .Where(x => x.PrgId == id)
-                        .Include(x => x.ImpustosIncluidos)
+                        .Include(x => x.ImpuestosPorParametros)
                         .FirstAsync();
-
-                    retorno.ImpustosIncluidos.ForEach(async x =>
-                    {
-
-                        var dato = await db.Impuestos.Where(z => z.ImpId == x.IicIdImpuesto).FirstAsync();
-                        x.IicIdImpuestoNavigation = dato;
-                    });
 
                     return retorno;
                 }

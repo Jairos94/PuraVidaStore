@@ -7,7 +7,7 @@ namespace PuraVidaStoreBK.Models.DbContex
     {
         public ParametrosGlobales()
         {
-            ImpustosIncluidos = new HashSet<ImpustosIncluido>();
+            ImpuestosPorParametros = new HashSet<ImpuestosPorParametro>();
         }
 
         public int PrgId { get; set; }
@@ -16,6 +16,6 @@ namespace PuraVidaStoreBK.Models.DbContex
         public bool PrgHabilitarImpuestos { get; set; }
         public bool PrgImpustosIncluidos { get; set; }
 
-        public virtual ICollection<ImpustosIncluido> ImpustosIncluidos { get; set; }
+        public virtual ICollection<ImpuestosPorParametro> ImpuestosPorParametros { get; set; }
     }
 }
