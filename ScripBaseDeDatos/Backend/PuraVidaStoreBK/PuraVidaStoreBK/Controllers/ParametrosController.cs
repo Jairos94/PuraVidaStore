@@ -28,9 +28,26 @@ namespace PuraVidaStoreBK.Controllers
             try
             {
                 var guardar = await _parametros.GuardarParametros(_mapper.Map<ParametrosGlobales>(parametros));
-                
-                
-                return Ok();
+
+                var retorno = new ParametrosGlobalesDTO();
+                retorno = _mapper.Map<ParametrosGlobalesDTO>(guardar);
+
+                if (parametros.ImpuestosPorParametros.Count!=null) 
+                {
+                    foreach (var impuesto in parametros.ImpuestosPorParametros) 
+                    {
+                        impuesto.ImpPidParametroGlobal = retorno.PrgId;
+                        await _parametros.GuardarImpuestoPorParametro(_mapper.Map<ImpuestosPorParametro>(impuesto));
+                    }
+                }
+
+                var listaImpuesto =await _parametros.ObtenerImpuestosPorParametro(guardar.PrgId);
+
+                foreach (var impuesto in listaImpuesto) 
+                {
+                    retorno.ImpuestosPorParametros.Add(_mapper.Map<ImpuestosPorParametroDTO>(impuesto));
+                }
+                return Ok(retorno);
             }
             catch (Exception)
             {
