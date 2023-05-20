@@ -194,7 +194,7 @@ export class FacturacionComponent implements OnInit {
         }
       }
 
-      this.total = this.total + x.dtfCantidad * x.dtfPrecio;
+      this.total = this.total + (x.dtfCantidad * x.dtfPrecio);
       this.totalCantidad = this.totalCantidad + x.dtfCantidad;
 
       if (this.totalCantidad >= 3) {
