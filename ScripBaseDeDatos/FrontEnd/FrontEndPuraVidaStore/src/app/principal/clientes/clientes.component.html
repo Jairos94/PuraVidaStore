@@ -1,2 +1,11 @@
-<p>clientes works!</p>
-<router-outlet></router-outlet>
+
+<div class="formgrid grid my-2">
+  <div class="field col-2">
+
+      <p-panelMenu [model]="items"></p-panelMenu>
+
+  </div>
+  <div class="field col">
+      <router-outlet></router-outlet>
+  </div>
+</div>

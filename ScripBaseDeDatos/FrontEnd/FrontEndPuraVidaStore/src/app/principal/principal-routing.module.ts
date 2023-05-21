@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ConfiguracionComponent } from './configuracion/configuracion.component';
 import { PrincipalComponent } from './principal.component';
+import { EditarPerfilComponent } from './editar-perfil/editar-perfil.component';
 
 const routes: Routes = [
   {
@@ -41,6 +42,7 @@ const routes: Routes = [
           import('./clientes/clientes.module').then((m) => m.ClientesModule),
       },
       { path: 'configuracion', component: ConfiguracionComponent },
+      { path: 'editar-perfil/:id', component: EditarPerfilComponent },
       { path: '**', redirectTo: 'ventas' },
     ],
   },

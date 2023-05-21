@@ -68,7 +68,7 @@ export class PrincipalComponent implements OnInit {
       {
         label: 'Configurar perfil',
         icon: 'pi pi-user-edit',
-        routerLink:'usuarios/editar-nuevo/'+this.usuario.usrId
+        routerLink:'editar-perfil/'+this.usuario.usrId
       },
       {
         label: 'Configurar opciones del sistema',
