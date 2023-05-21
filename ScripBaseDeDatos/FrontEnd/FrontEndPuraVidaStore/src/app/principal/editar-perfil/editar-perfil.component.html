@@ -60,13 +60,6 @@
               <input type="email" id="correo" pInputText placeholder="Correo" formControlName="correo" [disabled]="usuarioEdtitar.usrIdRol!=1">
           </div>
       </div>
-<!--
-      <div class="col-12 md:col-4">
-          <p-dropdown [options]="listaRoles" formControlName="rol" placeholder="Tipo de rol"
-           optionLabel="rluDescripcion" optionValue="rluId" (onChange)="cambioRol()"></p-dropdown>
-
-      </div>
--->
 
   </div>
 
@@ -74,7 +67,7 @@
       <span class="p-buttonset">
           <button pButton pRipple label="Guardar" type="submit" icon="pi pi-save"
               [disabled]="!usuarioForm.valid"></button>
-          <button pButton pRipple label="Cancel" routerLink="./usuarios/lista-usuarios"></button>
+          <button pButton pRipple label="Cancel" routerLink="./principal"></button>
       </span>
   </div>
 </div>
