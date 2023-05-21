@@ -10,6 +10,7 @@ namespace PuraVidaStoreBK.Models.DbContex
             DetalleFacturas = new HashSet<DetalleFactura>();
             FacturaResumen = new HashSet<FacturaResumen>();
             HistorialFacturasAnulada = new HashSet<HistorialFacturasAnulada>();
+            ImpuestosPorFacturas = new HashSet<ImpuestosPorFactura>();
         }
 
         public int FtrId { get; set; }
@@ -20,6 +21,7 @@ namespace PuraVidaStoreBK.Models.DbContex
         public int FtrBodega { get; set; }
         public int FtrFormaPago { get; set; }
         public bool? FtrEsFacturaNula { get; set; }
+        public string? FtrCodigoFactura { get; set; }
 
         public virtual Bodega FtrBodegaNavigation { get; set; } = null!;
         public virtual EstatusFactura FtrEstatus { get; set; } = null!;
@@ -29,5 +31,6 @@ namespace PuraVidaStoreBK.Models.DbContex
         public virtual ICollection<DetalleFactura> DetalleFacturas { get; set; }
         public virtual ICollection<FacturaResumen> FacturaResumen { get; set; }
         public virtual ICollection<HistorialFacturasAnulada> HistorialFacturasAnulada { get; set; }
+        public virtual ICollection<ImpuestosPorFactura> ImpuestosPorFacturas { get; set; }
     }
 }

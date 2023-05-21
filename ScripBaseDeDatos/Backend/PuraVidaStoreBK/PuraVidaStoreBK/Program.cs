@@ -1,10 +1,16 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Prometheus;
 using PuraVidaStoreBK.ExecQuerys;
 using PuraVidaStoreBK.ExecQuerys.Interfaces;
+using PuraVidaStoreBK.Models.DbContex;
+using PuraVidaStoreBK.Utilitarios;
+using PuraVidaStoreBK.Utilitarios.Interfase;
 using Serilog;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
@@ -67,15 +73,28 @@ builder.Services.AddHttpClient(Options.DefaultName)
 //AutoMapper
 builder.Services.AddAutoMapper(typeof(Program));
 
+var conexcion = builder.Configuration.GetConnectionString("sqlServer");
+
+//dbcontex
+Estaticas.SqlServerConexcion = builder.Configuration.GetConnectionString("sqlServer");
+
 #region Inyeccion de dependencias
-builder.Services.AddSingleton<IDataBase, DataBase>();
-builder.Services.AddSingleton<IBodegaQuery, BodegaQuery>();
-builder.Services.AddSingleton<IMovimientosQuery, MovimientosQuery>();
-builder.Services.AddSingleton<IPersonaQuery, PersonaQuery>();
-builder.Services.AddSingleton<IProductoQuery, ProductoQuery>();
-builder.Services.AddSingleton<IUsuariosQuerys,UsuariosQuerys>();
-builder.Services.AddSingleton<IRolQuery, RolesQuerys>();
-builder.Services.AddSingleton<ITipoProductoQuery, TipoProductoQuery>();
+builder.Services.AddTransient<IDataBase, DataBase>();
+builder.Services.AddTransient<IBodegaQuery, BodegaQuery>();
+builder.Services.AddTransient<IMovimientosQuery, MovimientosQuery>();
+builder.Services.AddTransient<IMayoristaQuery, MayoristaQuery>();
+builder.Services.AddTransient<IPersonaQuery, PersonaQuery>();
+builder.Services.AddTransient<IProductoQuery, ProductoQuery>();
+builder.Services.AddTransient<IUsuariosQuerys,UsuariosQuerys>();
+builder.Services.AddTransient<IRolQuery, RolesQuerys>();
+builder.Services.AddTransient<ITipoProductoQuery, TipoProductoQuery>();
+builder.Services.AddTransient<IVentasQuery, VentasQuery>();
+builder.Services.AddTransient<ICorreoQuery, CorreoQuery>();
+builder.Services.AddTransient<IParametrosGeneralesQuery, ParametrosGeneralesQuery>();
+builder.Services.AddTransient<IImpuestosQuery, ImpuestosQuery>();
+
+
+builder.Services.AddTransient<IEnvioCorreo, EnvioCorreo>();
 
 
 
@@ -83,16 +102,18 @@ builder.Services.AddSingleton<ITipoProductoQuery, TipoProductoQuery>();
 
 //Serilog
 Log.Logger = new LoggerConfiguration()
-    .WriteTo.File("C:\\_LogsPuraVidaStore\\ApiLog-.txt", rollingInterval:RollingInterval.Day).CreateLogger();
+    .WriteTo.Console()
+    .WriteTo.Seq(builder.Configuration["Serilog:seq"])
+    .WriteTo.File("C:\\_LogsPuraVidaStore\\ApiLog-.txt", rollingInterval:RollingInterval.Day)
+     .CreateLogger();
+
+builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
+
 
 app.UseHttpsRedirection();
 
@@ -104,20 +125,14 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.MapHealthChecks("/health");
+
+
 app.UseHttpMetrics(options => 
 {
     options.ReduceStatusCodeCardinality();
     options.AddCustomLabel("host", context => context.Request.Host.Host);
 });
-
-//app.UseEndpoints(endpoints =>
-//{
-//    // ...
-
-//    // Assumes that you have previously configured the "ReadMetrics" policy (not shown).
-//    endpoints.MapMetrics().RequireAuthorization("ReadMetrics");
-//});
-
 app.UseGrpcMetrics();
 
 app.Run();

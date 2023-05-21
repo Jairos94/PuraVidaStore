@@ -14,7 +14,7 @@ namespace PuraVidaStoreBK.Models.DbContex
         public double? DppCostoMoneda { get; set; }
         public double? DppCostoColones { get; set; }
 
-        public virtual Monedum DppIdMonedaNavigation { get; set; } = null!;
+        public virtual Moneda DppIdMonedaNavigation { get; set; } = null!;
         public virtual Pedido DppIdPedidoNavigation { get; set; } = null!;
         public virtual Producto DppIdProductoNavigation { get; set; } = null!;
     }

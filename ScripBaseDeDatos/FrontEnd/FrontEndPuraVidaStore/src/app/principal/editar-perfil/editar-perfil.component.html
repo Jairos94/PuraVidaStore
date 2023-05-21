@@ -1,0 +1,77 @@
+<form [formGroup]="usuarioForm" (ngSubmit)="guardar()">
+
+  <div>
+      <h3>Datos de la persona</h3>
+      <div class="formgrid grid">
+          <div class="col-12 md:col-4">
+              <div class="p-inputgroup">
+                  <span class="p-inputgroup-addon"><i class="pi pi-id-card"></i></span>
+                  <input type="text" id="cedula" pInputText placeholder="Cédula" formControlName="cedula">
+              </div>
+          </div>
+      </div>
+
+      <div class="formgrid grid my-2">
+          <div class="field col">
+              <label for="nombre">Nombre</label>
+              <input id="nombre" type="text"
+                  class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                  formControlName="nombre">
+          </div>
+          <div class="field col">
+              <label for="apellido1">Primer apellido</label>
+              <input id="apellido1" type="text"
+                  class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                  formControlName="apellido1">
+          </div>
+          <div class="field col">
+              <label for="apellido2">Segundo apellido</label>
+              <input id="apellido2" type="text"
+                  class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                  formControlName="apellido2">
+          </div>
+      </div>
+  </div>
+
+<div>
+  <h3>Datos del Usuario</h3>
+
+  <div class="grid p-fluid">
+      <div class="col-12 md:col-4">
+          <div class="p-inputgroup">
+              <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+              <input type="text" id="usuario" pInputText placeholder="Usuario" autocomplete="new-username" formControlName="usuario">
+          </div>
+      </div>
+
+      <div class="col-12 md:col-4">
+          <div class="p-inputgroup">
+              <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+              <input type="password" id="clave" pInputText placeholder="Contraseña" autocomplete="new-password" formControlName="clave">
+          </div>
+      </div>
+  </div>
+
+  <div class="grid p-fluid mt-2">
+
+      <div class="col-12 md:col-4">
+          <div class="p-inputgroup">
+              <span class="p-inputgroup-addon"><i class="pi pi-envelope"></i></span>
+              <input type="email" id="correo" pInputText placeholder="Correo" formControlName="correo" [disabled]="usuarioEdtitar.usrIdRol!=1">
+          </div>
+      </div>
+
+  </div>
+
+  <div class="my-2">
+      <span class="p-buttonset">
+          <button pButton pRipple label="Guardar" type="submit" icon="pi pi-save"
+              [disabled]="!usuarioForm.valid"></button>
+          <button pButton pRipple label="Cancel" routerLink="./principal"></button>
+      </span>
+  </div>
+</div>
+
+</form>
+
+<p-toast position="top-right"></p-toast>

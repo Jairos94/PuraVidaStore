@@ -1,4 +1,4 @@
-use <nombre de la base de datos>
+use <Nombre de la base de datos>
 INSERT INTO RolUsiario(RluDescripcion) VALUES('Administrador'),('Vendedor')
 go
 
@@ -42,6 +42,12 @@ INSERT INTO [dbo].[MotivosMovimientos]
            ('Ingreso por compra'
            ,1)
 GO
+
+INSERT INTO [dbo].[FormaPago]
+           ([FrpDescripcion])
+     VALUES
+           ('Efectivo'),('Sinpe Movil'),('Transferencia Bancaria')
+go
 
 
 EXEC IngresarUsuario 'Admin','GzPfpnFb7HWhQeP0wnV0+g==','jairo.ri.ce@gmail.com',1,1

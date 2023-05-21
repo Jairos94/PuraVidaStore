@@ -11,14 +11,50 @@ namespace PuraVidaStoreBK.Models
             CreateMap<Bodega, BodegaDTO>();
             CreateMap<BodegaDTO, Bodega>();
 
+            CreateMap<ClientesMayorista, ClienteMayoristaDTO>();
+            CreateMap<ClienteMayoristaDTO, ClientesMayorista>();
+
+            CreateMap<DetalleFactura, DetalleFacturaDTO>();
+            CreateMap<DetalleFacturaDTO, DetalleFactura>();
+
+            CreateMap<EstatusFactura, EstatusFacturaDTO>();
+            CreateMap<EstatusFacturaDTO, EstatusFactura>();
+
+            CreateMap<Factura, FacturaDTO>();
+            CreateMap<FacturaDTO, Factura>();
+
+            CreateMap<FacturaResumen, FacturaResumenDTO>();
+            CreateMap<FacturaResumenDTO, FacturaResumen>();
+
+            CreateMap<FormaPago, FormaPagoDTO>();
+            CreateMap<FormaPagoDTO, FormaPago>();
+
+            CreateMap<Impuesto, ImpuestosDTO>();
+            CreateMap<ImpuestosDTO, Impuesto>();
+
+            CreateMap<ImpuestosPorParametro, ImpuestosPorParametroDTO>();
+            CreateMap<ImpuestosPorParametroDTO, ImpuestosPorParametro>();
+
+            CreateMap<ImpuestosPorFactura, ImpuestosPorFacturaDTO>();
+            CreateMap<ImpuestosPorFacturaDTO, ImpuestosPorFactura>();
+
             CreateMap<Inventarios, InventariosDTO>();
             CreateMap<InventariosDTO, Inventarios>();
+
+            CreateMap<HistorialClienteMayorista, HistorialClienteMayoristaDTO>();
+            CreateMap<HistorialClienteMayoristaDTO, HistorialClienteMayorista>();
 
             CreateMap<Movimiento, MovimientosDTO>();
             CreateMap<MovimientosDTO, Movimiento>();
 
             CreateMap<MotivosMovimiento, MotivosMovimientoDTO>();
             CreateMap<MotivosMovimientoDTO, MotivosMovimiento>();
+
+            CreateMap<ParametrosEmail, ParametrosEmailDTO>();
+            CreateMap<ParametrosEmailDTO, ParametrosEmail>();
+
+            CreateMap<ParametrosGlobales, ParametrosGlobalesDTO>();
+            CreateMap<ParametrosGlobalesDTO, ParametrosGlobales>();
 
             CreateMap<Persona, PersonaDto>();
             CreateMap<PersonaDto, Persona>();

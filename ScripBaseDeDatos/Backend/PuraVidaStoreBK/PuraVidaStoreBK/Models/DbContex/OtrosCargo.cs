@@ -12,7 +12,7 @@ namespace PuraVidaStoreBK.Models.DbContex
         public double? OtrCostoMoneda { get; set; }
         public string OtrRazon { get; set; } = null!;
 
-        public virtual Monedum OtrIdMonedaNavigation { get; set; } = null!;
+        public virtual Moneda OtrIdMonedaNavigation { get; set; } = null!;
         public virtual Pedido OtrIdPedidoNavigation { get; set; } = null!;
     }
 }

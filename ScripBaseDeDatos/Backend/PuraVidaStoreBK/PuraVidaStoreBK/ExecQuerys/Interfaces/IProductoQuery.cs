@@ -1,4 +1,5 @@
-﻿using PuraVidaStoreBK.Models.DbContex;
+﻿
+using PuraVidaStoreBK.Models.DbContex;
 
 namespace PuraVidaStoreBK.ExecQuerys.Interfaces
 {

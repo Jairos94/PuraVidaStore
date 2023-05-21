@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using PuraVidaStoreBK.Utilitarios;
 
 namespace PuraVidaStoreBK.Models.DbContex
 {
@@ -25,17 +26,22 @@ namespace PuraVidaStoreBK.Models.DbContex
         public virtual DbSet<Factura> Facturas { get; set; } = null!;
         public virtual DbSet<FacturaResumen> FacturaResumen { get; set; } = null!;
         public virtual DbSet<FormaPago> FormaPagos { get; set; } = null!;
-        public virtual DbSet<HistorialClienteMayoristum> HistorialClienteMayorista { get; set; } = null!;
+        public virtual DbSet<HistorialClienteMayorista> HistorialClienteMayorista { get; set; } = null!;
         public virtual DbSet<HistorialFacturasAnulada> HistorialFacturasAnuladas { get; set; } = null!;
         public virtual DbSet<HistorialPrecio> HistorialPrecios { get; set; } = null!;
-        public virtual DbSet<Monedum> Moneda { get; set; } = null!;
+        public virtual DbSet<Impuesto> Impuestos { get; set; } = null!;
+        public virtual DbSet<ImpuestosPorFactura> ImpuestosPorFacturas { get; set; } = null!;
+        public virtual DbSet<ImpuestosPorParametro> ImpuestosPorParametros { get; set; } = null!;
+        public virtual DbSet<Moneda> Moneda { get; set; } = null!;
         public virtual DbSet<MotivosMovimiento> MotivosMovimientos { get; set; } = null!;
         public virtual DbSet<Movimiento> Movimientos { get; set; } = null!;
         public virtual DbSet<OtrosCargo> OtrosCargos { get; set; } = null!;
+        public virtual DbSet<ParametrosEmail> ParametrosEmails { get; set; } = null!;
+        public virtual DbSet<ParametrosGlobales> ParametrosGlobales { get; set; } = null!;
         public virtual DbSet<Pedido> Pedidos { get; set; } = null!;
         public virtual DbSet<Persona> Personas { get; set; } = null!;
         public virtual DbSet<Producto> Productos { get; set; } = null!;
-        public virtual DbSet<Proveedore> Proveedores { get; set; } = null!;
+        public virtual DbSet<Proveedores> Proveedores { get; set; } = null!;
         public virtual DbSet<RolUsiario> RolUsiarios { get; set; } = null!;
         public virtual DbSet<TipoMovimiento> TipoMovimientos { get; set; } = null!;
         public virtual DbSet<TipoProducto> TipoProductos { get; set; } = null!;
@@ -49,7 +55,8 @@ namespace PuraVidaStoreBK.Models.DbContex
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-4FJOI9V;Database=PuraVidaStore;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer(Estaticas.SqlServerConexcion);
+                //optionsBuilder.UseSqlServer("Data Source=DESKTOP-4FJOI9V;Initial Catalog=PuraVidaStore;Trusted_Connection=True");
             }
         }
 
@@ -58,7 +65,7 @@ namespace PuraVidaStoreBK.Models.DbContex
             modelBuilder.Entity<Bodega>(entity =>
             {
                 entity.HasKey(e => e.BdgId)
-                    .HasName("PK__Bodegas__522D12A51FBC787E");
+                    .HasName("PK__Bodegas__522D12A549EE25F7");
 
                 entity.Property(e => e.BdgDescripcion)
                     .HasMaxLength(30)
@@ -71,10 +78,10 @@ namespace PuraVidaStoreBK.Models.DbContex
             modelBuilder.Entity<ClientesMayorista>(entity =>
             {
                 entity.HasKey(e => e.ClmId)
-                    .HasName("PK__Clientes__FD21CFD25D2C9F01");
+                    .HasName("PK__Clientes__FD21CFD2C6A8DAE1");
 
                 entity.Property(e => e.ClmCorreo)
-                    .HasMaxLength(20)
+                    .HasMaxLength(100)
                     .IsUnicode(false);
 
                 entity.Property(e => e.ClmFechaCreacion).HasColumnType("datetime");
@@ -89,13 +96,13 @@ namespace PuraVidaStoreBK.Models.DbContex
                     .WithMany(p => p.ClientesMayorista)
                     .HasForeignKey(d => d.ClmIdPersona)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__ClientesM__ClmId__0D44F85C");
+                    .HasConstraintName("FK__ClientesM__ClmId__5FB337D6");
             });
 
             modelBuilder.Entity<DetalleFactura>(entity =>
             {
                 entity.HasKey(e => e.DtfId)
-                    .HasName("PK__DetalleF__08270EDEE7FD8D53");
+                    .HasName("PK__DetalleF__08270EDE4FB1230F");
 
                 entity.ToTable("DetalleFactura");
 
@@ -103,19 +110,19 @@ namespace PuraVidaStoreBK.Models.DbContex
                     .WithMany(p => p.DetalleFacturas)
                     .HasForeignKey(d => d.DtfIdProducto)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__DetalleFa__DtfId__0F2D40CE");
+                    .HasConstraintName("FK__DetalleFa__DtfId__628FA481");
 
                 entity.HasOne(d => d.DtfIdProducto1)
                     .WithMany(p => p.DetalleFacturas)
                     .HasForeignKey(d => d.DtfIdProducto)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__DetalleFa__DtfId__0E391C95");
+                    .HasConstraintName("FK__DetalleFa__DtfId__619B8048");
             });
 
             modelBuilder.Entity<DetalleProductoPedido>(entity =>
             {
                 entity.HasKey(e => e.DppId)
-                    .HasName("PK__DetalleP__45FE6F5AA8E08345");
+                    .HasName("PK__DetalleP__45FE6F5AA494DD59");
 
                 entity.ToTable("DetalleProductoPedido");
 
@@ -123,25 +130,25 @@ namespace PuraVidaStoreBK.Models.DbContex
                     .WithMany(p => p.DetalleProductoPedidos)
                     .HasForeignKey(d => d.DppIdMoneda)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__DetallePr__DppId__1209AD79");
+                    .HasConstraintName("FK__DetallePr__DppId__6754599E");
 
                 entity.HasOne(d => d.DppIdPedidoNavigation)
                     .WithMany(p => p.DetalleProductoPedidos)
                     .HasForeignKey(d => d.DppIdPedido)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__DetallePr__DppId__11158940");
+                    .HasConstraintName("FK__DetallePr__DppId__66603565");
 
                 entity.HasOne(d => d.DppIdProductoNavigation)
                     .WithMany(p => p.DetalleProductoPedidos)
                     .HasForeignKey(d => d.DppIdProducto)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__DetallePr__DppId__10216507");
+                    .HasConstraintName("FK__DetallePr__DppId__656C112C");
             });
 
             modelBuilder.Entity<EstadoPedido>(entity =>
             {
                 entity.HasKey(e => e.EtpId)
-                    .HasName("PK__EstadoPe__CD1FF58C20C845BB");
+                    .HasName("PK__EstadoPe__CD1FF58C5CD96F50");
 
                 entity.ToTable("EstadoPedido");
 
@@ -153,7 +160,7 @@ namespace PuraVidaStoreBK.Models.DbContex
             modelBuilder.Entity<EstatusFactura>(entity =>
             {
                 entity.HasKey(e => e.EtfId)
-                    .HasName("PK__EstatusF__CA83E8166F310484");
+                    .HasName("PK__EstatusF__CA83E816E94F8FAF");
 
                 entity.ToTable("EstatusFactura");
 
@@ -165,9 +172,11 @@ namespace PuraVidaStoreBK.Models.DbContex
             modelBuilder.Entity<Factura>(entity =>
             {
                 entity.HasKey(e => e.FtrId)
-                    .HasName("PK__Factura__2B314E1F3C0F686F");
+                    .HasName("PK__Factura__2B314E1F2CDF32A8");
 
                 entity.ToTable("Factura");
+
+                entity.Property(e => e.FtrCodigoFactura).HasMaxLength(350);
 
                 entity.Property(e => e.FtrFecha).HasColumnType("datetime");
 
@@ -175,48 +184,48 @@ namespace PuraVidaStoreBK.Models.DbContex
                     .WithMany(p => p.Facturas)
                     .HasForeignKey(d => d.FtrBodega)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Factura__FtrBode__12FDD1B2");
+                    .HasConstraintName("FK__Factura__FtrBode__6B24EA82");
 
                 entity.HasOne(d => d.FtrEstatus)
                     .WithMany(p => p.Facturas)
                     .HasForeignKey(d => d.FtrEstatusId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Factura__FtrEsta__13F1F5EB");
+                    .HasConstraintName("FK__Factura__FtrEsta__6D0D32F4");
 
                 entity.HasOne(d => d.FtrFormaPagoNavigation)
                     .WithMany(p => p.Facturas)
                     .HasForeignKey(d => d.FtrFormaPago)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Factura__FtrForm__05D8E0BE");
+                    .HasConstraintName("FK__Factura__FtrForm__6EF57B66");
 
                 entity.HasOne(d => d.FtrIdUsuarioNavigation)
                     .WithMany(p => p.Facturas)
                     .HasForeignKey(d => d.FtrIdUsuario)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Factura__FtrIdUs__15DA3E5D");
+                    .HasConstraintName("FK__Factura__FtrIdUs__70DDC3D8");
 
                 entity.HasOne(d => d.FtrMayoristaNavigation)
                     .WithMany(p => p.Facturas)
                     .HasForeignKey(d => d.FtrMayorista)
-                    .HasConstraintName("FK__Factura__FtrMayo__16CE6296");
+                    .HasConstraintName("FK__Factura__FtrMayo__72C60C4A");
             });
 
             modelBuilder.Entity<FacturaResumen>(entity =>
             {
                 entity.HasKey(e => e.FtrId)
-                    .HasName("PK__FacturaR__2B314E1F154DA4F6");
+                    .HasName("PK__FacturaR__2B314E1F4B8CD96A");
 
                 entity.HasOne(d => d.FtrFacturaNavigation)
                     .WithMany(p => p.FacturaResumen)
                     .HasForeignKey(d => d.FtrFactura)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__FacturaRe__FtrFa__02FC7413");
+                    .HasConstraintName("FK__FacturaRe__FtrFa__74AE54BC");
             });
 
             modelBuilder.Entity<FormaPago>(entity =>
             {
                 entity.HasKey(e => e.FrpId)
-                    .HasName("PK__FormaPag__C30F48C3B82E704C");
+                    .HasName("PK__FormaPag__C30F48C34FA6C5E8");
 
                 entity.ToTable("FormaPago");
 
@@ -225,10 +234,10 @@ namespace PuraVidaStoreBK.Models.DbContex
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<HistorialClienteMayoristum>(entity =>
+            modelBuilder.Entity<HistorialClienteMayorista>(entity =>
             {
                 entity.HasKey(e => e.HcmId)
-                    .HasName("PK__Historia__3B25B7B84D9CEA32");
+                    .HasName("PK__Historia__3B25B7B8ABAF3EAD");
 
                 entity.Property(e => e.HcmFechaActualizacion).HasColumnType("datetime");
 
@@ -238,13 +247,13 @@ namespace PuraVidaStoreBK.Models.DbContex
                     .WithMany(p => p.HistorialClienteMayorista)
                     .HasForeignKey(d => d.HcmIdCliente)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Historial__HcmId__18B6AB08");
+                    .HasConstraintName("FK__Historial__HcmId__76969D2E");
             });
 
             modelBuilder.Entity<HistorialFacturasAnulada>(entity =>
             {
                 entity.HasKey(e => e.HlfId)
-                    .HasName("PK__Historia__A894EAB3986E6961");
+                    .HasName("PK__Historia__A894EAB3CB9304ED");
 
                 entity.Property(e => e.HlfRazon)
                     .HasMaxLength(250)
@@ -254,19 +263,19 @@ namespace PuraVidaStoreBK.Models.DbContex
                     .WithMany(p => p.HistorialFacturasAnulada)
                     .HasForeignKey(d => d.HlfIdFctura)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Historial__HlfId__1A9EF37A");
+                    .HasConstraintName("FK__Historial__HlfId__797309D9");
 
                 entity.HasOne(d => d.HlfIdUsuarioNavigation)
                     .WithMany(p => p.HistorialFacturasAnulada)
                     .HasForeignKey(d => d.HlfIdUsuario)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Historial__HlfId__19AACF41");
+                    .HasConstraintName("FK__Historial__HlfId__787EE5A0");
             });
 
             modelBuilder.Entity<HistorialPrecio>(entity =>
             {
                 entity.HasKey(e => e.HlpId)
-                    .HasName("PK__Historia__AAE48D2CCFEE5D99");
+                    .HasName("PK__Historia__AAE48D2C57EF6381");
 
                 entity.Property(e => e.HlpFecha).HasColumnType("datetime");
 
@@ -274,19 +283,75 @@ namespace PuraVidaStoreBK.Models.DbContex
                     .WithMany(p => p.HistorialPrecios)
                     .HasForeignKey(d => d.HlpIdProducto)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Historial__HlpId__1B9317B3");
+                    .HasConstraintName("FK__Historial__HlpId__7C4F7684");
 
                 entity.HasOne(d => d.HlpIdUsuarioNavigation)
                     .WithMany(p => p.HistorialPrecios)
                     .HasForeignKey(d => d.HlpIdUsuario)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Historial__HlpId__1C873BEC");
+                    .HasConstraintName("FK__Historial__HlpId__7D439ABD");
             });
 
-            modelBuilder.Entity<Monedum>(entity =>
+            modelBuilder.Entity<Impuesto>(entity =>
+            {
+                entity.HasKey(e => e.ImpId)
+                    .HasName("PK__Impuesto__B6CB82B883354443");
+
+                entity.Property(e => e.ImpDescripcion)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<ImpuestosPorFactura>(entity =>
+            {
+                entity.HasKey(e => e.IpfId)
+                    .HasName("PK__Impuesto__C85CA5DA073C6646");
+
+                entity.ToTable("ImpuestosPorFactura");
+
+                entity.HasOne(d => d.IpfIdFacturaNavigation)
+                    .WithMany(p => p.ImpuestosPorFacturas)
+                    .HasForeignKey(d => d.IpfIdFactura)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Impuestos__IpfId__00200768");
+
+                entity.HasOne(d => d.IpfIdFactura1)
+                    .WithMany(p => p.ImpuestosPorFacturas)
+                    .HasForeignKey(d => d.IpfIdFactura)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Impuestos__IpfId__01142BA1");
+            });
+
+            modelBuilder.Entity<ImpuestosPorParametro>(entity =>
+            {
+                entity.HasKey(e => e.ImpPid)
+                    .HasName("PK__Impuesto__D0483333B7B298E6");
+
+                entity.ToTable("ImpuestosPorParametro");
+
+                entity.Property(e => e.ImpPid).HasColumnName("ImpPId");
+
+                entity.Property(e => e.ImpPidImpuesto).HasColumnName("ImpPIdImpuesto");
+
+                entity.Property(e => e.ImpPidParametroGlobal).HasColumnName("ImpPIdParametroGlobal");
+
+                entity.HasOne(d => d.ImpPidImpuestoNavigation)
+                    .WithMany(p => p.ImpuestosPorParametros)
+                    .HasForeignKey(d => d.ImpPidImpuesto)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Impuestos__ImpPI__3587F3E0");
+
+                entity.HasOne(d => d.ImpPidParametroGlobalNavigation)
+                    .WithMany(p => p.ImpuestosPorParametros)
+                    .HasForeignKey(d => d.ImpPidParametroGlobal)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Impuestos__ImpPI__3493CFA7");
+            });
+
+            modelBuilder.Entity<Moneda>(entity =>
             {
                 entity.HasKey(e => e.MndId)
-                    .HasName("PK__Moneda__D2906950D8649454");
+                    .HasName("PK__Moneda__D290695085B435BE");
 
                 entity.Property(e => e.MndCodigo)
                     .HasMaxLength(10)
@@ -300,7 +365,7 @@ namespace PuraVidaStoreBK.Models.DbContex
             modelBuilder.Entity<MotivosMovimiento>(entity =>
             {
                 entity.HasKey(e => e.MtmId)
-                    .HasName("PK__MotivosM__62D5204F84870B46");
+                    .HasName("PK__MotivosM__62D5204F5664D231");
 
                 entity.Property(e => e.MtmDescripcion)
                     .HasMaxLength(50)
@@ -310,13 +375,13 @@ namespace PuraVidaStoreBK.Models.DbContex
                     .WithMany(p => p.MotivosMovimientos)
                     .HasForeignKey(d => d.MtmIdTipoMovimiento)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__MotivosMo__MtmId__1D7B6025");
+                    .HasConstraintName("FK__MotivosMo__MtmId__03F0984C");
             });
 
             modelBuilder.Entity<Movimiento>(entity =>
             {
                 entity.HasKey(e => e.MvmId)
-                    .HasName("PK__Movimien__D46E0D011FFE982D");
+                    .HasName("PK__Movimien__D46E0D01A0F1C670");
 
                 entity.Property(e => e.MvmFecha).HasColumnType("datetime");
 
@@ -324,31 +389,31 @@ namespace PuraVidaStoreBK.Models.DbContex
                     .WithMany(p => p.Movimientos)
                     .HasForeignKey(d => d.MvmIdBodega)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Movimient__MvmId__214BF109");
+                    .HasConstraintName("FK__Movimient__MvmId__06CD04F7");
 
                 entity.HasOne(d => d.MvmIdMotivoMovimientoNavigation)
                     .WithMany(p => p.Movimientos)
                     .HasForeignKey(d => d.MvmIdMotivoMovimiento)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Movimient__MvmId__1F63A897");
+                    .HasConstraintName("FK__Movimient__MvmId__08B54D69");
 
                 entity.HasOne(d => d.MvmIdProductoNavigation)
                     .WithMany(p => p.Movimientos)
                     .HasForeignKey(d => d.MvmIdProducto)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Movimient__MvmId__1E6F845E");
+                    .HasConstraintName("FK__Movimient__MvmId__07C12930");
 
                 entity.HasOne(d => d.MvmIdUsuarioNavigation)
                     .WithMany(p => p.Movimientos)
                     .HasForeignKey(d => d.MvmIdUsuario)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Movimient__MvmId__2057CCD0");
+                    .HasConstraintName("FK__Movimient__MvmId__05D8E0BE");
             });
 
             modelBuilder.Entity<OtrosCargo>(entity =>
             {
                 entity.HasKey(e => e.OtrId)
-                    .HasName("PK__OtrosCar__91381F33CE238665");
+                    .HasName("PK__OtrosCar__91381F33804EF71B");
 
                 entity.Property(e => e.OtrRazon).HasColumnType("text");
 
@@ -356,19 +421,46 @@ namespace PuraVidaStoreBK.Models.DbContex
                     .WithMany(p => p.OtrosCargos)
                     .HasForeignKey(d => d.OtrIdMoneda)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__OtrosCarg__OtrId__22401542");
+                    .HasConstraintName("FK__OtrosCarg__OtrId__0C85DE4D");
 
                 entity.HasOne(d => d.OtrIdPedidoNavigation)
                     .WithMany(p => p.OtrosCargos)
                     .HasForeignKey(d => d.OtrIdPedido)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__OtrosCarg__OtrId__2334397B");
+                    .HasConstraintName("FK__OtrosCarg__OtrId__0D7A0286");
+            });
+
+            modelBuilder.Entity<ParametrosEmail>(entity =>
+            {
+                entity.HasKey(e => e.PreId)
+                    .HasName("PK__Parametr__7024CEC96F791782");
+
+                entity.ToTable("ParametrosEmail");
+
+                entity.Property(e => e.PreClave)
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.PreHost)
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.PreUser)
+                    .HasMaxLength(250)
+                    .IsUnicode(false)
+                    .HasColumnName("preUser");
+            });
+
+            modelBuilder.Entity<ParametrosGlobales>(entity =>
+            {
+                entity.HasKey(e => e.PrgId)
+                    .HasName("PK__Parametr__76A0837B633626CC");
             });
 
             modelBuilder.Entity<Pedido>(entity =>
             {
                 entity.HasKey(e => e.PddId)
-                    .HasName("PK__Pedido__98F0BE93936BA3F6");
+                    .HasName("PK__Pedido__98F0BE9333C2BD27");
 
                 entity.ToTable("Pedido");
 
@@ -380,25 +472,25 @@ namespace PuraVidaStoreBK.Models.DbContex
                     .WithMany(p => p.Pedidos)
                     .HasForeignKey(d => d.PddEstado)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Pedido__PddEstad__24285DB4");
+                    .HasConstraintName("FK__Pedido__PddEstad__10566F31");
 
                 entity.HasOne(d => d.PddIdUsuarioNavigation)
                     .WithMany(p => p.Pedidos)
                     .HasForeignKey(d => d.PddIdUsuario)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Pedido__PddIdUsu__251C81ED");
+                    .HasConstraintName("FK__Pedido__PddIdUsu__123EB7A3");
 
                 entity.HasOne(d => d.PddProveedorNavigation)
                     .WithMany(p => p.Pedidos)
                     .HasForeignKey(d => d.PddProveedor)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Pedido__PddProve__2610A626");
+                    .HasConstraintName("FK__Pedido__PddProve__14270015");
             });
 
             modelBuilder.Entity<Persona>(entity =>
             {
                 entity.HasKey(e => e.PsrId)
-                    .HasName("PK__Persona__4F16F4C87567EE03");
+                    .HasName("PK__Persona__4F16F4C8F2947BBB");
 
                 entity.ToTable("Persona");
 
@@ -422,7 +514,7 @@ namespace PuraVidaStoreBK.Models.DbContex
             modelBuilder.Entity<Producto>(entity =>
             {
                 entity.HasKey(e => e.PrdId)
-                    .HasName("PK__Producto__7168B164F60755CE");
+                    .HasName("PK__Producto__7168B16493801B50");
 
                 entity.Property(e => e.PdrFoto).IsUnicode(false);
 
@@ -442,13 +534,13 @@ namespace PuraVidaStoreBK.Models.DbContex
                     .WithMany(p => p.Productos)
                     .HasForeignKey(d => d.PrdIdTipoProducto)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Productos__PrdId__2704CA5F");
+                    .HasConstraintName("FK__Productos__PrdId__160F4887");
             });
 
-            modelBuilder.Entity<Proveedore>(entity =>
+            modelBuilder.Entity<Proveedores>(entity =>
             {
                 entity.HasKey(e => e.PvdId)
-                    .HasName("PK__Proveedo__E82C8553DF048A19");
+                    .HasName("PK__Proveedo__E82C8553B662311C");
 
                 entity.Property(e => e.PvdProveedorCorreo)
                     .HasMaxLength(100)
@@ -466,7 +558,7 @@ namespace PuraVidaStoreBK.Models.DbContex
             modelBuilder.Entity<RolUsiario>(entity =>
             {
                 entity.HasKey(e => e.RluId)
-                    .HasName("PK__RolUsiar__812CEDA6983A7D63");
+                    .HasName("PK__RolUsiar__812CEDA6B5573E42");
 
                 entity.ToTable("RolUsiario");
 
@@ -480,7 +572,7 @@ namespace PuraVidaStoreBK.Models.DbContex
             modelBuilder.Entity<TipoMovimiento>(entity =>
             {
                 entity.HasKey(e => e.TpmId)
-                    .HasName("PK__TipoMovi__0637E7B019D7DE63");
+                    .HasName("PK__TipoMovi__0637E7B0A49DEB5C");
 
                 entity.ToTable("TipoMovimiento");
 
@@ -492,7 +584,7 @@ namespace PuraVidaStoreBK.Models.DbContex
             modelBuilder.Entity<TipoProducto>(entity =>
             {
                 entity.HasKey(e => e.TppId)
-                    .HasName("PK__TipoProd__028B0F70D32FC76B");
+                    .HasName("PK__TipoProd__028B0F70B4C98685");
 
                 entity.ToTable("TipoProducto");
 
@@ -504,7 +596,7 @@ namespace PuraVidaStoreBK.Models.DbContex
             modelBuilder.Entity<Trackin>(entity =>
             {
                 entity.HasKey(e => e.TrkId)
-                    .HasName("PK__Trackins__B83DA4B293853C15");
+                    .HasName("PK__Trackins__B83DA4B2BC090FC7");
 
                 entity.Property(e => e.TrKtrackin)
                     .HasMaxLength(300)
@@ -517,42 +609,42 @@ namespace PuraVidaStoreBK.Models.DbContex
                     .WithMany(p => p.Trackins)
                     .HasForeignKey(d => d.TrkEstado)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Trackins__TrkEst__29E1370A");
+                    .HasConstraintName("FK__Trackins__TrkEst__1BC821DD");
 
                 entity.HasOne(d => d.TrkIdPedidoNavigation)
                     .WithMany(p => p.Trackins)
                     .HasForeignKey(d => d.TrkIdPedido)
-                    .HasConstraintName("FK__Trackins__TrkIdP__2AD55B43");
+                    .HasConstraintName("FK__Trackins__TrkIdP__1DB06A4F");
 
                 entity.HasOne(d => d.TrkMonedaNavigation)
                     .WithMany(p => p.Trackins)
                     .HasForeignKey(d => d.TrkMoneda)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Trackins__TrkMon__2BC97F7C");
+                    .HasConstraintName("FK__Trackins__TrkMon__1F98B2C1");
 
                 entity.HasOne(d => d.TrkProveedorNavigation)
                     .WithMany(p => p.Trackins)
                     .HasForeignKey(d => d.TrkProveedor)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Trackins__TrkPro__2CBDA3B5");
+                    .HasConstraintName("FK__Trackins__TrkPro__2180FB33");
             });
 
             modelBuilder.Entity<TrackinsAsociado>(entity =>
             {
                 entity.HasKey(e => e.TraId)
-                    .HasName("PK__Trackins__E6FDEF50059C5F97");
+                    .HasName("PK__Trackins__E6FDEF5077646311");
 
                 entity.HasOne(d => d.TraIdTrackinNavigation)
                     .WithMany(p => p.TrackinsAsociados)
                     .HasForeignKey(d => d.TraIdTrackin)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__TrackinsA__TraId__2DB1C7EE");
+                    .HasConstraintName("FK__TrackinsA__TraId__236943A5");
             });
 
             modelBuilder.Entity<UsuaiosEnvioCorreo>(entity =>
             {
                 entity.HasKey(e => e.UecId)
-                    .HasName("PK__UsuaiosE__2A7A034839D1BB89");
+                    .HasName("PK__UsuaiosE__2A7A03485F4F2E4D");
 
                 entity.Property(e => e.UecId).ValueGeneratedOnAdd();
 
@@ -560,13 +652,13 @@ namespace PuraVidaStoreBK.Models.DbContex
                     .WithOne(p => p.UsuaiosEnvioCorreo)
                     .HasForeignKey<UsuaiosEnvioCorreo>(d => d.UecId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UsuaiosEn__UecId__2F9A1060");
+                    .HasConstraintName("FK__UsuaiosEn__UecId__2739D489");
             });
 
             modelBuilder.Entity<Usuario>(entity =>
             {
                 entity.HasKey(e => e.UsrId)
-                    .HasName("PK__Usuarios__6A1E3D48CEFF182B");
+                    .HasName("PK__Usuarios__6A1E3D489F451843");
 
                 entity.Property(e => e.UsrId).HasColumnName("UsrID");
 
@@ -584,13 +676,13 @@ namespace PuraVidaStoreBK.Models.DbContex
                     .WithMany(p => p.Usuarios)
                     .HasForeignKey(d => d.UsrIdPersona)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Usuarios__UsrIdP__29572725");
+                    .HasConstraintName("FK__Usuarios__UsrIdP__29221CFB");
 
                 entity.HasOne(d => d.UsrIdRolNavigation)
                     .WithMany(p => p.Usuarios)
                     .HasForeignKey(d => d.UsrIdRol)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Usuarios__UsrIdR__267ABA7A");
+                    .HasConstraintName("FK__Usuarios__UsrIdR__2B0A656D");
             });
 
             OnModelCreatingPartial(modelBuilder);

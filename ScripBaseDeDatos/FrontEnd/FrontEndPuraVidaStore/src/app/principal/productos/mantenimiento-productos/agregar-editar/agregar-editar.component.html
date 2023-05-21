@@ -1,135 +1,192 @@
 <form [formGroup]="productoForm" (ngSubmit)="guardar()">
-    <div class="field grid">
-        <h3>Nombre del producto</h3>
+  <div class="field grid">
+    <h3>Nombre del producto</h3>
+    <div class="p-inputgroup">
+      <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+      <input
+        type="text"
+        id="NombreProducto"
+        formControlName="NombreProducto"
+        pInputText
+        placeholder="Nombre del producto"
+      />
+    </div>
+    {{ productoEditarAgregar.prdCodigo }}
+    <span
+      *ngIf="
+        productoForm.controls.NombreProducto.invalid &&
+        productoForm.controls.NombreProducto.touched
+      "
+      class="error"
+      >Campo requerido</span
+    >
+  </div>
+
+  <!-- ?Seegunda linea-->
+  <h3>Precios</h3>
+  <div class="flied grid">
+    <!--! este formato va en una sola linea-->
+    <div class="formgroup-inline">
+      <div class="field">
         <div class="p-inputgroup">
-            <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
-            <input type="text" id="NombreProducto" formControlName="NombreProducto" pInputText
-                placeholder="Nombre del producto">
+          <span class="p-inputgroup-addon"
+            ><i class="pi pi-tags" style="line-height: 1.25"></i
+          ></span>
+          <span class="p-inputgroup-addon"
+            ><i class="pi pi-shopping-cart" style="line-height: 1.25"></i
+          ></span>
+          <input
+            type="number"
+            id="prcioVentaMinorista"
+            formControlName="prcioVentaMinorista"
+            pInputText
+            placeholder="Precio venta"
+          />
+          <span class="p-inputgroup-addon">¢</span>
         </div>
-        {{productoEditarAgregar.prdCodigo}}
-        <span *ngIf="productoForm.controls.NombreProducto.invalid && productoForm.controls.NombreProducto.touched"
-            class="error">Campo requerido</span>
+        <span> Precio de venta regular</span>
+        <span
+          *ngIf="
+            productoForm.controls.prcioVentaMinorista.invalid &&
+            productoForm.controls.prcioVentaMinorista.touched
+          "
+          class="error"
+          >Campo requerido</span
+        >
+      </div>
 
+      <div class="field">
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon"
+            ><i class="pi pi-tags" style="line-height: 1.25"></i
+          ></span>
+          <span class="p-inputgroup-addon"
+            ><i class="pi pi-shopping-cart" style="line-height: 1.25"></i
+          ></span>
+          <input
+            type="number"
+            id="PrecioVentaMayorista"
+            formControlName="PrecioVentaMayorista"
+            pInputText
+            placeholder="precio venta mayorista"
+          />
+          <span class="p-inputgroup-addon">¢</span>
+        </div>
+        <span> Precio de venta mayoristas</span>
+      </div>
+    </div>
+  </div>
+
+  <!--? tercera linea-->
+  <div class="field grid">
+    <div class="formgroup-inline">
+      <div class="field">
+        <div class="p-inputgroup">
+          <h3>Código proveedor</h3>
+        </div>
+      </div>
+      <div class="field">
+        <div class="p-inputgroup">
+          <input
+            type="text"
+            id="CodigoProveedor"
+            formControlName="CodigoProveedor"
+            pInputText
+            placeholder="Código proveedor"
+          />
+        </div>
+      </div>
     </div>
 
-    <!-- ?Seegunda linea-->
-    <h3> Precios</h3>
-    <div class="flied grid">
-
-        <!--! este formato va en una sola linea-->
-        <div class="formgroup-inline">
-
-            <div class="field">
-                <div class="p-inputgroup">
-                    <span class="p-inputgroup-addon"><i class="pi pi-tags" style="line-height: 1.25;"></i></span>
-                    <span class="p-inputgroup-addon"><i class="pi pi-shopping-cart"
-                            style="line-height: 1.25;"></i></span>
-                    <input type="number" id="prcioVentaMinorista" formControlName="prcioVentaMinorista" pInputText
-                        placeholder="Precio venta">
-                    <span class="p-inputgroup-addon">¢</span>
-                </div>
-                <span> Precio de venta Mayorista</span>
-                <span
-                    *ngIf="productoForm.controls.prcioVentaMinorista.invalid && productoForm.controls.prcioVentaMinorista.touched"
-                    class="error">Campo requerido</span>
-            </div>
-
-            <div class="field">
-                <div class="p-inputgroup">
-                    <span class="p-inputgroup-addon"><i class="pi pi-tags" style="line-height: 1.25;"></i></span>
-                    <span class="p-inputgroup-addon"><i class="pi pi-shopping-cart"
-                            style="line-height: 1.25;"></i></span>
-                    <input type="number" id="PrecioVentaMayorista" formControlName="PrecioVentaMayorista" pInputText
-                        placeholder="precio venta mayorista">
-                    <span class="p-inputgroup-addon">¢</span>
-                </div>
-                <span> Precio de venta minorista</span>
-            </div>
-        </div>
-
+    <div class="field">
+      <div class="p-inputgroup">
+        <p-inputNumber
+          mode="decimal"
+          [showButtons]="true"
+          inputId="minmax-buttons"
+          [min]="0"
+          id="UnidadesMinimas"
+          formControlName="UnidadesMinimas"
+          placeholder="Unidades mínimas"
+        >
+        </p-inputNumber>
+      </div>
+      <span>Unidades mínimas</span>
     </div>
 
-    <!--? tercera linea-->
-    <div class="field grid">
-
-        <div class="formgroup-inline">
-            <div class="field">
-                <div class="p-inputgroup">
-                    <h3>Código proveedor</h3>
-                </div>
-            </div>
-            <div class="field">
-                <div class="p-inputgroup">
-                    <input type="text" id="CodigoProveedor" formControlName="CodigoProveedor" pInputText
-                        placeholder="Código proveedor" />
-                </div>
-            </div>
-        </div>
-
-        <div class="field">
-            <div class="p-inputgroup">
-                <p-inputNumber mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0"
-                    id="UnidadesMinimas" formControlName="UnidadesMinimas" placeholder="Unidades mínimas">
-                </p-inputNumber>
-            </div>
-            <span>Unidades mínimas</span>
-        </div>
-
-        <div class="field mx-3">
-            <p-dropdown [options]="listaTipoProductos" optionLabel="tppDescripcion" [filter]="true"
-                filterBy="tppDescripcion" [showClear]="true" optionValue="tppId" placeholder="Tipo de producto"
-                id="IdTipoProducto" formControlName="IdTipoProducto">
-            </p-dropdown>
-        </div>
-
+    <div class="field mx-3">
+      <p-dropdown
+        [options]="listaTipoProductos"
+        optionLabel="tppDescripcion"
+        [filter]="true"
+        filterBy="tppDescripcion"
+        [showClear]="true"
+        optionValue="tppId"
+        placeholder="Tipo de producto"
+        id="IdTipoProducto"
+        formControlName="IdTipoProducto"
+      >
+      </p-dropdown>
     </div>
+  </div>
 
-    <div class="field" *ngIf="!HayImagen">
-        <h2>Foto</h2>
-        <p-fileUpload chooseLabel="Subir" chooseIcon="pi pi-upload" name="myfile[]" accept="image/*" [auto]="true"
-            (onSelect)="archivo($event)" (onRemove)="eliminarImagen()">
+  <div class="field" *ngIf="!HayImagen">
+    <h2>Foto</h2>
+    <p-fileUpload
+      chooseLabel="Subir"
+      chooseIcon="pi pi-upload"
+      name="myfile[]"
+      accept="image/*"
+      [auto]="true"
+      (onSelect)="archivo($event)"
+      (onRemove)="eliminarImagen()"
+    >
+    </p-fileUpload>
+  </div>
 
-        </p-fileUpload>
-    </div>
-
-    <div class="flied grid">
-        <div class="formgroup-inline">
+  <div class="flied grid">
+    <div class="formgroup-inline">
+      <div class="field"></div>
+      <div class="field" *ngIf="HayImagen">
+        <div
+          class="flex align-items-stretch flex-wrap card-container green-container"
+          style="min-height: 200px"
+        >
+          <div
+            class="flex align-items-center justify-content-center"
+            style="min-width: 200px; min-height: 50px"
+          >
+            <img [src]="imagen" class="img" />
+          </div>
+          <div
+            class="align-self-center flex align-items-center justify-content-center"
+          >
             <div class="field">
-
+              <div class="field mt-2">
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  label="Eliminar Imagen"
+                  class="p-button-danger"
+                  (click)="eliminarImagen()"
+                  [disabled]="!HayImagen"
+                ></button>
+              </div>
             </div>
-            <div class="field" *ngIf="HayImagen">
-
-                <div class="flex align-items-stretch flex-wrap card-container green-container"
-                    style="min-height: 200px">
-                    <div class="flex align-items-center justify-content-center "
-                        style="min-width: 200px; min-height: 50px">
-                        <img [src]="imagen" class="img">
-
-                    </div>
-                    <div class="align-self-center flex align-items-center justify-content-center">
-                     
-
-                        <div class="field">
-
-                            <div class="field mt-2">
-                            
-                                <button pButton pRipple type="button" label="Eliminar Imagen" class="p-button-danger" (click)="eliminarImagen()" [disabled]="!HayImagen"></button>
-                            </div>
-                        </div>
-                      
-                       
-                    </div>
-                </div>
-
-            </div>
+          </div>
         </div>
-
+      </div>
     </div>
+  </div>
 
-    <button pButton pRipple type="submit" label="Guardar" [disabled]="productoForm.invalid"
-        class="p-button-success"></button>
-    <!--? Prevo Imagen-->
-
-
-
+  <button
+    pButton
+    pRipple
+    type="submit"
+    label="Guardar"
+    [disabled]="productoForm.invalid"
+    class="p-button-success"
+  ></button>
+  <!--? Prevo Imagen-->
 </form>

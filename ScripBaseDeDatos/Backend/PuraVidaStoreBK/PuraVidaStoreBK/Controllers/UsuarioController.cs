@@ -130,7 +130,7 @@ namespace PuraVidaStoreBK.Controllers
                 if (!HuboError) 
                 {
                    await _persona.EditarPersona(PersonaIngreso);
-                    _usuario.EditarUsuario(UsuarioIngreso, UsuarioParametro.UsrUser);
+                    _usuario.EditarUsuario(UsuarioIngreso, UsuarioParametro.Clave);
                    
                 }
 

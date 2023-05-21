@@ -39,8 +39,7 @@ export class MovimientosService {
   SugerenciasMotivoMovimientos(
     buscador: string
   ): Observable<MotivoMovimientoModel[]> {
-    const params = new HttpParams()
-      .set('motivos', buscador);
+    const params = new HttpParams().set('motivos', buscador);
     return this.http.get<MotivoMovimientoModel[]>(
       `${this.baseUrl}Movimientos/ObtenerMotivosPorDescripcion`,
       { params }
@@ -62,10 +61,9 @@ export class MovimientosService {
     );
   }
 
-
   GuardarMovimiento(
     AjusteAIngresar: InventariosModel,
-    Motivo:number
+    Motivo: number
   ): Observable<InventariosModel> {
     const params = new HttpParams()
       .set('IdBodega', activo.bodegaIngreso.bdgId)
@@ -78,8 +76,6 @@ export class MovimientosService {
       { params }
     );
   }
-
-
 
   GuardarMotivoMovimiento(
     MotivoMovimiento: MotivoMovimientoModel

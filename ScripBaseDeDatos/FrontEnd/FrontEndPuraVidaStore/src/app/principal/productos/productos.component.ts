@@ -40,7 +40,7 @@ export class ProductosComponent implements OnInit {
       },
       {
 
-        label: 'Consultar producta',
+        label: 'Consultar producto',
         icon: 'pi pi-pw pi-file',
         routerLink: 'consulta-producto',
       },
