@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
 using PuraVidaStoreBK.ExecQuerys.Interfaces;
-using PuraVidaStoreBK.Models;
 using PuraVidaStoreBK.Models.DbContex;
 using Serilog;
 
