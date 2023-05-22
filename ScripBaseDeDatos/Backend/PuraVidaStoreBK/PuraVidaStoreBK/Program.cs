@@ -73,10 +73,23 @@ builder.Services.AddHttpClient(Options.DefaultName)
 //AutoMapper
 builder.Services.AddAutoMapper(typeof(Program));
 
-var conexcion = builder.Configuration.GetConnectionString("sqlServer");
+//Serilog
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("C:\\_LogsPuraVidaStore\\ApiLog-.txt", rollingInterval: RollingInterval.Day)
+     .CreateLogger();
 
 //dbcontex
-Estaticas.SqlServerConexcion = builder.Configuration.GetConnectionString("sqlServer");
+var configuracion = builder.Configuration;
+Estaticas.SqlServerConexcion = configuracion.GetConnectionString("sqlServer");
+Log.Information(Estaticas.SqlServerConexcion);
+builder.Services.AddDbContext<PuraVidaStoreContext>(options =>
+{
+    options.UseSqlServer(configuracion.GetConnectionString("sqlServer"), sqlServerOptions =>
+    {
+       // sqlServerOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+    });
+});
 
 #region Inyeccion de dependencias
 builder.Services.AddTransient<IDataBase, DataBase>();
@@ -86,7 +99,7 @@ builder.Services.AddTransient<IMayoristaQuery, MayoristaQuery>();
 builder.Services.AddTransient<IPersonaQuery, PersonaQuery>();
 builder.Services.AddTransient<IProductoQuery, ProductoQuery>();
 builder.Services.AddTransient<IUsuariosQuerys,UsuariosQuerys>();
-builder.Services.AddTransient<IRolQuery, RolesQuerys>();
+builder.Services.AddTransient<IRolesQuerys, RolesQuerys>();
 builder.Services.AddTransient<ITipoProductoQuery, TipoProductoQuery>();
 builder.Services.AddTransient<IVentasQuery, VentasQuery>();
 builder.Services.AddTransient<ICorreoQuery, CorreoQuery>();
@@ -100,12 +113,7 @@ builder.Services.AddTransient<IEnvioCorreo, EnvioCorreo>();
 
 #endregion
 
-//Serilog
-Log.Logger = new LoggerConfiguration()
-    .WriteTo.Console()
-    .WriteTo.Seq(builder.Configuration["Serilog:seq"])
-    .WriteTo.File("C:\\_LogsPuraVidaStore\\ApiLog-.txt", rollingInterval:RollingInterval.Day)
-     .CreateLogger();
+
 
 builder.Services.AddHealthChecks();
 

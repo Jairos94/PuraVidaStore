@@ -7,20 +7,25 @@ namespace PuraVidaStoreBK.ExecQuerys
 {
     public class MayoristaQuery : IMayoristaQuery
     {
+        private readonly PuraVidaStoreContext dbContex;
+
+        public MayoristaQuery(PuraVidaStoreContext _dbContex)
+        {
+            dbContex = _dbContex;
+        }
         public async Task<ClientesMayorista> buscarClientePorCedulaOId(string buscador)
         {
 			
             var Cliente = new ClientesMayorista();
 			try
 			{
-				using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
-				{
+				
 					 
-					Cliente = await db.ClientesMayoristas
+					Cliente = await dbContex.ClientesMayoristas
 						.Where(x => x.ClmId.ToString() == buscador || x.ClmIdPersonaNavigation.PsrIdentificacion == buscador)
 						.Include(x=>x.ClmIdPersonaNavigation)
 						.FirstOrDefaultAsync();
-				}
+				
 			}
 			catch (Exception ex)
 			{
@@ -34,32 +39,31 @@ namespace PuraVidaStoreBK.ExecQuerys
         {
 			try
 			{
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
-                {
-					var consultaPersona = await db.Personas.FindAsync(cliente.ClmIdPersonaNavigation.PsrId);
+                
+					var consultaPersona = await dbContex.Personas.FindAsync(cliente.ClmIdPersonaNavigation.PsrId);
 					if (consultaPersona==null) 
 					{
-						db.Personas.Add(cliente.ClmIdPersonaNavigation);
+                    dbContex.Personas.Add(cliente.ClmIdPersonaNavigation);
 					}
 					else
 					{
-						db.Personas.Update(cliente.ClmIdPersonaNavigation);
+                    dbContex.Personas.Update(cliente.ClmIdPersonaNavigation);
 					}
-					await db.SaveChangesAsync();
+					await dbContex.SaveChangesAsync();
 
 					cliente.ClmIdPersona = cliente.ClmIdPersonaNavigation.PsrId;
 
 					if (cliente.ClmId>0) 
 					{
-						db.ClientesMayoristas.Update(cliente);
+						dbContex.ClientesMayoristas.Update(cliente);
 					}
 					else
 					{
-                        db.ClientesMayoristas.Add(cliente);
+                        dbContex.ClientesMayoristas.Add(cliente);
                     }
-                   await db.SaveChangesAsync();
+                   await dbContex.SaveChangesAsync();
 					
-					var ultimoHistorial = await db.HistorialClienteMayorista
+					var ultimoHistorial = await dbContex.HistorialClienteMayorista
 						                  .Where(x=>x.HcmIdCliente==cliente.ClmId)
 										  .OrderByDescending(x=>x.HcmFechaActualizacion)
 										  .FirstAsync();
@@ -74,12 +78,12 @@ namespace PuraVidaStoreBK.ExecQuerys
 							HcmIdCliente = cliente.ClmId
 						};
 
-						db.HistorialClienteMayorista.Add(nuevoRegistroHistorial);
-						await db.SaveChangesAsync();
+						dbContex.HistorialClienteMayorista.Add(nuevoRegistroHistorial);
+						await dbContex.SaveChangesAsync();
 					}
 
 					return cliente;
-                }
+                
             }
 			catch (Exception ex)
 			{

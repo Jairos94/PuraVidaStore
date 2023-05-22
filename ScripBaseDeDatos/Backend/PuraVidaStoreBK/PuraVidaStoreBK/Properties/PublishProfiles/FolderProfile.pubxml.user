@@ -4,8 +4,9 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 -->
 <Project>
   <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
     <_PublishTargetUrl>C:\Users\jairo\OneDrive\Escritorio\PuraVidaStore\Publicacion\Api</_PublishTargetUrl>
-    <History>True|2023-03-15T02:38:53.6110171Z;True|2023-03-14T17:45:06.4174713-06:00;</History>
+    <History>True|2023-05-21T23:36:35.3179171Z;True|2023-05-21T17:33:27.6668248-06:00;True|2023-05-21T17:28:25.6519902-06:00;True|2023-05-21T16:41:00.1594910-06:00;True|2023-05-21T16:32:26.2975092-06:00;True|2023-05-21T16:04:25.3177476-06:00;True|2023-05-21T15:49:10.7470012-06:00;True|2023-05-21T15:37:05.6897786-06:00;True|2023-05-21T15:27:10.3495364-06:00;True|2023-05-21T15:22:53.7751190-06:00;True|2023-05-21T15:17:21.2215467-06:00;</History>
     <LastFailureDetails />
   </PropertyGroup>
 </Project>

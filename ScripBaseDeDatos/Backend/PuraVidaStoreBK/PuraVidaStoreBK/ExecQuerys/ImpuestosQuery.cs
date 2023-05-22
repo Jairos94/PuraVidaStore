@@ -7,23 +7,27 @@ namespace PuraVidaStoreBK.ExecQuerys
 {
     public class ImpuestosQuery : IImpuestosQuery
     {
+        private readonly PuraVidaStoreContext dbContex;
+
+        public ImpuestosQuery(PuraVidaStoreContext _dbContex)
+        {
+            dbContex = _dbContex;
+        }
         public async Task<Impuesto> GuardarImpuesto(Impuesto impuesto)
         {
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
-                {
+                
                     if (impuesto.ImpId > 0) 
                     {
-                        db.Impuestos.Update(impuesto);
+                    dbContex.Impuestos.Update(impuesto);
                     }
                     else 
                     {
-                        db.Add(impuesto);
+                        dbContex.Add(impuesto);
                     }
-                   await db.SaveChangesAsync();
+                   await dbContex.SaveChangesAsync();
                     return impuesto;
-                }
             }
             catch (Exception ex)
             {
@@ -37,13 +41,11 @@ namespace PuraVidaStoreBK.ExecQuerys
         {
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
-                {
-                    var retorno =await  db.Impuestos.Where(x=>x.ImpDescripcion.Contains(descripcion) && x.ImpActivo == true ||
+                    var retorno =await dbContex.Impuestos.Where(x=>x.ImpDescripcion.Contains(descripcion) && x.ImpActivo == true ||
                                                               x.ImpId.ToString().Contains(descripcion) && x.ImpActivo == true ||
                                                               x.ImpActivo == true && x.ImpPorcentaje.ToString().Contains(descripcion)).ToListAsync() ;
                     return retorno;
-                }
+                
             }
             catch (Exception ex)
             {
@@ -58,11 +60,9 @@ namespace PuraVidaStoreBK.ExecQuerys
         {
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
-                {
-                    var retorno = await db.Impuestos.FindAsync(id);
+                
+                    var retorno = await dbContex.Impuestos.FindAsync(id);
                     return retorno;
-                }
             }
             catch (Exception ex)
             {
@@ -75,14 +75,13 @@ namespace PuraVidaStoreBK.ExecQuerys
         {
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
-                {
-                    var listaRetorno = await db.Impuestos
+                
+                    var listaRetorno = await dbContex.Impuestos
                         .Where(x => x.ImpActivo == true)
                         .ToListAsync();
 
                     return listaRetorno;
-                }
+                
             }
             catch (Exception ex)
             {

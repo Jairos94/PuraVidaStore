@@ -1,6 +1,5 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using XSystem.Security.Cryptography;
 using ICryptoTransform = System.Security.Cryptography.ICryptoTransform;
 
 namespace PuraVidaStoreBK.Utilitarios
