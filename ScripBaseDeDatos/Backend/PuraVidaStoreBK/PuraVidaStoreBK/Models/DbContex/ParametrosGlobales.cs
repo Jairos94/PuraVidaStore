@@ -16,6 +16,7 @@ namespace PuraVidaStoreBK.Models.DbContex
         public bool PrgHabilitarImpuestos { get; set; }
         public bool PrgImpustosIncluidos { get; set; }
 
+        public virtual ParametrosEmail? ParametrosEmail { get; set; }
         public virtual ICollection<ImpuestosPorParametro> ImpuestosPorParametros { get; set; }
     }
 }

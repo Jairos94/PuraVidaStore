@@ -11,5 +11,8 @@ namespace PuraVidaStoreBK.Models.DbContex
         public string PreUser { get; set; } = null!;
         public string PreClave { get; set; } = null!;
         public bool PreSsl { get; set; }
+        public int? PreIdParametroGlobal { get; set; }
+
+        public virtual ParametrosGlobales Pre { get; set; } = null!;
     }
 }

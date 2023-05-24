@@ -28,7 +28,15 @@ namespace PuraVidaStoreBK.Controllers
             try
             {
                 var retorno = _mapper.Map<ClienteMayoristaDTO>(await _mayorista.buscarClientePorCedulaOId(buscador));
-                return Ok(retorno);
+                if (retorno != null)
+                {
+                    return Ok(retorno);
+                }
+                else 
+                {
+                    return NoContent();
+                }
+               
             }
             catch (Exception)
             {

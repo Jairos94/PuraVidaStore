@@ -134,7 +134,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error(ex.Message);
                 return false;
             }
 
@@ -201,20 +201,17 @@ namespace PuraVidaStoreBK.ExecQuerys
         public async Task< Usuario> UsuarioPorUsuario(string usuario) 
         {
             var usuarioRetorno = new Usuario();
-            
-               
-                    usuarioRetorno = await dbContex.Usuarios.Where(x => x.UsrUser == usuario).FirstOrDefaultAsync();
-                
-            
-           
+            usuarioRetorno = await dbContex.Usuarios.Where(x => x.UsrUser == usuario).FirstOrDefaultAsync();
             return usuarioRetorno;
         }
 
         public async Task<Usuario> UsuarioIdPersona(int idPersona) 
         {
-            
-                return await dbContex.Usuarios.Where(x => x.UsrIdPersona == idPersona).FirstAsync();
-            
+            var usuario = new Usuario();
+            usuario = await dbContex.Usuarios.Where(x => x.UsrIdPersona == idPersona).FirstOrDefaultAsync();
+            return usuario;
+
+
         }
 
    
