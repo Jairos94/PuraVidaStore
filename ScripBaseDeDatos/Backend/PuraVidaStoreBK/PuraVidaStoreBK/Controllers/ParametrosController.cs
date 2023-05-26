@@ -57,7 +57,7 @@ namespace PuraVidaStoreBK.Controllers
         }
 
         // GET api/<ParametrosController>/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}"),Authorize]
         public string Get(int id)
         {
             return "value";

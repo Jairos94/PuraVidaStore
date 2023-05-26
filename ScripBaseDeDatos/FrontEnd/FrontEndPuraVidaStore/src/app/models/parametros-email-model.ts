@@ -8,5 +8,5 @@ export interface ParametrosEmailModel {
   preClave: string;
   preSsl: boolean;
   preIdParametroGlobal: number | null;
-  pre: ParametrosGlobalesModel;
+  pre: ParametrosGlobalesModel | null;
 }
