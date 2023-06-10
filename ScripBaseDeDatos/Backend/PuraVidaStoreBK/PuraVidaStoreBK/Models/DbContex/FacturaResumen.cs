@@ -5,9 +5,9 @@ namespace PuraVidaStoreBK.Models.DbContex;
 
 public partial class FacturaResumen
 {
-    public int FtrId { get; set; }
+    public long FtrId { get; set; }
 
-    public int FtrFactura { get; set; }
+    public long FtrFactura { get; set; }
 
     public double FtrMontoTotal { get; set; }
 

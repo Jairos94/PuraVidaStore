@@ -5,9 +5,9 @@ namespace PuraVidaStoreBK.Models.DbContex;
 
 public partial class Movimiento
 {
-    public int MvmId { get; set; }
+    public long MvmId { get; set; }
 
-    public int MvmIdProducto { get; set; }
+    public long MvmIdProducto { get; set; }
 
     public int MvmCantidad { get; set; }
 

@@ -5,9 +5,9 @@ namespace PuraVidaStoreBK.Models.DbContex;
 
 public partial class ClientesMayorista
 {
-    public int ClmId { get; set; }
+    public long ClmId { get; set; }
 
-    public int ClmIdPersona { get; set; }
+    public long ClmIdPersona { get; set; }
 
     public DateTime ClmFechaCreacion { get; set; }
 

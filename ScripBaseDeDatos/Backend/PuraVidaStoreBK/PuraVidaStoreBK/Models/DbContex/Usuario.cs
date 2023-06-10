@@ -15,7 +15,7 @@ public partial class Usuario
 
     public int UsrIdRol { get; set; }
 
-    public int UsrIdPersona { get; set; }
+    public long UsrIdPersona { get; set; }
 
     public bool? UsrActivo { get; set; }
 

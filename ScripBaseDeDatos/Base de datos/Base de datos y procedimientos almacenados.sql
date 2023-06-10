@@ -24,8 +24,8 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[ClientesMayoristas](
-	[ClmId] [int] IDENTITY(1,1) NOT NULL,
-	[ClmIdPersona] [int] NOT NULL,
+	[ClmId] [bigint] IDENTITY(1,1) NOT NULL,
+	[ClmIdPersona] [bigint] NOT NULL,
 	[ClmFechaCreacion] [datetime] NOT NULL,
 	[ClmFechaVencimiento] [datetime] NOT NULL,
 	[ClmCorreo] [varchar](100) NULL,
@@ -42,9 +42,9 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[DetalleFactura](
-	[DtfId] [int] IDENTITY(1,1) NOT NULL,
-	[DtfIdProducto] [int] NOT NULL,
-	[DtfIdFactura] [int] NOT NULL,
+	[DtfId] [bigint] IDENTITY(1,1) NOT NULL,
+	[DtfIdProducto] [bigint] NOT NULL,
+	[DtfIdFactura] [bigint] NOT NULL,
 	[DtfPrecio] [float] NOT NULL,
 	[DtfDescuento] [int] NULL,
 	[DtfCantidad] [int] NULL,
@@ -60,9 +60,9 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[DetalleProductoPedido](
-	[DppId] [int] IDENTITY(1,1) NOT NULL,
-	[DppIdProducto] [int] NOT NULL,
-	[DppIdPedido] [int] NOT NULL,
+	[DppId] [bigint] IDENTITY(1,1) NOT NULL,
+	[DppIdProducto] [bigint] NOT NULL,
+	[DppIdPedido] [bigint] NOT NULL,
 	[DppIdMoneda] [int] NOT NULL,
 	[DppPesoUnitario] [float] NULL,
 	[DppValorMoneda] [float] NULL,
@@ -108,10 +108,10 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Factura](
-	[FtrId] [int] IDENTITY(1,1) NOT NULL,
+	[FtrId] [bigint] IDENTITY(1,1) NOT NULL,
 	[FtrFecha] [datetime] NOT NULL,
 	[FtrIdUsuario] [int] NOT NULL,
-	[FtrMayorista] [int] NULL,
+	[FtrMayorista] [bigint] NULL,
 	[FtrEstatusId] [int] NOT NULL,
 	[FtrBodega] [int] NOT NULL,
 	[FtrFormaPago] [int] NOT NULL,
@@ -129,8 +129,8 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[FacturaResumen](
-	[FtrId] [int] IDENTITY(1,1) NOT NULL,
-	[FtrFactura] [int] NOT NULL,
+	[FtrId] [bigint] IDENTITY(1,1) NOT NULL,
+	[FtrFactura] [bigint] NOT NULL,
 	[FtrMontoTotal] [float] NOT NULL,
 	[FtrMontoPagado] [float] NULL,
 	[FtrCambio] [float] NULL,
@@ -160,8 +160,8 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[HistorialClienteMayorista](
-	[HcmId] [int] IDENTITY(1,1) NOT NULL,
-	[HcmIdCliente] [int] NOT NULL,
+	[HcmId] [bigint] IDENTITY(1,1) NOT NULL,
+	[HcmIdCliente] [bigint] NOT NULL,
 	[HcmFechaVencimiento] [datetime] NOT NULL,
 	[HcmFechaActualizacion] [datetime] NOT NULL,
 PRIMARY KEY CLUSTERED 
@@ -176,9 +176,9 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[HistorialFacturasAnuladas](
-	[HlfId] [int] IDENTITY(1,1) NOT NULL,
+	[HlfId] [bigint] IDENTITY(1,1) NOT NULL,
 	[HlfIdUsuario] [int] NOT NULL,
-	[HlfIdFctura] [int] NOT NULL,
+	[HlfIdFctura] [bigint] NOT NULL,
 	[HlfRazon] [varchar](250) NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
@@ -192,8 +192,8 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[HistorialPrecios](
-	[HlpId] [int] IDENTITY(1,1) NOT NULL,
-	[HlpIdProducto] [int] NOT NULL,
+	[HlpId] [bigint] IDENTITY(1,1) NOT NULL,
+	[HlpIdProducto] [bigint] NOT NULL,
 	[HlpFecha] [datetime] NOT NULL,
 	[HlpIdUsuario] [int] NOT NULL,
 	[HlpPrecioMayorista] [float] NULL,
@@ -228,8 +228,8 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[ImpuestosPorFactura](
-	[IpfId] [int] IDENTITY(1,1) NOT NULL,
-	[IpfIdFactura] [int] NOT NULL,
+	[IpfId] [bigint] IDENTITY(1,1) NOT NULL,
+	[IpfIdFactura] [bigint] NOT NULL,
 	[IpfIdImpuesto] [int] NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
@@ -288,8 +288,8 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Movimientos](
-	[MvmId] [int] IDENTITY(1,1) NOT NULL,
-	[MvmIdProducto] [int] NOT NULL,
+	[MvmId] [bigint] IDENTITY(1,1) NOT NULL,
+	[MvmIdProducto] [bigint] NOT NULL,
 	[MvmCantidad] [int] NOT NULL,
 	[MvmFecha] [datetime] NOT NULL,
 	[MvmIdMotivoMovimiento] [int] NOT NULL,
@@ -309,7 +309,7 @@ GO
 CREATE TABLE [dbo].[OtrosCargos](
 	[OtrId] [int] IDENTITY(1,1) NOT NULL,
 	[OtrIdMoneda] [int] NOT NULL,
-	[OtrIdPedido] [int] NOT NULL,
+	[OtrIdPedido] [bigint] NOT NULL,
 	[OtrValorMoneda] [float] NULL,
 	[OtrCostoMoneda] [float] NULL,
 	[OtrRazon] [text] NOT NULL,
@@ -362,11 +362,11 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Pedido](
-	[PddId] [int] IDENTITY(1,1) NOT NULL,
+	[PddId] [bigint] IDENTITY(1,1) NOT NULL,
 	[PddFecha] [datetime] NOT NULL,
 	[PddIdUsuario] [int] NOT NULL,
 	[PddRazonCancelada] [text] NULL,
-	[PddProveedor] [int] NOT NULL,
+	[PddProveedor] [bigint] NOT NULL,
 	[PddEstado] [int] NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
@@ -380,7 +380,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Persona](
-	[PsrId] [int] IDENTITY(1,1) NOT NULL,
+	[PsrId] [bigint] IDENTITY(1,1) NOT NULL,
 	[PsrIdentificacion] [varchar](30) NOT NULL,
 	[PsrNombre] [varchar](50) NOT NULL,
 	[PsrApellido1] [varchar](50) NOT NULL,
@@ -397,7 +397,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Productos](
-	[PrdId] [int] IDENTITY(1,1) NOT NULL,
+	[PrdId] [bigint] IDENTITY(1,1) NOT NULL,
 	[PrdNombre] [varchar](50) NOT NULL,
 	[PrdPrecioVentaMayorista] [float] NOT NULL,
 	[PrdPrecioVentaMinorista] [float] NOT NULL,
@@ -420,7 +420,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Proveedores](
-	[PvdId] [int] IDENTITY(1,1) NOT NULL,
+	[PvdId] [bigint] IDENTITY(1,1) NOT NULL,
 	[PvdProveedorNmbre] [varchar](100) NOT NULL,
 	[PvdProveedorCorreo] [varchar](100) NULL,
 	[PvdProveedorNumeroTelefono] [varchar](30) NULL,
@@ -480,20 +480,20 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Trackins](
-	[TrkId] [int] IDENTITY(1,1) NOT NULL,
+	[TrkId] [bigint] IDENTITY(1,1) NOT NULL,
 	[TrkFecha] [datetime] NOT NULL,
 	[TrKTrackin] [varchar](300) NOT NULL,
 	[TrkMoneda] [int] NOT NULL,
 	[TrkCostoMoneda] [float] NULL,
 	[TrkValorMoneda] [float] NULL,
-	[TrkIdPedido] [int] NULL,
+	[TrkIdPedido] [bigint] NULL,
 	[TrkPesoProveedor] [float] NULL,
 	[TrkPesoReal] [float] NULL,
 	[TrkMedidaLargoCm] [float] NULL,
 	[TrkMedidaAnchoCm] [float] NULL,
 	[TrkMedidaAlturaCm] [float] NULL,
 	[TrkEstado] [int] NOT NULL,
-	[TrkProveedor] [int] NOT NULL,
+	[TrkProveedor] [bigint] NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[TrkId] ASC
@@ -506,9 +506,9 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[TrackinsAsociados](
-	[TraId] [int] IDENTITY(1,1) NOT NULL,
-	[TraIdTrackin] [int] NOT NULL,
-	[TraIdTrackinPrincial] [int] NOT NULL,
+	[TraId] [bigint] IDENTITY(1,1) NOT NULL,
+	[TraIdTrackin] [bigint] NOT NULL,
+	[TraIdTrackinPrincial] [bigint] NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[TraId] ASC
@@ -540,7 +540,7 @@ CREATE TABLE [dbo].[Usuarios](
 	[UsrPass] [varbinary](8000) NOT NULL,
 	[UsrEmail] [varchar](100) NULL,
 	[UsrIdRol] [int] NOT NULL,
-	[UsrIdPersona] [int] NOT NULL,
+	[UsrIdPersona] [bigint] NOT NULL,
 	[UsrActivo] [bit] NULL,
 PRIMARY KEY CLUSTERED 
 (
@@ -548,255 +548,136 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-ALTER TABLE [dbo].[ClientesMayoristas]  WITH CHECK ADD FOREIGN KEY([ClmIdPersona])
+
+ALTER TABLE [dbo].[ClientesMayoristas]  WITH CHECK ADD FOREIGN KEY([ClmIdPersona])
 REFERENCES [dbo].[Persona] ([PsrId])
 GO
-ALTER TABLE [dbo].[ClientesMayoristas]  WITH CHECK ADD FOREIGN KEY([ClmIdPersona])
-REFERENCES [dbo].[Persona] ([PsrId])
-GO
-ALTER TABLE [dbo].[DetalleFactura]  WITH CHECK ADD FOREIGN KEY([DtfIdProducto])
+ALTER TABLE [dbo].[DetalleFactura]  WITH CHECK ADD FOREIGN KEY([DtfIdProducto])
 REFERENCES [dbo].[Productos] ([PrdId])
 GO
-ALTER TABLE [dbo].[DetalleFactura]  WITH CHECK ADD FOREIGN KEY([DtfIdProducto])
+ALTER TABLE [dbo].[DetalleFactura]  WITH CHECK ADD FOREIGN KEY([DtfIdProducto])
 REFERENCES [dbo].[Factura] ([FtrId])
 GO
-ALTER TABLE [dbo].[DetalleFactura]  WITH CHECK ADD FOREIGN KEY([DtfIdProducto])
+ALTER TABLE [dbo].[DetalleProductoPedido]  WITH CHECK ADD FOREIGN KEY([DppIdProducto])
 REFERENCES [dbo].[Productos] ([PrdId])
 GO
-ALTER TABLE [dbo].[DetalleFactura]  WITH CHECK ADD FOREIGN KEY([DtfIdProducto])
-REFERENCES [dbo].[Factura] ([FtrId])
-GO
-ALTER TABLE [dbo].[DetalleProductoPedido]  WITH CHECK ADD FOREIGN KEY([DppIdProducto])
-REFERENCES [dbo].[Productos] ([PrdId])
-GO
-ALTER TABLE [dbo].[DetalleProductoPedido]  WITH CHECK ADD FOREIGN KEY([DppIdPedido])
+ALTER TABLE [dbo].[DetalleProductoPedido]  WITH CHECK ADD FOREIGN KEY([DppIdPedido])
 REFERENCES [dbo].[Pedido] ([PddId])
 GO
-ALTER TABLE [dbo].[DetalleProductoPedido]  WITH CHECK ADD FOREIGN KEY([DppIdMoneda])
+ALTER TABLE [dbo].[DetalleProductoPedido]  WITH CHECK ADD FOREIGN KEY([DppIdMoneda])
 REFERENCES [dbo].[Moneda] ([MndId])
 GO
-ALTER TABLE [dbo].[DetalleProductoPedido]  WITH CHECK ADD FOREIGN KEY([DppIdProducto])
-REFERENCES [dbo].[Productos] ([PrdId])
-GO
-ALTER TABLE [dbo].[DetalleProductoPedido]  WITH CHECK ADD FOREIGN KEY([DppIdPedido])
-REFERENCES [dbo].[Pedido] ([PddId])
-GO
-ALTER TABLE [dbo].[DetalleProductoPedido]  WITH CHECK ADD FOREIGN KEY([DppIdMoneda])
-REFERENCES [dbo].[Moneda] ([MndId])
-GO
-ALTER TABLE [dbo].[Factura]  WITH CHECK ADD FOREIGN KEY([FtrBodega])
+ALTER TABLE [dbo].[Factura]  WITH CHECK ADD FOREIGN KEY([FtrBodega])
 REFERENCES [dbo].[Bodegas] ([BdgId])
 GO
-ALTER TABLE [dbo].[Factura]  WITH CHECK ADD FOREIGN KEY([FtrBodega])
-REFERENCES [dbo].[Bodegas] ([BdgId])
-GO
-ALTER TABLE [dbo].[Factura]  WITH CHECK ADD FOREIGN KEY([FtrEstatusId])
+ALTER TABLE [dbo].[Factura]  WITH CHECK ADD FOREIGN KEY([FtrEstatusId])
 REFERENCES [dbo].[EstatusFactura] ([EtfId])
 GO
-ALTER TABLE [dbo].[Factura]  WITH CHECK ADD FOREIGN KEY([FtrEstatusId])
-REFERENCES [dbo].[EstatusFactura] ([EtfId])
-GO
-ALTER TABLE [dbo].[Factura]  WITH CHECK ADD FOREIGN KEY([FtrFormaPago])
+ALTER TABLE [dbo].[Factura]  WITH CHECK ADD FOREIGN KEY([FtrFormaPago])
 REFERENCES [dbo].[FormaPago] ([FrpId])
 GO
-ALTER TABLE [dbo].[Factura]  WITH CHECK ADD FOREIGN KEY([FtrFormaPago])
-REFERENCES [dbo].[FormaPago] ([FrpId])
-GO
-ALTER TABLE [dbo].[Factura]  WITH CHECK ADD FOREIGN KEY([FtrIdUsuario])
+ALTER TABLE [dbo].[Factura]  WITH CHECK ADD FOREIGN KEY([FtrIdUsuario])
 REFERENCES [dbo].[Usuarios] ([UsrID])
 GO
-ALTER TABLE [dbo].[Factura]  WITH CHECK ADD FOREIGN KEY([FtrIdUsuario])
+ALTER TABLE [dbo].[Factura]  WITH CHECK ADD FOREIGN KEY([FtrMayorista])
+REFERENCES [dbo].[ClientesMayoristas] ([ClmId])
+GO
+ALTER TABLE [dbo].[FacturaResumen]  WITH CHECK ADD FOREIGN KEY([FtrFactura])
+REFERENCES [dbo].[Factura] ([FtrId])
+GO
+ALTER TABLE [dbo].[HistorialClienteMayorista]  WITH CHECK ADD FOREIGN KEY([HcmIdCliente])
+REFERENCES [dbo].[ClientesMayoristas] ([ClmId])
+GO
+ALTER TABLE [dbo].[HistorialFacturasAnuladas]  WITH CHECK ADD FOREIGN KEY([HlfIdUsuario])
 REFERENCES [dbo].[Usuarios] ([UsrID])
 GO
-ALTER TABLE [dbo].[Factura]  WITH CHECK ADD FOREIGN KEY([FtrMayorista])
-REFERENCES [dbo].[ClientesMayoristas] ([ClmId])
-GO
-ALTER TABLE [dbo].[Factura]  WITH CHECK ADD FOREIGN KEY([FtrMayorista])
-REFERENCES [dbo].[ClientesMayoristas] ([ClmId])
-GO
-ALTER TABLE [dbo].[FacturaResumen]  WITH CHECK ADD FOREIGN KEY([FtrFactura])
+ALTER TABLE [dbo].[HistorialFacturasAnuladas]  WITH CHECK ADD FOREIGN KEY([HlfIdFctura])
 REFERENCES [dbo].[Factura] ([FtrId])
 GO
-ALTER TABLE [dbo].[FacturaResumen]  WITH CHECK ADD FOREIGN KEY([FtrFactura])
-REFERENCES [dbo].[Factura] ([FtrId])
-GO
-ALTER TABLE [dbo].[HistorialClienteMayorista]  WITH CHECK ADD FOREIGN KEY([HcmIdCliente])
-REFERENCES [dbo].[ClientesMayoristas] ([ClmId])
-GO
-ALTER TABLE [dbo].[HistorialClienteMayorista]  WITH CHECK ADD FOREIGN KEY([HcmIdCliente])
-REFERENCES [dbo].[ClientesMayoristas] ([ClmId])
-GO
-ALTER TABLE [dbo].[HistorialFacturasAnuladas]  WITH CHECK ADD FOREIGN KEY([HlfIdUsuario])
-REFERENCES [dbo].[Usuarios] ([UsrID])
-GO
-ALTER TABLE [dbo].[HistorialFacturasAnuladas]  WITH CHECK ADD FOREIGN KEY([HlfIdFctura])
-REFERENCES [dbo].[Factura] ([FtrId])
-GO
-ALTER TABLE [dbo].[HistorialFacturasAnuladas]  WITH CHECK ADD FOREIGN KEY([HlfIdUsuario])
-REFERENCES [dbo].[Usuarios] ([UsrID])
-GO
-ALTER TABLE [dbo].[HistorialFacturasAnuladas]  WITH CHECK ADD FOREIGN KEY([HlfIdFctura])
-REFERENCES [dbo].[Factura] ([FtrId])
-GO
-ALTER TABLE [dbo].[HistorialPrecios]  WITH CHECK ADD FOREIGN KEY([HlpIdProducto])
+ALTER TABLE [dbo].[HistorialPrecios]  WITH CHECK ADD FOREIGN KEY([HlpIdProducto])
 REFERENCES [dbo].[Productos] ([PrdId])
 GO
-ALTER TABLE [dbo].[HistorialPrecios]  WITH CHECK ADD FOREIGN KEY([HlpIdUsuario])
+ALTER TABLE [dbo].[HistorialPrecios]  WITH CHECK ADD FOREIGN KEY([HlpIdUsuario])
 REFERENCES [dbo].[Usuarios] ([UsrID])
 GO
-ALTER TABLE [dbo].[HistorialPrecios]  WITH CHECK ADD FOREIGN KEY([HlpIdProducto])
-REFERENCES [dbo].[Productos] ([PrdId])
-GO
-ALTER TABLE [dbo].[HistorialPrecios]  WITH CHECK ADD FOREIGN KEY([HlpIdUsuario])
-REFERENCES [dbo].[Usuarios] ([UsrID])
-GO
-ALTER TABLE [dbo].[ImpuestosPorFactura]  WITH CHECK ADD FOREIGN KEY([IpfIdFactura])
+ALTER TABLE [dbo].[ImpuestosPorFactura]  WITH CHECK ADD FOREIGN KEY([IpfIdFactura])
 REFERENCES [dbo].[Factura] ([FtrId])
 GO
-ALTER TABLE [dbo].[ImpuestosPorFactura]  WITH CHECK ADD FOREIGN KEY([IpfIdFactura])
+ALTER TABLE [dbo].[ImpuestosPorFactura]  WITH CHECK ADD FOREIGN KEY([IpfIdImpuesto])
 REFERENCES [dbo].[Impuestos] ([ImpId])
 GO
-ALTER TABLE [dbo].[ImpuestosPorParametro]  WITH CHECK ADD FOREIGN KEY([ImpPIdParametroGlobal])
+ALTER TABLE [dbo].[ImpuestosPorParametro]  WITH CHECK ADD FOREIGN KEY([ImpPIdParametroGlobal])
 REFERENCES [dbo].[ParametrosGlobales] ([PrgId])
 GO
-ALTER TABLE [dbo].[ImpuestosPorParametro]  WITH CHECK ADD FOREIGN KEY([ImpPIdImpuesto])
+ALTER TABLE [dbo].[ImpuestosPorParametro]  WITH CHECK ADD FOREIGN KEY([ImpPIdImpuesto])
 REFERENCES [dbo].[Impuestos] ([ImpId])
 GO
-ALTER TABLE [dbo].[MotivosMovimientos]  WITH CHECK ADD FOREIGN KEY([MtmIdTipoMovimiento])
+ALTER TABLE [dbo].[MotivosMovimientos]  WITH CHECK ADD FOREIGN KEY([MtmIdTipoMovimiento])
 REFERENCES [dbo].[TipoMovimiento] ([TpmId])
 GO
-ALTER TABLE [dbo].[MotivosMovimientos]  WITH CHECK ADD FOREIGN KEY([MtmIdTipoMovimiento])
-REFERENCES [dbo].[TipoMovimiento] ([TpmId])
-GO
-ALTER TABLE [dbo].[Movimientos]  WITH CHECK ADD FOREIGN KEY([MvmIdUsuario])
+ALTER TABLE [dbo].[Movimientos]  WITH CHECK ADD FOREIGN KEY([MvmIdUsuario])
 REFERENCES [dbo].[Usuarios] ([UsrID])
 GO
-ALTER TABLE [dbo].[Movimientos]  WITH CHECK ADD FOREIGN KEY([MvmIdBodega])
+ALTER TABLE [dbo].[Movimientos]  WITH CHECK ADD FOREIGN KEY([MvmIdBodega])
 REFERENCES [dbo].[Bodegas] ([BdgId])
 GO
-ALTER TABLE [dbo].[Movimientos]  WITH CHECK ADD FOREIGN KEY([MvmIdProducto])
+ALTER TABLE [dbo].[Movimientos]  WITH CHECK ADD FOREIGN KEY([MvmIdProducto])
 REFERENCES [dbo].[Productos] ([PrdId])
 GO
-ALTER TABLE [dbo].[Movimientos]  WITH CHECK ADD FOREIGN KEY([MvmIdMotivoMovimiento])
+ALTER TABLE [dbo].[Movimientos]  WITH CHECK ADD FOREIGN KEY([MvmIdMotivoMovimiento])
 REFERENCES [dbo].[MotivosMovimientos] ([MtmId])
 GO
-ALTER TABLE [dbo].[Movimientos]  WITH CHECK ADD FOREIGN KEY([MvmIdUsuario])
-REFERENCES [dbo].[Usuarios] ([UsrID])
-GO
-ALTER TABLE [dbo].[Movimientos]  WITH CHECK ADD FOREIGN KEY([MvmIdBodega])
-REFERENCES [dbo].[Bodegas] ([BdgId])
-GO
-ALTER TABLE [dbo].[Movimientos]  WITH CHECK ADD FOREIGN KEY([MvmIdMotivoMovimiento])
-REFERENCES [dbo].[MotivosMovimientos] ([MtmId])
-GO
-ALTER TABLE [dbo].[OtrosCargos]  WITH CHECK ADD FOREIGN KEY([OtrIdMoneda])
+ALTER TABLE [dbo].[OtrosCargos]  WITH CHECK ADD FOREIGN KEY([OtrIdMoneda])
 REFERENCES [dbo].[Moneda] ([MndId])
 GO
-ALTER TABLE [dbo].[OtrosCargos]  WITH CHECK ADD FOREIGN KEY([OtrIdPedido])
+ALTER TABLE [dbo].[OtrosCargos]  WITH CHECK ADD FOREIGN KEY([OtrIdPedido])
 REFERENCES [dbo].[Pedido] ([PddId])
 GO
-ALTER TABLE [dbo].[OtrosCargos]  WITH CHECK ADD FOREIGN KEY([OtrIdMoneda])
-REFERENCES [dbo].[Moneda] ([MndId])
-GO
-ALTER TABLE [dbo].[OtrosCargos]  WITH CHECK ADD FOREIGN KEY([OtrIdPedido])
-REFERENCES [dbo].[Pedido] ([PddId])
-GO
-ALTER TABLE [dbo].[ParametrosEmail]  WITH CHECK ADD FOREIGN KEY([PreId])
+ALTER TABLE [dbo].[ParametrosEmail]  WITH CHECK ADD FOREIGN KEY([PreId])
 REFERENCES [dbo].[ParametrosGlobales] ([PrgId])
 GO
-ALTER TABLE [dbo].[ParametrosGlobales]  WITH CHECK ADD FOREIGN KEY([PrgIdBodega])
+ALTER TABLE [dbo].[ParametrosGlobales]  WITH CHECK ADD FOREIGN KEY([PrgIdBodega])
 REFERENCES [dbo].[Bodegas] ([BdgId])
 GO
-ALTER TABLE [dbo].[Pedido]  WITH CHECK ADD FOREIGN KEY([PddEstado])
+ALTER TABLE [dbo].[Pedido]  WITH CHECK ADD FOREIGN KEY([PddEstado])
 REFERENCES [dbo].[EstadoPedido] ([EtpId])
 GO
-ALTER TABLE [dbo].[Pedido]  WITH CHECK ADD FOREIGN KEY([PddEstado])
-REFERENCES [dbo].[EstadoPedido] ([EtpId])
-GO
-ALTER TABLE [dbo].[Pedido]  WITH CHECK ADD FOREIGN KEY([PddIdUsuario])
+ALTER TABLE [dbo].[Pedido]  WITH CHECK ADD FOREIGN KEY([PddIdUsuario])
 REFERENCES [dbo].[Usuarios] ([UsrID])
 GO
-ALTER TABLE [dbo].[Pedido]  WITH CHECK ADD FOREIGN KEY([PddIdUsuario])
-REFERENCES [dbo].[Usuarios] ([UsrID])
-GO
-ALTER TABLE [dbo].[Pedido]  WITH CHECK ADD FOREIGN KEY([PddProveedor])
+ALTER TABLE [dbo].[Pedido]  WITH CHECK ADD FOREIGN KEY([PddProveedor])
 REFERENCES [dbo].[Proveedores] ([PvdId])
 GO
-ALTER TABLE [dbo].[Pedido]  WITH CHECK ADD FOREIGN KEY([PddProveedor])
-REFERENCES [dbo].[Proveedores] ([PvdId])
-GO
-ALTER TABLE [dbo].[Productos]  WITH CHECK ADD FOREIGN KEY([PrdIdTipoProducto])
+ALTER TABLE [dbo].[Productos]  WITH CHECK ADD FOREIGN KEY([PrdIdTipoProducto])
 REFERENCES [dbo].[TipoProducto] ([TppId])
 GO
-ALTER TABLE [dbo].[Productos]  WITH CHECK ADD FOREIGN KEY([PrdIdTipoProducto])
-REFERENCES [dbo].[TipoProducto] ([TppId])
-GO
-ALTER TABLE [dbo].[Productos]  WITH CHECK ADD FOREIGN KEY([PrdIdTipoProducto])
-REFERENCES [dbo].[TipoProducto] ([TppId])
-GO
-ALTER TABLE [dbo].[Productos]  WITH CHECK ADD FOREIGN KEY([PrdIdTipoProducto])
-REFERENCES [dbo].[TipoProducto] ([TppId])
-GO
-ALTER TABLE [dbo].[Productos]  WITH CHECK ADD FOREIGN KEY([PrdIdTipoProducto])
-REFERENCES [dbo].[TipoProducto] ([TppId])
-GO
-ALTER TABLE [dbo].[Productos]  WITH CHECK ADD FOREIGN KEY([PrdIdTipoProducto])
-REFERENCES [dbo].[TipoProducto] ([TppId])
-GO
-ALTER TABLE [dbo].[Trackins]  WITH CHECK ADD FOREIGN KEY([TrkEstado])
+ALTER TABLE [dbo].[Trackins]  WITH CHECK ADD FOREIGN KEY([TrkEstado])
 REFERENCES [dbo].[EstadoPedido] ([EtpId])
 GO
-ALTER TABLE [dbo].[Trackins]  WITH CHECK ADD FOREIGN KEY([TrkEstado])
-REFERENCES [dbo].[EstadoPedido] ([EtpId])
-GO
-ALTER TABLE [dbo].[Trackins]  WITH CHECK ADD FOREIGN KEY([TrkIdPedido])
+ALTER TABLE [dbo].[Trackins]  WITH CHECK ADD FOREIGN KEY([TrkIdPedido])
 REFERENCES [dbo].[Pedido] ([PddId])
 GO
-ALTER TABLE [dbo].[Trackins]  WITH CHECK ADD FOREIGN KEY([TrkIdPedido])
-REFERENCES [dbo].[Pedido] ([PddId])
-GO
-ALTER TABLE [dbo].[Trackins]  WITH CHECK ADD FOREIGN KEY([TrkMoneda])
+ALTER TABLE [dbo].[Trackins]  WITH CHECK ADD FOREIGN KEY([TrkMoneda])
 REFERENCES [dbo].[Moneda] ([MndId])
 GO
-ALTER TABLE [dbo].[Trackins]  WITH CHECK ADD FOREIGN KEY([TrkMoneda])
-REFERENCES [dbo].[Moneda] ([MndId])
-GO
-ALTER TABLE [dbo].[Trackins]  WITH CHECK ADD FOREIGN KEY([TrkProveedor])
+ALTER TABLE [dbo].[Trackins]  WITH CHECK ADD FOREIGN KEY([TrkProveedor])
 REFERENCES [dbo].[Proveedores] ([PvdId])
 GO
-ALTER TABLE [dbo].[Trackins]  WITH CHECK ADD FOREIGN KEY([TrkProveedor])
-REFERENCES [dbo].[Proveedores] ([PvdId])
-GO
-ALTER TABLE [dbo].[TrackinsAsociados]  WITH CHECK ADD FOREIGN KEY([TraIdTrackin])
+ALTER TABLE [dbo].[TrackinsAsociados]  WITH CHECK ADD FOREIGN KEY([TraIdTrackin])
 REFERENCES [dbo].[Trackins] ([TrkId])
 GO
-ALTER TABLE [dbo].[TrackinsAsociados]  WITH CHECK ADD FOREIGN KEY([TraIdTrackin])
-REFERENCES [dbo].[Trackins] ([TrkId])
-GO
-ALTER TABLE [dbo].[TrackinsAsociados]  WITH CHECK ADD FOREIGN KEY([TraIdTrackin])
-REFERENCES [dbo].[Trackins] ([TrkId])
-GO
-ALTER TABLE [dbo].[TrackinsAsociados]  WITH CHECK ADD FOREIGN KEY([TraIdTrackin])
-REFERENCES [dbo].[Trackins] ([TrkId])
-GO
-ALTER TABLE [dbo].[UsuaiosEnvioCorreos]  WITH CHECK ADD FOREIGN KEY([UecId])
+ALTER TABLE [dbo].[UsuaiosEnvioCorreos]  WITH CHECK ADD FOREIGN KEY([UecId])
 REFERENCES [dbo].[Usuarios] ([UsrID])
 GO
-ALTER TABLE [dbo].[UsuaiosEnvioCorreos]  WITH CHECK ADD FOREIGN KEY([UecId])
-REFERENCES [dbo].[Usuarios] ([UsrID])
-GO
-ALTER TABLE [dbo].[Usuarios]  WITH CHECK ADD FOREIGN KEY([UsrIdPersona])
+ALTER TABLE [dbo].[Usuarios]  WITH CHECK ADD FOREIGN KEY([UsrIdPersona])
 REFERENCES [dbo].[Persona] ([PsrId])
 GO
-ALTER TABLE [dbo].[Usuarios]  WITH CHECK ADD FOREIGN KEY([UsrIdPersona])
-REFERENCES [dbo].[Persona] ([PsrId])
-GO
-ALTER TABLE [dbo].[Usuarios]  WITH CHECK ADD FOREIGN KEY([UsrIdRol])
+ALTER TABLE [dbo].[Usuarios]  WITH CHECK ADD FOREIGN KEY([UsrIdRol])
 REFERENCES [dbo].[RolUsiario] ([RluID])
 GO
-ALTER TABLE [dbo].[Usuarios]  WITH CHECK ADD FOREIGN KEY([UsrIdRol])
-REFERENCES [dbo].[RolUsiario] ([RluID])
-GO
+
+
+
 /****** Object:  StoredProcedure [dbo].[EditarUsuario]    Script Date: 10/06/2023 14:35:56 ******/
 SET ANSI_NULLS ON
 GO

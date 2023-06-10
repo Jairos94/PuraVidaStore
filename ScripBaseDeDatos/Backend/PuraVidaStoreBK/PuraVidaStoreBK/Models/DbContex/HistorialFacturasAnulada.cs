@@ -5,11 +5,11 @@ namespace PuraVidaStoreBK.Models.DbContex;
 
 public partial class HistorialFacturasAnulada
 {
-    public int HlfId { get; set; }
+    public long HlfId { get; set; }
 
     public int HlfIdUsuario { get; set; }
 
-    public int HlfIdFctura { get; set; }
+    public long HlfIdFctura { get; set; }
 
     public string HlfRazon { get; set; } = null!;
 

@@ -5,7 +5,7 @@ namespace PuraVidaStoreBK.Models.DbContex;
 
 public partial class Tracking
 {
-    public int TrkId { get; set; }
+    public long TrkId { get; set; }
 
     public DateTime TrkFecha { get; set; }
 
@@ -17,7 +17,7 @@ public partial class Tracking
 
     public double? TrkValorMoneda { get; set; }
 
-    public int? TrkIdPedido { get; set; }
+    public long? TrkIdPedido { get; set; }
 
     public double? TrkPesoProveedor { get; set; }
 
@@ -31,7 +31,7 @@ public partial class Tracking
 
     public int TrkEstado { get; set; }
 
-    public int TrkProveedor { get; set; }
+    public long TrkProveedor { get; set; }
 
     public virtual ICollection<TrackingsAsociado> TrackinsAsociados { get; set; } = new List<TrackingsAsociado>();
 

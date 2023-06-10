@@ -5,7 +5,7 @@ namespace PuraVidaStoreBK.Models.DbContex;
 
 public partial class Pedido
 {
-    public int PddId { get; set; }
+    public long PddId { get; set; }
 
     public DateTime PddFecha { get; set; }
 
@@ -13,7 +13,7 @@ public partial class Pedido
 
     public string? PddRazonCancelada { get; set; }
 
-    public int PddProveedor { get; set; }
+    public long PddProveedor { get; set; }
 
     public int PddEstado { get; set; }
 

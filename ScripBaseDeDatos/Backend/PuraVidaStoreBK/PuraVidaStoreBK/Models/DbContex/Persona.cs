@@ -5,7 +5,7 @@ namespace PuraVidaStoreBK.Models.DbContex;
 
 public partial class Persona
 {
-    public int PsrId { get; set; }
+    public long PsrId { get; set; }
 
     public string PsrIdentificacion { get; set; } = null!;
 

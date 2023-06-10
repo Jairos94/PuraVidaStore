@@ -5,9 +5,9 @@ namespace PuraVidaStoreBK.Models.DbContex;
 
 public partial class HistorialClienteMayorista
 {
-    public int HcmId { get; set; }
+    public long HcmId { get; set; }
 
-    public int HcmIdCliente { get; set; }
+    public long HcmIdCliente { get; set; }
 
     public DateTime HcmFechaVencimiento { get; set; }
 

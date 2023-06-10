@@ -5,11 +5,11 @@ namespace PuraVidaStoreBK.Models.DbContex;
 
 public partial class DetalleFactura
 {
-    public int DtfId { get; set; }
+    public long DtfId { get; set; }
 
-    public int DtfIdProducto { get; set; }
+    public long DtfIdProducto { get; set; }
 
-    public int DtfIdFactura { get; set; }
+    public long DtfIdFactura { get; set; }
 
     public double DtfPrecio { get; set; }
 

@@ -5,7 +5,7 @@ namespace PuraVidaStoreBK.Models.DbContex;
 
 public partial class Proveedores
 {
-    public int PvdId { get; set; }
+    public long PvdId { get; set; }
 
     public string PvdProveedorNmbre { get; set; } = null!;
 

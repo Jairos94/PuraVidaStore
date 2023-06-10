@@ -5,11 +5,11 @@ namespace PuraVidaStoreBK.Models.DbContex;
 
 public partial class TrackingsAsociado
 {
-    public int TraId { get; set; }
+    public long TraId { get; set; }
 
-    public int TraIdTrackin { get; set; }
+    public long TraIdTrackin { get; set; }
 
-    public int TraIdTrackinPrincial { get; set; }
+    public long TraIdTrackinPrincial { get; set; }
 
     public virtual Tracking TraIdTrackinNavigation { get; set; } = null!;
 }

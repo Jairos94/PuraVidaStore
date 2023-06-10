@@ -5,13 +5,13 @@ namespace PuraVidaStoreBK.Models.DbContex;
 
 public partial class Factura
 {
-    public int FtrId { get; set; }
+    public long FtrId { get; set; }
 
     public DateTime FtrFecha { get; set; }
 
     public int FtrIdUsuario { get; set; }
 
-    public int? FtrMayorista { get; set; }
+    public long? FtrMayorista { get; set; }
 
     public int FtrEstatusId { get; set; }
 

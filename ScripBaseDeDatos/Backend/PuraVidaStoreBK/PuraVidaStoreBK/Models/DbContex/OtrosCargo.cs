@@ -9,7 +9,7 @@ public partial class OtrosCargo
 
     public int OtrIdMoneda { get; set; }
 
-    public int OtrIdPedido { get; set; }
+    public long OtrIdPedido { get; set; }
 
     public double? OtrValorMoneda { get; set; }
 

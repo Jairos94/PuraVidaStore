@@ -5,9 +5,9 @@ namespace PuraVidaStoreBK.Models.DbContex;
 
 public partial class HistorialPrecio
 {
-    public int HlpId { get; set; }
+    public long HlpId { get; set; }
 
-    public int HlpIdProducto { get; set; }
+    public long HlpIdProducto { get; set; }
 
     public DateTime HlpFecha { get; set; }
 
