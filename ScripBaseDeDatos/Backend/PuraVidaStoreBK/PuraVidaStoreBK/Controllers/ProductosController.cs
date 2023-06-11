@@ -66,7 +66,7 @@ namespace PuraVidaStoreBK.Controllers
             return Ok(listaRetorno);
         }
         [HttpGet("ObtenerProductoPorId"), Authorize]
-        public async Task<IActionResult> ObtenerProductoPorId(int id)
+        public async Task<IActionResult> ObtenerProductoPorId(long id)
         {
             var producto = await _productoQuery.ProductoPorId(id);
             var productoRenorno = _mapper.Map<ProductoDTO>(producto);

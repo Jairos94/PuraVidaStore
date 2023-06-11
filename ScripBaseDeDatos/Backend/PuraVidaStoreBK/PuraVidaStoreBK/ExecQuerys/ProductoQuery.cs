@@ -119,7 +119,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             return listaProducto;
         }
 
-        public async Task<Producto> ProductoPorId(int id)
+        public async Task<Producto> ProductoPorId(long id)
         {
             var productoRetorno = new Producto();
             try

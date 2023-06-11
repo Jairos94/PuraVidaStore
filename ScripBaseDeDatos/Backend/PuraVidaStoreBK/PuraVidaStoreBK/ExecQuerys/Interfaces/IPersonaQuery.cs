@@ -9,6 +9,6 @@ namespace PuraVidaStoreBK.ExecQuerys.Interfaces
         Task<Persona> IngresarPersona(Persona PersonaData);
         Task<Persona> EditarPersona(Persona PersonaEditar);
         Task<List<Persona>> ObtenerPersonaPorCedula(string cedula);
-         Task<Persona> ObtenerPersonaPorId(int id);
+         Task<Persona> ObtenerPersonaPorId(long id);
     }
 }

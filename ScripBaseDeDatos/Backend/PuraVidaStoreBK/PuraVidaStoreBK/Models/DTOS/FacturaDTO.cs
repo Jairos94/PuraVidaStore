@@ -4,16 +4,23 @@ namespace PuraVidaStoreBK.Models.DTOS
 {
     public class FacturaDTO
     {
-        public int FtrId { get; set; }
-        public DateTime FtrFecha { get; set; }
-        public int FtrIdUsuario { get; set; }
-        public int? FtrMayorista { get; set; }
-        public int FtrEstatusId { get; set; }
-        public int FtrBodega { get; set; }
-        public int FtrFormaPago { get; set; }
-        public bool? FtrEsFacturaNula { get; set; }
-        public string? FtrCodigoFactura { get; set; }
+        public long FtrId { get; set; }
 
+        public DateTime FtrFecha { get; set; }
+
+        public int FtrIdUsuario { get; set; }
+
+        public long? FtrMayorista { get; set; }
+
+        public int FtrEstatusId { get; set; }
+
+        public int FtrBodega { get; set; }
+
+        public int FtrFormaPago { get; set; }
+
+        public bool? FtrEsFacturaNula { get; set; }
+
+        public string? FtrCodigoFactura { get; set; }
 
         public virtual EstatusFacturaDTO? FtrEstatus { get; set; } 
         public virtual FormaPagoDTO? FtrFormaPagoNavigation { get; set; }

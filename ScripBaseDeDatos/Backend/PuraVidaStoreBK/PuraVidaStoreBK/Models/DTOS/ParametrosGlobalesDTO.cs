@@ -22,6 +22,6 @@ namespace PuraVidaStoreBK.Models.DTOS
 
         public virtual ParametrosEmailDTO? ParametrosEmail { get; set; }
 
-        public virtual Bodega? PrgIdBodegaNavigation { get; set; } = null!;
+        public virtual BodegaDTO? PrgIdBodegaNavigation { get; set; } = null!;
     }
 }

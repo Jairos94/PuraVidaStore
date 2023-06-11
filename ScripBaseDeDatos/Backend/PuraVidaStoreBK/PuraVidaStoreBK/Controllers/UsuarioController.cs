@@ -256,7 +256,7 @@ namespace PuraVidaStoreBK.Controllers
             Response.Cookies.Append("actualizarToken",nuevaActualizacionToken.Token, cookieOptions);
         }
 
-        private async Task<bool> ValidarPersonaPorUsuario( int id) 
+        private async Task<bool> ValidarPersonaPorUsuario( long id) 
         {
             bool Existe = false;
             //valida si la persona es usuario

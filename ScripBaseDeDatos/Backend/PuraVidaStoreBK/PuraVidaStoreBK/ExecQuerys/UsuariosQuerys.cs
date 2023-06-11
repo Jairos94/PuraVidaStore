@@ -55,7 +55,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                         }
                         u.UsrIdRol = reader.GetInt32(3);
                         u.UsrActivo = reader.GetBoolean(4);
-                        u.UsrIdPersona = reader.GetInt32(5);
+                        u.UsrIdPersona = reader.GetInt64(5);
 
                         Persona p = new Persona();
                         p.PsrId= u.UsrIdPersona;
@@ -127,7 +127,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                 command.Parameters.Add("@Pass", SqlDbType.VarChar, 256).Value = clave;
                 command.Parameters.Add("@Email", SqlDbType.VarChar, 100).Value = usuario.UsrEmail;
                 command.Parameters.Add("@IdRol", SqlDbType.Int).Value = usuario.UsrIdRol;
-                command.Parameters.Add("@IdPersona", SqlDbType.Int).Value = usuario.UsrIdPersona;
+                command.Parameters.Add("@IdPersona", SqlDbType.BigInt).Value = usuario.UsrIdPersona;
 
                 reader = command.ExecuteReader();
                 return true;
@@ -158,7 +158,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                 command.Parameters.Add("@UsrPass", SqlDbType.VarChar, 256).Value = clave;
                 command.Parameters.Add("@Email", SqlDbType.VarChar, 100).Value = usuario.UsrEmail;
                 command.Parameters.Add("@Rol", SqlDbType.Int).Value = usuario.UsrIdRol;
-                command.Parameters.Add("@idPersona", SqlDbType.Int).Value = usuario.UsrIdPersona;
+                command.Parameters.Add("@idPersona", SqlDbType.BigInt).Value = usuario.UsrIdPersona;
                 command.Parameters.Add("@idUsuario", SqlDbType.Int).Value = usuario.UsrId;
                 command.Parameters.Add("@activo", SqlDbType.Int).Value = usuario.UsrActivo;
 
@@ -205,7 +205,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             return usuarioRetorno;
         }
 
-        public async Task<Usuario> UsuarioIdPersona(int idPersona) 
+        public async Task<Usuario> UsuarioIdPersona(long idPersona) 
         {
             var usuario = new Usuario();
             usuario = await dbContex.Usuarios.Where(x => x.UsrIdPersona == idPersona).FirstOrDefaultAsync();

@@ -50,7 +50,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             return ListaPersonas;
         }
 
-        public async Task<Persona> ObtenerPersonaPorId(int id)
+        public async Task<Persona> ObtenerPersonaPorId(long id)
         {
             var PersonaRetorno = new Persona();
             try

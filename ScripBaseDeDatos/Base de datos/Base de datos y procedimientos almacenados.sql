@@ -690,7 +690,7 @@ CREATE PROCEDURE [dbo].[EditarUsuario]
 	@UsrPass varchar(256),
 	@Email  varchar(100) =null,
 	@Rol int,
-	@idPersona int,
+	@idPersona bigint,
 	@idUsuario int,
 	@activo bit
 	
@@ -769,7 +769,7 @@ GO
   @Pass VARCHAR(256),
   @Email Varchar(100),
   @IdRol int,
-  @IdPersona int
+  @IdPersona bigint
   AS
  
 

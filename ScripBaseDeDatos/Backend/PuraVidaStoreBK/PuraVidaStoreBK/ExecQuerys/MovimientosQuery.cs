@@ -341,7 +341,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                 {
                     var IdProductos = new IdProductosPorCantidad 
                     {
-                        idProducto = reader.GetInt32(0),
+                        idProducto = reader.GetInt64(0),
                         Cantidad = reader.GetInt32(1)
                     };
                     ListaInventarios.Add(IdProductos);
