@@ -85,12 +85,6 @@ namespace PuraVidaStoreBK.ExecQuerys
                     Inventarios.ForEach(async x =>
                     {
 
-                        x.producto.PdrVisible = true;
-                        x.producto.PdrTieneExistencias = true;
-
-
-                        await _producto.GuardarProducto(x.producto, IdUsuario);
-
                         var movimiento = new Movimiento
                         {
                             MvmIdProducto = x.producto.PrdId,

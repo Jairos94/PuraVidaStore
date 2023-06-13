@@ -9,6 +9,7 @@ namespace PuraVidaStoreBK.ExecQuerys.Interfaces
         public Task<List<Producto>> ListaProductosNoFiltrada();
         public Task<List<Producto>> ListaProductos();
         public Task<Producto> ProductoPorId(long id);
+        public Task<bool> GuardarHistorial(Producto producto, int IdUsuario);
         public Task<Producto> BuscarProductoPorCodigo(string codigo);
         public Task<List<Producto>> ProductoPorDescripcion(string Descripcion);
         public Task<List<Producto>> ProductoPorNoFiltradaDescripcion(string Descripcion);

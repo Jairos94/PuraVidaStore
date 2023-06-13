@@ -106,11 +106,16 @@
             autocomplete="new-password"
           />
         </div>
-
       </div>
+
+      <label for="switch1">SSL</label>
+      <p-inputSwitch
+        inputId="switch1"
+        [(ngModel)]="emial.preSsl"
+      ></p-inputSwitch>
     </div>
   </p-accordionTab>
-  <p-accordionTab header="Lista de impuetsos">
+  <p-accordionTab header="Lista de impuestos">
     <p>
       At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis
       praesentium voluptatum deleniti atque corrupti quos dolores et quas

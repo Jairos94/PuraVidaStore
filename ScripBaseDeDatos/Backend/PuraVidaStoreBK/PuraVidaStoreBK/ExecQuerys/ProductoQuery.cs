@@ -17,11 +17,6 @@ namespace PuraVidaStoreBK.ExecQuerys
         public async Task<Producto> GuardarProducto(Producto producto, int idUsuario)
         {
             producto.PrdIdTipoProductoNavigation = null;
-            if (producto.PrdId>0) 
-            {
-                await GuardarHistorial(producto, idUsuario);
-
-            }
 
             try
             {
@@ -137,12 +132,13 @@ namespace PuraVidaStoreBK.ExecQuerys
             return productoRetorno;
         }
 
-        private async Task<bool>  GuardarHistorial(Producto producto,int IdUsuario) 
+        public async Task<bool>  GuardarHistorial(Producto producto,int IdUsuario) 
         {
             try
             {
-                
-                    var productoConsulta = await dbContex.Productos.FindAsync(producto.PrdId);
+                producto.PrdIdTipoProductoNavigation = null;
+
+                var productoConsulta = await dbContex.Productos.FindAsync(producto.PrdId);
 
 
                     if (productoConsulta.PrdPrecioVentaMayorista != producto.PrdPrecioVentaMayorista ||
