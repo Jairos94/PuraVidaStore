@@ -57,28 +57,22 @@ namespace PuraVidaStoreBK.Controllers
         }
 
         // GET api/<ParametrosController>/5
-        [HttpGet("{id}"),Authorize]
-        public string Get(int id)
+        [HttpGet("ObtenerParametros"),Authorize]
+        public async Task<IActionResult> ObtenerParametros(int idBodega)
         {
-            return "value";
-        }
+            try
+            {
+                var respuesta = await _parametros.ObtenerParametrosId(idBodega);
+                respuesta.ImpuestosPorParametros = await _parametros.ObtenerImpuestosPorParametro(respuesta.PrgId);
+                return Ok(_mapper.Map<ParametrosGlobalesDTO>(respuesta));
+            }
+            catch (Exception ex)
+            {
 
-        // POST api/<ParametrosController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
+                return BadRequest("Favor de revisar los logs");
+            }
+            
 
-        // PUT api/<ParametrosController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<ParametrosController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }
