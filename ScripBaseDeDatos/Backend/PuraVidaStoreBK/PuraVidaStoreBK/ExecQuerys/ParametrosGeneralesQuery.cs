@@ -73,14 +73,14 @@ namespace PuraVidaStoreBK.ExecQuerys
             }
         }
 
-        public async Task<ParametrosGlobales> ObtenerParametrosId(int id)
+        public async Task<ParametrosGlobales> ObtenerParametrosId(int idBodega)
         {
 
             try
             {
                 
                     var retorno = await dbContex.ParametrosGlobales
-                        .Where(x => x.PrgId == id)
+                        .Where(x => x.PrgIdBodega == idBodega)
                         .FirstAsync();
 
                     return retorno;

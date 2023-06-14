@@ -116,14 +116,49 @@
     </div>
   </p-accordionTab>
   <p-accordionTab header="Lista de impuestos">
-    <p>
-      At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis
-      praesentium voluptatum deleniti atque corrupti quos dolores et quas
-      molestias excepturi sint occaecati cupiditate non provident, similique
-      sunt in culpa qui officia deserunt mollitia animi, id est laborum et
-      dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.
-      Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil
-      impedit quo minus.
-    </p>
+    <div class="card">
+      <span class="p-fluid">
+        <div class="grid">
+          <div class="col">
+            <p-autoComplete
+              [(ngModel)]="buscador"
+              [suggestions]="ImpuestosSugerencia"
+              (completeMethod)="FiltrarImpuestos($event)"
+              field="impDescripcion"
+            >
+            </p-autoComplete>
+          </div>
+          <div class="col-1">
+            <p-button
+              icon="pi pi-plus"
+              styleClass="p-button-rounded p-button-success"
+              (click)="AgregarAlista()"
+            ></p-button>
+          </div>
+        </div>
+      </span>
+    </div>
+    <div class="my-2">
+      <p-table
+        [value]="ImpuestosAgregar"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        [rowsPerPageOptions]="[5,10,15]"
+      >
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th>#</th>
+            <th>Descricion</th>
+            <th>Porcentaje del impuesto</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-Impuesto let-columns="columns">
+          <tr>
+            <td>{{ Impuesto.impId }}</td>
+            <td>{{ Impuesto.impDescripcion }}</td>
+            <td>{{ Impuesto.impPorcentaje }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
   </p-accordionTab>
 </p-accordion>
