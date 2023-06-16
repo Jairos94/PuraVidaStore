@@ -102,7 +102,7 @@
             pInputText
             type="password"
             placeholder="Contraseña"
-            [(ngModel)]="emial.preUser"
+            [(ngModel)]="emial.preClave"
             autocomplete="new-password"
           />
         </div>
@@ -162,3 +162,4 @@
     </div>
   </p-accordionTab>
 </p-accordion>
+<p-button label="Guardar" icon="pi pi-save" (click)="guardar()" iconPos="right"></p-button>

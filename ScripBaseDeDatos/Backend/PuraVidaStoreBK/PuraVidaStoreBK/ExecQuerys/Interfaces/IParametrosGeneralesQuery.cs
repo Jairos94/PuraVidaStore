@@ -5,9 +5,11 @@ namespace PuraVidaStoreBK.ExecQuerys.Interfaces
 {
     public interface IParametrosGeneralesQuery
     {
-        public Task<ParametrosGlobales> GuardarParametros(ParametrosGlobales parametros);
+         Task<ParametrosGlobales> GuardarParametros(ParametrosGlobales parametros);
         Task<ImpuestosPorParametro> GuardarImpuestoPorParametro(ImpuestosPorParametro impuestos);
         Task<List<ImpuestosPorParametro>> ObtenerImpuestosPorParametro(int id);
-        public Task<ParametrosGlobales> ObtenerParametrosId(int idBodega);
+        Task<ParametrosEmail> GuardarEmail(ParametrosEmail parametrosEmail);
+         Task<ParametrosGlobales> ObtenerParametrosId(int idBodega);
+        Task<bool> EliminarImpustoPorParametro(List<ImpuestosPorParametro> datosElimnar);
     }
 }

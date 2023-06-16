@@ -22,7 +22,7 @@ namespace PuraVidaStoreBK.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("GuardarParametrosGlobales"), Authorize]
+        [HttpPost("GuardarParametrosGlobales"), Authorize(Roles = "1")]
         public async Task<IActionResult> GuardarParametrosGlobales(ParametrosGlobalesDTO parametros)
         {
             try
@@ -31,16 +31,24 @@ namespace PuraVidaStoreBK.Controllers
 
                 var retorno = new ParametrosGlobalesDTO();
                 retorno = _mapper.Map<ParametrosGlobalesDTO>(guardar);
-
-                if (parametros.ImpuestosPorParametros.Count!=null) 
+                if (parametros.ImpuestosPorParametros.Count>0 && parametros.ImpuestosPorParametros!=null) 
                 {
+                    var listaImpuestoPorParametro = await _parametros.ObtenerImpuestosPorParametro(guardar.PrgId);
+                    if (listaImpuestoPorParametro!=null) 
+                    {
+                        var seBorroLista = await _parametros.EliminarImpustoPorParametro(listaImpuestoPorParametro);
+                    }
                     foreach (var impuesto in parametros.ImpuestosPorParametros) 
                     {
                         impuesto.ImpPidParametroGlobal = retorno.PrgId;
                         await _parametros.GuardarImpuestoPorParametro(_mapper.Map<ImpuestosPorParametro>(impuesto));
                     }
                 }
-
+                if (parametros.ParametrosEmail!=null) 
+                {
+                    parametros.ParametrosEmail.PreIdParametroGlobal = guardar.PrgId;
+                    var guardarCorreo = await _parametros.GuardarEmail(_mapper.Map<ParametrosEmail>( parametros.ParametrosEmail));
+                }
                 var listaImpuesto =await _parametros.ObtenerImpuestosPorParametro(guardar.PrgId);
 
                 foreach (var impuesto in listaImpuesto) 
@@ -63,7 +71,11 @@ namespace PuraVidaStoreBK.Controllers
             try
             {
                 var respuesta = await _parametros.ObtenerParametrosId(idBodega);
-                respuesta.ImpuestosPorParametros = await _parametros.ObtenerImpuestosPorParametro(respuesta.PrgId);
+                if (respuesta!=null) 
+                {
+                    respuesta.ImpuestosPorParametros = await _parametros.ObtenerImpuestosPorParametro(respuesta.PrgId);
+                }
+               
                 return Ok(_mapper.Map<ParametrosGlobalesDTO>(respuesta));
             }
             catch (Exception ex)

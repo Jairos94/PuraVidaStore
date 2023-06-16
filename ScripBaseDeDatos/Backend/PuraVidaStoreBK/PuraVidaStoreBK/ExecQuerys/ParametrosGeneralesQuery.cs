@@ -16,6 +16,7 @@ namespace PuraVidaStoreBK.ExecQuerys
         public async Task<ParametrosGlobales> GuardarParametros(ParametrosGlobales parametros)
         {
             parametros.ImpuestosPorParametros = null;
+            parametros.ParametrosEmail = null;
             try
             {
                
@@ -39,7 +40,6 @@ namespace PuraVidaStoreBK.ExecQuerys
                 throw;
             }
         }
-
         public async Task<ImpuestosPorParametro> GuardarImpuestoPorParametro(ImpuestosPorParametro impuestos) 
         {
             try
@@ -81,7 +81,8 @@ namespace PuraVidaStoreBK.ExecQuerys
                 
                     var retorno = await dbContex.ParametrosGlobales
                         .Where(x => x.PrgIdBodega == idBodega)
-                        .FirstAsync();
+                        .Include(x=>x.ParametrosEmail)
+                        .FirstOrDefaultAsync();
 
                     return retorno;
                 
@@ -97,6 +98,25 @@ namespace PuraVidaStoreBK.ExecQuerys
             
                 return await dbContex.ImpuestosPorParametros.Where(x=>x.ImpPidParametroGlobal==id).Include(x=>x.ImpPidImpuestoNavigation).ToListAsync();
             
+        }
+        public async Task<ParametrosEmail> GuardarEmail(ParametrosEmail parametrosEmail) 
+        {
+            if (parametrosEmail.PreId > 0)
+            {
+                dbContex.Update(parametrosEmail);
+            }
+            else 
+            {
+                dbContex.Add(parametrosEmail);
+            }
+            await dbContex.SaveChangesAsync();
+            return parametrosEmail;
+        }
+        public async Task<bool> EliminarImpustoPorParametro(List<ImpuestosPorParametro> datosElimnar) 
+        {
+             dbContex.ImpuestosPorParametros.RemoveRange(datosElimnar);
+             await dbContex.SaveChangesAsync();
+             return true;
         }
     }
 }

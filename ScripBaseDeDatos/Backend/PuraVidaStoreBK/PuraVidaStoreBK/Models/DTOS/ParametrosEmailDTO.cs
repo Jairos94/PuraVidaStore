@@ -17,7 +17,5 @@ namespace PuraVidaStoreBK.Models.DTOS
         public bool PreSsl { get; set; }
 
         public int? PreIdParametroGlobal { get; set; }
-
-        public virtual ParametrosGlobalesDTO Pre { get; set; } = null!;
     }
 }
