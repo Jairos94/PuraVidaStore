@@ -87,7 +87,7 @@ public partial class PuraVidaStoreContext : DbContext
     {
         modelBuilder.Entity<Bodega>(entity =>
         {
-            entity.HasKey(e => e.BdgId).HasName("PK__Bodegas__522D12A5CF1ED749");
+            entity.HasKey(e => e.BdgId).HasName("PK__Bodegas__522D12A57C91B216");
 
             entity.Property(e => e.BdgDescripcion)
                 .HasMaxLength(30)
@@ -98,7 +98,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<ClientesMayorista>(entity =>
         {
-            entity.HasKey(e => e.ClmId).HasName("PK__Clientes__FD21CFD2282D10AB");
+            entity.HasKey(e => e.ClmId).HasName("PK__Clientes__FD21CFD2367F113F");
 
             entity.Property(e => e.ClmCorreo)
                 .HasMaxLength(100)
@@ -117,7 +117,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<DetalleFactura>(entity =>
         {
-            entity.HasKey(e => e.DtfId).HasName("PK__DetalleF__08270EDEFFE101AE");
+            entity.HasKey(e => e.DtfId).HasName("PK__DetalleF__08270EDE27242DA8");
 
             entity.ToTable("DetalleFactura");
 
@@ -134,7 +134,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<DetalleProductoPedido>(entity =>
         {
-            entity.HasKey(e => e.DppId).HasName("PK__DetalleP__45FE6F5AC628508C");
+            entity.HasKey(e => e.DppId).HasName("PK__DetalleP__45FE6F5A8BE38565");
 
             entity.ToTable("DetalleProductoPedido");
 
@@ -156,7 +156,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<EstadoPedido>(entity =>
         {
-            entity.HasKey(e => e.EtpId).HasName("PK__EstadoPe__CD1FF58CD14859E8");
+            entity.HasKey(e => e.EtpId).HasName("PK__EstadoPe__CD1FF58C3E6D2A10");
 
             entity.ToTable("EstadoPedido");
 
@@ -167,7 +167,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<EstatusFactura>(entity =>
         {
-            entity.HasKey(e => e.EtfId).HasName("PK__EstatusF__CA83E816F927070A");
+            entity.HasKey(e => e.EtfId).HasName("PK__EstatusF__CA83E8160B7A9AA7");
 
             entity.ToTable("EstatusFactura");
 
@@ -178,7 +178,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<Factura>(entity =>
         {
-            entity.HasKey(e => e.FtrId).HasName("PK__Factura__2B314E1F73F63AF6");
+            entity.HasKey(e => e.FtrId).HasName("PK__Factura__2B314E1FE17255B7");
 
             entity.ToTable("Factura");
 
@@ -212,7 +212,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<FacturaResumen>(entity =>
         {
-            entity.HasKey(e => e.FtrId).HasName("PK__FacturaR__2B314E1FC4F1BD7B");
+            entity.HasKey(e => e.FtrId).HasName("PK__FacturaR__2B314E1FAF74309B");
 
             entity.HasOne(d => d.FtrFacturaNavigation).WithMany(p => p.FacturaResumen)
                 .HasForeignKey(d => d.FtrFactura)
@@ -222,7 +222,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<FormaPago>(entity =>
         {
-            entity.HasKey(e => e.FrpId).HasName("PK__FormaPag__C30F48C36A83FBC1");
+            entity.HasKey(e => e.FrpId).HasName("PK__FormaPag__C30F48C320FE772C");
 
             entity.ToTable("FormaPago");
 
@@ -233,7 +233,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<HistorialClienteMayorista>(entity =>
         {
-            entity.HasKey(e => e.HcmId).HasName("PK__Historia__3B25B7B8DE821526");
+            entity.HasKey(e => e.HcmId).HasName("PK__Historia__3B25B7B852EEE045");
 
             entity.Property(e => e.HcmFechaActualizacion).HasColumnType("datetime");
             entity.Property(e => e.HcmFechaVencimiento).HasColumnType("datetime");
@@ -246,7 +246,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<HistorialFacturasAnulada>(entity =>
         {
-            entity.HasKey(e => e.HlfId).HasName("PK__Historia__A894EAB353FB9D17");
+            entity.HasKey(e => e.HlfId).HasName("PK__Historia__A894EAB3A3781C6A");
 
             entity.Property(e => e.HlfRazon)
                 .HasMaxLength(250)
@@ -265,7 +265,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<HistorialPrecio>(entity =>
         {
-            entity.HasKey(e => e.HlpId).HasName("PK__Historia__AAE48D2C9D0C0FFC");
+            entity.HasKey(e => e.HlpId).HasName("PK__Historia__AAE48D2C36074AF6");
 
             entity.Property(e => e.HlpFecha).HasColumnType("datetime");
 
@@ -282,7 +282,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<Impuesto>(entity =>
         {
-            entity.HasKey(e => e.ImpId).HasName("PK__Impuesto__B6CB82B8185AF984");
+            entity.HasKey(e => e.ImpId).HasName("PK__Impuesto__B6CB82B85725491F");
 
             entity.Property(e => e.ImpDescripcion)
                 .HasMaxLength(100)
@@ -291,7 +291,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<ImpuestosPorFactura>(entity =>
         {
-            entity.HasKey(e => e.IpfId).HasName("PK__Impuesto__C85CA5DA7C8617A4");
+            entity.HasKey(e => e.IpfId).HasName("PK__Impuesto__C85CA5DA0D5D6A91");
 
             entity.ToTable("ImpuestosPorFactura");
 
@@ -308,13 +308,15 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<ImpuestosPorParametro>(entity =>
         {
-            entity.HasKey(e => e.ImpPid).HasName("PK__Impuesto__D048333387AB78B0");
+            entity.HasKey(e => new { e.ImpPid, e.ImpPidParametroGlobal, e.ImpPidImpuesto }).HasName("PK__Impuesto__D0483333AC4F9899");
 
             entity.ToTable("ImpuestosPorParametro");
 
-            entity.Property(e => e.ImpPid).HasColumnName("ImpPId");
-            entity.Property(e => e.ImpPidImpuesto).HasColumnName("ImpPIdImpuesto");
+            entity.Property(e => e.ImpPid)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("ImpPId");
             entity.Property(e => e.ImpPidParametroGlobal).HasColumnName("ImpPIdParametroGlobal");
+            entity.Property(e => e.ImpPidImpuesto).HasColumnName("ImpPIdImpuesto");
 
             entity.HasOne(d => d.ImpPidImpuestoNavigation).WithMany(p => p.ImpuestosPorParametros)
                 .HasForeignKey(d => d.ImpPidImpuesto)
@@ -329,7 +331,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<Moneda>(entity =>
         {
-            entity.HasKey(e => e.MndId).HasName("PK__Moneda__D2906950280F3B2E");
+            entity.HasKey(e => e.MndId).HasName("PK__Moneda__D29069503B56DB36");
 
             entity.Property(e => e.MndCodigo)
                 .HasMaxLength(10)
@@ -341,7 +343,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<MotivosMovimiento>(entity =>
         {
-            entity.HasKey(e => e.MtmId).HasName("PK__MotivosM__62D5204F31F4C7B0");
+            entity.HasKey(e => e.MtmId).HasName("PK__MotivosM__62D5204F662D31B1");
 
             entity.Property(e => e.MtmDescripcion)
                 .HasMaxLength(50)
@@ -355,7 +357,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<Movimiento>(entity =>
         {
-            entity.HasKey(e => e.MvmId).HasName("PK__Movimien__D46E0D0167EF136F");
+            entity.HasKey(e => e.MvmId).HasName("PK__Movimien__D46E0D011C8E6E73");
 
             entity.Property(e => e.MvmFecha).HasColumnType("datetime");
 
@@ -382,7 +384,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<OtrosCargo>(entity =>
         {
-            entity.HasKey(e => e.OtrId).HasName("PK__OtrosCar__91381F3348B539AB");
+            entity.HasKey(e => e.OtrId).HasName("PK__OtrosCar__91381F33167080E9");
 
             entity.Property(e => e.OtrRazon).HasColumnType("text");
 
@@ -399,7 +401,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<ParametrosEmail>(entity =>
         {
-            entity.HasKey(e => e.PreId).HasName("PK__Parametr__7024CEC9EB169964");
+            entity.HasKey(e => e.PreId).HasName("PK__Parametr__7024CEC9E6E3B17E");
 
             entity.ToTable("ParametrosEmail");
 
@@ -423,7 +425,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<ParametrosGlobales>(entity =>
         {
-            entity.HasKey(e => e.PrgId).HasName("PK__Parametr__76A0837BB4CF55AF");
+            entity.HasKey(e => e.PrgId).HasName("PK__Parametr__76A0837BD86B9B26");
 
             entity.HasOne(d => d.PrgIdBodegaNavigation).WithMany(p => p.ParametrosGlobales)
                 .HasForeignKey(d => d.PrgIdBodega)
@@ -433,7 +435,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<Pedido>(entity =>
         {
-            entity.HasKey(e => e.PddId).HasName("PK__Pedido__98F0BE93F8D8DEDA");
+            entity.HasKey(e => e.PddId).HasName("PK__Pedido__98F0BE939B0E25D6");
 
             entity.ToTable("Pedido");
 
@@ -458,7 +460,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<Persona>(entity =>
         {
-            entity.HasKey(e => e.PsrId).HasName("PK__Persona__4F16F4C8CB0E8953");
+            entity.HasKey(e => e.PsrId).HasName("PK__Persona__4F16F4C833B1F752");
 
             entity.ToTable("Persona");
 
@@ -478,7 +480,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<Producto>(entity =>
         {
-            entity.HasKey(e => e.PrdId).HasName("PK__Producto__7168B164E4A51FFC");
+            entity.HasKey(e => e.PrdId).HasName("PK__Producto__7168B16406D00BDE");
 
             entity.Property(e => e.PdrFoto).IsUnicode(false);
             entity.Property(e => e.PrdCodigo)
@@ -499,7 +501,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<Proveedores>(entity =>
         {
-            entity.HasKey(e => e.PvdId).HasName("PK__Proveedo__E82C8553746D49FC");
+            entity.HasKey(e => e.PvdId).HasName("PK__Proveedo__E82C8553BB2FD3AF");
 
             entity.Property(e => e.PvdProveedorCorreo)
                 .HasMaxLength(100)
@@ -514,7 +516,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<RolUsiario>(entity =>
         {
-            entity.HasKey(e => e.RluId).HasName("PK__RolUsiar__812CEDA6AA56A424");
+            entity.HasKey(e => e.RluId).HasName("PK__RolUsiar__812CEDA685B8A6D8");
 
             entity.ToTable("RolUsiario");
 
@@ -526,7 +528,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<TipoMovimiento>(entity =>
         {
-            entity.HasKey(e => e.TpmId).HasName("PK__TipoMovi__0637E7B06EA07A47");
+            entity.HasKey(e => e.TpmId).HasName("PK__TipoMovi__0637E7B05A7FE1C6");
 
             entity.ToTable("TipoMovimiento");
 
@@ -537,7 +539,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<TipoProducto>(entity =>
         {
-            entity.HasKey(e => e.TppId).HasName("PK__TipoProd__028B0F7044490938");
+            entity.HasKey(e => e.TppId).HasName("PK__TipoProd__028B0F705429C86C");
 
             entity.ToTable("TipoProducto");
 
@@ -548,7 +550,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<Tracking>(entity =>
         {
-            entity.HasKey(e => e.TrkId).HasName("PK__Trackins__B83DA4B28991342B");
+            entity.HasKey(e => e.TrkId).HasName("PK__Trackins__B83DA4B2D2C21DDF");
 
             entity.Property(e => e.TrKtrackin)
                 .HasMaxLength(300)
@@ -578,7 +580,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<TrackingsAsociado>(entity =>
         {
-            entity.HasKey(e => e.TraId).HasName("PK__Trackins__E6FDEF50943FBBE9");
+            entity.HasKey(e => e.TraId).HasName("PK__Trackins__E6FDEF501791DE2B");
 
             entity.HasOne(d => d.TraIdTrackinNavigation).WithMany(p => p.TrackinsAsociados)
                 .HasForeignKey(d => d.TraIdTrackin)
@@ -588,7 +590,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<UsuaiosEnvioCorreo>(entity =>
         {
-            entity.HasKey(e => e.UecId).HasName("PK__UsuaiosE__2A7A0348322D0FBC");
+            entity.HasKey(e => e.UecId).HasName("PK__UsuaiosE__2A7A03482E37575B");
 
             entity.Property(e => e.UecId).ValueGeneratedOnAdd();
 
@@ -600,7 +602,7 @@ public partial class PuraVidaStoreContext : DbContext
 
         modelBuilder.Entity<Usuario>(entity =>
         {
-            entity.HasKey(e => e.UsrId).HasName("PK__Usuarios__6A1E3D480381385E");
+            entity.HasKey(e => e.UsrId).HasName("PK__Usuarios__6A1E3D480FDC74AE");
 
             entity.Property(e => e.UsrId).HasColumnName("UsrID");
             entity.Property(e => e.UsrEmail)

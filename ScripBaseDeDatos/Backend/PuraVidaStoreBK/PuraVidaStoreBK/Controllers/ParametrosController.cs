@@ -41,8 +41,8 @@ namespace PuraVidaStoreBK.Controllers
                     foreach (var impuesto in parametros.ImpuestosPorParametros) 
                     {
                         impuesto.ImpPidParametroGlobal = retorno.PrgId;
-                        await _parametros.GuardarImpuestoPorParametro(_mapper.Map<ImpuestosPorParametro>(impuesto));
                     }
+                    await _parametros.GuardarImpuestoPorParametro(_mapper.Map<List<ImpuestosPorParametro>>(parametros.ImpuestosPorParametros));
                 }
                 if (parametros.ParametrosEmail!=null) 
                 {
