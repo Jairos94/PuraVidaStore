@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { activo } from 'src/app/activo';
 import { ImpuestosModel } from 'src/app/models/impuestos-model';
 import { ParametrosEmailModel } from 'src/app/models/parametros-email-model';
@@ -42,6 +43,28 @@ export class ConfiguracionComponent implements OnInit {
     prgIdBodegaNavigation: null,
   };
 
+  ParametrosForm = new FormGroup({
+    unidadesHabilitarMayorista: new FormControl(
+      this.parametrosGlobales.prgUndsHabilitarMayorista,
+      [Validators.required]
+    ),
+    unidadesAgregarMayorista: new FormControl(
+      this.parametrosGlobales.prgUndsAgregarMayorista,
+      [Validators.required]
+    ),
+    habilitarImpuestos: new FormControl(
+      this.parametrosGlobales.prgHabilitarImpuestos
+    ),
+    ImpuestosIncluidos: new FormControl(
+      this.parametrosGlobales.prgImpustosIncluidos
+    ),
+    host: new FormControl(this.emial.preHost, [Validators.required]),
+    puerto: new FormControl(this.emial.prePuerto, [Validators.required]),
+    usuario: new FormControl(this.emial.preUser, [Validators.required]),
+    clave: new FormControl(this.emial.preClave, [Validators.required]),
+    ssl: new FormControl(this.emial.preSsl),
+  });
+
   constructor(
     private impuestoServicio: ImpuestoService,
     private parametrosServicio: ParametrosService
@@ -58,7 +81,9 @@ export class ConfiguracionComponent implements OnInit {
         this.ListaImpuestosConsultados = [];
         this.ListaImpuestosConsultados = x;
       },
-      error: (_e) => {},
+      error: (_e) => {
+        console.log(_e);
+      },
     });
   }
 
@@ -123,6 +148,8 @@ export class ConfiguracionComponent implements OnInit {
   }
 
   guardar() {
+    console.log('Entro al boton');
+
     if (this.ImpuestosAgregar.length > 0) {
       let contadorImpuesto: number = 0;
       this.ImpuestosAgregar.forEach((x) => {
@@ -136,14 +163,5 @@ export class ConfiguracionComponent implements OnInit {
         this.parametrosGlobales.impuestosPorParametros?.push(nuevoImpuesto);
       });
     }
-    this.parametrosGlobales.prgIdBodega = activo.bodegaIngreso.bdgId;
-    this.emial.preIdParametroGlobal = this.parametrosGlobales.prgId;
-    this.parametrosGlobales.parametrosEmail = this.emial;
-    this.parametrosServicio.GuardarParametros(this.parametrosGlobales).subscribe({
-      next:x=>{console.log(x);
-      },
-      error:_e=>{console.log(_e);
-      }
-    });
   }
 }

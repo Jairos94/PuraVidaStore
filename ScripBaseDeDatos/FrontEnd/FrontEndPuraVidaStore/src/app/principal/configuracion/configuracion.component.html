@@ -1,165 +1,160 @@
-<p-accordion [activeIndex]="0">
-  <p-accordionTab header="Parámetros Globales">
-    <div class="grid">
-      <div class="col-3 flex align-items-center justify-content-center">
-        Unidades para habilitar mayorista
-      </div>
-      <div class="col">
-        <p-inputNumber
-          [(ngModel)]="parametrosGlobales.prgUndsHabilitarMayorista"
-          mode="decimal"
-          [showButtons]="true"
-          inputId="minmax-buttons"
-          [min]="0"
-          [max]="100"
-        >
-        </p-inputNumber>
-      </div>
-    </div>
-    <div class="grid">
-      <div class="col-3 flex align-items-center justify-content-center">
-        Unidades para agregar mayorista
-      </div>
-      <div class="col">
-        <p-inputNumber
-          [(ngModel)]="parametrosGlobales.prgUndsAgregarMayorista"
-          mode="decimal"
-          [showButtons]="true"
-          inputId="minmax-buttons"
-          [min]="0"
-          [max]="100"
-        >
-        </p-inputNumber>
-      </div>
-    </div>
-    <div class="grid">
-      <div class="col">
-        Habilitar impuestos
-
-        <p-inputSwitch
-          [(ngModel)]="parametrosGlobales.prgHabilitarImpuestos"
-        ></p-inputSwitch>
-      </div>
-
-      <div class="col">
-        Impuestos Incluidos
-        <p-inputSwitch
-          [(ngModel)]="parametrosGlobales.prgImpustosIncluidos"
-        ></p-inputSwitch>
-      </div>
-    </div>
-  </p-accordionTab>
-  <p-accordionTab header="Configuracón del correo  principal">
-    <div class="my-2">
-      <h2>Host y puerto</h2>
-      <div class="grid">
-        <div class="sm:col md:col">
-          <label for="Host">Host</label>
-          <input
-            id="Host"
-            class="w-full"
-            pInputText
-            placeholder="Host"
-            [(ngModel)]="emial.preHost"
-          />
-        </div>
-
-        <div class="sm:col md:col-1">
-          <label for="Puerto">Puerto</label>
-          <input
-            id="Puerto"
-            class="w-full"
-            pInputText
-            pKeyFilter="int"
-            placeholder="Integers"
-            [(ngModel)]="emial.prePuerto"
-          />
-        </div>
-      </div>
-    </div>
-
-    <div class="my-2">
-      <h2>Usiaro y contraña del correo</h2>
-      <div class="grid">
-        <div class="sm:col md:col">
-          <label for="usuarioEmail">Usuario </label>
-          <input
-            id="usuarioEmail"
-            class="w-full"
-            pInputText
-            type="text"
-            placeholder="Usuario"
-            [(ngModel)]="emial.preUser"
-            autocomplete="off"
-          />
-        </div>
-
-        <div class="sm:col md:col-6">
-          <label for="PasswordEmail">Contraseña </label>
-          <input
-            id="PasswordEmail"
-            class="w-full"
-            pInputText
-            type="password"
-            placeholder="Contraseña"
-            [(ngModel)]="emial.preClave"
-            autocomplete="new-password"
-          />
-        </div>
-      </div>
-
-      <label for="switch1">SSL</label>
-      <p-inputSwitch
-        inputId="switch1"
-        [(ngModel)]="emial.preSsl"
-      ></p-inputSwitch>
-    </div>
-  </p-accordionTab>
-  <p-accordionTab header="Lista de impuestos">
-    <div class="card">
-      <span class="p-fluid">
+<form [formGroup]="ParametrosForm" (ngSubmit)="guardar()">
+  <div class="grid my-2">
+    <div class="col">
+      <div class="my-2">
+        <h2>Parámetros Globales</h2>
         <div class="grid">
           <div class="col">
-            <p-autoComplete
-              [(ngModel)]="buscador"
-              [suggestions]="ImpuestosSugerencia"
-              (completeMethod)="FiltrarImpuestos($event)"
-              field="impDescripcion"
+            Unidades para habilitar mayorista
+            <p-inputNumber
+              formControlName="unidadesHabilitarMayorista"
+              mode="decimal"
+              [showButtons]="true"
+              inputId="minmax-buttons"
+              [min]="0"
+              [max]="100"
             >
-            </p-autoComplete>
-          </div>
-          <div class="col-1">
-            <p-button
-              icon="pi pi-plus"
-              styleClass="p-button-rounded p-button-success"
-              (click)="AgregarAlista()"
-            ></p-button>
+            </p-inputNumber>
           </div>
         </div>
-      </span>
+        <div class="grid">
+          <div class="col">
+            Unidades para agregar mayorista
+            <p-inputNumber
+              formControlName="unidadesAgregarMayorista"
+              mode="decimal"
+              [showButtons]="true"
+              inputId="minmax-buttons"
+              [min]="0"
+              [max]="100"
+            >
+            </p-inputNumber>
+          </div>
+        </div>
+        <div class="field">
+          Habilitar impuestos
+          <p-inputSwitch formControlName="habilitarImpuestos"></p-inputSwitch>
+        </div>
+        <div class="field">
+          Impuestos Incluidos
+          <p-inputSwitch formControlName="ImpuestosIncluidos"></p-inputSwitch>
+        </div>
+      </div>
+
+      <div class="my-2">
+        <h2>Host y puerto</h2>
+        <div class="grid">
+          <div class="sm:col md:col">
+            <label for="Host">Host</label>
+            <input
+              id="Host"
+              class="w-full"
+              pInputText
+              placeholder="Host"
+              formControlName="host"
+            />
+          </div>
+
+          <div class="sm:col md:col-1">
+            <label for="Puerto">Puerto</label>
+            <input
+              id="Puerto"
+              class="w-full"
+              pInputText
+              pKeyFilter="int"
+              placeholder="Integers"
+              formControlName="puerto"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="my-2">
+        <h2>Usiaro y contraña del correo</h2>
+        <div class="grid">
+          <div class="sm:col md:col">
+            <label for="usuarioEmail">Usuario </label>
+            <input
+              id="usuarioEmail"
+              class="w-full"
+              pInputText
+              type="text"
+              placeholder="Usuario"
+              formControlName="usuario"
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="sm:col md:col-6">
+            <label for="PasswordEmail">Contraseña </label>
+            <input
+              id="PasswordEmail"
+              class="w-full"
+              pInputText
+              type="password"
+              placeholder="Contraseña"
+              formControlName="clave"
+              autocomplete="new-password"
+            />
+          </div>
+        </div>
+
+        <label for="switch1">SSL</label>
+        <p-inputSwitch inputId="switch1" formControlName="ssl"></p-inputSwitch>
+      </div>
     </div>
-    <div class="my-2">
-      <p-table
-        [value]="ImpuestosAgregar"
-        [tableStyle]="{ 'min-width': '50rem' }"
-        [rowsPerPageOptions]="[5,10,15]"
-      >
-        <ng-template pTemplate="header" let-columns>
-          <tr>
-            <th>#</th>
-            <th>Descricion</th>
-            <th>Porcentaje del impuesto</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-Impuesto let-columns="columns">
-          <tr>
-            <td>{{ Impuesto.impId }}</td>
-            <td>{{ Impuesto.impDescripcion }}</td>
-            <td>{{ Impuesto.impPorcentaje }}</td>
-          </tr>
-        </ng-template>
-      </p-table>
+    <div class="sm:col md:col-1">
+      <p-button
+        label="Guardar"
+        type="submit"
+        [disabled]="!ParametrosForm.valid"
+        icon="pi pi-save"
+      ></p-button>
     </div>
-  </p-accordionTab>
-</p-accordion>
-<p-button label="Guardar" icon="pi pi-save" (click)="guardar()" iconPos="right"></p-button>
+  </div>
+</form>
+
+<div class="card">
+  <span class="p-fluid">
+    <div class="grid">
+      <div class="col">
+        <p-autoComplete
+          [(ngModel)]="buscador"
+          [suggestions]="ImpuestosSugerencia"
+          (completeMethod)="FiltrarImpuestos($event)"
+          field="impDescripcion"
+        >
+        </p-autoComplete>
+      </div>
+      <div class="col-1">
+        <p-button
+          icon="pi pi-plus"
+          styleClass="p-button-rounded p-button-success"
+          (click)="AgregarAlista()"
+        ></p-button>
+      </div>
+    </div>
+  </span>
+</div>
+<div class="my-2">
+  <p-table
+    [value]="ImpuestosAgregar"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [rowsPerPageOptions]="[5, 10, 15]"
+  >
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th>#</th>
+        <th>Descricion</th>
+        <th>Porcentaje del impuesto</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-Impuesto let-columns="columns">
+      <tr>
+        <td>{{ Impuesto.impId }}</td>
+        <td>{{ Impuesto.impDescripcion }}</td>
+        <td>{{ Impuesto.impPorcentaje }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
