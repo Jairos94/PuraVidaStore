@@ -228,7 +228,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[ImpuestosPorFactura](
-	[IpfId] [bigint] IDENTITY(1,1) NOT NULL,
+	[IpfId] [bigint]  NOT NULL,
 	[IpfIdFactura] [bigint] NOT NULL,
 	[IpfIdImpuesto] [int] NOT NULL,
 PRIMARY KEY CLUSTERED 
