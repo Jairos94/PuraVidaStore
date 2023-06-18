@@ -37,35 +37,44 @@
         </div>
         <div class="field">
           Impuestos Incluidos
-          <p-inputSwitch formControlName="ImpuestosIncluidos"></p-inputSwitch>
+          <p-inputSwitch formControlName="impuestosIncluidos"></p-inputSwitch>
         </div>
       </div>
 
-      <div class="my-2">
-        <h2>Host y puerto</h2>
-        <div class="grid">
-          <div class="sm:col md:col">
-            <label for="Host">Host</label>
-            <input
-              id="Host"
-              class="w-full"
-              pInputText
-              placeholder="Host"
-              formControlName="host"
-            />
-          </div>
+      <div class="grid">
+        <div class="col">
+          <h1>Configuración del correo</h1>
+          <div class="my-2">
+            <h2>Host y puerto</h2>
+            <div class="grid">
+              <div class="sm:col md:col">
+                <label for="Host">Host</label>
+                <input
+                  id="Host"
+                  class="w-full"
+                  pInputText
+                  placeholder="Host"
+                  formControlName="host"
+                />
+              </div>
 
-          <div class="sm:col md:col-1">
-            <label for="Puerto">Puerto</label>
-            <input
-              id="Puerto"
-              class="w-full"
-              pInputText
-              pKeyFilter="int"
-              placeholder="Integers"
-              formControlName="puerto"
-            />
+              <div class="sm:col md:col-1">
+                <label for="Puerto">Puerto</label>
+                <input
+                  id="Puerto"
+                  class="w-full"
+                  pInputText
+                  pKeyFilter="int"
+                  placeholder="Integers"
+                  formControlName="puerto"
+                />
+              </div>
+            </div>
           </div>
+        </div>
+        <div class="col">
+          Habilitar encio de corrreo
+          <p-inputSwitch formControlName="habilitarCorreo"></p-inputSwitch>
         </div>
       </div>
 
@@ -158,3 +167,7 @@
     </ng-template>
   </p-table>
 </div>
+
+<p>Form Value: {{ ParametrosForm.value | json }}</p>
+
+<p>Form Status: {{ ParametrosForm.status }}</p>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { activo } from 'src/app/activo';
 import { ImpuestosModel } from 'src/app/models/impuestos-model';
 import { ParametrosEmailModel } from 'src/app/models/parametros-email-model';
@@ -12,6 +13,7 @@ import { ParametrosService } from 'src/app/services/parametros.service';
   selector: 'app-configuracion',
   templateUrl: './configuracion.component.html',
   styleUrls: ['./configuracion.component.css'],
+  providers: [MessageService]
 })
 export class ConfiguracionComponent implements OnInit {
   buscador: string = '';
@@ -55,19 +57,21 @@ export class ConfiguracionComponent implements OnInit {
     habilitarImpuestos: new FormControl(
       this.parametrosGlobales.prgHabilitarImpuestos
     ),
-    ImpuestosIncluidos: new FormControl(
+    impuestosIncluidos: new FormControl(
       this.parametrosGlobales.prgImpustosIncluidos
     ),
-    host: new FormControl(this.emial.preHost ),
+    habilitarCorreo:new FormControl(true),
+    host: new FormControl(this.emial.preHost),
     puerto: new FormControl(this.emial.prePuerto),
-    usuario: new FormControl(this.emial.preUser ),
-    clave: new FormControl(this.emial.preClave ),
+    usuario: new FormControl(this.emial.preUser),
+    clave: new FormControl(this.emial.preClave),
     ssl: new FormControl(this.emial.preSsl),
   });
 
   constructor(
     private impuestoServicio: ImpuestoService,
-    private parametrosServicio: ParametrosService
+    private parametrosServicio: ParametrosService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -128,6 +132,7 @@ export class ConfiguracionComponent implements OnInit {
         next: (x) => {
           if (x != null) {
             this.parametrosGlobales = x;
+            this.CargarDatosAlForm(this.parametrosGlobales);
             this.ImpuestosAgregar = [];
             this.parametrosGlobales.impuestosPorParametros?.forEach(
               (impuesto) => {
@@ -148,13 +153,21 @@ export class ConfiguracionComponent implements OnInit {
   }
 
   guardar() {
-    console.log('Entro al boton');
 
+    this.parametrosGlobales.prgUndsHabilitarMayorista=this.ParametrosForm.get('unidadesHabilitarMayorista')?.value!;
+    this.parametrosGlobales.prgUndsAgregarMayorista=this.ParametrosForm.get('unidadesAgregarMayorista')?.value!;
+    this.parametrosGlobales.prgHabilitarImpuestos=this.ParametrosForm.get('habilitarImpuestos')?.value!;
+    this.parametrosGlobales.prgImpustosIncluidos=this.ParametrosForm.get('impuestosIncluidos')?.value!;
+    this.emial.preIdParametroGlobal=this.parametrosGlobales.prgId;
+
+
+    let contadorImpuestos: 0;
     if (this.ImpuestosAgregar.length > 0) {
       let contadorImpuesto: number = 0;
       this.ImpuestosAgregar.forEach((x) => {
+        contadorImpuesto++;
         let nuevoImpuesto: ParametrosImpuestoModel = {
-          impPid: 0,
+          impPid: contadorImpuesto,
           impPidParametroGlobal: this.parametrosGlobales.prgId,
           impPidImpuesto: x.impId,
           impPidImpuestoNavigation: null,
@@ -165,7 +178,17 @@ export class ConfiguracionComponent implements OnInit {
     }
   }
 
-  CargarDatosAlForm(datos:ParametrosGlobalesModel) {
-this.ParametrosForm.patchValue();
+  CargarDatosAlForm(datos: ParametrosGlobalesModel) {
+    this.ParametrosForm.patchValue({
+      unidadesHabilitarMayorista: datos.prgUndsHabilitarMayorista,
+      unidadesAgregarMayorista: datos.prgUndsAgregarMayorista,
+      habilitarImpuestos: datos.prgHabilitarImpuestos,
+      impuestosIncluidos: datos.prgImpustosIncluidos,
+      host: datos.parametrosEmail?.preHost,
+      puerto: datos.parametrosEmail?.prePuerto,
+      usuario: datos.parametrosEmail?.preUser,
+      clave: datos.parametrosEmail?.preClave,
+      ssl: datos.parametrosEmail?.preSsl,
+    });
   }
 }
