@@ -58,10 +58,10 @@ export class ConfiguracionComponent implements OnInit {
     ImpuestosIncluidos: new FormControl(
       this.parametrosGlobales.prgImpustosIncluidos
     ),
-    host: new FormControl(this.emial.preHost, [Validators.required]),
-    puerto: new FormControl(this.emial.prePuerto, [Validators.required]),
-    usuario: new FormControl(this.emial.preUser, [Validators.required]),
-    clave: new FormControl(this.emial.preClave, [Validators.required]),
+    host: new FormControl(this.emial.preHost ),
+    puerto: new FormControl(this.emial.prePuerto),
+    usuario: new FormControl(this.emial.preUser ),
+    clave: new FormControl(this.emial.preClave ),
     ssl: new FormControl(this.emial.preSsl),
   });
 
@@ -163,5 +163,9 @@ export class ConfiguracionComponent implements OnInit {
         this.parametrosGlobales.impuestosPorParametros?.push(nuevoImpuesto);
       });
     }
+  }
+
+  CargarDatosAlForm(datos:ParametrosGlobalesModel) {
+this.ParametrosForm.patchValue();
   }
 }

@@ -40,36 +40,22 @@ namespace PuraVidaStoreBK.ExecQuerys
                 throw;
             }
         }
-        public async Task<ImpuestosPorParametro> GuardarImpuestoPorParametro(ImpuestosPorParametro impuestos) 
+        public async Task<bool> GuardarImpuestoPorParametro(List< ImpuestosPorParametro> impuestos) 
         {
             try
             {
-                  if (impuestos.ImpPid == 0)
-                    {
-                        var nuevoImpuesto = new ImpuestosPorParametro
-                        {
-                            ImpPidParametroGlobal = impuestos.ImpPidParametroGlobal,
-                            ImpPidImpuesto = impuestos.ImpPidImpuesto
-                        };
-                    dbContex.ImpuestosPorParametros.Add(nuevoImpuesto);
+                        
+                    dbContex.ImpuestosPorParametros.AddRange(impuestos);
                         await dbContex.SaveChangesAsync();
 
-                        return nuevoImpuesto;
-                    }
-                    else
-                    {
-                        dbContex.ImpuestosPorParametros.Update(impuestos);
-                        await dbContex.SaveChangesAsync();
-
-                        return impuestos;
-
-                    }
+                        return true;
+                    
                 
             }
             catch (Exception ex)
             {
                 Log.Error(ex.Message, ex);
-                throw;
+                return false;
             }
         }
 
