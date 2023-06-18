@@ -1,171 +1,113 @@
-<form [formGroup]="ParametrosForm" (ngSubmit)="guardar()">
-  <div class="grid my-2">
-    <div class="col">
-      <div class="my-2">
-        <h2>Parámetros Globales</h2>
-        <div class="grid">
-          <div class="col">
-            Unidades para habilitar mayorista
-            <p-inputNumber
-              formControlName="unidadesHabilitarMayorista"
-              mode="decimal"
-              [showButtons]="true"
-              inputId="minmax-buttons"
-              [min]="0"
-              [max]="100"
-            >
-            </p-inputNumber>
-          </div>
-        </div>
-        <div class="grid">
-          <div class="col">
-            Unidades para agregar mayorista
-            <p-inputNumber
-              formControlName="unidadesAgregarMayorista"
-              mode="decimal"
-              [showButtons]="true"
-              inputId="minmax-buttons"
-              [min]="0"
-              [max]="100"
-            >
-            </p-inputNumber>
-          </div>
-        </div>
-        <div class="field">
-          Habilitar impuestos
-          <p-inputSwitch formControlName="habilitarImpuestos"></p-inputSwitch>
-        </div>
-        <div class="field">
-          Impuestos Incluidos
-          <p-inputSwitch formControlName="impuestosIncluidos"></p-inputSwitch>
-        </div>
-      </div>
-
+<div class="mt-2">
+  <p-accordion [activeIndex]="0">
+    <form [formGroup]="ParametrosForm">
       <div class="grid">
         <div class="col">
-          <h1>Configuración del correo</h1>
-          <div class="my-2">
-            <h2>Host y puerto</h2>
-            <div class="grid">
-              <div class="sm:col md:col">
-                <label for="Host">Host</label>
-                <input
-                  id="Host"
-                  class="w-full"
-                  pInputText
-                  placeholder="Host"
-                  formControlName="host"
-                />
-              </div>
+          <p-accordionTab header="Configuración de parámetros">
+            <div class="field">
+              <label htmlFor="lblUnidadesHabilitarMayorista"
+                >Unidades para habilitar cliente mayorista
+              </label>
+              <p-inputNumber
+                formControlName="unidadesHabilitarMayorista"
+                [showButtons]="true"
+                inputId="minmax-buttons"
+                [min]="1"
+                class="mx-2"
+              >
+              </p-inputNumber>
+            </div>
 
-              <div class="sm:col md:col-1">
-                <label for="Puerto">Puerto</label>
-                <input
-                  id="Puerto"
-                  class="w-full"
-                  pInputText
-                  pKeyFilter="int"
-                  placeholder="Integers"
-                  formControlName="puerto"
-                />
+            <div class="field">
+              <label htmlFor="lblUnidadesAgregarMayorista"
+                >Unidades para agregar cliente mayorista
+              </label>
+              <p-inputNumber
+                formControlName="unidadesAgregarMayorista"
+                [showButtons]="true"
+                inputId="minmax-buttons"
+                [min]="1"
+                class="mx-2"
+              >
+              </p-inputNumber>
+            </div>
+
+            <div class="field">
+              <label htmlFor="swHabilitarImpuestos">Habilitar impuestos </label>
+              <p-inputSwitch
+                formControlName="habilitarImpuestos"
+              ></p-inputSwitch>
+            </div>
+
+            <div class="field">
+              <label htmlFor="swImpuestosIncluidos">Habilitar impuestos </label>
+              <p-inputSwitch
+                formControlName="impuestosIncluidos"
+              ></p-inputSwitch>
+            </div>
+          </p-accordionTab>
+
+          <p-accordionTab header="Configuración del correo">
+            <div class="grid">
+              <div class="col">
+                <div class="flex flex-column gap-2">
+                  <label htmlFor="Host">Ingrese el host</label>
+                  <input
+                    pInputText
+                    id="Host"
+                    aria-describedby="host-help"
+                    formControlName="host"
+                  />
+                  <small id="host-help"
+                    >Servidor del encargado de enviar correos</small
+                  >
+                </div>
+              </div>
+              <div class="sm:col md:col-2">
+                <div class="flex flex-column gap-2">
+                  <label htmlFor="Puerto">Ingrese el host</label>
+                  <input
+                    pInputText
+                    pKeyFilter="num"
+                    id="Puerto"
+                    aria-describedby="puerto-help"
+                    formControlName="puerto"
+                  />
+                  <small id="puerto-help"
+                    >Puerto de salida</small
+                  >
+                </div>
               </div>
             </div>
-          </div>
+
+          </p-accordionTab>
         </div>
-        <div class="col">
-          Habilitar encio de corrreo
-          <p-inputSwitch formControlName="habilitarCorreo"></p-inputSwitch>
+        <div class="sm:col md:col-1">
+          <button
+            type="submit"
+            pButton
+            pRipple
+            label="Guardar"
+            icon="pi pi-save"
+            class="ml-2"
+            [disabled]="!ParametrosForm.valid"
+          ></button>
         </div>
       </div>
+    </form>
 
-      <div class="my-2">
-        <h2>Usiaro y contraña del correo</h2>
-        <div class="grid">
-          <div class="sm:col md:col">
-            <label for="usuarioEmail">Usuario </label>
-            <input
-              id="usuarioEmail"
-              class="w-full"
-              pInputText
-              type="text"
-              placeholder="Usuario"
-              formControlName="usuario"
-              autocomplete="off"
-            />
-          </div>
-
-          <div class="sm:col md:col-6">
-            <label for="PasswordEmail">Contraseña </label>
-            <input
-              id="PasswordEmail"
-              class="w-full"
-              pInputText
-              type="password"
-              placeholder="Contraseña"
-              formControlName="clave"
-              autocomplete="new-password"
-            />
-          </div>
-        </div>
-
-        <label for="switch1">SSL</label>
-        <p-inputSwitch inputId="switch1" formControlName="ssl"></p-inputSwitch>
-      </div>
-    </div>
-    <div class="sm:col md:col-1">
-      <p-button
-        label="Guardar"
-        type="submit"
-        [disabled]="!ParametrosForm.valid"
-        icon="pi pi-save"
-      ></p-button>
-    </div>
-  </div>
-</form>
-
-<div class="card">
-  <span class="p-fluid">
-    <div class="grid">
-      <div class="col">
-        <p-autoComplete
-          [(ngModel)]="buscador"
-          [suggestions]="ImpuestosSugerencia"
-          (completeMethod)="FiltrarImpuestos($event)"
-          field="impDescripcion"
-        >
-        </p-autoComplete>
-      </div>
-      <div class="col-1">
-        <p-button
-          icon="pi pi-plus"
-          styleClass="p-button-rounded p-button-success"
-          (click)="AgregarAlista()"
-        ></p-button>
-      </div>
-    </div>
-  </span>
-</div>
-<div class="my-2">
-  <p-table
-    [value]="ImpuestosAgregar"
-    [tableStyle]="{ 'min-width': '50rem' }"
-    [rowsPerPageOptions]="[5, 10, 15]"
-  >
-    <ng-template pTemplate="header" let-columns>
-      <tr>
-        <th>#</th>
-        <th>Descricion</th>
-        <th>Porcentaje del impuesto</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-Impuesto let-columns="columns">
-      <tr>
-        <td>{{ Impuesto.impId }}</td>
-        <td>{{ Impuesto.impDescripcion }}</td>
-        <td>{{ Impuesto.impPorcentaje }}</td>
-      </tr>
-    </ng-template>
-  </p-table>
+    <p-accordionTab header="Header III">
+      <p>
+        At vero eos et accusamus et iusto odio dignissimos ducimus qui
+        blanditiis praesentium voluptatum deleniti atque corrupti quos dolores
+        et quas molestias excepturi sint occaecati cupiditate non provident,
+        similique sunt in culpa qui officia deserunt mollitia animi, id est
+        laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita
+        distinctio. Nam libero tempore, cum soluta nobis est eligendi optio
+        cumque nihil impedit quo minus.
+      </p>
+    </p-accordionTab>
+  </p-accordion>
 </div>
 
 <p>Form Value: {{ ParametrosForm.value | json }}</p>

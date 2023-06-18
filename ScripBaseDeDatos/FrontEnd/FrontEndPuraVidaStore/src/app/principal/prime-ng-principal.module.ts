@@ -17,6 +17,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { KeyFilterModule } from 'primeng/keyfilter';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { MegaMenuModule } from 'primeng/megamenu';
 import { MenuModule } from 'primeng/menu';
@@ -52,6 +53,7 @@ import { SlideMenuModule } from 'primeng/slidemenu';
     InputTextareaModule,
     InputTextModule,
     InputSwitchModule,
+    KeyFilterModule,
     MultiSelectModule,
     MegaMenuModule,
     MenuModule,

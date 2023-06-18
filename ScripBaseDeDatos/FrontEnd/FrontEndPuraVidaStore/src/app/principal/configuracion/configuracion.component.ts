@@ -35,8 +35,8 @@ export class ConfiguracionComponent implements OnInit {
 
   parametrosGlobales: ParametrosGlobalesModel = {
     prgId: 0,
-    prgUndsHabilitarMayorista: 0,
-    prgUndsAgregarMayorista: 0,
+    prgUndsHabilitarMayorista: 1,
+    prgUndsAgregarMayorista: 1,
     prgHabilitarImpuestos: false,
     prgImpustosIncluidos: false,
     prgIdBodega: 0,
