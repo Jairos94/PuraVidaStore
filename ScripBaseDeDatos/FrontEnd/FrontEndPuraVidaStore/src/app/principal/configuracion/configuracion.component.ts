@@ -1,10 +1,267 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
+import { activo } from 'src/app/activo';
+import { ImpuestosModel } from 'src/app/models/impuestos-model';
+import { ParametrosEmailModel } from 'src/app/models/parametros-email-model';
+import { ParametrosGlobalesModel } from 'src/app/models/parametros-globales-model';
+import { ParametrosImpuestoModel } from 'src/app/models/parametros-impuesto-model';
+import { ImpuestoService } from 'src/app/services/impuesto.service';
+import { ParametrosService } from 'src/app/services/parametros.service';
 
 @Component({
   selector: 'app-configuracion',
   templateUrl: './configuracion.component.html',
-  styleUrls: ['./configuracion.component.css']
+  styleUrls: ['./configuracion.component.css'],
+  providers: [MessageService],
 })
-export class ConfiguracionComponent {
+export class ConfiguracionComponent implements OnInit {
+  buscador: string = '';
+  emial: ParametrosEmailModel = {
+    preId: 0,
+    preHost: '',
+    prePuerto: 0,
+    preUser: '',
+    preClave: '',
+    preSsl: false,
+    preIdParametroGlobal: 0,
+  };
 
+  listaImpuestos: ParametrosImpuestoModel[] = [];
+  ListaImpuestosConsultados: ImpuestosModel[] = [];
+  ImpuestosSugerencia: ImpuestosModel[] = [];
+  ImpuestosAgregar: ImpuestosModel[] = []; //Impuestos que se agregan a la tabla
+  CorreoHbilitado: boolean = true;
+
+  parametrosGlobales: ParametrosGlobalesModel = {
+    prgId: 0,
+    prgUndsHabilitarMayorista: 1,
+    prgUndsAgregarMayorista: 1,
+    prgHabilitarImpuestos: false,
+    prgImpustosIncluidos: false,
+    prgIdBodega: 0,
+    parametrosEmail: this.emial,
+    impuestosPorParametros: this.listaImpuestos,
+    prgIdBodegaNavigation: null,
+  };
+
+  ParametrosForm = new FormGroup({
+    unidadesHabilitarMayorista: new FormControl(
+      this.parametrosGlobales.prgUndsHabilitarMayorista,
+      [Validators.required]
+    ),
+    unidadesAgregarMayorista: new FormControl(
+      this.parametrosGlobales.prgUndsAgregarMayorista,
+      [Validators.required]
+    ),
+    habilitarImpuestos: new FormControl(
+      this.parametrosGlobales.prgHabilitarImpuestos
+    ),
+    impuestosIncluidos: new FormControl(
+      this.parametrosGlobales.prgImpustosIncluidos
+    ),
+    habilitarCorreo: new FormControl(true),
+    host: new FormControl(this.emial.preHost),
+    puerto: new FormControl(this.emial.prePuerto),
+    usuario: new FormControl(this.emial.preUser),
+    clave: new FormControl(this.emial.preClave),
+    ssl: new FormControl(this.emial.preSsl),
+  });
+
+  constructor(
+    private impuestoServicio: ImpuestoService,
+    private parametrosServicio: ParametrosService,
+    private messageService: MessageService
+  ) {}
+
+  ngOnInit(): void {
+    this.CargarImpuestos();
+    this.obtenerParametros();
+  }
+
+  CargarImpuestos() {
+    this.impuestoServicio.listaImpuestos().subscribe({
+      next: (x) => {
+        this.ListaImpuestosConsultados = [];
+        this.ListaImpuestosConsultados = x;
+      },
+      error: (_e) => {
+        console.log(_e);
+      },
+    });
+  }
+
+  FiltrarImpuestos(evento: any) {
+    //in a real application, make a request to a remote url with the query and return filtered results,
+    let filtrado: any[] = [];
+    let query = evento.query;
+
+    for (let i = 0; i < this.ListaImpuestosConsultados.length; i++) {
+      let Impuesto = this.ListaImpuestosConsultados[i];
+      if (
+        Impuesto.impDescripcion.toLowerCase().indexOf(query.toLowerCase()) == 0
+      ) {
+        filtrado.push(Impuesto);
+      }
+    }
+    this.ImpuestosSugerencia = filtrado;
+
+    if (filtrado.length == 1) {
+      let DatoExiste = false;
+      this.ImpuestosAgregar.forEach((x) => {
+        if (x.impId == filtrado[0].impId) {
+          DatoExiste = true;
+        }
+      });
+      if (!DatoExiste) {
+        this.ImpuestosAgregar.push(filtrado[0]);
+      }
+    }
+  }
+
+  obtenerParametros() {
+    this.parametrosServicio
+      .ObtenerPametros(activo.bodegaIngreso.bdgId)
+      .subscribe({
+        next: (x) => {
+          if (x != null) {
+            this.parametrosGlobales = x;
+            this.CargarDatosAlForm(this.parametrosGlobales);
+            if (this.parametrosGlobales.parametrosEmail != null) {
+              this.cargarDatosEmail(this.parametrosGlobales.parametrosEmail);
+            }
+            this.ImpuestosAgregar = [];
+            this.parametrosGlobales.impuestosPorParametros?.forEach(
+              (impuesto) => {
+                if (impuesto.impPidImpuestoNavigation != null) {
+                  this.ImpuestosAgregar.push(impuesto.impPidImpuestoNavigation);
+                }
+              }
+            );
+            if (this.parametrosGlobales.parametrosEmail != null) {
+              this.emial = this.parametrosGlobales.parametrosEmail;
+            }
+          }
+        },
+        error: (_e) => {
+          console.log(_e);
+        },
+      });
+  }
+
+  guardar() {
+    let contadorImpuestos: number = 0;
+    let huboError: boolean = false;
+
+    this.parametrosGlobales.prgIdBodega = activo.bodegaIngreso.bdgId;
+    this.parametrosGlobales.prgUndsHabilitarMayorista = this.ParametrosForm.get(
+      'unidadesHabilitarMayorista'
+    )?.value!;
+    this.parametrosGlobales.prgUndsAgregarMayorista = this.ParametrosForm.get(
+      'unidadesAgregarMayorista'
+    )?.value!;
+    this.parametrosGlobales.prgHabilitarImpuestos =
+      this.ParametrosForm.get('habilitarImpuestos')?.value!;
+    this.parametrosGlobales.prgImpustosIncluidos =
+      this.ParametrosForm.get('impuestosIncluidos')?.value!;
+
+    if (this.CorreoHbilitado) {
+      this.emial.preHost = this.ParametrosForm.get('host')?.value!;
+      this.emial.prePuerto = this.ParametrosForm.get('puerto')?.value!;
+      this.emial.preUser = this.ParametrosForm.get('usuario')?.value!;
+      this.emial.preClave = this.ParametrosForm.get('clave')?.value!;
+      this.emial.preSsl = this.ParametrosForm.get('ssl')?.value!;
+      this.emial.preIdParametroGlobal = this.parametrosGlobales.prgId;
+
+      if (this.emial.preHost == null || this.emial.preHost == '') {
+        huboError = this.error();
+      }
+      if (this.emial.prePuerto == null || this.emial.prePuerto == 0) {
+        huboError = this.error();
+      }
+      if (this.emial.preUser == null || this.emial.preUser == '') {
+        huboError = this.error();
+      }
+      if (this.emial.preClave == null || this.emial.preClave == '') {
+        huboError = this.error();
+      }
+
+      if (!huboError) {
+        this.parametrosGlobales.parametrosEmail = this.emial;
+      }
+    } else {
+      this.parametrosGlobales.parametrosEmail = null;
+    }
+    if (this.ImpuestosAgregar.length > 0) {
+      let listaImpuestos: ParametrosImpuestoModel[] = [];
+      this.ImpuestosAgregar.forEach((x) => {
+        let nuevoImpuesto: ParametrosImpuestoModel = {
+          impPid: 0,
+          impPidParametroGlobal: this.parametrosGlobales.prgId,
+          impPidImpuesto: x.impId,
+          impPidImpuestoNavigation: null,
+          impPidParametroGlobalNavigation: null,
+        };
+        listaImpuestos.push(nuevoImpuesto);
+      });
+      this.parametrosGlobales.impuestosPorParametros = [];
+      this.parametrosGlobales.impuestosPorParametros = listaImpuestos;
+    } else {
+      this.parametrosGlobales.impuestosPorParametros = null;
+    }
+    if (!huboError) {
+      this.parametrosServicio
+        .GuardarParametros(this.parametrosGlobales)
+        .subscribe({
+          next: (x) => {
+            this.CargarDatosAlForm(x);
+          },
+          error: (_e) => {
+            console.log(_e);
+          },
+        });
+    } else {
+      this.error();
+    }
+  }
+
+  CargarDatosAlForm(datos: ParametrosGlobalesModel) {
+    this.ParametrosForm.patchValue({
+      unidadesHabilitarMayorista: datos.prgUndsHabilitarMayorista,
+      unidadesAgregarMayorista: datos.prgUndsAgregarMayorista,
+      habilitarImpuestos: datos.prgHabilitarImpuestos,
+      impuestosIncluidos: datos.prgImpustosIncluidos,
+    });
+  }
+
+  cargarDatosEmail(datos: ParametrosEmailModel) {
+    this.ParametrosForm.patchValue({
+      host: datos.preHost,
+      puerto: datos.prePuerto,
+      usuario: datos.preUser,
+      clave: datos.preClave,
+      ssl: datos.preSsl,
+    });
+  }
+
+  AsignarCorreo() {
+    this.CorreoHbilitado = this.ParametrosForm.get('habilitarCorreo')?.value!;
+  }
+
+  error(): boolean {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'No se puede guardar',
+      detail: 'Se requiere ingresar todos los datos',
+    });
+    return true;
+  }
+
+  eliminarLista(impuesto: ImpuestosModel) {
+    const index = this.ImpuestosAgregar.indexOf(impuesto, 0);
+    if (index > -1) {
+      this.ImpuestosAgregar.splice(index, 1);
+    }
+    this.ImpuestosAgregar.sort();
+  }
 }

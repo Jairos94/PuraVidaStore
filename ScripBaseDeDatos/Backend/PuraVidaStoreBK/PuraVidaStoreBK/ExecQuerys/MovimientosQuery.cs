@@ -12,11 +12,13 @@ namespace PuraVidaStoreBK.ExecQuerys
     {
         private readonly IDataBase _conexion;
         private readonly IProductoQuery _producto;
+        private readonly PuraVidaStoreContext dbContex;
 
-        public MovimientosQuery(IDataBase conexion,IProductoQuery producto)
+        public MovimientosQuery(IDataBase conexion,IProductoQuery producto, PuraVidaStoreContext _dbContex)
         {
             _conexion = conexion;
             _producto = producto;
+            dbContex = _dbContex;
         }
 
         public async Task<bool> GuardarAjuste(Inventarios inventario, int IdBodega, int idUsuario, int Motivo)
@@ -24,8 +26,6 @@ namespace PuraVidaStoreBK.ExecQuerys
             var retorno = false;
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
-                {
                     var movimiento = new Movimiento
                     {
                         MvmIdProducto = inventario.producto.PrdId,
@@ -39,7 +39,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                     await IngresarMotimoMovimiento(movimiento);
                    
                     retorno = true;
-                }
+                
 
             }
             catch (Exception)
@@ -54,20 +54,19 @@ namespace PuraVidaStoreBK.ExecQuerys
         {
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
-                {
+              
                     if (motivosMovimiento.MtmId==0) 
                     {
-                         db.MotivosMovimientos.Add(motivosMovimiento);
+                        dbContex.MotivosMovimientos.Add(motivosMovimiento);
                     } else 
                     { 
-                         db.MotivosMovimientos.Update(motivosMovimiento);
+                         dbContex.MotivosMovimientos.Update(motivosMovimiento);
 
                     }
 
-                    await db.SaveChangesAsync();
+                    await dbContex.SaveChangesAsync();
                     return motivosMovimiento;
-                }
+                
             }
             catch (Exception ex)
             {
@@ -82,16 +81,9 @@ namespace PuraVidaStoreBK.ExecQuerys
             var retorno = false;
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
-                {
+               
                     Inventarios.ForEach(async x =>
                     {
-
-                        x.producto.PdrVisible = true;
-                        x.producto.PdrTieneExistencias = true;
-
-
-                        await _producto.GuardarProducto(x.producto, IdUsuario);
 
                         var movimiento = new Movimiento
                         {
@@ -106,7 +98,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                         await IngresarMotimoMovimiento(movimiento);
                     });
                     retorno = true;
-                }
+               
 
             }
             catch (Exception)
@@ -122,9 +114,8 @@ namespace PuraVidaStoreBK.ExecQuerys
 
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
-                {
-                    var MotivosMovimiento = await db.MotivosMovimientos
+                
+                    var MotivosMovimiento = await dbContex.MotivosMovimientos
                         .Where(x => x.MtmDescripcion.Contains("Ingreso por compra"))
                         .FirstOrDefaultAsync();
 
@@ -132,7 +123,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                     movimiento.MvmIdMotivoMovimiento = MotivosMovimiento.MtmId;
 
                     return await IngresarMotimoMovimiento(movimiento);
-                }
+                
             }
             catch (Exception ex)
             {
@@ -149,11 +140,10 @@ namespace PuraVidaStoreBK.ExecQuerys
             var ListaProductos = new List<Inventarios>();
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
-                {
+                
                     foreach (var ProductoCantidad in listaIds) 
                     {
-                        var producto = await db.Productos.Where(x=>x.PrdId==ProductoCantidad.idProducto)
+                        var producto = await dbContex.Productos.Where(x=>x.PrdId==ProductoCantidad.idProducto)
                                                          .Include(x=>x.PrdIdTipoProductoNavigation)
                                                          .FirstOrDefaultAsync();
                        
@@ -167,8 +157,8 @@ namespace PuraVidaStoreBK.ExecQuerys
                                 producto.PdrVisible = true;
                                 producto.PdrTieneExistencias = true;
 
-                                db.Productos.Update(producto);
-                                await db.SaveChangesAsync();
+                                dbContex.Productos.Update(producto);
+                                await dbContex.SaveChangesAsync();
                             }
                             ListaProductos.Add(inventario);
                         }
@@ -176,11 +166,11 @@ namespace PuraVidaStoreBK.ExecQuerys
                         {
                             producto.PdrTieneExistencias = false;
 
-                            db.Productos.Update(producto);
-                            await db.SaveChangesAsync();
+                            dbContex.Productos.Update(producto);
+                            await dbContex.SaveChangesAsync();
                         }
                     }
-                }
+                
                    
             }
             catch (Exception ex)
@@ -196,9 +186,8 @@ namespace PuraVidaStoreBK.ExecQuerys
         {
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
-                {
-                    var retorno = await db.MotivosMovimientos
+                
+                    var retorno = await dbContex.MotivosMovimientos
                            .Where(x =>
                            x.MtmId != 1 &&
                            (x.MtmDescripcion.Contains(descripcion) ||
@@ -206,7 +195,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                            .Include(x => x.MtmIdTipoMovimientoNavigation)
                            .ToListAsync();
                     return retorno;
-                }
+                
             }
             catch (Exception ex)
             {
@@ -221,13 +210,12 @@ namespace PuraVidaStoreBK.ExecQuerys
         {
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
-                {
-                    return await db.MotivosMovimientos
+               
+                    return await dbContex.MotivosMovimientos
                            .Where(x=>x.MtmId!=1)
                            .Include(x => x.MtmIdTipoMovimientoNavigation)
                            .ToListAsync();
-                }
+                
             }
             catch (Exception ex)
             {
@@ -241,11 +229,10 @@ namespace PuraVidaStoreBK.ExecQuerys
         {
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
-                {
-                    var retorno = await db.TipoMovimientos.ToListAsync();
+               
+                    var retorno = await dbContex.TipoMovimientos.ToListAsync();
                     return retorno;
-                }
+                
             }
             catch (Exception ex)
             {
@@ -258,13 +245,12 @@ namespace PuraVidaStoreBK.ExecQuerys
         {
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
-                {
-                    return await db.MotivosMovimientos
+                
+                    return await dbContex.MotivosMovimientos
                          .Where(x => x.MtmId == id)
                          .Include(x=>x.MtmIdTipoMovimientoNavigation)
                          .FirstOrDefaultAsync();
-                }
+                
             }
             catch (Exception ex)
             {
@@ -282,11 +268,10 @@ namespace PuraVidaStoreBK.ExecQuerys
             var ListaProductos = new List<Inventarios>();
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
-                {
+               
                     foreach (var ProductoCantidad in listaIds)
                     {
-                        var producto = await db.Productos.Where(x => 
+                        var producto = await dbContex.Productos.Where(x => 
                                                                 x.PrdId == ProductoCantidad.idProducto && (
                                                                 x.PrdNombre.Contains(buscador) ||
                                                                 x.PrdCodigo.Contains(buscador)||
@@ -303,7 +288,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                             ListaProductos.Add(inventario);
                         }
                     }
-                }
+                
 
             }
             catch (Exception ex)
@@ -318,13 +303,12 @@ namespace PuraVidaStoreBK.ExecQuerys
         {
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
-                {
+              
 
-                    db.Movimientos.Add(movimiento);
-                    await db.SaveChangesAsync();
+                    dbContex.Movimientos.Add(movimiento);
+                    await dbContex.SaveChangesAsync();
                     return movimiento;
-                }
+                
             }
             catch (Exception ex)
             {
@@ -351,7 +335,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                 {
                     var IdProductos = new IdProductosPorCantidad 
                     {
-                        idProducto = reader.GetInt32(0),
+                        idProducto = reader.GetInt64(0),
                         Cantidad = reader.GetInt32(1)
                     };
                     ListaInventarios.Add(IdProductos);

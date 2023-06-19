@@ -6,23 +6,26 @@ namespace PuraVidaStoreBK.ExecQuerys
 {
     public class CorreoQuery : ICorreoQuery
     {
+        private readonly PuraVidaStoreContext dbContex;
+
+        public CorreoQuery(PuraVidaStoreContext _dbContex)
+        {
+            dbContex = _dbContex;
+        }
         public async Task<ParametrosEmail> GuardarEmail(ParametrosEmail email)
         {
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
-                {
                     if (email.PreId>0) 
                     {
-                        db.ParametrosEmails.Update(email);
+                    dbContex.ParametrosEmails.Update(email);
                     }
                     else 
                     {
-                        db.ParametrosEmails.Add(email);
+                        dbContex.ParametrosEmails.Add(email);
                     }
-                    await db.SaveChangesAsync();
+                    await dbContex.SaveChangesAsync();
                     return email;
-                }
             }
             catch (Exception ex)
             {
@@ -35,10 +38,9 @@ namespace PuraVidaStoreBK.ExecQuerys
         {
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
-                {
-                    return await db.ParametrosEmails.FindAsync(id);
-                }
+                
+                    return await dbContex.ParametrosEmails.FindAsync(id);
+                
             }
             catch (Exception ex)
             {

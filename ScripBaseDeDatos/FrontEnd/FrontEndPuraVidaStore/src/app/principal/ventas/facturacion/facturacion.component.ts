@@ -156,26 +156,6 @@ export class FacturacionComponent implements OnInit {
     });
   }
 
-  obtenerClienteMayoristaporCedulaOId() {
-    this.servicioMayorista
-      .obtenerMayoristaPorCedula(this.buscadorCedulaOId)
-      .subscribe({
-        next: (x) => {
-          this.limpiarMayorista();
-          this.buscadorCedulaOId = '';
-          this.mayorista = x;
-          if (this.mayorista.clmIdPersonaNavigation != null) {
-            this.personaMayorista = this.mayorista.clmIdPersonaNavigation;
-          }
-          this.sumarTotal();
-          this.verMayoristaModal = false;
-        },
-        error: (_e) => {
-          console.log(_e);
-        },
-      });
-  }
-
   sumarTotal() {
     this.total = 0;
     this.totalCantidad = 0;
@@ -194,7 +174,7 @@ export class FacturacionComponent implements OnInit {
         }
       }
 
-      this.total = this.total + (x.dtfCantidad * x.dtfPrecio);
+      this.total = this.total + x.dtfCantidad * x.dtfPrecio;
       this.totalCantidad = this.totalCantidad + x.dtfCantidad;
 
       if (this.totalCantidad >= 3) {
@@ -204,15 +184,39 @@ export class FacturacionComponent implements OnInit {
       }
     });
 
-if(this.mayoristaDeshabilitado){
-  this.limpiarMayorista();
-}
+    if (this.mayoristaDeshabilitado) {
+      this.limpiarMayorista();
+    }
 
     if (this.listaDtealle.length <= 0) {
       this.cancelar();
     }
   }
+  ConsultarClienteMayorista() {
+    this.servicioMayorista
+      .obtenerMayoristaPorCedula(this.buscadorCedulaOId)
+      .subscribe(
+        (x) => {
+          console.log(x);
+          this.limpiarMayorista();
+          this.buscadorCedulaOId = '';
+          this.mayorista = x;
 
+          if (x == null) {
+            this.limpiarMayorista();
+          }
+
+          if (this.mayorista.clmIdPersonaNavigation != null) {
+            this.personaMayorista = this.mayorista.clmIdPersonaNavigation;
+          }
+        },
+        (_e) => {
+          this.limpiarMayorista();
+          console.log(_e);
+        }
+      );
+    this.verMayoristaModal = false;
+  }
   deshabilitarCambio() {
     if (this.formaPagoSeleccionado.frpId > 1) {
       this.cambio = 0;

@@ -8,22 +8,27 @@ namespace PuraVidaStoreBK.ExecQuerys
 {
     public class VentasQuery : IVentasQuery
     {
+        private readonly PuraVidaStoreContext dbContex;
+
+        public VentasQuery( PuraVidaStoreContext _dbContex)
+        {
+            dbContex = _dbContex;
+        }
         public async Task<Factura> ingresarFactura(Factura factura)
         {
 			try
 			{
-				using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
-				{
-					db.Facturas.Add(factura);
-					await db.SaveChangesAsync();
+				
+					dbContex.Facturas.Add(factura);
+					await dbContex.SaveChangesAsync();
 
 					var fecha= DateTime.Now;
 					factura.FtrCodigoFactura=fecha.Year.ToString() + fecha.Month.ToString()+ factura.FtrId.ToString();
-					db.Facturas.Update(factura);
+					dbContex.Facturas.Update(factura);
 
 					factura.FacturaResumen.ForEach(x => 
 					{
-						db.FacturaResumen.Add(x);
+						dbContex.FacturaResumen.Add(x);
 					});
 
 					factura.DetalleFacturas.ForEach(x => 
@@ -32,13 +37,13 @@ namespace PuraVidaStoreBK.ExecQuerys
 					});
 
 
-                    db.DetalleFacturas.AddRange(factura.DetalleFacturas);
+                    dbContex.DetalleFacturas.AddRange(factura.DetalleFacturas);
 
-                    await db.SaveChangesAsync();
+                    await dbContex.SaveChangesAsync();
 
 
                  
-                }
+                
 				
 			}
 			catch (Exception ex)

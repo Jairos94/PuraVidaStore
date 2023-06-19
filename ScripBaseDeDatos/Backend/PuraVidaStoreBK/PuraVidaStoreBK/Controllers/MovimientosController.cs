@@ -16,11 +16,13 @@ namespace PuraVidaStoreBK.Controllers
     {
         private readonly IMovimientosQuery _movimientosQuery;
         private readonly IMapper _mapper;
+        private readonly IProductoQuery _productoQuery;
 
-        public MovimientosController(IMovimientosQuery movimientosQuery,IMapper mapper)
+        public MovimientosController(IMovimientosQuery movimientosQuery,IMapper mapper, IProductoQuery productoQuery)
         {
             _movimientosQuery = movimientosQuery;
             _mapper = mapper;
+            _productoQuery = productoQuery;
         }
         //GET: api/<MovimientosController>
         [HttpGet("Inventarios"), Authorize]
@@ -61,7 +63,17 @@ namespace PuraVidaStoreBK.Controllers
         {
             try
             {
-                var seGuardoDatos = await _movimientosQuery.IngresarProductosAlInventario(_mapper.Map<List<Inventarios>>(InventariosAgregar), IdBodega, IdUsuario, Motivo);
+                var datosTrasformados = _mapper.Map<List<Inventarios>>(InventariosAgregar);
+                datosTrasformados.ForEach(async x => 
+                {
+
+                    x.producto.PdrVisible = true;
+                    x.producto.PdrTieneExistencias = true;
+
+
+                    await _productoQuery.GuardarProducto(x.producto, IdUsuario);
+                });
+                var seGuardoDatos = await _movimientosQuery.IngresarProductosAlInventario(datosTrasformados, IdBodega, IdUsuario, Motivo);
                 return Ok(seGuardoDatos);
             }
             catch (Exception ex)

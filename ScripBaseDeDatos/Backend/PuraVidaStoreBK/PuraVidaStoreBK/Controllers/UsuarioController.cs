@@ -73,7 +73,7 @@ namespace PuraVidaStoreBK.Controllers
             bool HuboError = false;
             string MensajeError="";
             var UsuarioIngreso = _mapper.Map<Usuario>(UsuarioParametro);
-            
+
 
             //Valida si esta agregdo
             if (ListaPersonasPorCedula.Count == 0 || ListaPersonasPorCedula == null)
@@ -83,12 +83,21 @@ namespace PuraVidaStoreBK.Controllers
 
                 UsuarioIngreso.UsrIdPersona = PersonaIngreso.PsrId;
             }
+            else 
+            {
+                PersonaIngreso = ListaPersonasPorCedula[0];
+                if (agregar) 
+                {
+                    UsuarioIngreso.UsrIdPersona = UsuarioIngreso.UsrIdPersonaNavigation.PsrId;
+                }
+                
+            }
             UsuarioIngreso.UsrIdPersonaNavigation = PersonaIngreso;
 
             if (agregar) 
             {
                 //Valida si es una persona por usuario 
-                if (ValidarPersonaPorUsuario(ListaPersonasPorCedula)&& ListaPersonasPorCedula!=null) 
+                if (await ValidarPersonaPorUsuario( PersonaIngreso.PsrId) && ListaPersonasPorCedula!=null) 
                 {
                     HuboError = true;
                     MensajeError = "No se puede agregar el usuario porque esta persona ya tiene otro usuario";
@@ -247,19 +256,16 @@ namespace PuraVidaStoreBK.Controllers
             Response.Cookies.Append("actualizarToken",nuevaActualizacionToken.Token, cookieOptions);
         }
 
-        private bool ValidarPersonaPorUsuario(List<Persona> PersonaExiste) 
+        private async Task<bool> ValidarPersonaPorUsuario( long id) 
         {
             bool Existe = false;
             //valida si la persona es usuario
-            PersonaExiste.ForEach(x =>
-            {
-              
-                var PersonaUsuario = _usuario.UsuarioIdPersona(x.PsrId);
+                var PersonaUsuario =await _usuario.UsuarioIdPersona(id);
                 if (PersonaUsuario != null)
                 {
-                    Existe=   true;
+                    Existe = true;
                 }
-            });
+            
 
             return Existe;
         }

@@ -7,26 +7,32 @@ namespace PuraVidaStoreBK.ExecQuerys
 {
     public class ParametrosGeneralesQuery : IParametrosGeneralesQuery
     {
+        private readonly PuraVidaStoreContext dbContex;
+
+        public ParametrosGeneralesQuery(PuraVidaStoreContext _dbContex)
+        {
+            dbContex = _dbContex;
+        }
         public async Task<ParametrosGlobales> GuardarParametros(ParametrosGlobales parametros)
         {
             parametros.ImpuestosPorParametros = null;
+            parametros.ParametrosEmail = null;
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
-                {
+               
                     if (parametros.PrgId == 0)
                     {
-                        db.ParametrosGlobales.Add(parametros);
+                        dbContex.ParametrosGlobales.Add(parametros);
                     }
                     else
                     {
-                        db.ParametrosGlobales.Update(parametros);
+                        dbContex.ParametrosGlobales.Update(parametros);
 
                     }
-                    await db.SaveChangesAsync();
+                    await dbContex.SaveChangesAsync();
 
                     return parametros;
-                }
+                
             }
             catch (Exception ex)
             {
@@ -34,55 +40,38 @@ namespace PuraVidaStoreBK.ExecQuerys
                 throw;
             }
         }
-
-        public async Task<ImpuestosPorParametro> GuardarImpuestoPorParametro(ImpuestosPorParametro impuestos) 
+        public async Task<bool> GuardarImpuestoPorParametro(List< ImpuestosPorParametro> impuestos) 
         {
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
-                {
-                    if (impuestos.ImpPid == 0)
-                    {
-                        var nuevoImpuesto = new ImpuestosPorParametro
-                        {
-                            ImpPidParametroGlobal = impuestos.ImpPidParametroGlobal,
-                            ImpPidImpuesto = impuestos.ImpPidImpuesto
-                        };
-                        db.ImpuestosPorParametros.Add(nuevoImpuesto);
-                        await db.SaveChangesAsync();
+                        
+                    dbContex.ImpuestosPorParametros.AddRange(impuestos);
+                        await dbContex.SaveChangesAsync();
 
-                        return nuevoImpuesto;
-                    }
-                    else
-                    {
-                        db.ImpuestosPorParametros.Update(impuestos);
-                        await db.SaveChangesAsync();
-
-                        return impuestos;
-
-                    }
-                }
+                        return true;
+                    
+                
             }
             catch (Exception ex)
             {
                 Log.Error(ex.Message, ex);
-                throw;
+                return false;
             }
         }
 
-        public async Task<ParametrosGlobales> ObtenerParametrosId(int id)
+        public async Task<ParametrosGlobales> ObtenerParametrosId(int idBodega)
         {
 
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
-                {
-                    var retorno = await db.ParametrosGlobales
-                        .Where(x => x.PrgId == id)
-                        .FirstAsync();
+                
+                    var retorno = await dbContex.ParametrosGlobales
+                        .Where(x => x.PrgIdBodega == idBodega)
+                        .Include(x=>x.ParametrosEmail)
+                        .FirstOrDefaultAsync();
 
                     return retorno;
-                }
+                
             }
             catch (Exception ex)
             {
@@ -92,10 +81,28 @@ namespace PuraVidaStoreBK.ExecQuerys
         }
         public async Task<List<ImpuestosPorParametro>> ObtenerImpuestosPorParametro(int id) 
         {
-            using (PuraVidaStoreContext db= new PuraVidaStoreContext()) 
+            
+                return await dbContex.ImpuestosPorParametros.Where(x=>x.ImpPidParametroGlobal==id).Include(x=>x.ImpPidImpuestoNavigation).ToListAsync();
+            
+        }
+        public async Task<ParametrosEmail> GuardarEmail(ParametrosEmail parametrosEmail) 
+        {
+            if (parametrosEmail.PreId > 0)
             {
-                return await db.ImpuestosPorParametros.Where(x=>x.ImpPidParametroGlobal==id).Include(x=>x.ImpPidImpuestoNavigation).ToListAsync();
+                dbContex.Update(parametrosEmail);
             }
+            else 
+            {
+                dbContex.Add(parametrosEmail);
+            }
+            await dbContex.SaveChangesAsync();
+            return parametrosEmail;
+        }
+        public async Task<bool> EliminarImpustoPorParametro(List<ImpuestosPorParametro> datosElimnar) 
+        {
+             dbContex.ImpuestosPorParametros.RemoveRange(datosElimnar);
+             await dbContex.SaveChangesAsync();
+             return true;
         }
     }
 }

@@ -1,25 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PuraVidaStoreBK.Models.DbContex
+namespace PuraVidaStoreBK.Models.DbContex;
+
+public partial class ClientesMayorista
 {
-    public partial class ClientesMayorista
-    {
-        public ClientesMayorista()
-        {
-            Facturas = new HashSet<Factura>();
-            HistorialClienteMayorista = new HashSet<HistorialClienteMayorista>();
-        }
+    public long ClmId { get; set; }
 
-        public int ClmId { get; set; }
-        public int ClmIdPersona { get; set; }
-        public DateTime ClmFechaCreacion { get; set; }
-        public DateTime ClmFechaVencimiento { get; set; }
-        public string? ClmCorreo { get; set; }
-        public string? ClmTelefono { get; set; }
+    public long ClmIdPersona { get; set; }
 
-        public virtual Persona ClmIdPersonaNavigation { get; set; } = null!;
-        public virtual ICollection<Factura> Facturas { get; set; }
-        public virtual ICollection<HistorialClienteMayorista> HistorialClienteMayorista { get; set; }
-    }
+    public DateTime ClmFechaCreacion { get; set; }
+
+    public DateTime ClmFechaVencimiento { get; set; }
+
+    public string? ClmCorreo { get; set; }
+
+    public string? ClmTelefono { get; set; }
+
+    public virtual Persona ClmIdPersonaNavigation { get; set; } = null!;
+
+    public virtual ICollection<Factura> Facturas { get; set; } = new List<Factura>();
+
+    public virtual ICollection<HistorialClienteMayorista> HistorialClienteMayorista { get; set; } = new List<HistorialClienteMayorista>();
 }

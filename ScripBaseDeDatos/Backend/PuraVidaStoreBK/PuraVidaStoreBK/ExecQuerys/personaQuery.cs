@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
 using PuraVidaStoreBK.ExecQuerys.Interfaces;
-using PuraVidaStoreBK.Models;
 using PuraVidaStoreBK.Models.DbContex;
 using Serilog;
 
@@ -8,16 +7,19 @@ namespace PuraVidaStoreBK.ExecQuerys
 {
     public class PersonaQuery:IPersonaQuery
     {
+        private readonly PuraVidaStoreContext dbContex;
+
+        public PersonaQuery( PuraVidaStoreContext _dbContex)
+        {
+            dbContex = _dbContex;
+        }
         public async Task<Persona>  IngresarPersona(Persona PersonaData) 
         {
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
-                {
-                   
-                    await db.Personas.AddAsync(PersonaData);
-                    db.SaveChanges();
-                }
+                    await dbContex.Personas.AddAsync(PersonaData);
+                    dbContex.SaveChanges();
+                
                 
             }
             catch (Exception ex)
@@ -33,12 +35,11 @@ namespace PuraVidaStoreBK.ExecQuerys
             var ListaPersonas = new List<Persona>();
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
-                {
-                    ListaPersonas =  db.Personas
+                
+                    ListaPersonas = dbContex.Personas
                         .Where(x=>x.PsrIdentificacion.Contains(cedula))
                         .ToList();
-                }
+                
 
             }
             catch (Exception ex)
@@ -49,15 +50,14 @@ namespace PuraVidaStoreBK.ExecQuerys
             return ListaPersonas;
         }
 
-        public async Task<Persona> ObtenerPersonaPorId(int id)
+        public async Task<Persona> ObtenerPersonaPorId(long id)
         {
             var PersonaRetorno = new Persona();
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
-                {
-                    PersonaRetorno = await db.Personas.FindAsync(id);
-                }
+              
+                    PersonaRetorno = await dbContex.Personas.FindAsync(id);
+                
 
             }
             catch (Exception ex)
@@ -70,12 +70,19 @@ namespace PuraVidaStoreBK.ExecQuerys
 
         public async Task<Persona> EditarPersona(Persona PersonaEditar) 
         {
-            using (PuraVidaStoreContext db= new PuraVidaStoreContext()) 
+            try
             {
-                db.Personas.Update(PersonaEditar);
-                db.SaveChanges();
-                
+                dbContex.Update(PersonaEditar);
+                await dbContex.SaveChangesAsync();
             }
+            catch (Exception ex)
+            {
+
+                Log.Error(ex.Message);
+            }
+             
+                
+            
 
             return PersonaEditar;
         }

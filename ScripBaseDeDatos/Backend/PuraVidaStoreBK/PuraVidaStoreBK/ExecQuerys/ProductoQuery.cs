@@ -8,40 +8,38 @@ namespace PuraVidaStoreBK.ExecQuerys
 {
     public class ProductoQuery : IProductoQuery
     {
-       
+        private readonly PuraVidaStoreContext dbContex;
 
+        public ProductoQuery(PuraVidaStoreContext _dbContex)
+        {
+            dbContex = _dbContex;
+        }
         public async Task<Producto> GuardarProducto(Producto producto, int idUsuario)
         {
             producto.PrdIdTipoProductoNavigation = null;
-            if (producto.PrdId>0) 
-            {
-                await GuardarHistorial(producto, idUsuario);
-
-            }
 
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
-                {
+                
                     if (producto.PrdId>0) 
                     {
 
-                        db.Productos.Update(producto);
+                        dbContex.Productos.Update(producto);
 
                    
                     }
                     else 
                     {
-                        db.Productos.Add(producto);
-                        await db.SaveChangesAsync();
+                        dbContex.Productos.Add(producto);
+                        await dbContex.SaveChangesAsync();
 
                         producto.PrdCodigo = "PVS" + producto.PrdIdTipoProducto.ToString() + "C" + producto.PrdId.ToString();
-                        db.Productos.Update(producto);
+                        dbContex.Productos.Update(producto);
                         
                     }
-                    await db.SaveChangesAsync();
+                    await dbContex.SaveChangesAsync();
 
-                }
+                
                 return producto;
             }
             catch (Exception ex)
@@ -55,14 +53,13 @@ namespace PuraVidaStoreBK.ExecQuerys
         {
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
-                {
-                    var retorno = db.Productos
+                
+                    var retorno = dbContex.Productos
                            .Where(x => x.PrdCodigo == codigo || x.PrdCodigoProvedor == codigo)
                            .Include(x => x.PrdIdTipoProductoNavigation)
                            .FirstAsync();
                     return await retorno;
-                }
+                
             }
             catch (Exception ex)
             {
@@ -76,13 +73,12 @@ namespace PuraVidaStoreBK.ExecQuerys
             var listaProducto = new List<Producto>();
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
-                {
-                    listaProducto = await db.Productos
+                
+                    listaProducto = await dbContex.Productos
                         .Include(x=>x.PrdIdTipoProductoNavigation)
                         .ToListAsync();
                     return listaProducto;
-                }
+                
             }
             catch (Exception ex)
             {
@@ -97,9 +93,8 @@ namespace PuraVidaStoreBK.ExecQuerys
             var listaProducto = new List<Producto>();
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
-                {
-                    listaProducto = await db.Productos
+              
+                    listaProducto = await dbContex.Productos
                         .Where(x=>(x.PrdNombre.Contains(Descripcion)||
                                   x.PrdCodigo==Descripcion||
                                   x.PrdCodigoProvedor==Descripcion||
@@ -109,7 +104,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                         .Include(x=>x.PrdIdTipoProductoNavigation)
                         .ToListAsync();
                     return listaProducto;
-                }
+                
             }
             catch (Exception ex)
             {
@@ -119,16 +114,15 @@ namespace PuraVidaStoreBK.ExecQuerys
             return listaProducto;
         }
 
-        public async Task<Producto> ProductoPorId(int id)
+        public async Task<Producto> ProductoPorId(long id)
         {
             var productoRetorno = new Producto();
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
-                {
-                    productoRetorno = await db.Productos.FindAsync(id);
+                
+                    productoRetorno = await dbContex.Productos.FindAsync(id);
                     
-                }
+                
             }
             catch (Exception ex)
             {
@@ -138,13 +132,13 @@ namespace PuraVidaStoreBK.ExecQuerys
             return productoRetorno;
         }
 
-        private async Task<bool>  GuardarHistorial(Producto producto,int IdUsuario) 
+        public async Task<bool>  GuardarHistorial(Producto producto,int IdUsuario) 
         {
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
-                {
-                    var productoConsulta = await db.Productos.FindAsync(producto.PrdId);
+                producto.PrdIdTipoProductoNavigation = null;
+
+                var productoConsulta = await dbContex.Productos.FindAsync(producto.PrdId);
 
 
                     if (productoConsulta.PrdPrecioVentaMayorista != producto.PrdPrecioVentaMayorista ||
@@ -161,12 +155,12 @@ namespace PuraVidaStoreBK.ExecQuerys
                             HlpPrecioMinoristaAnterior = productoConsulta.PrdPrecioVentaMinorista
 
                         };
-                        db.HistorialPrecios.Add(Historial);
-                        await db.SaveChangesAsync();
+                        dbContex.HistorialPrecios.Add(Historial);
+                        await dbContex.SaveChangesAsync();
                         
                     }
                     return true;
-                }
+                
                     
             }
             catch (Exception ex)
@@ -182,14 +176,13 @@ namespace PuraVidaStoreBK.ExecQuerys
             var listaProducto = new List<Producto>();
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
-                {
-                    listaProducto = await db.Productos
+                
+                    listaProducto = await dbContex.Productos
                         .Where(x => x.PdrVisible == true)
                         .Include(x => x.PrdIdTipoProductoNavigation)
                         .ToListAsync();
                     return listaProducto;
-                }
+                
             }
             catch (Exception ex)
             {
@@ -204,13 +197,12 @@ namespace PuraVidaStoreBK.ExecQuerys
             var listaProducto = new List<Producto>();
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
-                {
-                    listaProducto = await db.Productos
+                
+                    listaProducto = await dbContex.Productos
                         .Include(x => x.PrdIdTipoProductoNavigation)
                         .ToListAsync();
                     return listaProducto;
-                }
+                
             }
             catch (Exception ex)
             {
@@ -225,9 +217,8 @@ namespace PuraVidaStoreBK.ExecQuerys
             var listaProducto = new List<Producto>();
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
-                {
-                    listaProducto = await db.Productos
+               
+                    listaProducto = await dbContex.Productos
                         .Where(x => x.PrdNombre.Contains(Descripcion) ||
                                   x.PrdCodigo==Descripcion ||
                                   x.PrdCodigoProvedor==Descripcion||
@@ -236,7 +227,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                         .Include(x => x.PrdIdTipoProductoNavigation)
                         .ToListAsync();
                     return listaProducto;
-                }
+                
             }
             catch (Exception ex)
             {

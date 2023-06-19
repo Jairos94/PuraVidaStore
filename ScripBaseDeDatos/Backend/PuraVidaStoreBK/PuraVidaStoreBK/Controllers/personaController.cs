@@ -36,7 +36,7 @@ namespace PuraVidaStoreBK.Controllers
 
         // GET api/<personaController>/5
         [HttpGet("personaPorId{id}"), Authorize]
-        public async Task< ActionResult> personaPorId(int id)
+        public async Task< ActionResult> personaPorId(long id)
         {
             try
             {

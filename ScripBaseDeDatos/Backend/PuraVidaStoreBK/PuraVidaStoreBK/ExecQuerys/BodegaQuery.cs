@@ -2,20 +2,24 @@
 using PuraVidaStoreBK.ExecQuerys.Interfaces;
 using PuraVidaStoreBK.Models.DbContex;
 using Serilog;
+using XAct.Library.Settings;
 
 namespace PuraVidaStoreBK.ExecQuerys
 {
     public class BodegaQuery : IBodegaQuery
     {
+        private readonly PuraVidaStoreContext dbContext;
+
+        public BodegaQuery(PuraVidaStoreContext _dbContext)
+        {
+            dbContext = _dbContext;
+        }
         public async Task<Bodega> BodegaPorId(int idBodega)
         {
             var bodega = new Bodega();
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
-                {
-                    bodega = await db.Bodegas.FindAsync(idBodega);
-                }
+                    bodega = await dbContext.Bodegas.FindAsync(idBodega);
             }
             catch (Exception ex)
             {
@@ -29,18 +33,15 @@ namespace PuraVidaStoreBK.ExecQuerys
         {
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
-                {
                     if (bodega.BdgId>0 && bodega != null) 
                     {
-                         db.Bodegas.Update(bodega);
+                         dbContext.Bodegas.Update(bodega);
                     }
                     else 
                     {
-                         await db.Bodegas.AddAsync(bodega);
+                         await dbContext.Bodegas.AddAsync(bodega);
                     }
-                    await db.SaveChangesAsync();
-                }
+                    await dbContext.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -56,10 +57,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             var lista = new List<Bodega>();
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
-                {
-                    lista =await db.Bodegas.Where(x=>x.BdgVisible==true).ToListAsync();
-                }
+                lista = await dbContext.Bodegas.Where(x => x.BdgVisible == true).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -74,12 +72,9 @@ namespace PuraVidaStoreBK.ExecQuerys
             var lista = new List<Bodega>();
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
-                {
-                    lista = await db.Bodegas
-                        .Where(x => x.BdgVisible == true && x.BdgDescripcion.Contains(Descripcion))
+                lista= await dbContext.Bodegas
+                    .Where(x => x.BdgVisible == true && x.BdgDescripcion.Contains(Descripcion))
                         .ToListAsync();
-                }
             }
             catch (Exception ex)
             {

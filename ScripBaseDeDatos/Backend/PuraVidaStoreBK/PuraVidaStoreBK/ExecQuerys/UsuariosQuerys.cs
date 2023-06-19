@@ -12,10 +12,12 @@ namespace PuraVidaStoreBK.ExecQuerys
     public class UsuariosQuerys:IUsuariosQuerys
     {
         private readonly IDataBase _data;
+        private readonly PuraVidaStoreContext dbContex;
 
-        public UsuariosQuerys(IDataBase conexion)
+        public UsuariosQuerys(IDataBase conexion, PuraVidaStoreContext _dbContex)
         {
             _data = conexion;
+            dbContex = _dbContex;
         }
         //DataBase data= new DataBase();
         //Hace Login
@@ -53,7 +55,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                         }
                         u.UsrIdRol = reader.GetInt32(3);
                         u.UsrActivo = reader.GetBoolean(4);
-                        u.UsrIdPersona = reader.GetInt32(5);
+                        u.UsrIdPersona = reader.GetInt64(5);
 
                         Persona p = new Persona();
                         p.PsrId= u.UsrIdPersona;
@@ -95,14 +97,13 @@ namespace PuraVidaStoreBK.ExecQuerys
             List<Usuario> usuarios = new List<Usuario>();
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
-                {
-                    usuarios = await db.Usuarios
+                
+                    usuarios = await dbContex.Usuarios
                                        .Where(x=>x.UsrActivo ==true)
                                        .Include(x=>x.UsrIdPersonaNavigation)
                                        .Include(x=>x.UsrIdRolNavigation)
                                        .ToListAsync();
-                }
+                
             }
             catch (Exception ex)
             {
@@ -126,14 +127,14 @@ namespace PuraVidaStoreBK.ExecQuerys
                 command.Parameters.Add("@Pass", SqlDbType.VarChar, 256).Value = clave;
                 command.Parameters.Add("@Email", SqlDbType.VarChar, 100).Value = usuario.UsrEmail;
                 command.Parameters.Add("@IdRol", SqlDbType.Int).Value = usuario.UsrIdRol;
-                command.Parameters.Add("@IdPersona", SqlDbType.Int).Value = usuario.UsrIdPersona;
+                command.Parameters.Add("@IdPersona", SqlDbType.BigInt).Value = usuario.UsrIdPersona;
 
                 reader = command.ExecuteReader();
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error(ex.Message);
                 return false;
             }
 
@@ -157,7 +158,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                 command.Parameters.Add("@UsrPass", SqlDbType.VarChar, 256).Value = clave;
                 command.Parameters.Add("@Email", SqlDbType.VarChar, 100).Value = usuario.UsrEmail;
                 command.Parameters.Add("@Rol", SqlDbType.Int).Value = usuario.UsrIdRol;
-                command.Parameters.Add("@idPersona", SqlDbType.Int).Value = usuario.UsrIdPersona;
+                command.Parameters.Add("@idPersona", SqlDbType.BigInt).Value = usuario.UsrIdPersona;
                 command.Parameters.Add("@idUsuario", SqlDbType.Int).Value = usuario.UsrId;
                 command.Parameters.Add("@activo", SqlDbType.Int).Value = usuario.UsrActivo;
 
@@ -180,13 +181,12 @@ namespace PuraVidaStoreBK.ExecQuerys
             var UsuarioRetorno = new Usuario();
             try
             {
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
-                {
-                    UsuarioRetorno = await db.Usuarios
+                
+                    UsuarioRetorno = await dbContex.Usuarios
                         .Include(x=>x.UsrIdPersonaNavigation)
                         .Include(x=>x.UsrIdRolNavigation)
                         .FirstOrDefaultAsync(x=>x.UsrId == id);
-                }
+                
             }
             catch (Exception ex)
             {
@@ -201,22 +201,17 @@ namespace PuraVidaStoreBK.ExecQuerys
         public async Task< Usuario> UsuarioPorUsuario(string usuario) 
         {
             var usuarioRetorno = new Usuario();
-            
-                using (PuraVidaStoreContext db = new PuraVidaStoreContext())
-                {
-                    usuarioRetorno = await db.Usuarios.Where(x => x.UsrUser == usuario).FirstOrDefaultAsync();
-                }
-            
-           
+            usuarioRetorno = await dbContex.Usuarios.Where(x => x.UsrUser == usuario).FirstOrDefaultAsync();
             return usuarioRetorno;
         }
 
-        public async Task<Usuario> UsuarioIdPersona(int idPersona) 
+        public async Task<Usuario> UsuarioIdPersona(long idPersona) 
         {
-            using (PuraVidaStoreContext db = new PuraVidaStoreContext())
-            {
-                return await db.Usuarios.Where(x => x.UsrIdPersona == idPersona).FirstAsync();
-            }
+            var usuario = new Usuario();
+            usuario = await dbContex.Usuarios.Where(x => x.UsrIdPersona == idPersona).FirstOrDefaultAsync();
+            return usuario;
+
+
         }
 
    

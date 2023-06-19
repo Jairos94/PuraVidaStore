@@ -1,4 +1,4 @@
-use <Nombre de la base de datos>
+use PuraVidaStore
 INSERT INTO RolUsiario(RluDescripcion) VALUES('Administrador'),('Vendedor')
 go
 

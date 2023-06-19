@@ -66,7 +66,7 @@ namespace PuraVidaStoreBK.Controllers
             return Ok(listaRetorno);
         }
         [HttpGet("ObtenerProductoPorId"), Authorize]
-        public async Task<IActionResult> ObtenerProductoPorId(int id)
+        public async Task<IActionResult> ObtenerProductoPorId(long id)
         {
             var producto = await _productoQuery.ProductoPorId(id);
             var productoRenorno = _mapper.Map<ProductoDTO>(producto);
@@ -98,6 +98,11 @@ namespace PuraVidaStoreBK.Controllers
         public async Task<IActionResult> GuardarProducto([FromBody] ProductoDTO model,int idUsuario)
         {
             var productoGuardar = _mapper.Map<Producto>(model);
+            if (productoGuardar.PrdId>0) 
+            {
+                var SeGuardoHistorital = await _productoQuery.GuardarHistorial(productoGuardar, idUsuario);
+            }
+            
             productoGuardar = await _productoQuery.GuardarProducto(productoGuardar, idUsuario);
             model = _mapper.Map<ProductoDTO>(productoGuardar);
             if (model != null)

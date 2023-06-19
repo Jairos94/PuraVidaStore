@@ -10,6 +10,7 @@ import {DropdownModule} from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { PanelMenuModule } from 'primeng/panelmenu';
+import { KeyFilterModule } from 'primeng/keyfilter';
 import { ToastModule } from 'primeng/toast';
 import { SidebarModule } from 'primeng/sidebar';
 
@@ -25,6 +26,7 @@ import { SidebarModule } from 'primeng/sidebar';
     ButtonModule,
     DropdownModule,
     InputTextModule,
+    KeyFilterModule,
     MessageModule,
     PanelMenuModule,
     ToastModule,

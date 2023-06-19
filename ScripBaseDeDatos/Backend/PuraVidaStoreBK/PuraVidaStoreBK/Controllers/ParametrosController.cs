@@ -22,7 +22,7 @@ namespace PuraVidaStoreBK.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("GuardarParametrosGlobales"), Authorize]
+        [HttpPost("GuardarParametrosGlobales"), Authorize(Roles = "1")]
         public async Task<IActionResult> GuardarParametrosGlobales(ParametrosGlobalesDTO parametros)
         {
             try
@@ -31,16 +31,24 @@ namespace PuraVidaStoreBK.Controllers
 
                 var retorno = new ParametrosGlobalesDTO();
                 retorno = _mapper.Map<ParametrosGlobalesDTO>(guardar);
-
-                if (parametros.ImpuestosPorParametros.Count!=null) 
+                var listaImpuestoPorParametro = await _parametros.ObtenerImpuestosPorParametro(guardar.PrgId);
+                if (listaImpuestoPorParametro.Count > 0)
+                {
+                    var seBorroLista = await _parametros.EliminarImpustoPorParametro(listaImpuestoPorParametro);
+                }
+                if (parametros.ImpuestosPorParametros!=null) 
                 {
                     foreach (var impuesto in parametros.ImpuestosPorParametros) 
                     {
                         impuesto.ImpPidParametroGlobal = retorno.PrgId;
-                        await _parametros.GuardarImpuestoPorParametro(_mapper.Map<ImpuestosPorParametro>(impuesto));
                     }
+                    await _parametros.GuardarImpuestoPorParametro(_mapper.Map<List<ImpuestosPorParametro>>(parametros.ImpuestosPorParametros));
                 }
-
+                if (parametros.ParametrosEmail!=null) 
+                {
+                    parametros.ParametrosEmail.PreIdParametroGlobal = guardar.PrgId;
+                    var guardarCorreo = await _parametros.GuardarEmail(_mapper.Map<ParametrosEmail>( parametros.ParametrosEmail));
+                }
                 var listaImpuesto =await _parametros.ObtenerImpuestosPorParametro(guardar.PrgId);
 
                 foreach (var impuesto in listaImpuesto) 
@@ -57,28 +65,26 @@ namespace PuraVidaStoreBK.Controllers
         }
 
         // GET api/<ParametrosController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("ObtenerParametros"),Authorize]
+        public async Task<IActionResult> ObtenerParametros(int idBodega)
         {
-            return "value";
-        }
+            try
+            {
+                var respuesta = await _parametros.ObtenerParametrosId(idBodega);
+                if (respuesta!=null) 
+                {
+                    respuesta.ImpuestosPorParametros = await _parametros.ObtenerImpuestosPorParametro(respuesta.PrgId);
+                }
+               
+                return Ok(_mapper.Map<ParametrosGlobalesDTO>(respuesta));
+            }
+            catch (Exception ex)
+            {
 
-        // POST api/<ParametrosController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
+                return BadRequest("Favor de revisar los logs");
+            }
+            
 
-        // PUT api/<ParametrosController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<ParametrosController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

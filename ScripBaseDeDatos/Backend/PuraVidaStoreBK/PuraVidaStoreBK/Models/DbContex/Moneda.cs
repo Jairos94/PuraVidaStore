@@ -1,23 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PuraVidaStoreBK.Models.DbContex
+namespace PuraVidaStoreBK.Models.DbContex;
+
+public partial class Moneda
 {
-    public partial class Moneda
-    {
-        public Moneda()
-        {
-            DetalleProductoPedidos = new HashSet<DetalleProductoPedido>();
-            OtrosCargos = new HashSet<OtrosCargo>();
-            Trackins = new HashSet<Trackin>();
-        }
+    public int MndId { get; set; }
 
-        public int MndId { get; set; }
-        public string MndCodigo { get; set; } = null!;
-        public string MndDescripcion { get; set; } = null!;
+    public string MndCodigo { get; set; } = null!;
 
-        public virtual ICollection<DetalleProductoPedido> DetalleProductoPedidos { get; set; }
-        public virtual ICollection<OtrosCargo> OtrosCargos { get; set; }
-        public virtual ICollection<Trackin> Trackins { get; set; }
-    }
+    public string MndDescripcion { get; set; } = null!;
+
+    public virtual ICollection<DetalleProductoPedido> DetalleProductoPedidos { get; set; } = new List<DetalleProductoPedido>();
+
+    public virtual ICollection<OtrosCargo> OtrosCargos { get; set; } = new List<OtrosCargo>();
+
+    public virtual ICollection<Tracking> Trackins { get; set; } = new List<Tracking>();
 }
