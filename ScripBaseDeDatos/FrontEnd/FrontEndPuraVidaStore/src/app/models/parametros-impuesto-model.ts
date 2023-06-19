@@ -1,5 +1,5 @@
-import { ImpuestosModel } from "./impuestos-model";
-import { ParametrosGlobalesModel } from "./parametros-globales-model";
+import { ImpuestosModel } from './impuestos-model';
+import { ParametrosGlobalesModel } from './parametros-globales-model';
 
 export interface ParametrosImpuestoModel {
   impPid: number;

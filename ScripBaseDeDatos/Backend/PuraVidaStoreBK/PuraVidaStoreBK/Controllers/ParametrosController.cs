@@ -31,13 +31,13 @@ namespace PuraVidaStoreBK.Controllers
 
                 var retorno = new ParametrosGlobalesDTO();
                 retorno = _mapper.Map<ParametrosGlobalesDTO>(guardar);
-                if (parametros.ImpuestosPorParametros.Count>0 && parametros.ImpuestosPorParametros!=null) 
+                var listaImpuestoPorParametro = await _parametros.ObtenerImpuestosPorParametro(guardar.PrgId);
+                if (listaImpuestoPorParametro.Count > 0)
                 {
-                    var listaImpuestoPorParametro = await _parametros.ObtenerImpuestosPorParametro(guardar.PrgId);
-                    if (listaImpuestoPorParametro!=null) 
-                    {
-                        var seBorroLista = await _parametros.EliminarImpustoPorParametro(listaImpuestoPorParametro);
-                    }
+                    var seBorroLista = await _parametros.EliminarImpustoPorParametro(listaImpuestoPorParametro);
+                }
+                if (parametros.ImpuestosPorParametros!=null) 
+                {
                     foreach (var impuesto in parametros.ImpuestosPorParametros) 
                     {
                         impuesto.ImpPidParametroGlobal = retorno.PrgId;

@@ -7,6 +7,5 @@ export interface ParametrosEmailModel {
   preUser: string;
   preClave: string;
   preSsl: boolean;
-  preIdParametroGlobal: number | null;
-  pre: ParametrosGlobalesModel | null;
+  preIdParametroGlobal: number;
 }
