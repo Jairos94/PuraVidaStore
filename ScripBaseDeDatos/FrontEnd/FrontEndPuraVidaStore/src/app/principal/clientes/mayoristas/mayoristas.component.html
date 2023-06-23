@@ -1,1 +1,38 @@
-<p>mayoristas works!</p>
+<div class="my-2">
+  <div class="field"></div>
+  <div class="field">
+    <p-table
+      [value]="listaClientes"
+      [rows]="10"
+      [rowsPerPageOptions]="[10, 25, 50]"
+    >
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>Fecha de creacón</th>
+          <th>Fecha de vencimiento</th>
+          <th>Tiempo para el vencimiento</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-mayorista let-columns="columns">
+        <tr>
+          <td>{{ mayorista.clmId }}</td>
+          <td>{{ mayorista.clmIdPersonaNavigation.psrNombre }} {{mayorista.clmIdPersonaNavigation.psrApellido1 }} {{mayorista.clmIdPersonaNavigation.psrApellido2 }}</td>
+          <td>{{ mayorista.clmFechaCreacion }}</td>
+          <td>{{ mayorista.clmFechaVencimiento }}</td>
+          <td>
+            <label class="text-blue-500" *ngIf="!EstaVencido(mayorista.clmFechaVencimiento)">
+              {{ validarFecha(mayorista.clmFechaVencimiento) }}
+            </label>
+
+            <label class="text-red-500" *ngIf="EstaVencido(mayorista.clmFechaVencimiento)">
+              {{ validarFecha(mayorista.clmFechaVencimiento) }}
+            </label>
+
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

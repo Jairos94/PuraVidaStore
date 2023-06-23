@@ -20,4 +20,11 @@ export class MayoristaService {
       { params }
     );
   }
+
+  obtenerListaMayorista():Observable<MayoristaModel[]>
+  {
+    return this.http.get<MayoristaModel[]>(
+      `${this.baseUrl}Mayorista/ListaClienteMayorista`
+    );
+  }
 }

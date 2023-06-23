@@ -1,6 +1,6 @@
 import { MayoristaModel } from "./mayorista-model";
 
-export interface HiltorialMayoristaModel {
+export interface HistorialMayoristaModel {
   hcmId: number;
   hcmIdCliente: number;
   hcmFechaVencimiento: string;

@@ -22,12 +22,22 @@ namespace PuraVidaStoreBK.Models.DTOS
 
         public string? FtrCodigoFactura { get; set; }
 
-        public virtual EstatusFacturaDTO? FtrEstatus { get; set; } 
-        public virtual FormaPagoDTO? FtrFormaPagoNavigation { get; set; }
-        public virtual UsuarioDto? FtrIdUsuarioNavigation { get; set; }
+        public virtual ICollection<DetalleFacturaDTO>? DetalleFacturas { get; set; } = new List<DetalleFacturaDTO>();
+
+        public virtual ICollection<FacturaResumenDTO>? FacturaResumen { get; set; } = new List<FacturaResumenDTO>();
+
+        public virtual BodegaDTO? FtrBodegaNavigation { get; set; } = null!;
+
+        public virtual EstatusFacturaDTO? FtrEstatus { get; set; } = null!;
+
+        public virtual FormaPagoDTO? FtrFormaPagoNavigation { get; set; } = null!;
+
+        public virtual UsuarioDto? FtrIdUsuarioNavigation { get; set; } = null!;
+
         public virtual ClienteMayoristaDTO? FtrMayoristaNavigation { get; set; }
-        public virtual ICollection<DetalleFacturaDTO>? DetalleFacturas { get; set; }
-        public virtual ICollection<FacturaResumenDTO>? FacturaResumen { get; set; }
-        public virtual ICollection<ImpuestosPorFacturaDTO>? ImpuestosPorFacturas { get; set; }
+
+        public virtual ICollection<HistorialClienteMayoristaDTO>? HistorialFacturasAnulada { get; set; } = new List<HistorialClienteMayoristaDTO>();
+
+        public virtual ICollection<ImpuestosPorFacturaDTO>? ImpuestosPorFacturas { get; set; } = new List<ImpuestosPorFacturaDTO>();
     }
 }

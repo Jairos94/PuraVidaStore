@@ -14,5 +14,6 @@ namespace PuraVidaStoreBK.Models.DTOS
 
         public string PsrApellido2 { get; set; } = null!;
 
+
     }
 }

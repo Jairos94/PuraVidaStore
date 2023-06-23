@@ -12,10 +12,16 @@ export class ClientesComponent {
   ngOnInit(): void {
     this.items = [
       {
-        label: 'Lista de cliente Mayorista',
+        label: 'Agregar Cliente Mayorista',
         icon: 'pi pi-fw pi-file',
-       // routerLink: 'facturacion',
+        routerLink: 'editar-nuevo/0',
+      },
+      {
+        label: 'Lista de clientes Mayoristas',
+        icon: 'pi pi-fw pi-file',
+        routerLink: 'mayorista',
       }
+
     ];
   }
 }

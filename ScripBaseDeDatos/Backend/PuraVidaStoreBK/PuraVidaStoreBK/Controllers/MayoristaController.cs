@@ -46,10 +46,19 @@ namespace PuraVidaStoreBK.Controllers
         }
 
         // GET api/<MayoristaController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("ListaClienteMayorista"),Authorize]
+        public async Task<IActionResult> ListaClienteMayorista()
         {
-            return "value";
+            var lista = _mapper.Map<List< ClienteMayoristaDTO>>(await _mayorista.listaClientesMayorista());
+            if (lista.Count > 0)
+            {
+                return Ok(lista);
+            }
+            else 
+            {
+                return NoContent();
+            }
+            
         }
 
         // POST api/<MayoristaController>

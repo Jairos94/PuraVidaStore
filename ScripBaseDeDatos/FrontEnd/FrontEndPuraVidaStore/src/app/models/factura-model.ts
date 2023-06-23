@@ -5,6 +5,8 @@ import { FormaPagoModel } from "./forma-pago-model";
 import { DetalleFacturaModel } from './detalle-factura-model';
 import { FacturaResumenModel } from './factura-resumen-model';
 import { ImpuestosPorFacturaModel } from './impuestos-por-factura-model';
+import { BodegaModel } from './bodega-model';
+import { HistorialMayoristaModel } from './historial-mayorista-model';
 
 export interface FacturaModel {
   ftrId: number;
@@ -16,11 +18,14 @@ export interface FacturaModel {
   ftrFormaPago: number;
   ftrEsFacturaNula: boolean | null;
   ftrCodigoFactura: string | null;
+  detalleFacturas: DetalleFacturaModel[] | null;
+  facturaResumen: FacturaResumenModel[] | null;
+  ftrBodegaNavigation: BodegaModel | null;
   ftrEstatus: EstatusModel | null;
   ftrFormaPagoNavigation: FormaPagoModel | null;
   ftrIdUsuarioNavigation: UsuarioModel | null;
   ftrMayoristaNavigation: MayoristaModel | null;
-  detalleFacturas: DetalleFacturaModel[] | null;
-  facturaResumen: FacturaResumenModel[] | null;
+  historialFacturasAnulada: HistorialMayoristaModel[] | null;
   impuestosPorFacturas: ImpuestosPorFacturaModel[] | null;
 }
+
