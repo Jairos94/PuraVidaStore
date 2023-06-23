@@ -13,6 +13,7 @@
           <th>Fecha de creacón</th>
           <th>Fecha de vencimiento</th>
           <th>Tiempo para el vencimiento</th>
+          <th>Acciones</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-mayorista let-columns="columns">
@@ -29,7 +30,9 @@
             <label class="text-red-500" *ngIf="EstaVencido(mayorista.clmFechaVencimiento)">
               {{ validarFecha(mayorista.clmFechaVencimiento) }}
             </label>
-
+          </td>
+          <td>
+            <p-button icon="pi pi-pencil" styleClass="p-button-rounded p-button-warning"></p-button>
           </td>
         </tr>
       </ng-template>
