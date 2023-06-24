@@ -50,6 +50,14 @@ INSERT INTO [dbo].[FormaPago]
 go
 
 
+INSERT INTO [dbo].[TiempoParaRenovar]
+           ([TrrDescricpcion])
+     VALUES
+           ('Días'),('Meses'),('Años')
+GO
+
+
+
 EXEC IngresarUsuario 'Admin','GzPfpnFb7HWhQeP0wnV0+g==','jairo.ri.ce@gmail.com',1,1
 go
 

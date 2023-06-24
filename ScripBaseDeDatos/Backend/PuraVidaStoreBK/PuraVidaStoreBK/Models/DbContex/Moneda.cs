@@ -15,5 +15,5 @@ public partial class Moneda
 
     public virtual ICollection<OtrosCargo> OtrosCargos { get; set; } = new List<OtrosCargo>();
 
-    public virtual ICollection<Tracking> Trackins { get; set; } = new List<Tracking>();
+    public virtual ICollection<Tracking> Trackings { get; set; } = new List<Tracking>();
 }

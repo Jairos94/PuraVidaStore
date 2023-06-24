@@ -11,5 +11,5 @@ public partial class EstadoPedido
 
     public virtual ICollection<Pedido> Pedidos { get; set; } = new List<Pedido>();
 
-    public virtual ICollection<Tracking> Trackins { get; set; } = new List<Tracking>();
+    public virtual ICollection<Tracking> Trackings { get; set; } = new List<Tracking>();
 }
