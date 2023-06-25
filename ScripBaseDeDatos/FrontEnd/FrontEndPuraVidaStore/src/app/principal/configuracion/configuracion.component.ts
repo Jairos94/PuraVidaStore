@@ -6,6 +6,7 @@ import { ImpuestosModel } from 'src/app/models/impuestos-model';
 import { ParametrosEmailModel } from 'src/app/models/parametros-email-model';
 import { ParametrosGlobalesModel } from 'src/app/models/parametros-globales-model';
 import { ParametrosImpuestoModel } from 'src/app/models/parametros-impuesto-model';
+import { TiempoParaRenovarModel } from 'src/app/models/tiempo-para-renovar-model';
 import { ImpuestoService } from 'src/app/services/impuesto.service';
 import { ParametrosService } from 'src/app/services/parametros.service';
 
@@ -31,6 +32,7 @@ export class ConfiguracionComponent implements OnInit {
   ListaImpuestosConsultados: ImpuestosModel[] = [];
   ImpuestosSugerencia: ImpuestosModel[] = [];
   ImpuestosAgregar: ImpuestosModel[] = []; //Impuestos que se agregan a la tabla
+  ListTiempos: TiempoParaRenovarModel[] = [];
   CorreoHbilitado: boolean = true;
 
   parametrosGlobales: ParametrosGlobalesModel = {
@@ -40,6 +42,8 @@ export class ConfiguracionComponent implements OnInit {
     prgHabilitarImpuestos: false,
     prgImpustosIncluidos: false,
     prgIdBodega: 0,
+    prgIdTiempo: 0,
+    prgCantidadTiempo: 0,
     parametrosEmail: this.emial,
     impuestosPorParametros: this.listaImpuestos,
     prgIdBodegaNavigation: null,
@@ -52,6 +56,14 @@ export class ConfiguracionComponent implements OnInit {
     ),
     unidadesAgregarMayorista: new FormControl(
       this.parametrosGlobales.prgUndsAgregarMayorista,
+      [Validators.required]
+    ),
+    tiempoParaRenovar: new FormControl(
+      this.parametrosGlobales.prgCantidadTiempo,
+      [Validators.required]
+    ),
+    tiempoParaRenovarId: new FormControl(
+      this.parametrosGlobales.prgIdTiempo,
       [Validators.required]
     ),
     habilitarImpuestos: new FormControl(
@@ -77,6 +89,7 @@ export class ConfiguracionComponent implements OnInit {
   ngOnInit(): void {
     this.CargarImpuestos();
     this.obtenerParametros();
+    this.obtenerTiempoParaRenovar();
   }
 
   CargarImpuestos() {
@@ -88,6 +101,15 @@ export class ConfiguracionComponent implements OnInit {
       error: (_e) => {
         console.log(_e);
       },
+    });
+  }
+
+  obtenerTiempoParaRenovar() {
+    this.parametrosServicio.ObtenerListaParaRenovar().subscribe({
+      next: (x) => {
+        this.ListTiempos = x;
+      },
+      error: (_e) => console.log(_e),
     });
   }
 
@@ -164,6 +186,10 @@ export class ConfiguracionComponent implements OnInit {
       this.ParametrosForm.get('habilitarImpuestos')?.value!;
     this.parametrosGlobales.prgImpustosIncluidos =
       this.ParametrosForm.get('impuestosIncluidos')?.value!;
+      this.parametrosGlobales.prgCantidadTiempo =
+      this.ParametrosForm.get('tiempoParaRenovar')?.value!;
+      this.parametrosGlobales.prgIdTiempo =
+      this.ParametrosForm.get('tiempoParaRenovarId')?.value!;
 
     if (this.CorreoHbilitado) {
       this.emial.preHost = this.ParametrosForm.get('host')?.value!;
@@ -231,6 +257,9 @@ export class ConfiguracionComponent implements OnInit {
       unidadesAgregarMayorista: datos.prgUndsAgregarMayorista,
       habilitarImpuestos: datos.prgHabilitarImpuestos,
       impuestosIncluidos: datos.prgImpustosIncluidos,
+      tiempoParaRenovar: datos.prgCantidadTiempo,
+      tiempoParaRenovarId:datos.prgIdTiempo
+
     });
   }
 

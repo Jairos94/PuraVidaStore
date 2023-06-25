@@ -38,58 +38,25 @@ namespace PuraVidaStoreBK.ExecQuerys
 
 		public async Task<ClientesMayorista> guardarClienteMayorista(ClientesMayorista cliente)
 		{
+
 			try
 			{
-
-				var consultaPersona = await dbContex.Personas.FindAsync(cliente.ClmIdPersonaNavigation.PsrId);
-				if (consultaPersona == null)
+				if (cliente.ClmId>0) 
 				{
-					dbContex.Personas.Add(cliente.ClmIdPersonaNavigation);
+					dbContex.Update(cliente);
 				}
-				else
+				else 
 				{
-					dbContex.Personas.Update(cliente.ClmIdPersonaNavigation);
+					dbContex.Add(cliente);
 				}
 				await dbContex.SaveChangesAsync();
-
-				cliente.ClmIdPersona = cliente.ClmIdPersonaNavigation.PsrId;
-
-				if (cliente.ClmId > 0)
-				{
-					dbContex.ClientesMayoristas.Update(cliente);
-				}
-				else
-				{
-					dbContex.ClientesMayoristas.Add(cliente);
-				}
-				await dbContex.SaveChangesAsync();
-
-				var ultimoHistorial = await dbContex.HistorialClienteMayorista
-									  .Where(x => x.HcmIdCliente == cliente.ClmId)
-									  .OrderByDescending(x => x.HcmFechaActualizacion)
-									  .FirstAsync();
-
-				if (ultimoHistorial.HcmFechaVencimiento < DateTime.Now || ultimoHistorial == null)
-				{
-					HistorialClienteMayorista nuevoRegistroHistorial = new HistorialClienteMayorista
-					{
-						HcmId = 0,
-						HcmFechaActualizacion = cliente.ClmFechaCreacion,
-						HcmFechaVencimiento = cliente.ClmFechaVencimiento,
-						HcmIdCliente = cliente.ClmId
-					};
-
-					dbContex.HistorialClienteMayorista.Add(nuevoRegistroHistorial);
-					await dbContex.SaveChangesAsync();
-				}
-
 				return cliente;
-
 			}
 			catch (Exception ex)
 			{
-				Log.Error(ex.Message, ex);
-				throw;
+
+				Log.Error(ex.StackTrace);
+				return new ClientesMayorista();
 			}
 
 		}
@@ -99,6 +66,13 @@ namespace PuraVidaStoreBK.ExecQuerys
 			return await dbContex.ClientesMayoristas
 				         .Include(x=>x.ClmIdPersonaNavigation) 
 						 .ToListAsync();	
+		}
+
+		public async Task<HistorialClienteMayorista> AgregarAlhistorial(HistorialClienteMayorista historial) 
+		{
+			await dbContex.HistorialClienteMayorista.AddAsync(historial);
+			 dbContex.SaveChanges();
+			return historial;
 		}
     }
 }

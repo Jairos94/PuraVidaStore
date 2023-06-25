@@ -104,5 +104,11 @@ namespace PuraVidaStoreBK.ExecQuerys
              await dbContex.SaveChangesAsync();
              return true;
         }
+
+        public async Task<List<TiempoParaRenovar>> ListaTiempoParaRenovar()
+        {
+
+            return await dbContex.TiempoParaRenovar.ToListAsync();
+        }
     }
 }

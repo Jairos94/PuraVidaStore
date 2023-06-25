@@ -96,11 +96,11 @@ namespace PuraVidaStoreBK.Controllers
 
             if (agregar) 
             {
-                //Valida si es una persona por usuario 
+                //Valida si es una _persona por usuario 
                 if (await ValidarPersonaPorUsuario( PersonaIngreso.PsrId) && ListaPersonasPorCedula!=null) 
                 {
                     HuboError = true;
-                    MensajeError = "No se puede agregar el usuario porque esta persona ya tiene otro usuario";
+                    MensajeError = "No se puede agregar el usuario porque esta _persona ya tiene otro usuario";
                 }
 
                 //valida si el usuario ya se ingreso
@@ -259,7 +259,7 @@ namespace PuraVidaStoreBK.Controllers
         private async Task<bool> ValidarPersonaPorUsuario( long id) 
         {
             bool Existe = false;
-            //valida si la persona es usuario
+            //valida si la _persona es usuario
                 var PersonaUsuario =await _usuario.UsuarioIdPersona(id);
                 if (PersonaUsuario != null)
                 {

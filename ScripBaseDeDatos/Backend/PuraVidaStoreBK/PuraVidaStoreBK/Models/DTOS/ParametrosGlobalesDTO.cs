@@ -18,6 +18,10 @@ namespace PuraVidaStoreBK.Models.DTOS
 
         public int PrgIdBodega { get; set; }
 
+        public int? PrgIdTiempo { get; set; }
+
+        public int? PrgCantidadTiempo { get; set; }
+
 
         public virtual ICollection<ImpuestosPorParametroDTO>? ImpuestosPorParametros { get; set; } = new List<ImpuestosPorParametroDTO>();
 

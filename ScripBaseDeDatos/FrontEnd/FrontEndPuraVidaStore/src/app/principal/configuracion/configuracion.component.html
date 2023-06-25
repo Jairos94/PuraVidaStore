@@ -45,6 +45,27 @@
                 formControlName="impuestosIncluidos"
               ></p-inputSwitch>
             </div>
+
+            <div class="field">
+              <label htmlFor="lblUnidadesHabilitarMayorista"
+                >Tiempo para renovar
+              </label>
+              <p-inputNumber
+                formControlName="tiempoParaRenovar"
+                [showButtons]="true"
+                inputId="minmax-buttons"
+                [min]="1"
+                class="mx-2"
+              >
+              </p-inputNumber>
+
+              <p-dropdown
+                formControlName="tiempoParaRenovarId"
+                [options]="ListTiempos"
+                optionLabel="trrDescricpcion"
+                optionValue="trpId"
+              ></p-dropdown>
+            </div>
           </p-accordionTab>
 
           <p-accordionTab header="Configuración del correo">

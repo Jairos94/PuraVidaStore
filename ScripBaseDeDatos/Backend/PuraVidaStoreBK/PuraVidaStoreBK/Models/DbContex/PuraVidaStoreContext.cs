@@ -67,7 +67,7 @@ public partial class PuraVidaStoreContext : DbContext
 
     public virtual DbSet<RolUsiario> RolUsiarios { get; set; }
 
-    public virtual DbSet<TiempoParaRenovar> TiempoParaRenovars { get; set; }
+    public virtual DbSet<TiempoParaRenovar> TiempoParaRenovar { get; set; }
 
     public virtual DbSet<TipoMovimiento> TipoMovimientos { get; set; }
 

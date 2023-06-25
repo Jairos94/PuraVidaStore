@@ -86,5 +86,12 @@ namespace PuraVidaStoreBK.Controllers
             
 
         }
+
+        [HttpGet("ListaTiempoParaRenovar"), Authorize]
+        public async Task<IActionResult> ListaTiempoParaRenovar()
+         {
+             
+            return Ok(_mapper.Map<List<TiempoParaRenovarDTO>>( await _parametros.ListaTiempoParaRenovar())); 
+         }
     }
 }

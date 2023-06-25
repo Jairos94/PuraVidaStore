@@ -11,5 +11,7 @@ namespace PuraVidaStoreBK.ExecQuerys.Interfaces
         Task<ParametrosEmail> GuardarEmail(ParametrosEmail parametrosEmail);
          Task<ParametrosGlobales> ObtenerParametrosId(int idBodega);
         Task<bool> EliminarImpustoPorParametro(List<ImpuestosPorParametro> datosElimnar);
+        Task<List<TiempoParaRenovar>> ListaTiempoParaRenovar();
+        
     }
 }

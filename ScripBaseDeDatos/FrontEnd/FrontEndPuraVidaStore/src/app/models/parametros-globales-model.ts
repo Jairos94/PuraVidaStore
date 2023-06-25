@@ -9,6 +9,8 @@ export interface ParametrosGlobalesModel {
   prgHabilitarImpuestos: boolean;
   prgImpustosIncluidos: boolean;
   prgIdBodega: number;
+  prgIdTiempo: number | null;
+  prgCantidadTiempo: number | null;
   impuestosPorParametros: ParametrosImpuestoModel[] | null;
   parametrosEmail: ParametrosEmailModel  | null;
   prgIdBodegaNavigation: BodegaModel | null;
