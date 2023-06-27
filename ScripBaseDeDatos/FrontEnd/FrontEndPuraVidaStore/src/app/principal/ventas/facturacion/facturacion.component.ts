@@ -80,9 +80,11 @@ export class FacturacionComponent implements OnInit {
     clmFechaVencimiento: this.fecha.toString(),
     clmCorreo: '',
     clmTelefono: '',
+    cantidadTiempo: 0,
+    idTipoTiempo: 0,
     clmIdPersonaNavigation: this.personaMayorista,
-    historialClienteMayorista: null,
-    facturas:null
+    facturas: null,
+    historialClienteMayorista:  null
   };
 
   factura: FacturaModel = {
@@ -290,9 +292,11 @@ export class FacturacionComponent implements OnInit {
       clmFechaVencimiento: this.fecha.toString(),
       clmCorreo: '',
       clmTelefono: '',
+      cantidadTiempo: 0,
+      idTipoTiempo: 0,
       clmIdPersonaNavigation: this.personaMayorista,
-    facturas:null,
-    historialClienteMayorista:  null,
+      facturas:null,
+      historialClienteMayorista: null
 
     };
   }

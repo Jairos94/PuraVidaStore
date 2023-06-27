@@ -3,6 +3,7 @@
   <div class="field">
     <p-table
       [value]="listaClientes"
+      [paginator]="true"
       [rows]="10"
       [rowsPerPageOptions]="[10, 25, 50]"
     >
@@ -19,20 +20,34 @@
       <ng-template pTemplate="body" let-mayorista let-columns="columns">
         <tr>
           <td>{{ mayorista.clmId }}</td>
-          <td>{{ mayorista.clmIdPersonaNavigation.psrNombre }} {{mayorista.clmIdPersonaNavigation.psrApellido1 }} {{mayorista.clmIdPersonaNavigation.psrApellido2 }}</td>
-          <td>{{ mayorista.clmFechaCreacion }}</td>
-          <td>{{ mayorista.clmFechaVencimiento }}</td>
           <td>
-            <label class="text-blue-500" *ngIf="!EstaVencido(mayorista.clmFechaVencimiento)">
+            {{ mayorista.clmIdPersonaNavigation.psrNombre }}
+            {{ mayorista.clmIdPersonaNavigation.psrApellido1 }}
+            {{ mayorista.clmIdPersonaNavigation.psrApellido2 }}
+          </td>
+          <td>{{ mayorista.clmFechaCreacion |date:'dd/MM/yyyy' : 'America/Costa_Rica'}}</td>
+          <td>{{ mayorista.clmFechaVencimiento |date:'dd/MM/yyyy' : 'America/Costa_Rica'}}</td>
+          <td>
+            <label
+              class="text-blue-500"
+              *ngIf="!EstaVencido(mayorista.clmFechaVencimiento)"
+            >
               {{ validarFecha(mayorista.clmFechaVencimiento) }}
             </label>
 
-            <label class="text-red-500" *ngIf="EstaVencido(mayorista.clmFechaVencimiento)">
+            <label
+              class="text-red-500"
+              *ngIf="EstaVencido(mayorista.clmFechaVencimiento)"
+            >
               {{ validarFecha(mayorista.clmFechaVencimiento) }}
             </label>
           </td>
           <td>
-            <p-button icon="pi pi-pencil" styleClass="p-button-rounded p-button-warning"></p-button>
+            <p-button
+              icon="pi pi-pencil"
+              styleClass="p-button-rounded p-button-warning"
+              routerLink="/principal/clientes/editar-nuevo/{{mayorista.clmId}}"
+            ></p-button>
           </td>
         </tr>
       </ng-template>

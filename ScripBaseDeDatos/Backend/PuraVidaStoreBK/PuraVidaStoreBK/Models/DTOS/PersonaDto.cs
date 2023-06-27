@@ -1,4 +1,4 @@
-﻿using PuraVidaStoreBK.Models.DbContex;
+﻿
 
 namespace PuraVidaStoreBK.Models.DTOS
 {
@@ -13,6 +13,7 @@ namespace PuraVidaStoreBK.Models.DTOS
         public string PsrApellido1 { get; set; } = null!;
 
         public string PsrApellido2 { get; set; } = null!;
+
 
 
     }

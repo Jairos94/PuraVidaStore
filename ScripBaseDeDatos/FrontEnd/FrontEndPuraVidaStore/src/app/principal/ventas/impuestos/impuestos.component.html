@@ -80,7 +80,13 @@
     </div>
     <div class="col">
       <div class="p-inputgroup">
-        <input type="text" pInputText placeholder="Buscar" [(ngModel)]="buscador" (input)="filtrar()" />
+        <input
+          type="text"
+          pInputText
+          placeholder="Buscar"
+          [(ngModel)]="buscador"
+          (input)="filtrar()"
+        />
         <button
           type="button"
           pButton
@@ -94,7 +100,13 @@
   </div>
 </div>
 <div class="field">
-  <p-table [value]="listaImpuestos" [tableStyle]="{ 'min-width': '50rem' }">
+  <p-table
+    [value]="listaImpuestos"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [paginator]="true"
+    [rows]="5"
+    [rowsPerPageOptions]="[10, 25, 50]"
+  >
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th>#</th>
@@ -109,9 +121,25 @@
         <td>{{ impuesto.impDescripcion }}</td>
         <td>{{ impuesto.impPorcentaje }}%</td>
         <td>
-          <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning" [disabled]="!esAdministrador" (click)="editarUsuario(impuesto,false)"></button>
-          <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" [disabled]="!esAdministrador" (click)="editarUsuario(impuesto,true)" ></button>
-      </td>
+          <button
+            pButton
+            pRipple
+            type="button"
+            icon="pi pi-pencil"
+            class="p-button-rounded p-button-warning"
+            [disabled]="!esAdministrador"
+            (click)="editarUsuario(impuesto, false)"
+          ></button>
+          <button
+            pButton
+            pRipple
+            type="button"
+            icon="pi pi-trash"
+            class="p-button-rounded p-button-danger"
+            [disabled]="!esAdministrador"
+            (click)="editarUsuario(impuesto, true)"
+          ></button>
+        </td>
       </tr>
     </ng-template>
   </p-table>

@@ -6,18 +6,19 @@ import { ClientesComponent } from './clientes.component';
 import { MayoristasComponent } from './mayoristas/mayoristas.component';
 import { PrimeNgPrincipalModule } from '../prime-ng-principal.module';
 import { AgregarClienteComponent } from './agregar-cliente/agregar-cliente.component';
-
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     ClientesComponent,
     MayoristasComponent,
-    AgregarClienteComponent
+    AgregarClienteComponent,
   ],
   imports: [
     CommonModule,
     ClientesRoutingModule,
-    PrimeNgPrincipalModule
-  ]
+    PrimeNgPrincipalModule,
+    ReactiveFormsModule,
+  ],
 })
-export class ClientesModule { }
+export class ClientesModule {}

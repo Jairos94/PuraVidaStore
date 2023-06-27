@@ -1,42 +1,38 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PuraVidaStoreBK.ExecQuerys;
 using PuraVidaStoreBK.ExecQuerys.Interfaces;
-using PuraVidaStoreBK.Models;
 using PuraVidaStoreBK.Models.DTOS;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace PuraVidaStoreBK.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PersonaController : ControllerBase
+    public class personaController : ControllerBase
     {
         private readonly IPersonaQuery _persona;
         private readonly IMapper _mapper;
 
-        private PersonaController(IPersonaQuery persona, IMapper mapper)
+        public personaController(IPersonaQuery persona, IMapper mapper)
         {
             _persona = persona;
-            _mapper = mapper;
+           _mapper = mapper;
         }
 
         // GET api/<personaController>/5
-        [HttpGet("obtenerPersonaCedula"),Authorize]
+        [HttpGet("obtenerPersonaCedula"), Authorize]
         public async Task<ActionResult> obtenerPersonaCedula(string id)
         {
-            var ListaPersonas =await _persona.ObtenerPersonaPorCedula(id);
+            var ListaPersonas = await _persona.ObtenerPersonaPorCedula(id);
             var ListaRetorno = _mapper.Map<List<PersonaDto>>(ListaPersonas);
 
 
-            return Ok( ListaRetorno);
+            return Ok(ListaRetorno);
         }
 
         // GET api/<personaController>/5
         [HttpGet("personaPorId{id}"), Authorize]
-        public async Task< ActionResult> personaPorId(long id)
+        public async Task<ActionResult> personaPorId(long id)
         {
             try
             {
@@ -49,8 +45,16 @@ namespace PuraVidaStoreBK.Controllers
 
                 return BadRequest();
             }
-           
+
         }
 
+        [HttpGet("buscarPersonaPorCedula"), Authorize]
+        public async Task<ActionResult> buscarPersonaPorCedula(string cedula)
+        {
+            var dato = await _persona.BuscarUnaPersonaPorCedula(cedula);
+            var retorno = _mapper.Map<PersonaDto>(dato);
+
+            return Ok(retorno);
+        }
     }
 }

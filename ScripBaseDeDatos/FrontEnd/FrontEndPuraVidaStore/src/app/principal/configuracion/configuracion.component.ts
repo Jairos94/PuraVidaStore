@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { activo } from 'src/app/activo';
 import { ImpuestosModel } from 'src/app/models/impuestos-model';
@@ -83,7 +84,8 @@ export class ConfiguracionComponent implements OnInit {
   constructor(
     private impuestoServicio: ImpuestoService,
     private parametrosServicio: ParametrosService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private ruta: Router,
   ) {}
 
   ngOnInit(): void {
@@ -241,6 +243,7 @@ export class ConfiguracionComponent implements OnInit {
         .subscribe({
           next: (x) => {
             this.CargarDatosAlForm(x);
+            this.ruta.navigate(['./principal'])
           },
           error: (_e) => {
             console.log(_e);

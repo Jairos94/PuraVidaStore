@@ -11,8 +11,6 @@ namespace PuraVidaStoreBK.Models.DTOS
         public DateTime HcmFechaVencimiento { get; set; }
 
         public DateTime HcmFechaActualizacion { get; set; }
-
-        public virtual ClienteMayoristaDTO? HcmIdClienteNavigation { get; set; } 
     }
 
 }
