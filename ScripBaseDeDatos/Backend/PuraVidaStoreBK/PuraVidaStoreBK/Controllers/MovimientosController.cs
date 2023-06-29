@@ -185,7 +185,7 @@ namespace PuraVidaStoreBK.Controllers
                 var bodegaOrigen = await _bodegaQuery.BodegaPorId(traslado.idBodegaOrigen);
                 var BodegaDestino = await _bodegaQuery.BodegaPorId(traslado.idBodegaDestino);
 
-                var descricionBodega = string.Format("Traslado entre bodegas [origen:{0},destino:{1}]", bodegaOrigen.BdgDescripcion, BodegaDestino.BdgDescripcion);
+                var descricionBodega = string.Format("Traslado entre bodegas [origen:{0}, destino:{1}]", bodegaOrigen.BdgDescripcion, BodegaDestino.BdgDescripcion);
                 var lista = new List<MotivosMovimiento>();
                 lista = await _movimientosQuery.BusquedaPorDescripcion(descricionBodega);
                 if (lista.Count == 0)
