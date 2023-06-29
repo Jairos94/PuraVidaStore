@@ -27,4 +27,10 @@ export class MayoristaService {
       `${this.baseUrl}Mayorista/ListaClienteMayorista`
     );
   }
+
+  guardarMayorista(datos:MayoristaModel):Observable<MayoristaModel>{
+    return this.http.post<MayoristaModel>(
+      `${this.baseUrl}Mayorista/GuardarClienteMayorista`,datos
+    );
+  }
 }

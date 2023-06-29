@@ -243,6 +243,7 @@ export class ConfiguracionComponent implements OnInit {
         .subscribe({
           next: (x) => {
             this.CargarDatosAlForm(x);
+            activo.parametrosGlobales=x;
             this.ruta.navigate(['./principal'])
           },
           error: (_e) => {
