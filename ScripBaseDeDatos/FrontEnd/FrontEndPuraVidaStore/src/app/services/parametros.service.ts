@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ParametrosGlobalesModel } from '../models/parametros-globales-model';
+import { TiempoParaRenovarModel } from '../models/tiempo-para-renovar-model';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +19,12 @@ export class ParametrosService {
     return this.http.get<ParametrosGlobalesModel>(
       `${this.baseUrl}Parametros/ObtenerParametros`,
       { params }
+    );
+  }
+
+  ObtenerListaParaRenovar(): Observable<TiempoParaRenovarModel[]> {
+    return this.http.get<TiempoParaRenovarModel[]>(
+      `${this.baseUrl}Parametros/ListaTiempoParaRenovar`
     );
   }
 

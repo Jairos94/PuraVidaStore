@@ -101,7 +101,7 @@ export class AgregarEditarComponent implements OnInit {
     this.servicioProducto.GuardarProducto(this.productoEditarAgregar,activo.usuarioPrograma.usrId).subscribe((x => {
       console.log(x);
       //this.showSuccess();
-      this.ruta.navigate(['./principal/productos/'])
+      this.ruta.navigate(['./principal/productos/lista-productos'])
 
     }),
       (_e => {

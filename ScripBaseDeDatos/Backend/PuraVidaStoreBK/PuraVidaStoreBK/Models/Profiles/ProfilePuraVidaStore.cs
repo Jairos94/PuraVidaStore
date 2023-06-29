@@ -8,71 +8,53 @@ namespace PuraVidaStoreBK.Models
     {
         public ProfilePuraVidaStore()
         {
-            CreateMap<Bodega, BodegaDTO>();
-            CreateMap<BodegaDTO, Bodega>();
+            CreateMap<Bodega, BodegaDTO>().ReverseMap();
 
-            CreateMap<ClientesMayorista, ClienteMayoristaDTO>();
-            CreateMap<ClienteMayoristaDTO, ClientesMayorista>();
+            CreateMap<ClientesMayorista, ClienteMayoristaDTO>().ReverseMap();
 
-            CreateMap<DetalleFactura, DetalleFacturaDTO>();
-            CreateMap<DetalleFacturaDTO, DetalleFactura>();
+            CreateMap<DetalleFactura, DetalleFacturaDTO>().ReverseMap();
 
-            CreateMap<EstatusFactura, EstatusFacturaDTO>();
-            CreateMap<EstatusFacturaDTO, EstatusFactura>();
+            CreateMap<EstatusFactura, EstatusFacturaDTO>().ReverseMap();
 
-            CreateMap<Factura, FacturaDTO>();
-            CreateMap<FacturaDTO, Factura>();
+            CreateMap<Factura, FacturaDTO>().ReverseMap();
 
-            CreateMap<FacturaResumen, FacturaResumenDTO>();
-            CreateMap<FacturaResumenDTO, FacturaResumen>();
+            CreateMap<FacturaResumen, FacturaResumenDTO>().ReverseMap();
 
-            CreateMap<FormaPago, FormaPagoDTO>();
-            CreateMap<FormaPagoDTO, FormaPago>();
+            CreateMap<FormaPago, FormaPagoDTO>().ReverseMap();
 
-            CreateMap<Impuesto, ImpuestosDTO>();
-            CreateMap<ImpuestosDTO, Impuesto>();
+            CreateMap<Impuesto, ImpuestosDTO>().ReverseMap();
 
-            CreateMap<ImpuestosPorParametro, ImpuestosPorParametroDTO>();
-            CreateMap<ImpuestosPorParametroDTO, ImpuestosPorParametro>();
+            CreateMap<ImpuestosPorParametro, ImpuestosPorParametroDTO>().ReverseMap();
 
-            CreateMap<ImpuestosPorFactura, ImpuestosPorFacturaDTO>();
-            CreateMap<ImpuestosPorFacturaDTO, ImpuestosPorFactura>();
+            CreateMap<ImpuestosPorFactura, ImpuestosPorFacturaDTO>().ReverseMap();
 
-            CreateMap<Inventarios, InventariosDTO>();
-            CreateMap<InventariosDTO, Inventarios>();
+            CreateMap<Inventarios, InventariosDTO>().ReverseMap();
 
-            CreateMap<HistorialClienteMayorista, HistorialClienteMayoristaDTO>();
-            CreateMap<HistorialClienteMayoristaDTO, HistorialClienteMayorista>();
+            CreateMap<HistorialClienteMayorista, HistorialClienteMayoristaDTO>().ReverseMap();
 
-            CreateMap<Movimiento, MovimientosDTO>();
-            CreateMap<MovimientosDTO, Movimiento>();
+            CreateMap<Movimiento, MovimientosDTO>().ReverseMap();
 
-            CreateMap<MotivosMovimiento, MotivosMovimientoDTO>();
-            CreateMap<MotivosMovimientoDTO, MotivosMovimiento>();
+            CreateMap<MotivosMovimiento, MotivosMovimientoDTO>().ReverseMap();
 
-            CreateMap<ParametrosEmail, ParametrosEmailDTO>();
-            CreateMap<ParametrosEmailDTO, ParametrosEmail>();
+            CreateMap<ParametrosEmail, ParametrosEmailDTO>().ReverseMap();
 
-            CreateMap<ParametrosGlobales, ParametrosGlobalesDTO>();
-            CreateMap<ParametrosGlobalesDTO, ParametrosGlobales>();
+            CreateMap<ParametrosGlobales, ParametrosGlobalesDTO>().ReverseMap();
 
-            CreateMap<Persona, PersonaDto>();
-            CreateMap<PersonaDto, Persona>();
+            CreateMap<Persona, PersonaDto>().ReverseMap();
 
-            CreateMap<Producto, ProductoDTO>();
-            CreateMap<ProductoDTO, Producto>();
+            CreateMap<Producto, ProductoDTO>().ReverseMap();
 
-            CreateMap<RolUsiario, RolUsuarioDto>();
-            CreateMap<RolUsuarioDto, RolUsiario>();
+            CreateMap<RolUsiario, RolUsuarioDto>().ReverseMap();
 
-            CreateMap<Usuario, UsuarioDto>();
-            CreateMap<UsuarioDto, Usuario>();
+            CreateMap<Usuario, UsuarioDto>().ReverseMap();
 
-            CreateMap<TipoMovimiento, TipoMovimientoDTO>();
-            CreateMap<TipoMovimientoDTO, TipoMovimiento>();
+            CreateMap<TiempoParaRenovar, TiempoParaRenovarDTO>().ReverseMap();
 
-            CreateMap<TipoProducto, TipoProductoDTO>();
-            CreateMap<TipoProductoDTO, TipoProducto>();
+            CreateMap<TipoMovimiento, TipoMovimientoDTO>().ReverseMap();
+
+            CreateMap<TipoProducto, TipoProductoDTO>().ReverseMap();
+
+           
 
         }
     }

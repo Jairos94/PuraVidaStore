@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { activo } from 'src/app/activo';
 
 @Component({
   selector: 'app-clientes',
@@ -12,10 +13,17 @@ export class ClientesComponent {
   ngOnInit(): void {
     this.items = [
       {
-        label: 'Lista de cliente Mayorista',
+        label: 'Agregar Cliente Mayorista',
         icon: 'pi pi-fw pi-file',
-       // routerLink: 'facturacion',
+        routerLink: 'editar-nuevo/0',
+        visible:activo.esAministrador()
+      },
+      {
+        label: 'Lista de clientes Mayoristas',
+        icon: 'pi pi-fw pi-file',
+        routerLink: 'mayorista',
       }
+
     ];
   }
 }

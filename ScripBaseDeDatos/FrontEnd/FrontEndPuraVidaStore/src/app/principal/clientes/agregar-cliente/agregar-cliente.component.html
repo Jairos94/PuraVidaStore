@@ -1,0 +1,163 @@
+<div class="my-2">
+  <form [formGroup]="mayoritaForm" (ngSubmit)="guardar()">
+    <div class="grid">
+      <div class="col">
+        <h3>Cédula</h3>
+        <div class="field">
+          <div class="grid">
+            <div class="sm:col md:col">
+              <div class="p-inputgroup w-full">
+                <span class="p-inputgroup-addon">
+                  <i class="pi pi-id-card"></i>
+                </span>
+                <input
+                  pInputText
+                  placeholder="Cedula"
+                  formControlName="cedula"
+                />
+              </div>
+            </div>
+
+            <div class="sm:col-2 md:col">
+              <p-button
+                icon="pi pi-search"
+                styleClass="p-button-success"
+                (onClick)="buscarCedula()"
+              ></p-button>
+            </div>
+          </div>
+        </div>
+
+        <h3>Nombre del cliente</h3>
+        <div class="field">
+          <div class="grid">
+            <div class="col">
+              <div class="p-inputgroup">
+                <span class="p-inputgroup-addon">
+                  <i class="pi pi-user"></i>
+                </span>
+                <input
+                  pInputText
+                  placeholder="Nombre"
+                  formControlName="nombre"
+                />
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="p-inputgroup">
+                <span class="p-inputgroup-addon">
+                  <i class="pi pi-user"></i>
+                </span>
+                <input
+                  type="text"
+                  pInputText
+                  placeholder="Primer Apellido"
+                  formControlName="primerApellido"
+                />
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="p-inputgroup">
+                <span class="p-inputgroup-addon">
+                  <i class="pi pi-user"></i>
+                </span>
+                <input
+                  type="text"
+                  pInputText
+                  placeholder="Segundo Apellido"
+                  formControlName="segundoApellido"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3>Contacto</h3>
+        <div class="field">
+          <div class="grid">
+            <div class="col">
+              <div class="p-inputgroup">
+                <span class="p-inputgroup-addon">
+                  <i class="pi pi-at"></i>
+                </span>
+                <input
+                  pInputText
+                  placeholder="Correo"
+                  formControlName="correo"
+                />
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="p-inputgroup">
+                <span class="p-inputgroup-addon">
+                  <i class="pi pi-phone"></i>
+                </span>
+                <input
+                  pInputText
+                  placeholder="Teléfono"
+                  formControlName="telefono"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="parametroId!=0">
+          <h3>Membresía</h3>
+          <div class="field">
+            Fecha de vencimiento:
+            {{
+              this.mayoritaForm.get("fechaVencimiento")?.value
+                | date : "dd/MM/yyyy" : "America/Costa_Rica"
+            }}
+          </div>
+        </div>
+      </div>
+
+      <div class="col-1">
+        <p-button
+          icon="pi pi-check"
+          type="submit"
+          label="Guardar"
+          [disabled]="mayoritaForm.invalid"
+        ></p-button>
+      </div>
+    </div>
+  </form>
+
+  <div *ngIf="parametroId != 0">
+    <h3>Historial de actualizaciones</h3>
+    <p-table
+      [value]="historial"
+      [paginator]="true"
+      [rows]="5"
+      [rowsPerPageOptions]="[10, 25, 50]"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Fecha de actualizacion</th>
+          <th>Fecha de vencimiento</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-actualizacion>
+        <tr>
+          <td>
+            {{
+              actualizacion.hcmFechaActualizacion
+                | date : "dd/MM/yyyy" : "America/Costa_Rica"
+            }}
+          </td>
+          <td>
+            {{
+              actualizacion.hcmFechaVencimiento
+                | date : "dd/MM/yyyy" : "America/Costa_Rica"
+            }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

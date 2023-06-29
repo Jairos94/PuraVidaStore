@@ -17,9 +17,15 @@ public partial class ParametrosGlobales
 
     public int PrgIdBodega { get; set; }
 
+    public int? PrgIdTiempo { get; set; }
+
+    public int? PrgCantidadTiempo { get; set; }
+
     public virtual ICollection<ImpuestosPorParametro> ImpuestosPorParametros { get; set; } = new List<ImpuestosPorParametro>();
 
     public virtual ParametrosEmail? ParametrosEmail { get; set; }
 
     public virtual Bodega PrgIdBodegaNavigation { get; set; } = null!;
+
+    public virtual TiempoParaRenovar? PrgIdTiempoNavigation { get; set; }
 }

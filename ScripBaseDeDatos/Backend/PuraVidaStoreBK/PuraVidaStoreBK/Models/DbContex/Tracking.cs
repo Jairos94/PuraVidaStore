@@ -33,7 +33,7 @@ public partial class Tracking
 
     public long TrkProveedor { get; set; }
 
-    public virtual ICollection<TrackingsAsociado> TrackinsAsociados { get; set; } = new List<TrackingsAsociado>();
+    public virtual ICollection<TrackingsAsociado> TrackingsAsociados { get; set; } = new List<TrackingsAsociado>();
 
     public virtual EstadoPedido TrkEstadoNavigation { get; set; } = null!;
 

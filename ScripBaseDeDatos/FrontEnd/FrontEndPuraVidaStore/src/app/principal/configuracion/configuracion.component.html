@@ -45,6 +45,27 @@
                 formControlName="impuestosIncluidos"
               ></p-inputSwitch>
             </div>
+
+            <div class="field">
+              <label htmlFor="lblUnidadesHabilitarMayorista"
+                >Tiempo para renovar
+              </label>
+              <p-inputNumber
+                formControlName="tiempoParaRenovar"
+                [showButtons]="true"
+                inputId="minmax-buttons"
+                [min]="1"
+                class="mx-2"
+              >
+              </p-inputNumber>
+
+              <p-dropdown
+                formControlName="tiempoParaRenovarId"
+                [options]="ListTiempos"
+                optionLabel="trrDescricpcion"
+                optionValue="trpId"
+              ></p-dropdown>
+            </div>
           </p-accordionTab>
 
           <p-accordionTab header="Configuración del correo">
@@ -154,6 +175,7 @@
       <div class="field">
         <p-table
           [value]="ImpuestosAgregar"
+          [paginator]="true"
           [rows]="5"
           [rowsPerPageOptions]="[10, 25, 50]"
         >
@@ -185,6 +207,3 @@
   </p-accordion>
 </div>
 <p-toast position="top-right"></p-toast>
-<p>Form Value: {{ ParametrosForm.value | json }}</p>
-
-<p>Form Status: {{ ParametrosForm.status }}</p>

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { activo } from 'src/app/activo';
 import { UsuarioModel } from 'src/app/models/usuario-model';
@@ -11,11 +10,10 @@ import { UsuarioModel } from 'src/app/models/usuario-model';
 })
 export class UsuariosComponent implements OnInit {
 
-  constructor(private router: Router ) { }
+  constructor( ) { }
   items: MenuItem[]=[];
   usuarioActual:UsuarioModel=activo.usuarioPrograma;
   ngOnInit(): void {
-    console.log(this.router.url);
 
     this.items = [
       {

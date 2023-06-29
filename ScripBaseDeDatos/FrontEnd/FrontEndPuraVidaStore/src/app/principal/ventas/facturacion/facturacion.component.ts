@@ -80,27 +80,32 @@ export class FacturacionComponent implements OnInit {
     clmFechaVencimiento: this.fecha.toString(),
     clmCorreo: '',
     clmTelefono: '',
+    cantidadTiempo: 0,
+    idTipoTiempo: 0,
     clmIdPersonaNavigation: this.personaMayorista,
-    historialClienteMayorista: null,
+    facturas: null,
+    historialClienteMayorista:  null
   };
 
   factura: FacturaModel = {
     ftrId: 0,
     ftrFecha: '',
     ftrIdUsuario: 0,
-    ftrMayorista: null,
+    ftrMayorista: 0,
     ftrEstatusId: 0,
     ftrBodega: 0,
     ftrFormaPago: 0,
     ftrEsFacturaNula: false,
-    ftrCodigoFactura: null,
+    ftrCodigoFactura: '',
+    detalleFacturas:  null,
+    facturaResumen:  null,
+    ftrBodegaNavigation:  null,
     ftrEstatus: null,
-    ftrFormaPagoNavigation: null,
-    ftrIdUsuarioNavigation: null,
-    ftrMayoristaNavigation: null,
-    detalleFacturas: null, //Array
-    facturaResumen: null, //Aray
-    impuestosPorFacturas: null, //Array
+    ftrFormaPagoNavigation:  null,
+    ftrIdUsuarioNavigation:  null,
+    ftrMayoristaNavigation:  null,
+    historialFacturasAnulada:  null,
+    impuestosPorFacturas:  null,
   };
 
   facturaResumen: FacturaResumenModel = {
@@ -287,8 +292,12 @@ export class FacturacionComponent implements OnInit {
       clmFechaVencimiento: this.fecha.toString(),
       clmCorreo: '',
       clmTelefono: '',
+      cantidadTiempo: 0,
+      idTipoTiempo: 0,
       clmIdPersonaNavigation: this.personaMayorista,
-      historialClienteMayorista: null,
+      facturas:null,
+      historialClienteMayorista: null
+
     };
   }
 
@@ -363,19 +372,21 @@ export class FacturacionComponent implements OnInit {
       ftrId: 0,
       ftrFecha: '',
       ftrIdUsuario: 0,
-      ftrMayorista: null,
+      ftrMayorista: 0,
       ftrEstatusId: 0,
       ftrBodega: 0,
       ftrFormaPago: 0,
       ftrEsFacturaNula: false,
-      ftrCodigoFactura: null,
+      ftrCodigoFactura: '',
+      detalleFacturas:  null,
+      facturaResumen:  null,
+      ftrBodegaNavigation:  null,
       ftrEstatus: null,
-      ftrFormaPagoNavigation: null,
-      ftrIdUsuarioNavigation: null,
-      ftrMayoristaNavigation: null,
-      detalleFacturas: null, //Array
-      facturaResumen: null, //Aray
-      impuestosPorFacturas: null, //Array
+      ftrFormaPagoNavigation:  null,
+      ftrIdUsuarioNavigation:  null,
+      ftrMayoristaNavigation:  null,
+      historialFacturasAnulada:  null,
+      impuestosPorFacturas:  null,
     };
   }
 

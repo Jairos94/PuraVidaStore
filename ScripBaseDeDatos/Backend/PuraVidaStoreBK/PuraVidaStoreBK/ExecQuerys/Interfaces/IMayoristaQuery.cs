@@ -8,5 +8,8 @@ namespace PuraVidaStoreBK.ExecQuerys.Interfaces
     {
         public Task<ClientesMayorista> buscarClientePorCedulaOId(string buscador);
         public Task<ClientesMayorista> guardarClienteMayorista(ClientesMayorista cliente);
+        Task<List<ClientesMayorista>> listaClientesMayorista();
+        Task<HistorialClienteMayorista> AgregarAlhistorial(HistorialClienteMayorista historial);
+        Task<List<ClientesMayorista>> buscarClientePorNombre(string buscador);
     }
 }

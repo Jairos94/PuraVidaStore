@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
 using PuraVidaStoreBK.ExecQuerys.Interfaces;
 using PuraVidaStoreBK.Models.DbContex;
 using Serilog;
@@ -85,6 +86,12 @@ namespace PuraVidaStoreBK.ExecQuerys
             
 
             return PersonaEditar;
+        }
+
+        public async Task<Persona> BuscarUnaPersonaPorCedula(string cedula) 
+        {
+            var retorno= await dbContex.Personas.Where(x => x.PsrIdentificacion == cedula).FirstOrDefaultAsync();
+            return retorno;
         }
     }
 }

@@ -10,13 +10,18 @@ namespace PuraVidaStoreBK.Models.DTOS
 
         public DateTime ClmFechaCreacion { get; set; }
 
-        public DateTime ClmFechaVencimiento { get; set; }
+        public DateTime? ClmFechaVencimiento { get; set; } = null!;
 
         public string? ClmCorreo { get; set; }
 
         public string? ClmTelefono { get; set; }
+        public int CantidadTiempo { get; set; }
+        public int IdTipoTiempo { get; set; }
 
-        public virtual PersonaDto? ClmIdPersonaNavigation { get; set; }
-        public virtual ICollection<HistorialClienteMayoristaDTO>? HistorialClienteMayorista { get; set; }
+        public virtual PersonaDto? ClmIdPersonaNavigation { get; set; } = null!;
+
+        public virtual ICollection<FacturaDTO>? Facturas { get; set; } = new List<FacturaDTO>();
+
+        public virtual ICollection<HistorialClienteMayoristaDTO>? HistorialClienteMayorista { get; set; } = new List<HistorialClienteMayoristaDTO>();
     }
 }

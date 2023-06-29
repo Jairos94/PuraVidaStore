@@ -20,4 +20,26 @@ export class MayoristaService {
       { params }
     );
   }
+
+  obtenerListaMayorista():Observable<MayoristaModel[]>
+  {
+    return this.http.get<MayoristaModel[]>(
+      `${this.baseUrl}Mayorista/ListaClienteMayorista`
+    );
+  }
+
+  guardarMayorista(datos:MayoristaModel):Observable<MayoristaModel>{
+    return this.http.post<MayoristaModel>(
+      `${this.baseUrl}Mayorista/GuardarClienteMayorista`,datos
+    );
+  }
+
+  sugerencias(buscador:string):Observable<MayoristaModel[]>
+  {
+    const params = new HttpParams().set('buscador', buscador);
+    return this.http.get<MayoristaModel[]>(
+      `${this.baseUrl}Mayorista/BuscarClientePorNombre`,
+      { params }
+    );
+  }
 }

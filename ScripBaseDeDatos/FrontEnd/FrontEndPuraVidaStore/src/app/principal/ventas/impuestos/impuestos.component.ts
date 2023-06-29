@@ -59,7 +59,9 @@ export class ImpuestosComponent implements OnInit {
   Guardar() {
     this.servicioImpuesto.guardarImpuesto(this.impuestoSelecionado).subscribe({
       next: (x) => {
+        this.limpiar();
         this.obtenerLista();
+
       },
       error: (_e) => {
         console.log(_e);
