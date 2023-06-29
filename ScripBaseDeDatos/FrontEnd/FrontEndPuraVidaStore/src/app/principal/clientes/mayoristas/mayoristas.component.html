@@ -1,5 +1,10 @@
 <div class="my-2">
-  <div class="field"></div>
+  <div class="field">
+    <span class="p-input-icon-left w-full">
+      <i class="pi pi-search"></i>
+      <input class="w-full" type="text" pInputText [(ngModel)]="buscador" (input)="filtrarTabla()"/>
+  </span>
+  </div>
   <div class="field">
     <p-table
       [value]="listaClientes"
@@ -14,7 +19,7 @@
           <th>Fecha de creacón</th>
           <th>Fecha de vencimiento</th>
           <th>Tiempo para el vencimiento</th>
-          <th>Acciones</th>
+          <th *ngIf="esAdministrador">Acciones</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-mayorista let-columns="columns">
@@ -42,11 +47,12 @@
               {{ validarFecha(mayorista.clmFechaVencimiento) }}
             </label>
           </td>
-          <td>
+          <td *ngIf="esAdministrador">
             <p-button
               icon="pi pi-pencil"
               styleClass="p-button-rounded p-button-warning"
               routerLink="/principal/clientes/editar-nuevo/{{mayorista.clmId}}"
+
             ></p-button>
           </td>
         </tr>

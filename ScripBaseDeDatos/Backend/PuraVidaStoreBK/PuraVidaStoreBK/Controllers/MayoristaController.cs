@@ -148,16 +148,11 @@ namespace PuraVidaStoreBK.Controllers
             }
         }
 
-        // PUT api/<MayoristaController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpGet("BuscarClientePorNombre"),Authorize]
+        public async Task<IActionResult> BuscarClientePorNombre(string buscador) 
         {
-        }
-
-        // DELETE api/<MayoristaController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            var lista = _mapper.Map< List< ClienteMayoristaDTO>>(await _mayorista.buscarClientePorNombre(buscador));
+            return Ok(lista);
         }
     }
 }

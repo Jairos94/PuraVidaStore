@@ -74,5 +74,20 @@ namespace PuraVidaStoreBK.ExecQuerys
 			 dbContex.SaveChanges();
 			return historial;
 		}
+
+		public async Task<List<ClientesMayorista>> buscarClientePorNombre(string buscador) 
+		{
+			var lista = await dbContex.ClientesMayoristas.Where(x =>
+			                                            ( x.ClmId.ToString() == buscador ||
+														 x.ClmIdPersonaNavigation.PsrNombre.Contains(buscador) ||
+														 x.ClmIdPersonaNavigation.PsrApellido1.Contains(buscador) ||
+														 x.ClmIdPersonaNavigation.PsrApellido2.Contains(buscador) ||
+														 x.ClmIdPersonaNavigation.PsrIdentificacion == buscador
+														 )&& x.ClmIdPersona>0)
+														.Include(p=>p.ClmIdPersonaNavigation) 
+														.ToListAsync() ;
+
+			return lista;
+		}
     }
 }
