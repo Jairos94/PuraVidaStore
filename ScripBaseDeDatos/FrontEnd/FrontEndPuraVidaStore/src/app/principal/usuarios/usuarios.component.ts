@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { activo } from 'src/app/activo';
+import { UsuarioModel } from 'src/app/models/usuario-model';
 
 @Component({
   selector: 'app-usuarios',
@@ -8,14 +10,16 @@ import { MenuItem } from 'primeng/api';
 })
 export class UsuariosComponent implements OnInit {
 
-  constructor() { }
+  constructor( ) { }
   items: MenuItem[]=[];
+  usuarioActual:UsuarioModel=activo.usuarioPrograma;
   ngOnInit(): void {
+
     this.items = [
       {
           label: 'Lista de usuarios',
           icon: 'pi pi-users',
-          routerLink:'lista-usuario',
+          routerLink:'lista-usuarios',
       },
       {
           label: 'Agregar usuario',

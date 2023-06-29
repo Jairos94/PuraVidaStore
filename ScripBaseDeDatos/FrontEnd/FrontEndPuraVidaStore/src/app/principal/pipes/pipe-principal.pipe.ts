@@ -10,7 +10,7 @@ export class PipePrincipalPipe implements PipeTransform {
 
   transform(name: string): string {
     let hi: string = '';
-    if (this.DateT.getHours() > 0 && this.DateT.getHours() < 11) {
+    if (this.DateT.getHours() > 0 && this.DateT.getHours() < 12) {
       hi = `Buenos días, ${name}`;
     }
     else {

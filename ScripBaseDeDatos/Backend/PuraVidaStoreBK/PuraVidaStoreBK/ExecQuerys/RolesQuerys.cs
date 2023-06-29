@@ -5,17 +5,20 @@ using PuraVidaStoreBK.Models.DbContex;
 
 namespace PuraVidaStoreBK.ExecQuerys
 {
-    public class RolesQuerys : IRolQuery
+    public class RolesQuerys : IRolesQuerys
     {
+        private readonly PuraVidaStoreContext dbContex;
 
+        public RolesQuerys(PuraVidaStoreContext _dbContex )
+        {
+            dbContex = _dbContex;
+        }
         public async Task<List<RolUsiario>> obtenerListaroles()
         {
             var ListaRolUsuarios = new List<RolUsiario>();
-            using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
-            {
-                ListaRolUsuarios = await db.RolUsiarios.ToListAsync();
+                ListaRolUsuarios = await dbContex.RolUsiarios.ToListAsync();
                 
-            }
+            
             return ListaRolUsuarios;
         }
     }

@@ -1,10 +1,11 @@
+import { MotivoMovimientoModel } from 'src/app/models/motivo-movimiento-model';
+import { TipoMovimientoModel } from './../models/tipo-movimiento-model';
 import { activo } from './../activo';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { InventariosModel } from '../models/inventarios-model';
-import { MotivoMovimientoModel } from '../models/motivo-movimiento-model';
 
 @Injectable({
   providedIn: 'root',
@@ -35,6 +36,16 @@ export class MovimientosService {
     );
   }
 
+  SugerenciasMotivoMovimientos(
+    buscador: string
+  ): Observable<MotivoMovimientoModel[]> {
+    const params = new HttpParams().set('motivos', buscador);
+    return this.http.get<MotivoMovimientoModel[]>(
+      `${this.baseUrl}Movimientos/ObtenerMotivosPorDescripcion`,
+      { params }
+    );
+  }
+
   GuardarSinOrden(
     ProductosAIngresar: InventariosModel[]
   ): Observable<InventariosModel[]> {
@@ -50,10 +61,40 @@ export class MovimientosService {
     );
   }
 
+  GuardarMovimiento(
+    AjusteAIngresar: InventariosModel,
+    Motivo: number
+  ): Observable<InventariosModel> {
+    const params = new HttpParams()
+      .set('IdBodega', activo.bodegaIngreso.bdgId)
+      .set('IdUsuario', activo.usuarioPrograma.usrId)
+      .set('Motivo', Motivo);
+
+    return this.http.post<InventariosModel>(
+      `${this.baseUrl}Movimientos/GuardarAjuste`,
+      AjusteAIngresar,
+      { params }
+    );
+  }
+
+  GuardarMotivoMovimiento(
+    MotivoMovimiento: MotivoMovimientoModel
+  ): Observable<MotivoMovimientoModel> {
+    return this.http.post<MotivoMovimientoModel>(
+      `${this.baseUrl}Movimientos/GuardarMotivo`,
+      MotivoMovimiento
+    );
+  }
+
   obtenerMotivosMovimientos(): Observable<MotivoMovimientoModel[]> {
     return this.http.get<MotivoMovimientoModel[]>(
       `${this.baseUrl}Movimientos/ObtenerMotivos`
     );
   }
 
+  obtenerTipoMovimiento(): Observable<TipoMovimientoModel[]> {
+    return this.http.get<TipoMovimientoModel[]>(
+      `${this.baseUrl}Movimientos/ObtenerTipoMovimiento`
+    );
+  }
 }

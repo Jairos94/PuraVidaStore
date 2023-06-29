@@ -1,20 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PuraVidaStoreBK.Models.DbContex
+namespace PuraVidaStoreBK.Models.DbContex;
+
+public partial class EstadoPedido
 {
-    public partial class EstadoPedido
-    {
-        public EstadoPedido()
-        {
-            Pedidos = new HashSet<Pedido>();
-            Trackins = new HashSet<Trackin>();
-        }
+    public int EtpId { get; set; }
 
-        public int EtpId { get; set; }
-        public string EtpDescripcion { get; set; } = null!;
+    public string EtpDescripcion { get; set; } = null!;
 
-        public virtual ICollection<Pedido> Pedidos { get; set; }
-        public virtual ICollection<Trackin> Trackins { get; set; }
-    }
+    public virtual ICollection<Pedido> Pedidos { get; set; } = new List<Pedido>();
+
+    public virtual ICollection<Tracking> Trackings { get; set; } = new List<Tracking>();
 }

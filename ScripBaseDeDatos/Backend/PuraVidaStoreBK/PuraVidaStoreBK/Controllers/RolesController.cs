@@ -14,14 +14,14 @@ namespace PuraVidaStoreBK.Controllers
     [ApiController]
     public class RolesController : ControllerBase
     {
-        public RolesController(IMapper mapper, IRolQuery rolQuery)
+        public RolesController(IMapper mapper, IRolesQuerys rolQuery)
         {
             _mapper = mapper;
             _rolQuery = rolQuery;
         }
-        RolesQuerys Ejecuta = new RolesQuerys();
+
         private readonly IMapper _mapper;
-        private readonly IRolQuery _rolQuery;
+        private readonly IRolesQuerys _rolQuery;
 
         // GET: api/<RolesController>
         [HttpGet("ListaRoles"), Authorize]

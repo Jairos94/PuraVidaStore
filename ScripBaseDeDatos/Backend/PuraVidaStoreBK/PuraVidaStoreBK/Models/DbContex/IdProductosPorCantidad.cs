@@ -2,7 +2,7 @@
 {
     public class IdProductosPorCantidad
     {
-        public int idProducto { get; set; }
+        public long idProducto { get; set; }
         public int Cantidad { get; set; }
     }
 }

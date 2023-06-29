@@ -57,6 +57,9 @@ export class IngresosComponent implements OnInit {
   buscarProductoPorCodigo() {
     this.servicioProducto.ObtenerProductoPorCodigo(this.codigo).subscribe({
       next: (x) => {
+        if(x!=null){
+          
+        }
         var inventario: InventariosModel = {
           producto: x,
           cantidadExistencia: 1,

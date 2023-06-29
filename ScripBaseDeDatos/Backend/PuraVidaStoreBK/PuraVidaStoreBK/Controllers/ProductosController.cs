@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using PuraVidaStoreBK.ExecQuerys.Interfaces;
 using PuraVidaStoreBK.Models.DbContex;
 using PuraVidaStoreBK.Models.DTOS;
-using System.Data;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -67,7 +66,7 @@ namespace PuraVidaStoreBK.Controllers
             return Ok(listaRetorno);
         }
         [HttpGet("ObtenerProductoPorId"), Authorize]
-        public async Task<IActionResult> ObtenerProductoPorId(int id)
+        public async Task<IActionResult> ObtenerProductoPorId(long id)
         {
             var producto = await _productoQuery.ProductoPorId(id);
             var productoRenorno = _mapper.Map<ProductoDTO>(producto);
@@ -79,17 +78,17 @@ namespace PuraVidaStoreBK.Controllers
             else { return NoContent(); }
         }
 
-        [HttpGet("BusquedaPorCodigo")]
+        [HttpGet("BusquedaPorCodigo"), Authorize]
         public async Task<IActionResult> BusquedaPorCodigo(string codigo) 
         {
             var resultado = await _productoQuery.BuscarProductoPorCodigo(codigo);
-            if (resultado != null)
+            if (resultado.PrdId > 0)
             {
                 return Ok(_mapper.Map<ProductoDTO>(resultado));
             }
             else
             {
-                return NoContent();
+                return BadRequest();
             }
 
           
@@ -99,6 +98,11 @@ namespace PuraVidaStoreBK.Controllers
         public async Task<IActionResult> GuardarProducto([FromBody] ProductoDTO model,int idUsuario)
         {
             var productoGuardar = _mapper.Map<Producto>(model);
+            if (productoGuardar.PrdId>0) 
+            {
+                var SeGuardoHistorital = await _productoQuery.GuardarHistorial(productoGuardar, idUsuario);
+            }
+            
             productoGuardar = await _productoQuery.GuardarProducto(productoGuardar, idUsuario);
             model = _mapper.Map<ProductoDTO>(productoGuardar);
             if (model != null)

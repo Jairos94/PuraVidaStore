@@ -1,0 +1,267 @@
+<p-toast></p-toast>
+<div class="my-2">
+  <div class="field">
+    <div class="grid">
+      <div class="col">
+        <div class="p-inputgroup">
+          <input
+            type="text"
+            pInputText
+            placeholder="Buscar producto por código"
+            class="w-full"
+            [(ngModel)]="buscadorCodigoBarras"
+            (keyup.enter)="buscarProductoPorCodigodBarras()"
+          />
+          <button
+            type="button"
+            pButton
+            pRipple
+            icon="pi pi-search"
+            styleClass="p-button-warn"
+            (click)="buscarProductoPorCodigodBarras()"
+          ></button>
+        </div>
+      </div>
+
+      <div class="col-3">
+        <p-button
+          (click)="showResponsiveDialog()"
+          icon="pi pi-external-link"
+          label="Ver productos"
+        ></p-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de detalle producto -->
+  <div class="grid">
+    <div class="col-8">
+      <p-table
+        [value]="listaDtealle"
+        [rows]="5"
+        [paginator]="true"
+        [rowsPerPageOptions]="[5, 7, 10]"
+      >
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th>Producto</th>
+            <th>Código</th>
+            <th>Imagen</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Acciones</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-detalle let-columns="columns">
+          <tr>
+            <td>{{ detalle.dtfIdProducto1.prdNombre }}</td>
+            <td>
+              {{ detalle.dtfIdProducto1.prdCodigo }} /
+              {{ detalle.dtfIdProducto1.prdCodigoProvedor }}
+            </td>
+            <td>
+              <img
+                [src]="leerArchivo(detalle.dtfIdProducto1.pdrFoto)"
+                width="100"
+                class="shadow-4"
+              />
+            </td>
+            <td>
+              {{ detalle.dtfPrecio | currency : "CRC" : "symbol-narrow" }}
+            </td>
+
+            <td
+              [pEditableColumn]="detalle.dtfCantidad"
+              pEditableColumnField="Cantidad"
+            >
+              <p-cellEditor>
+                <ng-template pTemplate="input">
+                  <input
+                    pInputText
+                    type="text"
+                    [(ngModel)]="detalle.dtfCantidad"
+                    required
+                    (input)="sumarTotal()"
+                  />
+                </ng-template>
+                <ng-template pTemplate="output">
+                  {{ detalle.dtfCantidad }}
+                </ng-template>
+              </p-cellEditor>
+            </td>
+            <td>
+              <button
+                pButton
+                pRipple
+                type="button"
+                icon="pi pi-times"
+                class="p-button-rounded p-button-danger"
+                (click)="eliminarDeLaLista(detalle.dtfId)"
+              ></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <div class="col">
+      <div class="field">
+        <H1>Total: {{ total | currency : "CRC" : "symbol-narrow" }}</H1>
+      </div>
+      <div *ngIf="mayorista.clmId > 0 && listaDtealle.length > 0">
+        <h3>
+          {{ personaMayorista.psrNombre }} {{ personaMayorista.psrApellido1 }}
+          {{ personaMayorista.psrApellido2 }}
+        </h3>
+        <div class="field">Id: {{ mayorista.clmId }}</div>
+        <div class="field">
+          Cédula: {{ personaMayorista.psrIdentificacion }}
+        </div>
+      </div>
+
+      <div class="field">
+        <button
+          pButton
+          type="button"
+          label="Pagar"
+          class="p-button-success w-full"
+          icon="pi pi-wallet"
+          (click)="showResponsiveDialogPago()"
+          [disabled]="pagarDeshabilitado"
+        ></button>
+      </div>
+
+      <div class="field">
+        <button
+          pButton
+          type="button"
+          label="Cancelar"
+          (click)="cancelar()"
+          class="p-button-danger w-full"
+          icon="pi pi-times"
+        ></button>
+      </div>
+
+      <div class="field">
+        <button
+          pButton
+          type="button"
+          label="Mayorista"
+          class="p-button-secondary w-full"
+          icon="pi pi-user"
+          (click)="showResponsiveDialogMayorista()"
+          [disabled]="mayoristaDeshabilitado"
+        ></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modales -->
+<!-- todo Modal para ver todos los productos -->
+<p-dialog
+  header="Godfather I"
+  [(visible)]="verModal"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [maximizable]="true"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+  </p>
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-check"
+      (click)="verModal = false"
+      label="Salir"
+      styleClass="p-button-text"
+    ></p-button>
+  </ng-template>
+</p-dialog>
+
+<!-- todo pago -->
+<p-dialog
+  header="Realizar pago"
+  [(visible)]="verModalPago"
+  [breakpoints]="{ '960px': '75vw' }"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <p>
+    Seleccione una forma de pago:
+    <p-dropdown
+      [options]="listaFormaPago"
+      [(ngModel)]="formaPagoSeleccionado"
+      placeholder="Forma de pago"
+      optionLabel="frpDescripcion"
+      [showClear]="true"
+      (onChange)="deshabilitarCambio()"
+    ></p-dropdown>
+  </p>
+
+  <div class="grid my-2">
+    <div class="col">
+      <label for="moneda-CR">Paga con </label>
+      <p-inputNumber
+        [(ngModel)]="pagoCon"
+        inputId="moneda-CR"
+        mode="currency"
+        (keyup.enter)="hacerCambio()"
+        currency="CRC"
+        locale="es-CR"
+        [disabled]="cambioDeshabilitar"
+      >
+      </p-inputNumber>
+    </div>
+    <div class="col">
+      <div class="field">
+        Total a pagar : {{ total | currency : "CRC" : "symbol-narrow" }}
+      </div>
+      <div class="field">
+        Cambio: {{ cambio | currency : "CRC" : "symbol-narrow" }}
+      </div>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      (click)="verModalPago = false"
+      label="No"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      (click)="verModalPago = false"
+      label="Yes"
+      styleClass="p-button-text"
+    ></p-button>
+  </ng-template>
+</p-dialog>
+
+<!-- todo Mayorista buscar -->
+<p-dialog
+  header="Consultar cliente Mayorista"
+  [(visible)]="verMayoristaModal"
+  [style]="{ width: '50vw' }"
+>
+  <div class="grid">
+    <div class="col">
+      <div class="p-inputgroup">
+        <span class="p-inputgroup-addon">
+          <i class="pi pi-user"></i>
+        </span>
+        <input pInputText placeholder="Username" [(ngModel)]="buscadorCedulaOId" (keyup.enter)="ConsultarClienteMayorista()"/>
+      </div>
+    </div>
+    <div class="col-1">
+      <p-button icon="pi pi-search" styleClass="p-button-rounded p-button-outlined"  (click)="ConsultarClienteMayorista()"></p-button>
+    </div>
+  </div>
+</p-dialog>

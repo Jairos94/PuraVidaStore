@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PuraVidaStoreBK.Models.DbContex
+namespace PuraVidaStoreBK.Models.DbContex;
+
+public partial class EstatusFactura
 {
-    public partial class EstatusFactura
-    {
-        public EstatusFactura()
-        {
-            Facturas = new HashSet<Factura>();
-        }
+    public int EtfId { get; set; }
 
-        public int EtfId { get; set; }
-        public string EsfDescripcion { get; set; } = null!;
+    public string EsfDescripcion { get; set; } = null!;
 
-        public virtual ICollection<Factura> Facturas { get; set; }
-    }
+    public virtual ICollection<Factura> Facturas { get; set; } = new List<Factura>();
 }

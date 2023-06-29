@@ -24,4 +24,10 @@ export class PersonaServiceService {
     .set('id', id);
   return this.http.get<PersonaModel>(`${this.baseUrl}persona/personaPorId`, { params });
   }
+
+  buscarPersonaPorCedula(cedula:string):Observable<PersonaModel>{
+    const params = new HttpParams()
+    .set('cedula', cedula);
+  return this.http.get<PersonaModel>(`${this.baseUrl}persona/buscarPersonaPorCedula`, { params });
+  }
 }

@@ -8,35 +8,53 @@ namespace PuraVidaStoreBK.Models
     {
         public ProfilePuraVidaStore()
         {
-            CreateMap<Bodega, BodegaDTO>();
-            CreateMap<BodegaDTO, Bodega>();
+            CreateMap<Bodega, BodegaDTO>().ReverseMap();
 
-            CreateMap<Inventarios, InventariosDTO>();
-            CreateMap<InventariosDTO, Inventarios>();
+            CreateMap<ClientesMayorista, ClienteMayoristaDTO>().ReverseMap();
 
-            CreateMap<Movimiento, MovimientosDTO>();
-            CreateMap<MovimientosDTO, Movimiento>();
+            CreateMap<DetalleFactura, DetalleFacturaDTO>().ReverseMap();
 
-            CreateMap<MotivosMovimiento, MotivosMovimientoDTO>();
-            CreateMap<MotivosMovimientoDTO, MotivosMovimiento>();
+            CreateMap<EstatusFactura, EstatusFacturaDTO>().ReverseMap();
 
-            CreateMap<Persona, PersonaDto>();
-            CreateMap<PersonaDto, Persona>();
+            CreateMap<Factura, FacturaDTO>().ReverseMap();
 
-            CreateMap<Producto, ProductoDTO>();
-            CreateMap<ProductoDTO, Producto>();
+            CreateMap<FacturaResumen, FacturaResumenDTO>().ReverseMap();
 
-            CreateMap<RolUsiario, RolUsuarioDto>();
-            CreateMap<RolUsuarioDto, RolUsiario>();
+            CreateMap<FormaPago, FormaPagoDTO>().ReverseMap();
 
-            CreateMap<Usuario, UsuarioDto>();
-            CreateMap<UsuarioDto, Usuario>();
+            CreateMap<Impuesto, ImpuestosDTO>().ReverseMap();
 
-            CreateMap<TipoMovimiento, TipoMovimientoDTO>();
-            CreateMap<TipoMovimientoDTO, TipoMovimiento>();
+            CreateMap<ImpuestosPorParametro, ImpuestosPorParametroDTO>().ReverseMap();
 
-            CreateMap<TipoProducto, TipoProductoDTO>();
-            CreateMap<TipoProductoDTO, TipoProducto>();
+            CreateMap<ImpuestosPorFactura, ImpuestosPorFacturaDTO>().ReverseMap();
+
+            CreateMap<Inventarios, InventariosDTO>().ReverseMap();
+
+            CreateMap<HistorialClienteMayorista, HistorialClienteMayoristaDTO>().ReverseMap();
+
+            CreateMap<Movimiento, MovimientosDTO>().ReverseMap();
+
+            CreateMap<MotivosMovimiento, MotivosMovimientoDTO>().ReverseMap();
+
+            CreateMap<ParametrosEmail, ParametrosEmailDTO>().ReverseMap();
+
+            CreateMap<ParametrosGlobales, ParametrosGlobalesDTO>().ReverseMap();
+
+            CreateMap<Persona, PersonaDto>().ReverseMap();
+
+            CreateMap<Producto, ProductoDTO>().ReverseMap();
+
+            CreateMap<RolUsiario, RolUsuarioDto>().ReverseMap();
+
+            CreateMap<Usuario, UsuarioDto>().ReverseMap();
+
+            CreateMap<TiempoParaRenovar, TiempoParaRenovarDTO>().ReverseMap();
+
+            CreateMap<TipoMovimiento, TipoMovimientoDTO>().ReverseMap();
+
+            CreateMap<TipoProducto, TipoProductoDTO>().ReverseMap();
+
+           
 
         }
     }

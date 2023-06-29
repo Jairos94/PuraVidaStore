@@ -1,1 +1,128 @@
-<p>realizar-ajuste works!</p>
+<p-toast></p-toast>
+<div class="my-2">
+  <div class="grid">
+    <div class="col">
+      <div class="p-inputgroup">
+        <input
+          type="text"
+          pInputText
+          placeholder="Buscar por código"
+          [(ngModel)]="buscador"
+          (keyup.enter)="buscarProductoPorCodigo()"
+        />
+        <button
+          type="button"
+          pButton
+          pRipple
+          icon="pi pi-search"
+          styleClass="p-button-warn"
+          (click)="buscarProductoPorCodigo()"
+        ></button>
+      </div>
+    </div>
+
+    <div class="col-1">
+      <div class="p-inputgroup">
+        <button
+          type="button"
+          pButton
+          pRipple
+          class="mx-1"
+          icon="pi pi-save"
+          styleClass="p-button-warn"
+          (click)="guardarAjuste()"
+          [disabled]="
+            !(productoSeleccionado.prdId >0 && motivoSeleccionado.mtmId>0 && cantidad>0)
+          "
+        ></button>
+        <button
+          type="button"
+          pButton
+          pRipple
+          icon="pi pi-eraser"
+          styleClass="p-button-warn"
+          (click)="limpiar()"
+        ></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid my-2">
+    <div class="col">
+      <p-card class="w-full">
+        <ng-template pTemplate="header">
+          <h1>{{ productoSeleccionado.prdCodigo }}</h1>
+        </ng-template>
+        <img
+          alt="Card"
+          [attr.height]="'200px'"
+          [src]="leerArchivo(productoSeleccionado.pdrFoto)"
+        />
+        <div class="field">Código: {{ productoSeleccionado.prdNombre }}</div>
+        <div class="field">
+          Código proveedor: {{ productoSeleccionado.prdCodigoProvedor }}
+        </div>
+        <div class="field">
+          Tipo producto:
+          {{ productoSeleccionado.prdIdTipoProductoNavigation?.tppDescripcion }}
+        </div>
+      </p-card>
+    </div>
+
+    <div class="col">
+      <p-card class="w-full">
+        <ng-template pTemplate="header">
+          <h1>Parámetros de ingreso</h1>
+        </ng-template>
+        <div class="field">
+          <label for="minmax-buttons">Cantidad a ajustar: </label>
+          <p-inputNumber
+            [(ngModel)]="cantidad"
+            [showButtons]="true"
+            inputId="minmax-buttons"
+            [min]="0"
+          >
+          </p-inputNumber>
+        </div>
+
+        <div class="field">
+          Motivo de ajuste
+          <p-dropdown
+            [options]="listaMotivoMovimiento"
+            [(ngModel)]="motivoSeleccionado"
+            [filter]="true"
+            filterBy="mtmDescripcion"
+            placeholder="Seleccione el tipo de ajuste"
+            optionLabel="mtmDescripcion"
+            [showClear]="true"
+          ></p-dropdown>
+          <div
+            *ngIf="
+              motivoSeleccionado.mtmIdTipoMovimiento > 00 &&
+              motivoSeleccionado.mtmIdTipoMovimientoNavigation!.tpmId === 1
+            "
+          >
+            <label class="text-green-500">
+              {{
+                motivoSeleccionado.mtmIdTipoMovimientoNavigation!.tpmDescripcion
+              }}
+            </label>
+          </div>
+
+          <div
+            *ngIf="
+              motivoSeleccionado.mtmIdTipoMovimiento > 00 &&
+              motivoSeleccionado.mtmIdTipoMovimientoNavigation!.tpmId === 2
+            "
+          >
+            <label class="text-red-500">
+              {{
+                motivoSeleccionado.mtmIdTipoMovimientoNavigation!.tpmDescripcion
+              }}
+            </label>
+          </div>
+        </div>
+      </p-card>
+    </div>
+  </div>
+</div>

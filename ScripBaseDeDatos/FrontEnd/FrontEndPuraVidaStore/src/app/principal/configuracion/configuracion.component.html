@@ -1,0 +1,209 @@
+<div class="mt-2">
+  <p-accordion [activeIndex]="0">
+    <form [formGroup]="ParametrosForm" (ngSubmit)="guardar()">
+      <div class="grid">
+        <div class="col">
+          <p-accordionTab header="Configuración de parámetros">
+            <div class="field">
+              <label htmlFor="lblUnidadesHabilitarMayorista"
+                >Unidades para habilitar cliente mayorista
+              </label>
+              <p-inputNumber
+                formControlName="unidadesHabilitarMayorista"
+                [showButtons]="true"
+                inputId="minmax-buttons"
+                [min]="1"
+                class="mx-2"
+              >
+              </p-inputNumber>
+            </div>
+
+            <div class="field">
+              <label htmlFor="lblUnidadesAgregarMayorista"
+                >Unidades para agregar cliente mayorista
+              </label>
+              <p-inputNumber
+                formControlName="unidadesAgregarMayorista"
+                [showButtons]="true"
+                inputId="minmax-buttons"
+                [min]="1"
+                class="mx-2"
+              >
+              </p-inputNumber>
+            </div>
+
+            <div class="field">
+              <label htmlFor="swHabilitarImpuestos">Habilitar impuestos </label>
+              <p-inputSwitch
+                formControlName="habilitarImpuestos"
+              ></p-inputSwitch>
+            </div>
+
+            <div class="field">
+              <label htmlFor="swImpuestosIncluidos">Habilitar impuestos </label>
+              <p-inputSwitch
+                formControlName="impuestosIncluidos"
+              ></p-inputSwitch>
+            </div>
+
+            <div class="field">
+              <label htmlFor="lblUnidadesHabilitarMayorista"
+                >Tiempo para renovar
+              </label>
+              <p-inputNumber
+                formControlName="tiempoParaRenovar"
+                [showButtons]="true"
+                inputId="minmax-buttons"
+                [min]="1"
+                class="mx-2"
+              >
+              </p-inputNumber>
+
+              <p-dropdown
+                formControlName="tiempoParaRenovarId"
+                [options]="ListTiempos"
+                optionLabel="trrDescricpcion"
+                optionValue="trpId"
+              ></p-dropdown>
+            </div>
+          </p-accordionTab>
+
+          <p-accordionTab header="Configuración del correo">
+            <div class="field">
+              Habilitar correo
+              <p-inputSwitch
+                formControlName="habilitarCorreo"
+                (onChange)="AsignarCorreo()"
+              ></p-inputSwitch>
+            </div>
+            <div *ngIf="CorreoHbilitado">
+              <div class="grid">
+                <div class="col">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="Host">Ingrese el host</label>
+                    <input
+                      pInputText
+                      id="Host"
+                      aria-describedby="host-help"
+                      formControlName="host"
+                    />
+                    <small id="host-help"
+                      >Servidor del encargado de enviar correos</small
+                    >
+                  </div>
+                </div>
+                <div class="sm:col md:col-2">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="Puerto">Ingrese el host</label>
+                    <input
+                      pInputText
+                      pKeyFilter="num"
+                      id="Puerto"
+                      aria-describedby="puerto-help"
+                      formControlName="puerto"
+                    />
+                    <small id="puerto-help">Puerto de salida</small>
+                  </div>
+                </div>
+              </div>
+              <div class="grid">
+                <div class="col">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="usuario">Usuario</label>
+                    <input
+                      pInputText
+                      id="usuario"
+                      autocomplete="new-password"
+                      aria-describedby="usuario-help"
+                      formControlName="usuario"
+                    />
+                    <small id="usuario-help"
+                      >Se ingresa el usuario del correo</small
+                    >
+                  </div>
+                </div>
+
+                <div class="col">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="pass">Contraseña</label>
+                    <input
+                      pInputText
+                      id="pass"
+                      aria-describedby="pass-help"
+                      type="password"
+                      formControlName="clave"
+                      autocomplete="new-password"
+                    />
+                    <small id="pass-help"
+                      >Se ingresa la contraseña del correo</small
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="field">
+                <label htmlFor="swSSl">SSL</label>
+                <p-inputSwitch formControlName="ssl"></p-inputSwitch>
+              </div>
+            </div>
+          </p-accordionTab>
+        </div>
+        <div class="sm:col md:col-1">
+          <button
+            type="submit"
+            pButton
+            pRipple
+            label="Guardar"
+            [disabled]="!ParametrosForm.valid"
+            icon="pi pi-save"
+            class="ml-2"
+          ></button>
+        </div>
+      </div>
+    </form>
+
+    <p-accordionTab header="Impuestos">
+      <div class="field">
+        <p-autoComplete
+          [(ngModel)]="buscador"
+          [forceSelection]="true"
+          [suggestions]="ImpuestosSugerencia"
+          (completeMethod)="FiltrarImpuestos($event)"
+          field="impDescripcion"
+        ></p-autoComplete>
+      </div>
+
+      <div class="field">
+        <p-table
+          [value]="ImpuestosAgregar"
+          [paginator]="true"
+          [rows]="5"
+          [rowsPerPageOptions]="[10, 25, 50]"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th>#</th>
+              <th>Impuesto</th>
+              <th>%</th>
+              <th>Acciones</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-impuesto>
+            <tr>
+              <td>{{ impuesto.impId }}</td>
+              <td>{{ impuesto.impDescripcion }}</td>
+              <td>{{ impuesto.impPorcentaje }}</td>
+              <td>
+                <p-button
+                  icon="pi pi-times"
+                  styleClass="p-button-rounded p-button-danger p-button-text"
+                  (click)="eliminarLista(impuesto)"
+                ></p-button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </p-accordionTab>
+  </p-accordion>
+</div>
+<p-toast position="top-right"></p-toast>

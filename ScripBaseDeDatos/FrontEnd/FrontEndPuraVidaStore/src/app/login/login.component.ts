@@ -6,13 +6,13 @@ import { MessageService, PrimeNGConfig } from 'primeng/api';
 import { EncripDesencrip } from '../utils/EncripDesencrip';
 import { BodegaService } from '../services/bodega.service';
 import { BodegaModel } from '../models/bodega-model';
-
+import { ParametrosService } from '../services/parametros.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  providers: [MessageService]
+  providers: [MessageService],
 })
 export class LoginComponent implements OnInit {
   Usuario: string = '';
@@ -20,56 +20,80 @@ export class LoginComponent implements OnInit {
   listaBodegas: BodegaModel[] = [];
   bodegaSeleccionada: BodegaModel = {
     bdgId: 0,
-    bdgDescripcion: "",
-    bdgVisible: true
-  }
-  constructor(private servicio: UsuarioServiceService,
+    bdgDescripcion: '',
+    bdgVisible: true,
+  };
+  constructor(
+    private servicio: UsuarioServiceService,
     private servicioBodega: BodegaService,
+    private servicioParametros: ParametrosService,
     private route: Router,
     private messageService: MessageService,
-    private primengConfig: PrimeNGConfig) { }
+    private primengConfig: PrimeNGConfig
+  ) {}
 
   ngOnInit(): void {
-
     this.primengConfig.ripple = true;
     this.obtenerBodegas();
   }
 
   validar() {
-    this.servicio.login(this.Usuario, EncripDesencrip.encryptUsingAES256(this.Contrasena)).subscribe((u => {
+    this.servicio
+      .login(this.Usuario, EncripDesencrip.encryptUsingAES256(this.Contrasena))
+      .subscribe(
+        (u) => {
+          activo.usuarioPrograma = u.usuario;
+          activo.token = u.token;
+          activo.bodegaIngreso = this.bodegaSeleccionada;
+          this.obtenerParametrosGlabales(activo.bodegaIngreso.bdgId)
+          this.route.navigate(['/principal']);
+        },
+        (_error) => {
+          let datoError = '';
+          try {
+            datoError = _error.error;
+            this.showError(datoError);
+          } catch (error) {
+            datoError = 'Error de conexcion';
+          }
 
-      activo.usuarioPrograma = u.usuario;
-      activo.token = u.token;
-      activo.bodegaIngreso = this.bodegaSeleccionada;
-      
-      this.route.navigate(['/principal'])
-
-    }), (_error => {
-
-      let datoError = '';
-      try {
-        datoError = _error.error;
-        this.showError(datoError);
-      } catch (error) {
-        datoError = 'Error de conexcion'
-      }
-
-      console.log(datoError);
-
-
-    }));
+          console.log(datoError);
+        }
+      );
   }
 
   obtenerBodegas() {
-    this.servicioBodega.listaUsuarios()
-      .subscribe((x => {
+    this.servicioBodega.listaUsuarios().subscribe(
+      (x) => {
         this.listaBodegas = [];
         this.listaBodegas = x;
-      }), (_e => console.error(_e)));
+      },
+      (_e) => console.error(_e)
+    );
+  }
+
+  obtenerParametrosGlabales(idBodega: number) {
+    this.servicioParametros.ObtenerPametros(idBodega).subscribe({
+      next: (x) => {
+        activo.parametrosGlobales = x;
+        activo.parametrosGlobales.impuestosPorParametros?.forEach(
+          (impuesto) => {
+            if (impuesto.impPidImpuestoNavigation != null) {
+              activo.listaImpuestos.push(impuesto.impPidImpuestoNavigation);
+            }
+          }
+        );
+      },
+      error: (_e) => {console.log(_e);
+      },
+    });
   }
 
   showError(MensajeError: string) {
-    this.messageService.add({ severity: 'error', summary: 'Error', detail: MensajeError });
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: MensajeError,
+    });
   }
-
 }

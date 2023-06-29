@@ -13,24 +13,24 @@ export class TipoProductoService {
   constructor(private http: HttpClient,) { }
 
   listaTipoProducto():Observable<TipoProductoModel[]>{
-    return this.http.get<TipoProductoModel[]>(`${this.baseUrl}TipoProduco/ListaTipoProducto`);
+    return this.http.get<TipoProductoModel[]>(`${this.baseUrl}TipoProducto/ListaTipoProducto`);
   }
 
   listaTipoProductoFiltrado():Observable<TipoProductoModel[]>{
-    return this.http.get<TipoProductoModel[]>(`${this.baseUrl}TipoProduco/ListaTipoProductoFiltrado`);
+    return this.http.get<TipoProductoModel[]>(`${this.baseUrl}TipoProducto/ListaTipoProductoFiltrado`);
   }
-  guardarTipoUsuario(TipoProduco:TipoProductoModel):Observable<TipoProductoModel>{
-    return this.http.post<TipoProductoModel>(`${this.baseUrl}TipoProduco/GuardarTipoProducto`,TipoProduco);
+  guardarTipoUsuario(TipoProducto:TipoProductoModel):Observable<TipoProductoModel>{
+    return this.http.post<TipoProductoModel>(`${this.baseUrl}TipoProducto/GuardarTipoProducto`,TipoProducto);
   }
   obetenerTipoProductoPorId(id:number):Observable<TipoProductoModel>{
     const params = new HttpParams()
     .set('id',id)
-    return this.http.get<TipoProductoModel>(`${this.baseUrl}TipoProduco/ObtenerTipoProductoPorId`,{ params });
+    return this.http.get<TipoProductoModel>(`${this.baseUrl}TipoProducto/ObtenerTipoProductoPorId`,{ params });
   }
 
   sugerencias(dato:string):Observable<TipoProductoModel[]>{
     const params = new HttpParams()
     .set('dato',dato)
-    return this.http.get<TipoProductoModel[]>(`${this.baseUrl}TipoProduco/BuscarTipoProductoPorDescripcion`,{ params });
+    return this.http.get<TipoProductoModel[]>(`${this.baseUrl}TipoProducto/BuscarTipoProductoPorDescripcion`,{ params });
   }
 }
