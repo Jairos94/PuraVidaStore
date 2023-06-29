@@ -42,6 +42,12 @@ export class MovimientosComponent implements OnInit {
           },
         ],
       },
+      {
+        label: 'Traslados',
+        icon: 'pi pi-pw pi-file',
+        routerLink: 'traslados',
+        visible: activo.esAministrador(),
+      },
     ];
   }
 }
