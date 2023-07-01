@@ -12,7 +12,7 @@ export class BodegaService {
 
   constructor(private http: HttpClient) { }
 
-  listaUsuarios(): Observable<BodegaModel[]> {
+  listaBodegas(): Observable<BodegaModel[]> {
     return this.http.get<BodegaModel[]>(`${this.baseUrl}Bodega/ListaBodegas`);
   }
 
