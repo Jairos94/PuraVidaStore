@@ -1,3 +1,4 @@
+import { MovimientosModel } from './../models/movimientos-model';
 import { MotivoMovimientoModel } from 'src/app/models/motivo-movimiento-model';
 import { TipoMovimientoModel } from './../models/tipo-movimiento-model';
 import { activo } from './../activo';
@@ -6,6 +7,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { InventariosModel } from '../models/inventarios-model';
+import { TrasladoEntreBodegasModel } from '../models/traslado-entre-bodegas-model';
 
 @Injectable({
   providedIn: 'root',
@@ -95,6 +97,14 @@ export class MovimientosService {
   obtenerTipoMovimiento(): Observable<TipoMovimientoModel[]> {
     return this.http.get<TipoMovimientoModel[]>(
       `${this.baseUrl}Movimientos/ObtenerTipoMovimiento`
+    );
+  }
+
+  guardarTraslado(traslado:TrasladoEntreBodegasModel):Observable<MovimientosModel[]>
+  {
+    return this.http.post<MovimientosModel[]>(
+      `${this.baseUrl}Movimientos/GuardarTraslado`,
+      traslado
     );
   }
 }
