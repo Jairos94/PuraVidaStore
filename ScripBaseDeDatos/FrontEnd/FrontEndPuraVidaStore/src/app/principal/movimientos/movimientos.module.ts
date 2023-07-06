@@ -7,13 +7,15 @@ import { MovimientosComponent } from './movimientos.component';
 import { IngresosComponent } from './ingresos/ingresos.component';
 import { InventariosComponent } from './inventarios/inventarios.component';
 import { FormsModule } from '@angular/forms';
+import { TrasladosComponent } from './traslados/traslados.component';
 
 
 @NgModule({
   declarations: [
     MovimientosComponent,
     IngresosComponent,
-    InventariosComponent
+    InventariosComponent,
+    TrasladosComponent
   ],
   imports: [
     CommonModule,

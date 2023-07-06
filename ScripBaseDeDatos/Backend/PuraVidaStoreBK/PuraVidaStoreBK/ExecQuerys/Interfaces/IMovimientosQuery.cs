@@ -15,6 +15,9 @@ namespace PuraVidaStoreBK.ExecQuerys.Interfaces
         public Task<List<MotivosMovimiento>> ObtenerListaMotivoMovimientoPorDescripcion(string descripcion);
         public Task<MotivosMovimiento> ObtenerMotivoMovmientoPorId(int id);
         public Task<bool> GuardarAjuste(Inventarios inventario, int IdBodega, int idUsuario, int Motivo);
+        Task<List<MotivosMovimiento>> BusquedaPorDescripcion(string descripcion);
+        Task<List<MotivosMovimiento>> GuardarListaMotivos(List<MotivosMovimiento> movimientos);
+        Task<List<Movimiento>> GuardarListaMovimientos(List<Movimiento> movimientos);
         public Task<List<TipoMovimiento>> ObtenerListaTipoMovimiento(); 
     }
 }

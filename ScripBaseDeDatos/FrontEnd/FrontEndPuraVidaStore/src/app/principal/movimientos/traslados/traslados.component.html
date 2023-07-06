@@ -1,0 +1,125 @@
+<div class="my-2">
+  <div class="grid">
+    <div class="col">
+      <div class="field">
+        Bodega destino:
+        <p-dropdown
+          [options]="listaBodegas"
+          [(ngModel)]="bodegaSeleccionada"
+          optionLabel="bdgDescripcion"
+        ></p-dropdown>
+      </div>
+
+      <div class="field">
+        <div class="p-inputgroup w-full">
+          <input
+            type="text"
+            class="w-full"
+            pInputText
+            placeholder="Código"
+            [(ngModel)]="buscador"
+            (keyup.enter)="buscarCodigoEnExistencias()"
+            (focus)="enfoque()"
+          />
+          <button
+            type="button"
+            pButton
+            icon="pi pi-search"
+            styleClass="p-button-warn"
+          ></button>
+        </div>
+
+        <div class="field my-1">
+          <p-table
+            [value]="inventariosTabla"
+            [paginator]="true"
+            [rows]="5"
+            [rowsPerPageOptions]="[10, 25, 50]"
+          >
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th>Nombre</th>
+                <th>Código</th>
+                <th>Unds Max</th>
+                <th>Unds a Trasladar</th>
+                <th>Acciones</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-inventario let-columns="columns">
+              <tr>
+                <td>{{ inventario.producto.prdNombre }}</td>
+                <td>
+                  {{ inventario.producto.prdCodigo }} -
+                  {{ inventario.producto.prdCodigoProvedor }}
+                </td>
+                <td>{{ inventario.undsMaximas }}</td>
+                <td>{{ inventario.cantidadExistencia }}</td>
+                <td>
+                  <p-button
+                    icon="pi pi-pencil"
+                    styleClass="p-button-rounded p-button-warning"
+                    (onClick)="editarUnidades(inventario)"
+                  ></p-button>
+                  <p-button
+                    icon="pi pi-trash"
+                    styleClass="p-button-rounded p-button-danger"
+                    (onClick)="removerLista(inventario)"
+                  ></p-button>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-2">
+      <p-button
+        label="Guardar"
+        icon="pi pi-save"
+        [disabled]="
+          bodegaSeleccionada.bdgId === 0 &&
+          inventariosSeleccionadosNoFiltrado.length <= 0
+        "
+        (onClick)="Guardar()"
+      ></p-button>
+    </div>
+  </div>
+</div>
+
+<p-toast></p-toast>
+
+<p-dialog
+  header="Header"
+  [(visible)]="habilitarModal"
+  [style]="{ width: '50vw' }"
+>
+  <ng-template pTemplate="header">
+    <span class="text-xl font-bold">{{
+      inventarioSeleccionado.producto.prdNombre
+    }}</span>
+  </ng-template>
+  <div>
+    <label>Cantidad a trasladar</label>
+    <p-inputNumber
+      [(ngModel)]="inventarioSeleccionado.cantidadExistencia"
+      [showButtons]="true"
+      buttonLayout="horizontal"
+      inputId="horizontal"
+      spinnerMode="horizontal"
+      decrementButtonClass="p-button-danger"
+      incrementButtonClass="p-button-success"
+      incrementButtonIcon="pi pi-plus"
+      decrementButtonIcon="pi pi-minus"
+      [max]="inventarioSeleccionado.undsMaximas"
+    ></p-inputNumber>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-check"
+      label="Aceptar"
+      styleClass="p-button-text"
+      (onClick)="actualizarTraslado()"
+    ></p-button>
+  </ng-template>
+</p-dialog>

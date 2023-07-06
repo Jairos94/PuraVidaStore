@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit {
   }
 
   obtenerBodegas() {
-    this.servicioBodega.listaUsuarios().subscribe(
+    this.servicioBodega.listaBodegas().subscribe(
       (x) => {
         this.listaBodegas = [];
         this.listaBodegas = x;
