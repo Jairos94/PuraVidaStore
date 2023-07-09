@@ -11,6 +11,8 @@ import { FacturaModel } from 'src/app/models/factura-model';
 import { FormaPagoModel } from 'src/app/models/forma-pago-model';
 import { VentasService } from 'src/app/services/ventas.service';
 import { FacturaResumenModel } from 'src/app/models/factura-resumen-model';
+import { ParametrosGlobalesModel } from 'src/app/models/parametros-globales-model';
+import { activo } from 'src/app/activo';
 
 @Component({
   selector: 'app-facturacion',
@@ -22,15 +24,18 @@ export class FacturacionComponent implements OnInit {
   pagoCon: number = 0;
   cambio: number = 0;
   totalCantidad: number = 0;
+  subTotal:number=0;
   total: number = 0;
   buscadorCodigoBarras: string = '';
   buscadorCedulaOId: string = '';
+  esCambioTabla:boolean=false;
   pagarDeshabilitado: boolean = true;
   cambioDeshabilitar: boolean = false;
   mayoristaDeshabilitado: boolean = true;
   verModal: boolean = false;
   verModalPago: boolean = false;
   verMayoristaModal: boolean = false;
+  parametrosGlobales:ParametrosGlobalesModel=activo.parametrosGlobales;
   listaDtealle: DetalleFacturaModel[] = [];
   listaFormaPago: FormaPagoModel[] = [];
 
@@ -163,26 +168,23 @@ export class FacturacionComponent implements OnInit {
 
   sumarTotal() {
     this.total = 0;
+    this.subTotal=0;
     this.totalCantidad = 0;
     this.pagarDeshabilitado = false;
 
     this.listaDtealle.forEach((x, i) => {
       if (x.dtfIdProducto1 != null) {
         if (this.mayorista.clmId > 0) {
-          console.log('Entro al true de venta mayorista');
-
           x.dtfPrecio = x.dtfIdProducto1.prdPrecioVentaMayorista;
         } else {
-          console.log('Entro al false (venta regular)');
-
           x.dtfPrecio = x.dtfIdProducto1.prdPrecioVentaMinorista;
         }
       }
 
-      this.total = this.total + x.dtfCantidad * x.dtfPrecio;
+      this.subTotal = this.subTotal + x.dtfCantidad * x.dtfPrecio;
       this.totalCantidad = this.totalCantidad + x.dtfCantidad;
 
-      if (this.totalCantidad >= 3) {
+      if (this.totalCantidad >= this.parametrosGlobales.prgUndsHabilitarMayorista) {
         this.mayoristaDeshabilitado = false;
       } else {
         this.mayoristaDeshabilitado = true;
@@ -197,6 +199,7 @@ export class FacturacionComponent implements OnInit {
       this.cancelar();
     }
   }
+
   ConsultarClienteMayorista() {
     this.servicioMayorista
       .obtenerMayoristaPorCedula(this.buscadorCedulaOId)

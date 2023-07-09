@@ -45,9 +45,11 @@ CREATE TABLE [dbo].[DetalleFactura](
 	[DtfId] [bigint] IDENTITY(1,1) NOT NULL,
 	[DtfIdProducto] [bigint] NOT NULL,
 	[DtfIdFactura] [bigint] NOT NULL,
-	[DtfPrecio] [float] NOT NULL,
+	[DtfLinea] int  NULL,
+	[DtfPrecio] decimal(18,2) NOT NULL,
+	[DtfMontoImpuestos] decimal(18,2) NOT NULL,
 	[DtfDescuento] [int] NULL,
-	[DtfCantidad] [int] NULL,
+	[DtfCantidad] [int] not NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[DtfId] ASC
@@ -64,10 +66,10 @@ CREATE TABLE [dbo].[DetalleProductoPedido](
 	[DppIdProducto] [bigint] NOT NULL,
 	[DppIdPedido] [bigint] NOT NULL,
 	[DppIdMoneda] [int] NOT NULL,
-	[DppPesoUnitario] [float] NULL,
-	[DppValorMoneda] [float] NULL,
-	[DppCostoMoneda] [float] NULL,
-	[DppCostoColones] [float] NULL,
+	[DppPesoUnitario] decimal(18,2) NULL,
+	[DppValorMoneda] decimal(18,2) NULL,
+	[DppCostoMoneda] decimal(18,2) NULL,
+	[DppCostoColones] decimal(18,2) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[DppId] ASC
@@ -131,9 +133,10 @@ GO
 CREATE TABLE [dbo].[FacturaResumen](
 	[FtrId] [bigint] IDENTITY(1,1) NOT NULL,
 	[FtrFactura] [bigint] NOT NULL,
-	[FtrMontoTotal] [float] NOT NULL,
-	[FtrMontoPagado] [float] NULL,
-	[FtrCambio] [float] NULL,
+	[FtrMontoTotal] decimal(18,2) NOT NULL,
+	[FtrMontoImpuestos] decimal(18,2) NOT NULL,
+	[FtrMontoPagado] decimal(18,2) NULL,
+	[FtrCambio] decimal(18,2) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[FtrId] ASC
@@ -196,10 +199,10 @@ CREATE TABLE [dbo].[HistorialPrecios](
 	[HlpIdProducto] [bigint] NOT NULL,
 	[HlpFecha] [datetime] NOT NULL,
 	[HlpIdUsuario] [int] NOT NULL,
-	[HlpPrecioMayorista] [float] NULL,
-	[HlpPrecioMinorista] [float] NULL,
-	[HlpPrecioMayoristaAnterior] [float] NULL,
-	[HlpPrecioMinoristaAnterior] [float] NULL,
+	[HlpPrecioMayorista] decimal(18,2) NULL,
+	[HlpPrecioMinorista] decimal(18,2) NULL,
+	[HlpPrecioMayoristaAnterior] decimal(18,2) NULL,
+	[HlpPrecioMinoristaAnterior] decimal(18,2) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[HlpId] ASC
@@ -214,7 +217,7 @@ GO
 CREATE TABLE [dbo].[Impuestos](
 	[ImpId] [int] IDENTITY(1,1) NOT NULL,
 	[ImpDescripcion] [varchar](100) NULL,
-	[ImpPorcentaje] [float] NULL,
+	[ImpPorcentaje] decimal(18,2) NULL,
 	[ImpActivo] [bit] NULL,
 PRIMARY KEY CLUSTERED 
 (
@@ -312,8 +315,8 @@ CREATE TABLE [dbo].[OtrosCargos](
 	[OtrId] [int] IDENTITY(1,1) NOT NULL,
 	[OtrIdMoneda] [int] NOT NULL,
 	[OtrIdPedido] [bigint] NOT NULL,
-	[OtrValorMoneda] [float] NULL,
-	[OtrCostoMoneda] [float] NULL,
+	[OtrValorMoneda] decimal(18,2) NULL,
+	[OtrCostoMoneda] decimal(18,2) NULL,
 	[OtrRazon] [text] NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
@@ -403,8 +406,8 @@ GO
 CREATE TABLE [dbo].[Productos](
 	[PrdId] [bigint] IDENTITY(1,1) NOT NULL,
 	[PrdNombre] [varchar](50) NOT NULL,
-	[PrdPrecioVentaMayorista] [float] NOT NULL,
-	[PrdPrecioVentaMinorista] [float] NOT NULL,
+	[PrdPrecioVentaMayorista] decimal(18,2) NOT NULL,
+	[PrdPrecioVentaMinorista] decimal(18,2) NOT NULL,
 	[PrdCodigo] [varchar](100) NULL,
 	[PrdUnidadesMinimas] [int] NULL,
 	[PrdIdTipoProducto] [int] NOT NULL,
@@ -502,14 +505,14 @@ CREATE TABLE [dbo].[Trackings](
 	[TrkFecha] [datetime] NOT NULL,
 	[TrKTrackin] [varchar](300) NOT NULL,
 	[TrkMoneda] [int] NOT NULL,
-	[TrkCostoMoneda] [float] NULL,
-	[TrkValorMoneda] [float] NULL,
+	[TrkCostoMoneda] decimal(18,2) NULL,
+	[TrkValorMoneda] decimal(18,2) NULL,
 	[TrkIdPedido] [bigint] NULL,
-	[TrkPesoProveedor] [float] NULL,
-	[TrkPesoReal] [float] NULL,
-	[TrkMedidaLargoCm] [float] NULL,
-	[TrkMedidaAnchoCm] [float] NULL,
-	[TrkMedidaAlturaCm] [float] NULL,
+	[TrkPesoProveedor] decimal(18,2) NULL,
+	[TrkPesoReal] decimal(18,2) NULL,
+	[TrkMedidaLargoCm] decimal(18,2) NULL,
+	[TrkMedidaAnchoCm] decimal(18,2) NULL,
+	[TrkMedidaAlturaCm] decimal(18,2) NULL,
 	[TrkEstado] [int] NOT NULL,
 	[TrkProveedor] [bigint] NOT NULL,
 PRIMARY KEY CLUSTERED 
