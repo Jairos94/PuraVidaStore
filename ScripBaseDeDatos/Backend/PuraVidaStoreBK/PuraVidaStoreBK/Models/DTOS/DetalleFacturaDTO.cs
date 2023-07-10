@@ -21,7 +21,7 @@ namespace PuraVidaStoreBK.Models.DTOS
 
         public int DtfCantidad { get; set; }
 
-        public virtual ProductoDTO DtfIdProducto1 { get; set; } = null!;
+        public virtual ProductoDTO? DtfIdProducto1 { get; set; } = null!;
 
     }
 }

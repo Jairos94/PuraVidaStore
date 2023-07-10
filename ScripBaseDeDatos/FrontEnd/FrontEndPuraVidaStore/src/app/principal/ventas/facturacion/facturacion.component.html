@@ -105,6 +105,12 @@
     </div>
 
     <div class="col">
+      <div class="field" *ngIf="parametrosGlobales.prgHabilitarImpuestos">
+        <H1>Subtotal: {{ subTotal | currency : "CRC" : "symbol-narrow" }}</H1>
+      </div>
+      <div class="field" *ngIf="parametrosGlobales.prgHabilitarImpuestos">
+        <H1>Impuestos: {{ montoTotalImpuestos | currency : "CRC" : "symbol-narrow" }}</H1>
+      </div>
       <div class="field">
         <H1>Total: {{ total | currency : "CRC" : "symbol-narrow" }}</H1>
       </div>
