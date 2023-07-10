@@ -81,7 +81,7 @@
                     type="text"
                     [(ngModel)]="detalle.dtfCantidad"
                     required
-                    (input)="sumarTotal()"
+                    (input)="cambioTabla(detalle)"
                   />
                 </ng-template>
                 <ng-template pTemplate="output">
@@ -149,15 +149,34 @@
       </div>
 
       <div class="field">
-        <button
-          pButton
-          type="button"
-          label="Mayorista"
-          class="p-button-secondary w-full"
-          icon="pi pi-user"
-          (click)="showResponsiveDialogMayorista()"
-          [disabled]="mayoristaDeshabilitado"
-        ></button>
+        <div class="grid">
+
+          <div class="col">
+            <button
+            pButton
+            type="button"
+            label="Consultar Mayorista"
+            class="p-button-secondary w-full"
+            icon="pi pi-user"
+            (click)="showResponsiveDialogMayorista()"
+            [disabled]="mayoristaDeshabilitado"
+          ></button>
+          </div>
+
+
+          <div class="col" *ngIf="mayorista.clmId==0 && totalCantidad>= parametrosGlobales.prgUndsAgregarMayorista">
+            <button
+            pButton
+            type="button"
+            label="Agregar Mayorista"
+            class="p-button-secondary w-full"
+            icon="pi pi-user"
+            [disabled]="mayoristaDeshabilitado"
+          ></button>
+          </div>
+
+        </div>
+
       </div>
     </div>
   </div>
