@@ -1,4 +1,7 @@
-﻿namespace PuraVidaStoreBK.Models.DbContex;
+﻿using System;
+using System.Collections.Generic;
+
+namespace PuraVidaStoreBK.Models.DbContex;
 
 public partial class Moneda
 {

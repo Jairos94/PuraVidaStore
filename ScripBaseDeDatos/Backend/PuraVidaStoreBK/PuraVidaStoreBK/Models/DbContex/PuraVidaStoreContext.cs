@@ -316,6 +316,7 @@ public partial class PuraVidaStoreContext : DbContext
             entity.ToTable("ImpuestosPorFactura");
 
             entity.Property(e => e.IpfId).ValueGeneratedNever();
+            entity.Property(e => e.IpfPorcentaje).HasColumnType("decimal(18, 2)");
 
             entity.HasOne(d => d.IpfIdFacturaNavigation).WithMany(p => p.ImpuestosPorFacturas)
                 .HasForeignKey(d => d.IpfIdFactura)
