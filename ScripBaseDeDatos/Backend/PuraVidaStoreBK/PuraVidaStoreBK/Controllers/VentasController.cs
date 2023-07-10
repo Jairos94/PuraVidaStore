@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PuraVidaStoreBK.ExecQuerys.Interfaces;
 using PuraVidaStoreBK.Models.DbContex;
 using PuraVidaStoreBK.Models.DTOS;
@@ -45,26 +46,54 @@ namespace PuraVidaStoreBK.Controllers
         {
             try
             {
-               var retorno =  await _ventas.ingresarFactura(_mapper.Map<Factura>(factura));
-                return Ok(_mapper.Map<FacturaDTO>(retorno));
+               var nuevaFactura =  _mapper.Map<Factura>(factura);
+
+                nuevaFactura.FacturaResumen = null;
+                nuevaFactura.ImpuestosPorFacturas = null;
+
+                nuevaFactura = await _ventas.ingresarFactura(nuevaFactura);
+                var fecha = DateTime.Now;
+                nuevaFactura.FtrCodigoFactura = fecha.Year.ToString() + fecha.Month.ToString() + factura.FtrId.ToString();
+                await _ventas.actualizarFactura(nuevaFactura);
+
+                if (factura.FacturaResumen!=null) 
+                {
+                    var nuevaFacturaResumen = new FacturaResumen();
+                    foreach (var facturaResumen in factura.FacturaResumen) 
+                    {
+                        nuevaFacturaResumen = _mapper.Map<FacturaResumen>(facturaResumen);
+                    }
+                    nuevaFacturaResumen.FtrFactura = nuevaFactura.FtrId;
+                    await _ventas.ingresarFacturaResumen(nuevaFacturaResumen);
+                }
+
+                if (factura.ImpuestosPorFacturas!=null) 
+                {
+                    var listaImpuestos = _mapper.Map<List<ImpuestosPorFactura>>(factura.ImpuestosPorFacturas);
+                    listaImpuestos = await _ventas.ingresarImpuestosPorFactura(listaImpuestos);
+                }
+
+                if (factura.DetalleFacturas != null) 
+                {
+                    var listaDetalle = _mapper.Map<List<DetalleFactura>>(factura.DetalleFacturas);
+                    var contador = 0;
+                    listaDetalle.ForEach(x => 
+                    {
+                        contador++;
+                        x.DtfIdFactura = nuevaFactura.FtrId;
+                        x.DtfLinea = contador;
+                    });
+                    await _ventas.ingresarDetalleFactura(listaDetalle);
+                }
+                var retorno = _mapper.Map<FacturaDTO>(await _ventas.buscarFacturaPorCodigo(nuevaFactura.FtrCodigoFactura));
+                return Ok(retorno);
+      
             }
             catch (Exception)
             {
 
                 return BadRequest("Favor de revisar los logs");
             }
-        }
-
-        // PUT api/<VentasController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<VentasController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

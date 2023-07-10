@@ -109,7 +109,10 @@
         <H1>Subtotal: {{ subTotal | currency : "CRC" : "symbol-narrow" }}</H1>
       </div>
       <div class="field" *ngIf="parametrosGlobales.prgHabilitarImpuestos">
-        <H1>Impuestos: {{ montoTotalImpuestos | currency : "CRC" : "symbol-narrow" }}</H1>
+        <H1
+          >Impuestos:
+          {{ montoTotalImpuestos | currency : "CRC" : "symbol-narrow" }}</H1
+        >
       </div>
       <div class="field">
         <H1>Total: {{ total | currency : "CRC" : "symbol-narrow" }}</H1>
@@ -150,33 +153,36 @@
 
       <div class="field">
         <div class="grid">
-
           <div class="col">
             <button
-            pButton
-            type="button"
-            label="Consultar Mayorista"
-            class="p-button-secondary w-full"
-            icon="pi pi-user"
-            (click)="showResponsiveDialogMayorista()"
-            [disabled]="mayoristaDeshabilitado"
-          ></button>
+              pButton
+              type="button"
+              label="Consultar Mayorista"
+              class="p-button-secondary w-full"
+              icon="pi pi-user"
+              (click)="showResponsiveDialogMayorista()"
+              [disabled]="mayoristaDeshabilitado"
+            ></button>
           </div>
 
-
-          <div class="col" *ngIf="mayorista.clmId==0 && totalCantidad>= parametrosGlobales.prgUndsAgregarMayorista">
+          <div
+            class="col"
+            *ngIf="
+              mayorista.clmId == 0 &&
+              totalCantidad >= parametrosGlobales.prgUndsAgregarMayorista
+            "
+          >
             <button
-            pButton
-            type="button"
-            label="Agregar Mayorista"
-            class="p-button-secondary w-full"
-            icon="pi pi-user"
-            [disabled]="mayoristaDeshabilitado"
-          ></button>
+              pButton
+              type="button"
+              label="Agregar Mayorista"
+              class="p-button-secondary w-full"
+              icon="pi pi-user"
+              [disabled]="mayoristaDeshabilitado"
+              (click)="verAgregarMayoristaModal = true"
+            ></button>
           </div>
-
         </div>
-
       </div>
     </div>
   </div>
@@ -259,12 +265,12 @@
   <ng-template pTemplate="footer">
     <p-button
       (click)="verModalPago = false"
-      label="No"
+      label="Cancelar"
       styleClass="p-button-text"
     ></p-button>
     <p-button
       (click)="verModalPago = false"
-      label="Yes"
+      label="Facturar"
       styleClass="p-button-text"
     ></p-button>
   </ng-template>
@@ -282,11 +288,139 @@
         <span class="p-inputgroup-addon">
           <i class="pi pi-user"></i>
         </span>
-        <input pInputText placeholder="Username" [(ngModel)]="buscadorCedulaOId" (keyup.enter)="ConsultarClienteMayorista()"/>
+        <input
+          pInputText
+          placeholder="Username"
+          [(ngModel)]="buscadorCedulaOId"
+          (keyup.enter)="ConsultarClienteMayorista()"
+        />
       </div>
     </div>
     <div class="col-1">
-      <p-button icon="pi pi-search" styleClass="p-button-rounded p-button-outlined"  (click)="ConsultarClienteMayorista()"></p-button>
+      <p-button
+        icon="pi pi-search"
+        styleClass="p-button-rounded p-button-outlined"
+        (click)="ConsultarClienteMayorista()"
+      ></p-button>
+    </div>
+  </div>
+</p-dialog>
+
+<!--! Agregar cliente Mayorista-->
+<p-dialog
+  header="Agregar cliente mayorista"
+  [(visible)]="verAgregarMayoristaModal"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div class="field">
+    <h3>Cédula</h3>
+    <div class="field">
+      <div class="grid">
+        <div class="sm:col md:col">
+          <div class="p-inputgroup w-full">
+            <span class="p-inputgroup-addon">
+              <i class="pi pi-id-card"></i>
+            </span>
+            <input
+              pInputText
+              placeholder="Cedula"
+              [(ngModel)]="personaMayorista.psrIdentificacion"
+            />
+          </div>
+        </div>
+
+        <div class="sm:col-2 md:col">
+          <p-button
+            icon="pi pi-search"
+            styleClass="p-button-success"
+            (onClick)="buscarCedula()"
+          ></p-button>
+        </div>
+      </div>
+    </div>
+
+    <h3>Nombre del cliente</h3>
+    <div class="field">
+      <div class="grid">
+        <div class="col">
+          <div class="p-inputgroup">
+            <span class="p-inputgroup-addon">
+              <i class="pi pi-user"></i>
+            </span>
+            <input
+              pInputText
+              placeholder="Nombre"
+              [(ngModel)]="personaMayorista.psrNombre"
+            />
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="p-inputgroup">
+            <span class="p-inputgroup-addon">
+              <i class="pi pi-user"></i>
+            </span>
+            <input
+              type="text"
+              pInputText
+              placeholder="Primer Apellido"
+              [(ngModel)]="personaMayorista.psrApellido1"
+            />
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="p-inputgroup">
+            <span class="p-inputgroup-addon">
+              <i class="pi pi-user"></i>
+            </span>
+            <input
+              type="text"
+              pInputText
+              placeholder="Segundo Apellido"
+              [(ngModel)]="personaMayorista.psrApellido2"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Contacto</h3>
+    <div class="field">
+      <div class="grid">
+        <div class="col">
+          <div class="p-inputgroup">
+            <span class="p-inputgroup-addon">
+              <i class="pi pi-at"></i>
+            </span>
+            <input
+              pInputText
+              placeholder="Correo"
+              [(ngModel)]="mayorista.clmCorreo"
+            />
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="p-inputgroup">
+            <span class="p-inputgroup-addon">
+              <i class="pi pi-phone"></i>
+            </span>
+            <input
+              pInputText
+              placeholder="Teléfono"
+              [(ngModel)]="mayorista.clmTelefono"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <p-button icon="pi pi-check" label="Guardar"></p-button>
     </div>
   </div>
 </p-dialog>

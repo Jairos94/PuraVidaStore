@@ -13,6 +13,7 @@ import { VentasService } from 'src/app/services/ventas.service';
 import { FacturaResumenModel } from 'src/app/models/factura-resumen-model';
 import { ParametrosGlobalesModel } from 'src/app/models/parametros-globales-model';
 import { activo } from 'src/app/activo';
+import { PersonaServiceService } from 'src/app/services/persona-service.service';
 
 @Component({
   selector: 'app-facturacion',
@@ -36,6 +37,7 @@ export class FacturacionComponent implements OnInit {
   verModal: boolean = false;
   verModalPago: boolean = false;
   verMayoristaModal: boolean = false;
+  verAgregarMayoristaModal:boolean = false;
   parametrosGlobales: ParametrosGlobalesModel = activo.parametrosGlobales;
   listaDtealle: DetalleFacturaModel[] = [];
   listaFormaPago: FormaPagoModel[] = [];
@@ -128,6 +130,7 @@ export class FacturacionComponent implements OnInit {
     private servicioPorducto: ProductoServiceService,
     private servicioVenta: VentasService,
     private servicioMayorista: MayoristaService,
+    private servicioPersona: PersonaServiceService,
     private messageService: MessageService
   ) {}
 
@@ -207,6 +210,22 @@ export class FacturacionComponent implements OnInit {
         },
       });
   }
+
+  buscarCedula(){
+    this.servicioPersona
+    .buscarPersonaPorCedula(this.personaMayorista.psrIdentificacion)
+    .subscribe({
+      next: (x) => {
+        if (x.psrId > 0) {
+          this.personaMayorista = x;
+        }
+      },
+      error: (_e) => {
+        console.log(_e);
+      },
+    });
+  }
+
 
   obtenerFormaPago() {
     this.servicioVenta.listaFormaPago().subscribe({
@@ -477,6 +496,7 @@ export class FacturacionComponent implements OnInit {
     this.verModalPago = false;
     this.listaDtealle = [];
     this.limpiarDetalle();
+    this.parametrosGlobales=activo.parametrosGlobales;
 
     this.formaPagoSeleccionado = {
       frpId: 1,
