@@ -37,7 +37,7 @@ export class FacturacionComponent implements OnInit {
   verModal: boolean = false;
   verModalPago: boolean = false;
   verMayoristaModal: boolean = false;
-  verAgregarMayoristaModal:boolean = false;
+  verAgregarMayoristaModal: boolean = false;
   parametrosGlobales: ParametrosGlobalesModel = activo.parametrosGlobales;
   listaDtealle: DetalleFacturaModel[] = [];
   listaFormaPago: FormaPagoModel[] = [];
@@ -140,55 +140,48 @@ export class FacturacionComponent implements OnInit {
 
   cambioTabla(detalle: DetalleFacturaModel) {
     let producto: ProductoModel = detalle.dtfIdProducto1!;
-    this.listaDtealle.forEach(x=>
-      {
-        if(this.parametrosGlobales.prgHabilitarImpuestos && this.parametrosGlobales.impuestosPorParametros?.length! > 0)
-        {
+    this.listaDtealle.forEach((x) => {
+      if (
+        this.parametrosGlobales.prgHabilitarImpuestos &&
+        this.parametrosGlobales.impuestosPorParametros?.length! > 0
+      ) {
+        let sumaImpuestosMayorista: number = 0;
+        let sumaImpuestosMinorista: number = 0;
+        this.parametrosGlobales.impuestosPorParametros?.forEach((impuesto) => {
+          let porcentaje = impuesto.impPidImpuestoNavigation?.impPorcentaje! / 100;
+          sumaImpuestosMayorista = sumaImpuestosMayorista +producto.prdPrecioVentaMayorista * porcentaje;
+          sumaImpuestosMinorista = sumaImpuestosMinorista +producto.prdPrecioVentaMinorista * porcentaje;
+        });
 
-          let sumaImpuestosMayorista:number=0;
-          let sumaImpuestosMinorista:number=0;
-          this.parametrosGlobales.impuestosPorParametros?.forEach(impuesto=>
-            {
-              let porcentaje = impuesto.impPidImpuestoNavigation?.impPorcentaje!/100;
-              sumaImpuestosMayorista = sumaImpuestosMayorista + (producto.prdPrecioVentaMayorista*porcentaje);
-              sumaImpuestosMinorista = sumaImpuestosMinorista + (producto.prdPrecioVentaMinorista*porcentaje);
-            });
-
-          if(this.parametrosGlobales.prgImpustosIncluidos)
-          {
-            if(this.mayorista.clmId>0)
-            {
-              x.dtfPrecio=producto.prdPrecioVentaMayorista-sumaImpuestosMayorista;
-              x.dtfMontoImpuestos=sumaImpuestosMayorista;
-            }else{
-              x.dtfPrecio=producto.prdPrecioVentaMinorista-sumaImpuestosMinorista;
-              x.dtfMontoImpuestos=sumaImpuestosMinorista;
-            }
+        if (this.parametrosGlobales.prgImpustosIncluidos) {
+          if (this.mayorista.clmId > 0) {
+            x.dtfPrecio =
+              producto.prdPrecioVentaMayorista - sumaImpuestosMayorista;
+            x.dtfMontoImpuestos = sumaImpuestosMayorista;
+          } else {
+            x.dtfPrecio =
+              producto.prdPrecioVentaMinorista - sumaImpuestosMinorista;
+            x.dtfMontoImpuestos = sumaImpuestosMinorista;
           }
-          else
-          {
-            if(this.mayorista.clmId>0)
-            {
-              x.dtfPrecio=producto.prdPrecioVentaMayorista;
-              x.dtfMontoImpuestos=sumaImpuestosMayorista;
-            }else{
-              x.dtfPrecio=producto.prdPrecioVentaMinorista;
-              x.dtfMontoImpuestos=sumaImpuestosMinorista;
-            }
-
+        } else {
+          if (this.mayorista.clmId > 0) {
+            x.dtfPrecio = producto.prdPrecioVentaMayorista;
+            x.dtfMontoImpuestos = sumaImpuestosMayorista;
+          } else {
+            x.dtfPrecio = producto.prdPrecioVentaMinorista;
+            x.dtfMontoImpuestos = sumaImpuestosMinorista;
           }
         }
-        else
-        {
-          x.dtfMontoImpuestos=0
-          if(this.mayorista.clmId>0){
-            x.dtfPrecio=producto.prdPrecioVentaMayorista
-          }else{
-            x.dtfPrecio=producto.prdPrecioVentaMinorista
-          }
+      } else {
+        x.dtfMontoImpuestos = 0;
+        if (this.mayorista.clmId > 0) {
+          x.dtfPrecio = producto.prdPrecioVentaMayorista;
+        } else {
+          x.dtfPrecio = producto.prdPrecioVentaMinorista;
         }
-      });
-      this.sumarTotal();
+      }
+    });
+    this.sumarTotal();
   }
 
   buscarProductoPorCodigodBarras() {
@@ -211,21 +204,20 @@ export class FacturacionComponent implements OnInit {
       });
   }
 
-  buscarCedula(){
+  buscarCedula() {
     this.servicioPersona
-    .buscarPersonaPorCedula(this.personaMayorista.psrIdentificacion)
-    .subscribe({
-      next: (x) => {
-        if (x.psrId > 0) {
-          this.personaMayorista = x;
-        }
-      },
-      error: (_e) => {
-        console.log(_e);
-      },
-    });
+      .buscarPersonaPorCedula(this.personaMayorista.psrIdentificacion)
+      .subscribe({
+        next: (x) => {
+          if (x.psrId > 0) {
+            this.personaMayorista = x;
+          }
+        },
+        error: (_e) => {
+          console.log(_e);
+        },
+      });
   }
-
 
   obtenerFormaPago() {
     this.servicioVenta.listaFormaPago().subscribe({
@@ -248,81 +240,24 @@ export class FacturacionComponent implements OnInit {
     this.montoTotalImpuestos = 0;
 
     //regorrido para obtener el subtotal
-    this.listaDtealle.forEach((x, i) => {
-      let sumaImpuestoMayorista: number = 0;
-      let sumaImpuestoMinorista: number = 0;
-      if (
-        this.parametrosGlobales.prgHabilitarImpuestos &&
-        this.parametrosGlobales.impuestosPorParametros != null
-      ) {
-        //!si se la da ctr +f se debe acomodar
-        this.parametrosGlobales.impuestosPorParametros.forEach((impuesto) => {
-          let porcentaje = impuesto.impPidImpuestoNavigation?.impPorcentaje! / 100;
-          sumaImpuestoMayorista =sumaImpuestoMayorista + porcentaje * x.dtfIdProducto1?.prdPrecioVentaMayorista!;
-          sumaImpuestoMinorista =sumaImpuestoMinorista +porcentaje * x.dtfIdProducto1?.prdPrecioVentaMinorista!;
-        });
+    if (this.parametrosGlobales.prgHabilitarImpuestos) {
+      if (this.parametrosGlobales.prgImpustosIncluidos) {
+        this.SumarConImpuestosIncluidos();
 
-        if (this.parametrosGlobales.prgImpustosIncluidos) {
-          if (x.dtfIdProducto1 != null) {
-            if (this.mayorista.clmId > 0) {
-              //!si se la da ctr +f se debe acomodar
-              x.dtfPrecio =
-                x.dtfIdProducto1.prdPrecioVentaMayorista -
-                sumaImpuestoMayorista;
-              x.dtfMontoImpuestos = sumaImpuestoMayorista;
-            } else {
-              //!si se la da ctr +f se debe acomodar
-              x.dtfPrecio =
-                x.dtfIdProducto1.prdPrecioVentaMinorista -
-                sumaImpuestoMinorista;
-              x.dtfMontoImpuestos = sumaImpuestoMinorista;
-            }
-          }
-        } else {
-          if (x.dtfIdProducto1 != null) {
-            if (this.mayorista.clmId > 0) {
-              x.dtfPrecio = x.dtfIdProducto1.prdPrecioVentaMayorista;
-              x.dtfMontoImpuestos = sumaImpuestoMayorista;
-            } else {
-              x.dtfPrecio = x.dtfIdProducto1.prdPrecioVentaMinorista;
-              x.dtfMontoImpuestos = sumaImpuestoMinorista;
-            }
-          }
-        }
       } else {
-        if (x.dtfIdProducto1 != null) {
-          if (
-            this.mayorista.clmId >
-            this.parametrosGlobales.prgUndsHabilitarMayorista
-          ) {
-            //!si se la da ctr +f se debe acomodar
-            x.dtfPrecio = x.dtfIdProducto1.prdPrecioVentaMayorista;
-            x.dtfMontoImpuestos = sumaImpuestoMayorista;
-          } else {
-            //!si se la da ctr +f se debe acomodar
-            x.dtfPrecio = x.dtfIdProducto1.prdPrecioVentaMinorista;
-            x.dtfMontoImpuestos = sumaImpuestoMinorista;
-          }
-        }
+        this.sumarSinImpuestosIncluidos();
+
       }
-
-      this.subTotal = this.subTotal + x.dtfCantidad * x.dtfPrecio;
-      this.totalCantidad = this.totalCantidad + x.dtfCantidad;
-
-      if (
-        this.totalCantidad >= this.parametrosGlobales.prgUndsHabilitarMayorista
-      ) {
-        this.mayoristaDeshabilitado = false;
-      } else {
-        this.mayoristaDeshabilitado = true;
-      }
-    });
-
-    this.listaDtealle.forEach((x) => {
-      this.montoTotalImpuestos =
-        (this.montoTotalImpuestos + x.dtfMontoImpuestos) * x.dtfCantidad;
-    });
-    this.total = this.subTotal + this.montoTotalImpuestos;
+    } else {
+      this.SumarSinImpuestos();
+    }
+    this.total =  this.subTotal +this.montoTotalImpuestos;
+    if(this.totalCantidad>=this.parametrosGlobales.prgUndsHabilitarMayorista)
+    {
+      this.mayoristaDeshabilitado = false;
+    }else{
+      true;
+    }
 
     if (this.mayoristaDeshabilitado) {
       this.limpiarMayorista();
@@ -331,6 +266,83 @@ export class FacturacionComponent implements OnInit {
     if (this.listaDtealle.length <= 0) {
       this.cancelar();
     }
+  }
+
+  sumarSinImpuestosIncluidos() {
+    this.listaDtealle.forEach((x) => {
+      let totalImpuestosMayorista: number = 0;
+      let totalImpuestosMinorista: number = 0;
+      if (this.parametrosGlobales.impuestosPorParametros?.length! > 0) {
+        this.parametrosGlobales.impuestosPorParametros?.forEach((impuesto) => {
+          let porcentaje =
+            impuesto.impPidImpuestoNavigation?.impPorcentaje! / 100;
+          totalImpuestosMayorista =
+            totalImpuestosMayorista +
+            porcentaje * x.dtfIdProducto1?.prdPrecioVentaMayorista!;
+          totalImpuestosMinorista =
+            totalImpuestosMinorista +
+            porcentaje * x.dtfIdProducto1?.prdPrecioVentaMinorista!;
+        });
+      }
+
+      if (this.mayorista.clmId > 0) {
+        x.dtfPrecio = x.dtfIdProducto1?.prdPrecioVentaMayorista!;
+        x.dtfMontoImpuestos = totalImpuestosMayorista;
+        this.montoTotalImpuestos =
+          this.montoTotalImpuestos + totalImpuestosMayorista;
+      } else {
+        x.dtfPrecio = x.dtfIdProducto1?.prdPrecioVentaMinorista!;
+        x.dtfMontoImpuestos = totalImpuestosMinorista;
+        this.montoTotalImpuestos =
+          this.montoTotalImpuestos + totalImpuestosMinorista;
+      }
+
+      this.subTotal = this.subTotal + x.dtfPrecio;
+      this.totalCantidad = this.totalCantidad + x.dtfCantidad;
+    });
+  }
+
+  SumarConImpuestosIncluidos() {
+    this.listaDtealle.forEach((x) => {
+      let totalImpuestosMayorista: number = 0;
+      let totalImpuestosMinorista: number = 0;
+      if (this.parametrosGlobales.impuestosPorParametros?.length! > 0) {
+        this.parametrosGlobales.impuestosPorParametros?.forEach((impuesto) => {
+          let porcentaje =
+            impuesto.impPidImpuestoNavigation?.impPorcentaje! / 100;
+          totalImpuestosMayorista =totalImpuestosMayorista + porcentaje * x.dtfIdProducto1?.prdPrecioVentaMayorista!;
+          totalImpuestosMinorista = totalImpuestosMinorista + porcentaje * x.dtfIdProducto1?.prdPrecioVentaMinorista!;
+        });
+      }
+
+      if (this.mayorista.clmId > 0) {
+        x.dtfPrecio =
+          x.dtfIdProducto1?.prdPrecioVentaMayorista! - totalImpuestosMayorista;
+        x.dtfMontoImpuestos = totalImpuestosMayorista;
+        this.montoTotalImpuestos =
+          this.montoTotalImpuestos + totalImpuestosMayorista;
+      } else {
+        x.dtfPrecio =
+          x.dtfIdProducto1?.prdPrecioVentaMinorista! - totalImpuestosMinorista;
+        x.dtfMontoImpuestos = totalImpuestosMinorista;
+        this.montoTotalImpuestos =
+          this.montoTotalImpuestos + totalImpuestosMinorista;
+      }
+      this.subTotal = this.subTotal + x.dtfPrecio;
+      this.totalCantidad = this.totalCantidad + x.dtfCantidad;
+    });
+  }
+
+  SumarSinImpuestos() {
+    this.listaDtealle.forEach((x) => {
+      if (this.mayorista.clmId > 0) {
+        x.dtfPrecio = x.dtfIdProducto1?.prdPrecioVentaMayorista!;
+      } else {
+        x.dtfPrecio = x.dtfIdProducto1?.prdPrecioVentaMinorista!;
+      }
+      this.subTotal = this.subTotal + x.dtfPrecio;
+      this.totalCantidad = this.totalCantidad + x.dtfCantidad;
+    });
   }
 
   ConsultarClienteMayorista() {
@@ -401,8 +413,8 @@ export class FacturacionComponent implements OnInit {
     if (this.listaDtealle.length > 0) {
       this.listaDtealle.forEach((x) => {
         if (x.dtfIdProducto === this.detalleSeleccionado.dtfIdProducto) {
-
-          x.dtfCantidad = Number(x.dtfCantidad)+ this.detalleSeleccionado.dtfCantidad;
+          x.dtfCantidad =
+            Number(x.dtfCantidad) + this.detalleSeleccionado.dtfCantidad;
           ingresado = true;
         }
       });
@@ -483,8 +495,8 @@ export class FacturacionComponent implements OnInit {
 
   cancelar() {
     this.limpiarMayorista();
-    this.subTotal=0;
-    this.montoTotalImpuestos=0;
+    this.subTotal = 0;
+    this.montoTotalImpuestos = 0;
     this.pagoCon = 0;
     this.cambio = 0;
     this.pagarDeshabilitado = true;
@@ -496,7 +508,7 @@ export class FacturacionComponent implements OnInit {
     this.verModalPago = false;
     this.listaDtealle = [];
     this.limpiarDetalle();
-    this.parametrosGlobales=activo.parametrosGlobales;
+    this.parametrosGlobales = activo.parametrosGlobales;
 
     this.formaPagoSeleccionado = {
       frpId: 1,
