@@ -8,9 +8,9 @@ namespace PuraVidaStoreBK.Models.DTOS
 
         public string PrdNombre { get; set; } = null!;
 
-        public double PrdPrecioVentaMayorista { get; set; }
+        public decimal PrdPrecioVentaMayorista { get; set; }
 
-        public double PrdPrecioVentaMinorista { get; set; }
+        public decimal PrdPrecioVentaMinorista { get; set; }
 
         public string? PrdCodigo { get; set; }
 

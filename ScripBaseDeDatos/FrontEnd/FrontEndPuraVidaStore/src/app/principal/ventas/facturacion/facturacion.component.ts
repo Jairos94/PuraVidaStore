@@ -24,6 +24,7 @@ export class FacturacionComponent implements OnInit {
   pagoCon: number = 0;
   cambio: number = 0;
   totalCantidad: number = 0;
+  montoTotalImpuestos:number=0;
   subTotal:number=0;
   total: number = 0;
   buscadorCodigoBarras: string = '';
@@ -171,6 +172,11 @@ export class FacturacionComponent implements OnInit {
     this.subTotal=0;
     this.totalCantidad = 0;
     this.pagarDeshabilitado = false;
+   if(this.parametrosGlobales.impuestosPorParametros!=null){
+    this.parametrosGlobales.impuestosPorParametros.forEach(x=>{
+
+    });
+   }
 
     this.listaDtealle.forEach((x, i) => {
       if (x.dtfIdProducto1 != null) {

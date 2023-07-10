@@ -7,7 +7,7 @@ public partial class MotivosMovimiento
 {
     public int MtmId { get; set; }
 
-    public string MtmDescripcion { get; set; } = null!;
+    public string? MtmDescripcion { get; set; }
 
     public int MtmIdTipoMovimiento { get; set; }
 

@@ -13,13 +13,13 @@ public partial class DetalleProductoPedido
 
     public int DppIdMoneda { get; set; }
 
-    public double? DppPesoUnitario { get; set; }
+    public decimal? DppPesoUnitario { get; set; }
 
-    public double? DppValorMoneda { get; set; }
+    public decimal? DppValorMoneda { get; set; }
 
-    public double? DppCostoMoneda { get; set; }
+    public decimal? DppCostoMoneda { get; set; }
 
-    public double? DppCostoColones { get; set; }
+    public decimal? DppCostoColones { get; set; }
 
     public virtual Moneda DppIdMonedaNavigation { get; set; } = null!;
 

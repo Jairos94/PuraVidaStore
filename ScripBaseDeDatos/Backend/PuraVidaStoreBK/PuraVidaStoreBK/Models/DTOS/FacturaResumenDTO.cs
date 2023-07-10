@@ -8,11 +8,13 @@ namespace PuraVidaStoreBK.Models.DTOS
 
         public long FtrFactura { get; set; }
 
-        public double FtrMontoTotal { get; set; }
+        public decimal FtrMontoTotal { get; set; }
 
-        public double? FtrMontoPagado { get; set; }
+        public decimal FtrMontoImpuestos { get; set; }
 
-        public double? FtrCambio { get; set; }
+        public decimal? FtrMontoPagado { get; set; }
+
+        public decimal? FtrCambio { get; set; }
 
 
         public virtual FacturaDTO? FtrFacturaNavigation { get; set; }

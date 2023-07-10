@@ -13,21 +13,21 @@ public partial class Tracking
 
     public int TrkMoneda { get; set; }
 
-    public double? TrkCostoMoneda { get; set; }
+    public decimal? TrkCostoMoneda { get; set; }
 
-    public double? TrkValorMoneda { get; set; }
+    public decimal? TrkValorMoneda { get; set; }
 
     public long? TrkIdPedido { get; set; }
 
-    public double? TrkPesoProveedor { get; set; }
+    public decimal? TrkPesoProveedor { get; set; }
 
-    public double? TrkPesoReal { get; set; }
+    public decimal? TrkPesoReal { get; set; }
 
-    public double? TrkMedidaLargoCm { get; set; }
+    public decimal? TrkMedidaLargoCm { get; set; }
 
-    public double? TrkMedidaAnchoCm { get; set; }
+    public decimal? TrkMedidaAnchoCm { get; set; }
 
-    public double? TrkMedidaAlturaCm { get; set; }
+    public decimal? TrkMedidaAlturaCm { get; set; }
 
     public int TrkEstado { get; set; }
 
