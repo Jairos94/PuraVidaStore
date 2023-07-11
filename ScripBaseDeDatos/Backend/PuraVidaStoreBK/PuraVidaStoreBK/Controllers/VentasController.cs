@@ -88,8 +88,12 @@ namespace PuraVidaStoreBK.Controllers
                 if (factura.ImpuestosPorFacturas!=null) 
                 {
                     var listaImpuestos = _mapper.Map<List<ImpuestosPorFactura>>(factura.ImpuestosPorFacturas);
+                    var contadorImpuestos =0;
                     listaImpuestos.ForEach(x => 
                     {
+                        contadorImpuestos++;
+                        x.IpfIdImpuesto = contadorImpuestos;
+
                         x.IpfIdFactura = nuevaFactura.FtrId;
                     });
                     listaImpuestos = await _ventas.ingresarImpuestosPorFactura(listaImpuestos);
