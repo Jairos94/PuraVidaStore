@@ -128,10 +128,9 @@ namespace PuraVidaStoreBK.ExecQuerys
         {
 			try
 			{
-				using (PuraVidaStoreContext db = new PuraVidaStoreContext()) 
-				{
-					return await db.FormaPagos.ToListAsync();
-				}
+				
+					return await dbContex.FormaPagos.ToListAsync();
+				
 			}
 			catch (Exception ex)
 			{

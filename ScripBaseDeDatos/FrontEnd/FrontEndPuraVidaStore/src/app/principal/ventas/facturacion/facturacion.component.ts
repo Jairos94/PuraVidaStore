@@ -1,3 +1,4 @@
+import { AppModule } from './../../../app.module';
 import { MayoristaService } from './../../../services/mayorista.service';
 import { PersonaModel } from 'src/app/models/persona-model';
 import { Component, OnInit } from '@angular/core';
@@ -297,7 +298,8 @@ export class FacturacionComponent implements OnInit {
           this.montoTotalImpuestos + totalImpuestosMinorista;
       }
 
-      this.subTotal = this.subTotal + x.dtfPrecio;
+      this.montoTotalImpuestos = this.montoTotalImpuestos * x.dtfCantidad
+      this.subTotal = this.subTotal + (x.dtfPrecio * x.dtfCantidad);
       this.totalCantidad = this.totalCantidad + x.dtfCantidad;
     });
   }
@@ -328,7 +330,8 @@ export class FacturacionComponent implements OnInit {
         this.montoTotalImpuestos =
           this.montoTotalImpuestos + totalImpuestosMinorista;
       }
-      this.subTotal = this.subTotal + x.dtfPrecio;
+      this.montoTotalImpuestos = this.montoTotalImpuestos * x.dtfCantidad
+      this.subTotal = this.subTotal + (x.dtfPrecio * x.dtfCantidad);
       this.totalCantidad = this.totalCantidad + x.dtfCantidad;
     });
   }
@@ -340,7 +343,7 @@ export class FacturacionComponent implements OnInit {
       } else {
         x.dtfPrecio = x.dtfIdProducto1?.prdPrecioVentaMinorista!;
       }
-      this.subTotal = this.subTotal + x.dtfPrecio;
+      this.subTotal = this.subTotal + (x.dtfPrecio *x.dtfCantidad);
       this.totalCantidad = this.totalCantidad + x.dtfCantidad;
     });
   }
@@ -371,6 +374,41 @@ export class FacturacionComponent implements OnInit {
       );
     this.verMayoristaModal = false;
   }
+
+  GuardarClienteMayorista(){
+    if(
+    this.personaMayorista.psrIdentificacion===''||
+    this.personaMayorista.psrNombre === '' ||
+    this.personaMayorista.psrApellido1 === '' ||
+    this.personaMayorista.psrApellido2 === '' ||
+    this.mayorista.clmCorreo === '' ||
+    this.mayorista.clmTelefono === '' )
+       {
+        this.showError('Datos Incompletos','Se requiere llenar todos los datos');
+       }else{
+        this.mayorista.clmIdPersonaNavigation = this.personaMayorista
+        this.mayorista.idTipoTiempo = this.parametrosGlobales.prgIdTiempo!;
+        this.mayorista.cantidadTiempo = this.parametrosGlobales.prgCantidadTiempo!;
+        let fecha = new Date();
+        this.mayorista.clmFechaCreacion = fecha.toISOString();
+        this.mayorista.clmFechaVencimiento = null;
+
+        this.servicioMayorista.guardarMayorista(this.mayorista).subscribe(
+          {
+            next:x=>
+            {
+              this.mayorista = x;
+              this.verAgregarMayoristaModal = false;
+              this.showSuccess('Se ingresó al cliente mayorista','Código del cliente: '+ x.clmId.toString() )
+              this.sumarTotal();
+
+            },
+            error: _e=> console.log(_e)
+
+          });
+       }
+  }
+
   deshabilitarCambio() {
     if (this.formaPagoSeleccionado.frpId > 1) {
       this.cambio = 0;
@@ -379,6 +417,7 @@ export class FacturacionComponent implements OnInit {
     } else {
       this.cambioDeshabilitar = false;
     }
+
   }
 
   eliminarDeLaLista(id: number) {
@@ -564,11 +603,11 @@ export class FacturacionComponent implements OnInit {
     });
   }
 
-  showSuccess() {
+  showSuccess(encabezado: string, mensaje: string) {
     this.messageService.add({
       severity: 'success',
-      summary: 'Success',
-      detail: 'Message Content',
+      summary: encabezado,
+      detail: mensaje,
     });
   }
 }
