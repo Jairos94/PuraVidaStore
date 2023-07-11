@@ -15,6 +15,7 @@ import { FacturaResumenModel } from 'src/app/models/factura-resumen-model';
 import { ParametrosGlobalesModel } from 'src/app/models/parametros-globales-model';
 import { activo } from 'src/app/activo';
 import { PersonaServiceService } from 'src/app/services/persona-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-facturacion',
@@ -133,10 +134,17 @@ export class FacturacionComponent implements OnInit {
     private servicioVenta: VentasService,
     private servicioMayorista: MayoristaService,
     private servicioPersona: PersonaServiceService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private route: Router,
+
   ) {}
 
   ngOnInit(): void {
+    if(activo.parametrosGlobales===undefined || activo.parametrosGlobales === null)
+    {
+      this.route.navigate(['/principal/configuracion']);
+
+    }
     this.obtenerFormaPago();
   }
 
