@@ -1,5 +1,4 @@
 import { ImpuestosPorFacturaModel } from './../../../models/impuestos-por-factura-model';
-import { AppModule } from './../../../app.module';
 import { MayoristaService } from './../../../services/mayorista.service';
 import { PersonaModel } from 'src/app/models/persona-model';
 import { Component, OnInit } from '@angular/core';

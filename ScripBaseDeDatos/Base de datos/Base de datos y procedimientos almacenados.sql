@@ -231,7 +231,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[ImpuestosPorFactura](
-	[IpfId] [bigint] NOT NULL,
+	[IpfId] [bigint] identity(1,1) NOT NULL,
 	[IpfIdFactura] [bigint] NOT NULL,
 	[IpfIdImpuesto] [int] NOT NULL,
 	[IpfPorcentaje] [decimal](18, 2) NULL,
