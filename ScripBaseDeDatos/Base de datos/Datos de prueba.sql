@@ -56,7 +56,29 @@ INSERT INTO [dbo].[TiempoParaRenovar]
            ('Días'),('Meses'),('Años')
 GO
 
+INSERT INTO [dbo].[EstatusFactura]
+           ([EsfDescripcion])
+     VALUES
+           ('Activa'),('Nula')
+GO
 
+INSERT INTO [dbo].[ParametrosGlobales]
+           ([PrgUndsHabilitarMayorista]
+           ,[PrgUndsAgregarMayorista]
+           ,[PrgHabilitarImpuestos]
+           ,[PrgImpustosIncluidos]
+           ,[PrgIdBodega]
+           ,[PrgIdTiempo]
+           ,[PrgCantidadTiempo])
+     VALUES
+           (1
+           ,1
+           ,0
+           ,0
+           ,1
+           ,3
+           ,1)
+GO
 
 EXEC IngresarUsuario 'Admin','GzPfpnFb7HWhQeP0wnV0+g==','jairo.ri.ce@gmail.com',1,1
 go

@@ -1,3 +1,4 @@
+import { ImpuestosPorFacturaModel } from './../../../models/impuestos-por-factura-model';
 import { AppModule } from './../../../app.module';
 import { MayoristaService } from './../../../services/mayorista.service';
 import { PersonaModel } from 'src/app/models/persona-model';
@@ -124,6 +125,7 @@ export class FacturacionComponent implements OnInit {
     ftrMontoTotal: 0,
     ftrMontoPagado: 0,
     ftrCambio: 0,
+    ftrMontoImpuestos:0,
     ftrFacturaNavigation: null,
   };
 
@@ -409,6 +411,75 @@ export class FacturacionComponent implements OnInit {
        }
   }
 
+
+facturar(){
+  let listaResumen:FacturaResumenModel[]=[];
+
+  this.facturaResumen = {
+    ftrId: 0,
+    ftrFactura: 0,
+    ftrMontoTotal: this.total,
+    ftrMontoPagado: this.pagoCon,
+    ftrCambio: this.cambio,
+    ftrMontoImpuestos: this.montoTotalImpuestos,
+    ftrFacturaNavigation: null,
+  };
+listaResumen.push(this.facturaResumen);
+
+
+  this.factura = {
+    ftrId: 0,
+    ftrFecha: this.fecha.toISOString(),
+    ftrIdUsuario: activo.usuarioPrograma.usrId,
+    ftrMayorista: this.mayorista.clmId,
+    ftrEstatusId: 1,
+    ftrBodega: activo.bodegaIngreso.bdgId,
+    ftrFormaPago: this.formaPagoSeleccionado.frpId,
+    ftrEsFacturaNula: false,
+    ftrCodigoFactura: '',
+    detalleFacturas: this.listaDtealle,
+    facturaResumen: listaResumen,
+    ftrBodegaNavigation: null,
+    ftrEstatus: null,
+    ftrFormaPagoNavigation: null,
+    ftrIdUsuarioNavigation: null,
+    ftrMayoristaNavigation: null,
+    historialFacturasAnulada: null,
+    impuestosPorFacturas: null,
+  };
+
+  if(this.mayorista.clmId===0)
+  {
+    this.factura.ftrMayorista=null;
+  }
+
+let impuestosPorFacturaModel:ImpuestosPorFacturaModel[]=[];
+this.parametrosGlobales.impuestosPorParametros?.forEach(x=>
+  {
+    let nuevoImpuestoParametro:ImpuestosPorFacturaModel={
+      ipfId: 0,
+      ipfIdFactura: 0,
+      ipfIdImpuesto: x.impPidImpuestoNavigation?.impId!,
+      ipfIdFactura1: null,
+      ipfPorcentaje: x.impPidImpuestoNavigation?.impPorcentaje!,
+      ipfIdFacturaNavigation: null
+
+    }
+    impuestosPorFacturaModel.push(nuevoImpuestoParametro);
+  })
+  this.factura.impuestosPorFacturas = impuestosPorFacturaModel;
+  this.servicioVenta.IngresarVenta(this.factura).subscribe(
+    {
+      next:x=>{
+        this.showSuccess('Ingreso de venta','Número factura '+ x.ftrCodigoFactura!)
+        this.verModalPago=false;
+        this.cancelar();
+      },
+      error:_e=>console.log(_e)
+
+    });
+}
+
   deshabilitarCambio() {
     if (this.formaPagoSeleccionado.frpId > 1) {
       this.cambio = 0;
@@ -559,6 +630,16 @@ export class FacturacionComponent implements OnInit {
       psrNombre: '',
       psrApellido1: '',
       psrApellido2: '',
+    };
+
+    this.facturaResumen = {
+      ftrId: 0,
+      ftrFactura: 0,
+      ftrMontoTotal: 0,
+      ftrMontoPagado: 0,
+      ftrCambio: 0,
+      ftrMontoImpuestos:0,
+      ftrFacturaNavigation: null,
     };
 
     this.factura = {

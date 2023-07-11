@@ -50,10 +50,12 @@ namespace PuraVidaStoreBK.Controllers
 
                 nuevaFactura.FacturaResumen = null;
                 nuevaFactura.ImpuestosPorFacturas = null;
-
-                nuevaFactura = await _ventas.ingresarFactura(nuevaFactura);
+                nuevaFactura.DetalleFacturas = null;
                 var fecha = DateTime.Now;
-                nuevaFactura.FtrCodigoFactura = fecha.Year.ToString() + fecha.Month.ToString() + factura.FtrId.ToString();
+                nuevaFactura.FtrFecha = fecha;
+                nuevaFactura = await _ventas.ingresarFactura(nuevaFactura);
+               
+                nuevaFactura.FtrCodigoFactura = fecha.Year.ToString() + fecha.Month.ToString() + nuevaFactura.FtrId.ToString();
                 await _ventas.actualizarFactura(nuevaFactura);
 
                 if (factura.FacturaResumen!=null) 
@@ -67,25 +69,35 @@ namespace PuraVidaStoreBK.Controllers
                     await _ventas.ingresarFacturaResumen(nuevaFacturaResumen);
                 }
 
-                if (factura.ImpuestosPorFacturas!=null) 
-                {
-                    var listaImpuestos = _mapper.Map<List<ImpuestosPorFactura>>(factura.ImpuestosPorFacturas);
-                    listaImpuestos = await _ventas.ingresarImpuestosPorFactura(listaImpuestos);
-                }
-
-                if (factura.DetalleFacturas != null) 
+                if (factura.DetalleFacturas != null)
                 {
                     var listaDetalle = _mapper.Map<List<DetalleFactura>>(factura.DetalleFacturas);
                     var contador = 0;
-                    listaDetalle.ForEach(x => 
+                    listaDetalle.ForEach(x =>
                     {
                         contador++;
                         x.DtfIdFactura = nuevaFactura.FtrId;
                         x.DtfLinea = contador;
+                        x.DtfIdProducto1 = null;
+                        x.DtfIdProductoNavigation = null;
+
                     });
                     await _ventas.ingresarDetalleFactura(listaDetalle);
                 }
-                var retorno = _mapper.Map<FacturaDTO>(await _ventas.buscarFacturaPorCodigo(nuevaFactura.FtrCodigoFactura));
+
+                if (factura.ImpuestosPorFacturas!=null) 
+                {
+                    var listaImpuestos = _mapper.Map<List<ImpuestosPorFactura>>(factura.ImpuestosPorFacturas);
+                    listaImpuestos.ForEach(x => 
+                    {
+                        x.IpfIdFactura = nuevaFactura.FtrId;
+                    });
+                    listaImpuestos = await _ventas.ingresarImpuestosPorFactura(listaImpuestos);
+                }
+
+             
+                var consulta = await _ventas.buscarFacturaPorCodigo(nuevaFactura.FtrCodigoFactura);
+                var retorno = _mapper.Map<FacturaDTO>(consulta);
                 return Ok(retorno);
       
             }
