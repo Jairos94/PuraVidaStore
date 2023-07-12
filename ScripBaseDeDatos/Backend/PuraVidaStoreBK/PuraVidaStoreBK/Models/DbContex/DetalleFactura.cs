@@ -11,11 +11,15 @@ public partial class DetalleFactura
 
     public long DtfIdFactura { get; set; }
 
-    public double DtfPrecio { get; set; }
+    public int? DtfLinea { get; set; }
+
+    public decimal DtfPrecio { get; set; }
+
+    public decimal DtfMontoImpuestos { get; set; }
 
     public int? DtfDescuento { get; set; }
 
-    public int? DtfCantidad { get; set; }
+    public int DtfCantidad { get; set; }
 
     public virtual Producto DtfIdProducto1 { get; set; } = null!;
 

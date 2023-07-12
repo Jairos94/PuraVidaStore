@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { IngresosComponent } from './ingresos/ingresos.component';
 import { MovimientosComponent } from './movimientos.component';
+import { TrasladosComponent } from './traslados/traslados.component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,7 @@ const routes: Routes = [
     children: [
       { path: 'ingreso-productos', component: IngresosComponent },
       { path: 'inventarios', component: InventariosComponent },
+      { path: 'traslados', component: TrasladosComponent },
       {
         path: 'ajustes',
         loadChildren: () =>

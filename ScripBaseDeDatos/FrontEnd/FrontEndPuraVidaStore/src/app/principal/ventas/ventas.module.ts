@@ -7,13 +7,15 @@ import { FacturacionComponent } from './facturacion/facturacion.component';
 import { PrimeNgPrincipalModule } from '../prime-ng-principal.module';
 import { FormsModule } from '@angular/forms';
 import { ImpuestosComponent } from './impuestos/impuestos.component';
+import { ReportesComponent } from './reportes/reportes.component';
 
 
 @NgModule({
   declarations: [
     VentasComponent,
     FacturacionComponent,
-    ImpuestosComponent
+    ImpuestosComponent,
+    ReportesComponent
   ],
   imports: [
     CommonModule,

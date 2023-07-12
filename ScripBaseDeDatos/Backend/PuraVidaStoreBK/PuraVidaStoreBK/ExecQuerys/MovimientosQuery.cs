@@ -12,13 +12,13 @@ namespace PuraVidaStoreBK.ExecQuerys
     {
         private readonly IDataBase _conexion;
         private readonly IProductoQuery _producto;
-        private readonly PuraVidaStoreContext dbContex;
+        private readonly PuraVidaStoreContext _dbContex;
 
-        public MovimientosQuery(IDataBase conexion,IProductoQuery producto, PuraVidaStoreContext _dbContex)
+        public MovimientosQuery(IDataBase conexion,IProductoQuery producto, PuraVidaStoreContext dbContex)
         {
             _conexion = conexion;
             _producto = producto;
-            dbContex = _dbContex;
+            _dbContex = dbContex;
         }
 
         public async Task<bool> GuardarAjuste(Inventarios inventario, int IdBodega, int idUsuario, int Motivo)
@@ -57,14 +57,14 @@ namespace PuraVidaStoreBK.ExecQuerys
               
                     if (motivosMovimiento.MtmId==0) 
                     {
-                        dbContex.MotivosMovimientos.Add(motivosMovimiento);
+                        _dbContex.MotivosMovimientos.Add(motivosMovimiento);
                     } else 
                     { 
-                         dbContex.MotivosMovimientos.Update(motivosMovimiento);
+                         _dbContex.MotivosMovimientos.Update(motivosMovimiento);
 
                     }
 
-                    await dbContex.SaveChangesAsync();
+                    await _dbContex.SaveChangesAsync();
                     return motivosMovimiento;
                 
             }
@@ -115,7 +115,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             try
             {
                 
-                    var MotivosMovimiento = await dbContex.MotivosMovimientos
+                    var MotivosMovimiento = await _dbContex.MotivosMovimientos
                         .Where(x => x.MtmDescripcion.Contains("Ingreso por compra"))
                         .FirstOrDefaultAsync();
 
@@ -143,7 +143,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                 
                     foreach (var ProductoCantidad in listaIds) 
                     {
-                        var producto = await dbContex.Productos.Where(x=>x.PrdId==ProductoCantidad.idProducto)
+                        var producto = await _dbContex.Productos.Where(x=>x.PrdId==ProductoCantidad.idProducto)
                                                          .Include(x=>x.PrdIdTipoProductoNavigation)
                                                          .FirstOrDefaultAsync();
                        
@@ -157,8 +157,8 @@ namespace PuraVidaStoreBK.ExecQuerys
                                 producto.PdrVisible = true;
                                 producto.PdrTieneExistencias = true;
 
-                                dbContex.Productos.Update(producto);
-                                await dbContex.SaveChangesAsync();
+                                _dbContex.Productos.Update(producto);
+                                await _dbContex.SaveChangesAsync();
                             }
                             ListaProductos.Add(inventario);
                         }
@@ -166,8 +166,8 @@ namespace PuraVidaStoreBK.ExecQuerys
                         {
                             producto.PdrTieneExistencias = false;
 
-                            dbContex.Productos.Update(producto);
-                            await dbContex.SaveChangesAsync();
+                            _dbContex.Productos.Update(producto);
+                            await _dbContex.SaveChangesAsync();
                         }
                     }
                 
@@ -187,7 +187,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             try
             {
                 
-                    var retorno = await dbContex.MotivosMovimientos
+                    var retorno = await _dbContex.MotivosMovimientos
                            .Where(x =>
                            x.MtmId != 1 &&
                            (x.MtmDescripcion.Contains(descripcion) ||
@@ -211,8 +211,8 @@ namespace PuraVidaStoreBK.ExecQuerys
             try
             {
                
-                    return await dbContex.MotivosMovimientos
-                           .Where(x=>x.MtmId!=1)
+                    return await _dbContex.MotivosMovimientos
+                           .Where(x=>x.MtmId!=1 && !x.MtmDescripcion.Contains("Traslado"))
                            .Include(x => x.MtmIdTipoMovimientoNavigation)
                            .ToListAsync();
                 
@@ -230,7 +230,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             try
             {
                
-                    var retorno = await dbContex.TipoMovimientos.ToListAsync();
+                    var retorno = await _dbContex.TipoMovimientos.ToListAsync();
                     return retorno;
                 
             }
@@ -246,7 +246,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             try
             {
                 
-                    return await dbContex.MotivosMovimientos
+                    return await _dbContex.MotivosMovimientos
                          .Where(x => x.MtmId == id)
                          .Include(x=>x.MtmIdTipoMovimientoNavigation)
                          .FirstOrDefaultAsync();
@@ -271,7 +271,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                
                     foreach (var ProductoCantidad in listaIds)
                     {
-                        var producto = await dbContex.Productos.Where(x => 
+                        var producto = await _dbContex.Productos.Where(x => 
                                                                 x.PrdId == ProductoCantidad.idProducto && (
                                                                 x.PrdNombre.Contains(buscador) ||
                                                                 x.PrdCodigo.Contains(buscador)||
@@ -299,14 +299,34 @@ namespace PuraVidaStoreBK.ExecQuerys
             return ListaProductos;
         }
 
+        public async Task<List<MotivosMovimiento>> BusquedaPorDescripcion(string descripcion) 
+        {
+            var lista = await _dbContex.MotivosMovimientos.Where(x=>x.MtmDescripcion==descripcion).ToListAsync();
+            return lista;
+        }
+        public async Task<List<MotivosMovimiento>> GuardarListaMotivos(List<MotivosMovimiento> movimientos) 
+        {
+            _dbContex.MotivosMovimientos.AddRange(movimientos);
+            await _dbContex.SaveChangesAsync();
+            return movimientos;
+        }
+
+        public async Task<List<Movimiento>> GuardarListaMovimientos(List<Movimiento> movimientos) 
+        {
+            _dbContex.Movimientos.AddRange(movimientos);
+            await _dbContex.SaveChangesAsync();
+            return movimientos;
+        }
+
+
         private async Task<Movimiento> IngresarMotimoMovimiento(Movimiento movimiento) 
         {
             try
             {
               
 
-                    dbContex.Movimientos.Add(movimiento);
-                    await dbContex.SaveChangesAsync();
+                    _dbContex.Movimientos.Add(movimiento);
+                    await _dbContex.SaveChangesAsync();
                     return movimiento;
                 
             }
@@ -316,6 +336,8 @@ namespace PuraVidaStoreBK.ExecQuerys
                 return new Movimiento();
             }
         }
+
+        
 
         private async Task< List<IdProductosPorCantidad>> listaIdProductos(int idBodega) 
         {
@@ -351,6 +373,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             finally
             { conn.Close(); }
         }
+
 
     }
 }

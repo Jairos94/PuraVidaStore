@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using PuraVidaStoreBK.ExecQuerys.Interfaces;
 using PuraVidaStoreBK.Models.DbContex;
 using PuraVidaStoreBK.Models.DTOS;
+using Serilog;
 using System.Data;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -17,12 +18,14 @@ namespace PuraVidaStoreBK.Controllers
         private readonly IMovimientosQuery _movimientosQuery;
         private readonly IMapper _mapper;
         private readonly IProductoQuery _productoQuery;
+        private readonly IBodegaQuery _bodegaQuery;
 
-        public MovimientosController(IMovimientosQuery movimientosQuery,IMapper mapper, IProductoQuery productoQuery)
+        public MovimientosController(IMovimientosQuery movimientosQuery,IMapper mapper, IProductoQuery productoQuery,IBodegaQuery bodega)
         {
             _movimientosQuery = movimientosQuery;
             _mapper = mapper;
             _productoQuery = productoQuery;
+            _bodegaQuery = bodega;
         }
         //GET: api/<MovimientosController>
         [HttpGet("Inventarios"), Authorize]
@@ -64,16 +67,31 @@ namespace PuraVidaStoreBK.Controllers
             try
             {
                 var datosTrasformados = _mapper.Map<List<Inventarios>>(InventariosAgregar);
-                datosTrasformados.ForEach(async x => 
+                var listaGuardar = new List<Movimiento>();
+                var fecha = DateTime.Now;
+                foreach (var dato in datosTrasformados) 
                 {
+                    dato.producto.PdrVisible = true;
+                    dato.producto.PdrTieneExistencias = true;
+                    var nuevoMovimiento = new Movimiento
+                    {
+                        MvmId = 0,
+                        MvmIdProducto = dato.producto.PrdId,
+                        MvmCantidad = dato.CantidadExistencia,
+                        MvmFecha = fecha,
+                        MvmIdMotivoMovimiento = Motivo,
+                        MvmIdUsuario = IdUsuario,
+                        MvmIdBodega = IdBodega,
 
-                    x.producto.PdrVisible = true;
-                    x.producto.PdrTieneExistencias = true;
+                    };
+                    listaGuardar.Add(nuevoMovimiento);
+                    await _productoQuery.GuardarProducto(dato.producto, IdUsuario);
+                }
+                var retorno= await _movimientosQuery.GuardarListaMovimientos(listaGuardar);
+                var seGuardoDatos = retorno.Count > 0 ?true:false;
 
 
-                    await _productoQuery.GuardarProducto(x.producto, IdUsuario);
-                });
-                var seGuardoDatos = await _movimientosQuery.IngresarProductosAlInventario(datosTrasformados, IdBodega, IdUsuario, Motivo);
+
                 return Ok(seGuardoDatos);
             }
             catch (Exception ex)
@@ -175,6 +193,72 @@ namespace PuraVidaStoreBK.Controllers
             }
         }
 
+        [HttpPost("GuardarTraslado"), Authorize(Roles = "1")]
+        public async Task<IActionResult> GuardarTraslado([FromBody] TrasladoEntreBodegasDTO traslado) 
+        {
+            try
+            {
+                var bodegaOrigen = await _bodegaQuery.BodegaPorId(traslado.idBodegaOrigen);
+                var BodegaDestino = await _bodegaQuery.BodegaPorId(traslado.idBodegaDestino);
+
+                var descricionBodega = string.Format("Traslado entre bodegas [origen:{0}, destino:{1}]", bodegaOrigen.BdgDescripcion, BodegaDestino.BdgDescripcion);
+                var lista = new List<MotivosMovimiento>();
+                lista = await _movimientosQuery.BusquedaPorDescripcion(descricionBodega);
+                if (lista.Count == 0)
+                {
+                    lista.Add(new MotivosMovimiento
+                    {
+                        MtmIdTipoMovimiento = 1,
+                        MtmDescripcion = descricionBodega
+                    });
+                    lista.Add(new MotivosMovimiento
+                    {
+                        MtmIdTipoMovimiento = 2,
+                        MtmDescripcion = descricionBodega
+                    });
+                    lista = await _movimientosQuery.GuardarListaMotivos(lista);
+                }
+                var listaMovimientos = new List<Movimiento>();
+                var fecha = DateTime.Now;
+
+                traslado.productos.ForEach(x => 
+                {
+                    var salidaBodegaOrigen = new Movimiento
+                    {
+                        MvmIdProducto = x.idProducto,
+                        MvmCantidad = x.cantidad,
+                        MvmFecha = fecha,
+                        MvmIdMotivoMovimiento = lista[1].MtmId,
+                        MvmIdUsuario = traslado.idUsuario,
+                        MvmIdBodega = traslado.idBodegaOrigen
+
+                    };
+                    listaMovimientos.Add(salidaBodegaOrigen);
+
+                    var entradaBodegaDestino = new Movimiento
+                    {
+                        MvmIdProducto = x.idProducto,
+                        MvmCantidad = x.cantidad,
+                        MvmFecha = fecha,
+                        MvmIdMotivoMovimiento = lista[0].MtmId,
+                        MvmIdUsuario = traslado.idUsuario,
+                        MvmIdBodega = traslado.idBodegaDestino
+
+                    };
+                    listaMovimientos.Add(entradaBodegaDestino);
+                });
+               
+                var retorno = _mapper.Map<List<MovimientosDTO>>(await _movimientosQuery.GuardarListaMovimientos(listaMovimientos));
+                return Ok(retorno);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+                Log.Error(ex.StackTrace);
+                return BadRequest("Favor de revisar los logs");
+            }
+           
+        }
 
     }
 }

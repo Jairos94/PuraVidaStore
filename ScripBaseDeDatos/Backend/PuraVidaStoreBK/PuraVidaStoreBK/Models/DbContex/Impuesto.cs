@@ -9,7 +9,7 @@ public partial class Impuesto
 
     public string? ImpDescripcion { get; set; }
 
-    public double? ImpPorcentaje { get; set; }
+    public decimal? ImpPorcentaje { get; set; }
 
     public bool? ImpActivo { get; set; }
 

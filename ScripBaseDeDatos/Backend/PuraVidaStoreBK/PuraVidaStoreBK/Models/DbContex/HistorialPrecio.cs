@@ -13,13 +13,13 @@ public partial class HistorialPrecio
 
     public int HlpIdUsuario { get; set; }
 
-    public double? HlpPrecioMayorista { get; set; }
+    public decimal? HlpPrecioMayorista { get; set; }
 
-    public double? HlpPrecioMinorista { get; set; }
+    public decimal? HlpPrecioMinorista { get; set; }
 
-    public double? HlpPrecioMayoristaAnterior { get; set; }
+    public decimal? HlpPrecioMayoristaAnterior { get; set; }
 
-    public double? HlpPrecioMinoristaAnterior { get; set; }
+    public decimal? HlpPrecioMinoristaAnterior { get; set; }
 
     public virtual Producto HlpIdProductoNavigation { get; set; } = null!;
 

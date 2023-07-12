@@ -32,7 +32,7 @@ export class ListaBodegasComponent implements OnInit {
 
 
   ObtenerBodegas() {
-    this.ServicioBodega.listaUsuarios().subscribe((x => {
+    this.ServicioBodega.listaBodegas().subscribe((x => {
       this.listaBodegas = [];
       this.listaBodegas = x;
 
@@ -98,7 +98,7 @@ export class ListaBodegasComponent implements OnInit {
         if(x.length>0 )
         {
           this.listaBodegas=[];
-          this.listaBodegas=x;      
+          this.listaBodegas=x;
         }else{
           this.ObtenerBodegas()
         }
