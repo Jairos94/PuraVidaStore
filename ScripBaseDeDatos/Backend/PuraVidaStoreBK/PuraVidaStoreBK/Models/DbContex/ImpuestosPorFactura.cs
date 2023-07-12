@@ -11,6 +11,8 @@ public partial class ImpuestosPorFactura
 
     public int IpfIdImpuesto { get; set; }
 
+    public decimal? IpfPorcentaje { get; set; }
+
     public virtual Factura IpfIdFacturaNavigation { get; set; } = null!;
 
     public virtual Impuesto IpfIdImpuestoNavigation { get; set; } = null!;

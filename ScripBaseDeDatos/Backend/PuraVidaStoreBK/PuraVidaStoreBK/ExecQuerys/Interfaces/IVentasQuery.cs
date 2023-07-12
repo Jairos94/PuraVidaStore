@@ -4,7 +4,12 @@ namespace PuraVidaStoreBK.ExecQuerys.Interfaces
 {
     public interface IVentasQuery
     {
-        public Task<Factura> ingresarFactura(Factura factura);
-        public Task<List<FormaPago>> listaFormaPago();
+        Task<Factura> ingresarFactura(Factura factura);
+        Task<Factura> actualizarFactura(Factura factura);
+        Task<FacturaResumen> ingresarFacturaResumen(FacturaResumen facturaResumen);
+        Task<List<DetalleFactura>> ingresarDetalleFactura(List<DetalleFactura> listaDetalleFactura);
+        Task<List<ImpuestosPorFactura>> ingresarImpuestosPorFactura(List<ImpuestosPorFactura> impuestos);
+        Task<Factura> buscarFacturaPorCodigo(string buscador);
+        Task<List<FormaPago>> listaFormaPago();
     }
 }

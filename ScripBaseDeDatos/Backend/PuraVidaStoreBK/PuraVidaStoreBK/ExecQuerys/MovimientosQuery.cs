@@ -318,6 +318,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             return movimientos;
         }
 
+
         private async Task<Movimiento> IngresarMotimoMovimiento(Movimiento movimiento) 
         {
             try
@@ -335,6 +336,8 @@ namespace PuraVidaStoreBK.ExecQuerys
                 return new Movimiento();
             }
         }
+
+        
 
         private async Task< List<IdProductosPorCantidad>> listaIdProductos(int idBodega) 
         {

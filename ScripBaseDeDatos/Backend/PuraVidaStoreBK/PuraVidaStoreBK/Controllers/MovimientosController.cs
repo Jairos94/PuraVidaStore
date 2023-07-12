@@ -67,15 +67,31 @@ namespace PuraVidaStoreBK.Controllers
             try
             {
                 var datosTrasformados = _mapper.Map<List<Inventarios>>(InventariosAgregar);
+                var listaGuardar = new List<Movimiento>();
+                var fecha = DateTime.Now;
                 foreach (var dato in datosTrasformados) 
                 {
                     dato.producto.PdrVisible = true;
                     dato.producto.PdrTieneExistencias = true;
+                    var nuevoMovimiento = new Movimiento
+                    {
+                        MvmId = 0,
+                        MvmIdProducto = dato.producto.PrdId,
+                        MvmCantidad = dato.CantidadExistencia,
+                        MvmFecha = fecha,
+                        MvmIdMotivoMovimiento = Motivo,
+                        MvmIdUsuario = IdUsuario,
+                        MvmIdBodega = IdBodega,
 
-
+                    };
+                    listaGuardar.Add(nuevoMovimiento);
                     await _productoQuery.GuardarProducto(dato.producto, IdUsuario);
                 }
-                var seGuardoDatos = await _movimientosQuery.IngresarProductosAlInventario(datosTrasformados, IdBodega, IdUsuario, Motivo);
+                var retorno= await _movimientosQuery.GuardarListaMovimientos(listaGuardar);
+                var seGuardoDatos = retorno.Count > 0 ?true:false;
+
+
+
                 return Ok(seGuardoDatos);
             }
             catch (Exception ex)

@@ -73,7 +73,8 @@ export class PrincipalComponent implements OnInit {
       {
         label: 'Configurar opciones del sistema',
         icon: 'pi pi-desktop',
-        routerLink:'configuracion'
+        routerLink:'configuracion',
+        visible:activo.esAministrador()
       },
       {
         label: 'Salir',

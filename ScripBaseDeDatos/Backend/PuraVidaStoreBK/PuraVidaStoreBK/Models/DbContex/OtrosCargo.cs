@@ -11,9 +11,9 @@ public partial class OtrosCargo
 
     public long OtrIdPedido { get; set; }
 
-    public double? OtrValorMoneda { get; set; }
+    public decimal? OtrValorMoneda { get; set; }
 
-    public double? OtrCostoMoneda { get; set; }
+    public decimal? OtrCostoMoneda { get; set; }
 
     public string OtrRazon { get; set; } = null!;
 

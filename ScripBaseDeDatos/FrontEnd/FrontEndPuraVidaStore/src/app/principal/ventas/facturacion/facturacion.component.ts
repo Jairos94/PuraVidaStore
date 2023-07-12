@@ -1,3 +1,4 @@
+import { ImpuestosPorFacturaModel } from './../../../models/impuestos-por-factura-model';
 import { MayoristaService } from './../../../services/mayorista.service';
 import { PersonaModel } from 'src/app/models/persona-model';
 import { Component, OnInit } from '@angular/core';
@@ -11,6 +12,10 @@ import { FacturaModel } from 'src/app/models/factura-model';
 import { FormaPagoModel } from 'src/app/models/forma-pago-model';
 import { VentasService } from 'src/app/services/ventas.service';
 import { FacturaResumenModel } from 'src/app/models/factura-resumen-model';
+import { ParametrosGlobalesModel } from 'src/app/models/parametros-globales-model';
+import { activo } from 'src/app/activo';
+import { PersonaServiceService } from 'src/app/services/persona-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-facturacion',
@@ -22,15 +27,20 @@ export class FacturacionComponent implements OnInit {
   pagoCon: number = 0;
   cambio: number = 0;
   totalCantidad: number = 0;
+  montoTotalImpuestos: number = 0;
+  subTotal: number = 0;
   total: number = 0;
   buscadorCodigoBarras: string = '';
   buscadorCedulaOId: string = '';
+  esCambioTabla: boolean = false;
   pagarDeshabilitado: boolean = true;
   cambioDeshabilitar: boolean = false;
   mayoristaDeshabilitado: boolean = true;
   verModal: boolean = false;
   verModalPago: boolean = false;
   verMayoristaModal: boolean = false;
+  verAgregarMayoristaModal: boolean = false;
+  parametrosGlobales: ParametrosGlobalesModel = activo.parametrosGlobales;
   listaDtealle: DetalleFacturaModel[] = [];
   listaFormaPago: FormaPagoModel[] = [];
 
@@ -58,11 +68,12 @@ export class FacturacionComponent implements OnInit {
     dtfId: 0,
     dtfIdProducto: 0,
     dtfIdFactura: 0,
+    dtfLinea: 0,
     dtfPrecio: 0,
+    dtfMontoImpuestos: 0,
     dtfDescuento: 0,
     dtfCantidad: 0,
-    dtfIdProducto1: this.productoBuscado,
-    dtfIdProductoNavigation: null,
+    dtfIdProducto1: null,
   };
   fecha = new Date();
   personaMayorista: PersonaModel = {
@@ -84,7 +95,7 @@ export class FacturacionComponent implements OnInit {
     idTipoTiempo: 0,
     clmIdPersonaNavigation: this.personaMayorista,
     facturas: null,
-    historialClienteMayorista:  null
+    historialClienteMayorista: null,
   };
 
   factura: FacturaModel = {
@@ -97,15 +108,15 @@ export class FacturacionComponent implements OnInit {
     ftrFormaPago: 0,
     ftrEsFacturaNula: false,
     ftrCodigoFactura: '',
-    detalleFacturas:  null,
-    facturaResumen:  null,
-    ftrBodegaNavigation:  null,
+    detalleFacturas: null,
+    facturaResumen: null,
+    ftrBodegaNavigation: null,
     ftrEstatus: null,
-    ftrFormaPagoNavigation:  null,
-    ftrIdUsuarioNavigation:  null,
-    ftrMayoristaNavigation:  null,
-    historialFacturasAnulada:  null,
-    impuestosPorFacturas:  null,
+    ftrFormaPagoNavigation: null,
+    ftrIdUsuarioNavigation: null,
+    ftrMayoristaNavigation: null,
+    historialFacturasAnulada: null,
+    impuestosPorFacturas: null,
   };
 
   facturaResumen: FacturaResumenModel = {
@@ -114,6 +125,7 @@ export class FacturacionComponent implements OnInit {
     ftrMontoTotal: 0,
     ftrMontoPagado: 0,
     ftrCambio: 0,
+    ftrMontoImpuestos:0,
     ftrFacturaNavigation: null,
   };
 
@@ -121,11 +133,65 @@ export class FacturacionComponent implements OnInit {
     private servicioPorducto: ProductoServiceService,
     private servicioVenta: VentasService,
     private servicioMayorista: MayoristaService,
-    private messageService: MessageService
+    private servicioPersona: PersonaServiceService,
+    private messageService: MessageService,
+    private route: Router,
+
   ) {}
 
   ngOnInit(): void {
+    if(activo.parametrosGlobales===undefined || activo.parametrosGlobales === null)
+    {
+      this.route.navigate(['/principal/configuracion']);
+
+    }
     this.obtenerFormaPago();
+  }
+
+  cambioTabla(detalle: DetalleFacturaModel) {
+    let producto: ProductoModel = detalle.dtfIdProducto1!;
+    this.listaDtealle.forEach((x) => {
+      if (
+        this.parametrosGlobales.prgHabilitarImpuestos &&
+        this.parametrosGlobales.impuestosPorParametros?.length! > 0
+      ) {
+        let sumaImpuestosMayorista: number = 0;
+        let sumaImpuestosMinorista: number = 0;
+        this.parametrosGlobales.impuestosPorParametros?.forEach((impuesto) => {
+          let porcentaje = impuesto.impPidImpuestoNavigation?.impPorcentaje! / 100;
+          sumaImpuestosMayorista = sumaImpuestosMayorista +producto.prdPrecioVentaMayorista * porcentaje;
+          sumaImpuestosMinorista = sumaImpuestosMinorista +producto.prdPrecioVentaMinorista * porcentaje;
+        });
+
+        if (this.parametrosGlobales.prgImpustosIncluidos) {
+          if (this.mayorista.clmId > 0) {
+            x.dtfPrecio =
+              producto.prdPrecioVentaMayorista - sumaImpuestosMayorista;
+            x.dtfMontoImpuestos = sumaImpuestosMayorista;
+          } else {
+            x.dtfPrecio =
+              producto.prdPrecioVentaMinorista - sumaImpuestosMinorista;
+            x.dtfMontoImpuestos = sumaImpuestosMinorista;
+          }
+        } else {
+          if (this.mayorista.clmId > 0) {
+            x.dtfPrecio = producto.prdPrecioVentaMayorista;
+            x.dtfMontoImpuestos = sumaImpuestosMayorista;
+          } else {
+            x.dtfPrecio = producto.prdPrecioVentaMinorista;
+            x.dtfMontoImpuestos = sumaImpuestosMinorista;
+          }
+        }
+      } else {
+        x.dtfMontoImpuestos = 0;
+        if (this.mayorista.clmId > 0) {
+          x.dtfPrecio = producto.prdPrecioVentaMayorista;
+        } else {
+          x.dtfPrecio = producto.prdPrecioVentaMinorista;
+        }
+      }
+    });
+    this.sumarTotal();
   }
 
   buscarProductoPorCodigodBarras() {
@@ -148,6 +214,21 @@ export class FacturacionComponent implements OnInit {
       });
   }
 
+  buscarCedula() {
+    this.servicioPersona
+      .buscarPersonaPorCedula(this.personaMayorista.psrIdentificacion)
+      .subscribe({
+        next: (x) => {
+          if (x.psrId > 0) {
+            this.personaMayorista = x;
+          }
+        },
+        error: (_e) => {
+          console.log(_e);
+        },
+      });
+  }
+
   obtenerFormaPago() {
     this.servicioVenta.listaFormaPago().subscribe({
       next: (x) => {
@@ -163,31 +244,30 @@ export class FacturacionComponent implements OnInit {
 
   sumarTotal() {
     this.total = 0;
+    this.subTotal = 0;
     this.totalCantidad = 0;
     this.pagarDeshabilitado = false;
+    this.montoTotalImpuestos = 0;
 
-    this.listaDtealle.forEach((x, i) => {
-      if (x.dtfIdProducto1 != null) {
-        if (this.mayorista.clmId > 0) {
-          console.log('Entro al true de venta mayorista');
+    //regorrido para obtener el subtotal
+    if (this.parametrosGlobales.prgHabilitarImpuestos) {
+      if (this.parametrosGlobales.prgImpustosIncluidos) {
+        this.SumarConImpuestosIncluidos();
 
-          x.dtfPrecio = x.dtfIdProducto1.prdPrecioVentaMayorista;
-        } else {
-          console.log('Entro al false (venta regular)');
-
-          x.dtfPrecio = x.dtfIdProducto1.prdPrecioVentaMinorista;
-        }
-      }
-
-      this.total = this.total + x.dtfCantidad * x.dtfPrecio;
-      this.totalCantidad = this.totalCantidad + x.dtfCantidad;
-
-      if (this.totalCantidad >= 3) {
-        this.mayoristaDeshabilitado = false;
       } else {
-        this.mayoristaDeshabilitado = true;
+        this.sumarSinImpuestosIncluidos();
+
       }
-    });
+    } else {
+      this.SumarSinImpuestos();
+    }
+    this.total =  this.subTotal +this.montoTotalImpuestos;
+    if(this.totalCantidad>=this.parametrosGlobales.prgUndsHabilitarMayorista)
+    {
+      this.mayoristaDeshabilitado = false;
+    }else{
+      true;
+    }
 
     if (this.mayoristaDeshabilitado) {
       this.limpiarMayorista();
@@ -197,6 +277,86 @@ export class FacturacionComponent implements OnInit {
       this.cancelar();
     }
   }
+
+  sumarSinImpuestosIncluidos() {
+    this.listaDtealle.forEach((x) => {
+      let totalImpuestosMayorista: number = 0;
+      let totalImpuestosMinorista: number = 0;
+      if (this.parametrosGlobales.impuestosPorParametros?.length! > 0) {
+        this.parametrosGlobales.impuestosPorParametros?.forEach((impuesto) => {
+          let porcentaje =
+            impuesto.impPidImpuestoNavigation?.impPorcentaje! / 100;
+          totalImpuestosMayorista =
+            totalImpuestosMayorista +
+            porcentaje * x.dtfIdProducto1?.prdPrecioVentaMayorista!;
+          totalImpuestosMinorista =
+            totalImpuestosMinorista +
+            porcentaje * x.dtfIdProducto1?.prdPrecioVentaMinorista!;
+        });
+      }
+
+      if (this.mayorista.clmId > 0) {
+        x.dtfPrecio = x.dtfIdProducto1?.prdPrecioVentaMayorista!;
+        x.dtfMontoImpuestos = totalImpuestosMayorista;
+        this.montoTotalImpuestos =
+          this.montoTotalImpuestos + totalImpuestosMayorista;
+      } else {
+        x.dtfPrecio = x.dtfIdProducto1?.prdPrecioVentaMinorista!;
+        x.dtfMontoImpuestos = totalImpuestosMinorista;
+        this.montoTotalImpuestos =
+          this.montoTotalImpuestos + totalImpuestosMinorista;
+      }
+
+      this.montoTotalImpuestos = this.montoTotalImpuestos * x.dtfCantidad
+      this.subTotal = this.subTotal + (x.dtfPrecio * x.dtfCantidad);
+      this.totalCantidad = this.totalCantidad + x.dtfCantidad;
+    });
+  }
+
+  SumarConImpuestosIncluidos() {
+    this.listaDtealle.forEach((x) => {
+      let totalImpuestosMayorista: number = 0;
+      let totalImpuestosMinorista: number = 0;
+      if (this.parametrosGlobales.impuestosPorParametros?.length! > 0) {
+        this.parametrosGlobales.impuestosPorParametros?.forEach((impuesto) => {
+          let porcentaje =
+            impuesto.impPidImpuestoNavigation?.impPorcentaje! / 100;
+          totalImpuestosMayorista =totalImpuestosMayorista + porcentaje * x.dtfIdProducto1?.prdPrecioVentaMayorista!;
+          totalImpuestosMinorista = totalImpuestosMinorista + porcentaje * x.dtfIdProducto1?.prdPrecioVentaMinorista!;
+        });
+      }
+
+      if (this.mayorista.clmId > 0) {
+        x.dtfPrecio =
+          x.dtfIdProducto1?.prdPrecioVentaMayorista! - totalImpuestosMayorista;
+        x.dtfMontoImpuestos = totalImpuestosMayorista;
+        this.montoTotalImpuestos =
+          this.montoTotalImpuestos + totalImpuestosMayorista;
+      } else {
+        x.dtfPrecio =
+          x.dtfIdProducto1?.prdPrecioVentaMinorista! - totalImpuestosMinorista;
+        x.dtfMontoImpuestos = totalImpuestosMinorista;
+        this.montoTotalImpuestos =
+          this.montoTotalImpuestos + totalImpuestosMinorista;
+      }
+      this.montoTotalImpuestos = this.montoTotalImpuestos * x.dtfCantidad
+      this.subTotal = this.subTotal + (x.dtfPrecio * x.dtfCantidad);
+      this.totalCantidad = this.totalCantidad + x.dtfCantidad;
+    });
+  }
+
+  SumarSinImpuestos() {
+    this.listaDtealle.forEach((x) => {
+      if (this.mayorista.clmId > 0) {
+        x.dtfPrecio = x.dtfIdProducto1?.prdPrecioVentaMayorista!;
+      } else {
+        x.dtfPrecio = x.dtfIdProducto1?.prdPrecioVentaMinorista!;
+      }
+      this.subTotal = this.subTotal + (x.dtfPrecio *x.dtfCantidad);
+      this.totalCantidad = this.totalCantidad + x.dtfCantidad;
+    });
+  }
+
   ConsultarClienteMayorista() {
     this.servicioMayorista
       .obtenerMayoristaPorCedula(this.buscadorCedulaOId)
@@ -206,6 +366,7 @@ export class FacturacionComponent implements OnInit {
           this.limpiarMayorista();
           this.buscadorCedulaOId = '';
           this.mayorista = x;
+          this.sumarTotal();
 
           if (x == null) {
             this.limpiarMayorista();
@@ -222,6 +383,110 @@ export class FacturacionComponent implements OnInit {
       );
     this.verMayoristaModal = false;
   }
+
+  GuardarClienteMayorista(){
+    if(
+    this.personaMayorista.psrIdentificacion===''||
+    this.personaMayorista.psrNombre === '' ||
+    this.personaMayorista.psrApellido1 === '' ||
+    this.personaMayorista.psrApellido2 === '' ||
+    this.mayorista.clmCorreo === '' ||
+    this.mayorista.clmTelefono === '' )
+       {
+        this.showError('Datos Incompletos','Se requiere llenar todos los datos');
+       }else{
+        this.mayorista.clmIdPersonaNavigation = this.personaMayorista
+        this.mayorista.idTipoTiempo = this.parametrosGlobales.prgIdTiempo!;
+        this.mayorista.cantidadTiempo = this.parametrosGlobales.prgCantidadTiempo!;
+        let fecha = new Date();
+        this.mayorista.clmFechaCreacion = fecha.toISOString();
+        this.mayorista.clmFechaVencimiento = null;
+
+        this.servicioMayorista.guardarMayorista(this.mayorista).subscribe(
+          {
+            next:x=>
+            {
+              this.mayorista = x;
+              this.verAgregarMayoristaModal = false;
+              this.showSuccess('Se ingresó al cliente mayorista','Código del cliente: '+ x.clmId.toString() )
+              this.sumarTotal();
+
+            },
+            error: _e=> console.log(_e)
+
+          });
+       }
+  }
+
+
+facturar(){
+  let listaResumen:FacturaResumenModel[]=[];
+
+  this.facturaResumen = {
+    ftrId: 0,
+    ftrFactura: 0,
+    ftrMontoTotal: this.total,
+    ftrMontoPagado: this.pagoCon,
+    ftrCambio: this.cambio,
+    ftrMontoImpuestos: this.montoTotalImpuestos,
+    ftrFacturaNavigation: null,
+  };
+listaResumen.push(this.facturaResumen);
+
+
+  this.factura = {
+    ftrId: 0,
+    ftrFecha: this.fecha.toISOString(),
+    ftrIdUsuario: activo.usuarioPrograma.usrId,
+    ftrMayorista: this.mayorista.clmId,
+    ftrEstatusId: 1,
+    ftrBodega: activo.bodegaIngreso.bdgId,
+    ftrFormaPago: this.formaPagoSeleccionado.frpId,
+    ftrEsFacturaNula: false,
+    ftrCodigoFactura: '',
+    detalleFacturas: this.listaDtealle,
+    facturaResumen: listaResumen,
+    ftrBodegaNavigation: null,
+    ftrEstatus: null,
+    ftrFormaPagoNavigation: null,
+    ftrIdUsuarioNavigation: null,
+    ftrMayoristaNavigation: null,
+    historialFacturasAnulada: null,
+    impuestosPorFacturas: null,
+  };
+
+  if(this.mayorista.clmId===0)
+  {
+    this.factura.ftrMayorista=null;
+  }
+
+let impuestosPorFacturaModel:ImpuestosPorFacturaModel[]=[];
+this.parametrosGlobales.impuestosPorParametros?.forEach(x=>
+  {
+    let nuevoImpuestoParametro:ImpuestosPorFacturaModel={
+      ipfId: 0,
+      ipfIdFactura: 0,
+      ipfIdImpuesto: x.impPidImpuestoNavigation?.impId!,
+      ipfIdFactura1: null,
+      ipfPorcentaje: x.impPidImpuestoNavigation?.impPorcentaje!,
+      ipfIdFacturaNavigation: null
+
+    }
+    impuestosPorFacturaModel.push(nuevoImpuestoParametro);
+  })
+  this.factura.impuestosPorFacturas = impuestosPorFacturaModel;
+  this.servicioVenta.IngresarVenta(this.factura).subscribe(
+    {
+      next:x=>{
+        this.showSuccess('Ingreso de venta','Número factura '+ x.ftrCodigoFactura!)
+        this.verModalPago=false;
+        this.cancelar();
+      },
+      error:_e=>console.log(_e)
+
+    });
+}
+
   deshabilitarCambio() {
     if (this.formaPagoSeleccionado.frpId > 1) {
       this.cambio = 0;
@@ -230,6 +495,7 @@ export class FacturacionComponent implements OnInit {
     } else {
       this.cambioDeshabilitar = false;
     }
+
   }
 
   eliminarDeLaLista(id: number) {
@@ -256,6 +522,7 @@ export class FacturacionComponent implements OnInit {
     }
 
     this.detalleSeleccionado.dtfCantidad = 1;
+
     this.detalleSeleccionado.dtfIdProducto1 = this.productoBuscado;
 
     let ingresado = false;
@@ -263,7 +530,8 @@ export class FacturacionComponent implements OnInit {
     if (this.listaDtealle.length > 0) {
       this.listaDtealle.forEach((x) => {
         if (x.dtfIdProducto === this.detalleSeleccionado.dtfIdProducto) {
-          x.dtfCantidad = x.dtfCantidad + this.detalleSeleccionado.dtfCantidad;
+          x.dtfCantidad =
+            Number(x.dtfCantidad) + this.detalleSeleccionado.dtfCantidad;
           ingresado = true;
         }
       });
@@ -295,9 +563,8 @@ export class FacturacionComponent implements OnInit {
       cantidadTiempo: 0,
       idTipoTiempo: 0,
       clmIdPersonaNavigation: this.personaMayorista,
-      facturas:null,
-      historialClienteMayorista: null
-
+      facturas: null,
+      historialClienteMayorista: null,
     };
   }
 
@@ -321,11 +588,12 @@ export class FacturacionComponent implements OnInit {
       dtfId: 0,
       dtfIdProducto: 0,
       dtfIdFactura: 0,
+      dtfLinea: 0,
       dtfPrecio: 0,
+      dtfMontoImpuestos: 0,
       dtfDescuento: 0,
       dtfCantidad: 0,
-      dtfIdProducto1: this.productoBuscado,
-      dtfIdProductoNavigation: null,
+      dtfIdProducto1: null,
     };
   }
 
@@ -344,6 +612,8 @@ export class FacturacionComponent implements OnInit {
 
   cancelar() {
     this.limpiarMayorista();
+    this.subTotal = 0;
+    this.montoTotalImpuestos = 0;
     this.pagoCon = 0;
     this.cambio = 0;
     this.pagarDeshabilitado = true;
@@ -355,6 +625,7 @@ export class FacturacionComponent implements OnInit {
     this.verModalPago = false;
     this.listaDtealle = [];
     this.limpiarDetalle();
+    this.parametrosGlobales = activo.parametrosGlobales;
 
     this.formaPagoSeleccionado = {
       frpId: 1,
@@ -368,6 +639,16 @@ export class FacturacionComponent implements OnInit {
       psrApellido2: '',
     };
 
+    this.facturaResumen = {
+      ftrId: 0,
+      ftrFactura: 0,
+      ftrMontoTotal: 0,
+      ftrMontoPagado: 0,
+      ftrCambio: 0,
+      ftrMontoImpuestos:0,
+      ftrFacturaNavigation: null,
+    };
+
     this.factura = {
       ftrId: 0,
       ftrFecha: '',
@@ -378,15 +659,15 @@ export class FacturacionComponent implements OnInit {
       ftrFormaPago: 0,
       ftrEsFacturaNula: false,
       ftrCodigoFactura: '',
-      detalleFacturas:  null,
-      facturaResumen:  null,
-      ftrBodegaNavigation:  null,
+      detalleFacturas: null,
+      facturaResumen: null,
+      ftrBodegaNavigation: null,
       ftrEstatus: null,
-      ftrFormaPagoNavigation:  null,
-      ftrIdUsuarioNavigation:  null,
-      ftrMayoristaNavigation:  null,
-      historialFacturasAnulada:  null,
-      impuestosPorFacturas:  null,
+      ftrFormaPagoNavigation: null,
+      ftrIdUsuarioNavigation: null,
+      ftrMayoristaNavigation: null,
+      historialFacturasAnulada: null,
+      impuestosPorFacturas: null,
     };
   }
 
@@ -410,11 +691,11 @@ export class FacturacionComponent implements OnInit {
     });
   }
 
-  showSuccess() {
+  showSuccess(encabezado: string, mensaje: string) {
     this.messageService.add({
       severity: 'success',
-      summary: 'Success',
-      detail: 'Message Content',
+      summary: encabezado,
+      detail: mensaje,
     });
   }
 }
