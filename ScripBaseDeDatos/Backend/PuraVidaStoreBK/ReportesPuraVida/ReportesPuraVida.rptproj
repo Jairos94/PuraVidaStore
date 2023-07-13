@@ -49,6 +49,7 @@
     <Reports>@(Report)</Reports>
   </PropertyGroup>
   <ItemGroup>
+    <DataSet Include="BodegaPorId.rsd" />
     <DataSet Include="Movimientos.rsd" />
   </ItemGroup>
   <ItemGroup>
