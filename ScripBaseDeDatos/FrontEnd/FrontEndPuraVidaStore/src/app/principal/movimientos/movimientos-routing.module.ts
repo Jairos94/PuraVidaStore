@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { IngresosComponent } from './ingresos/ingresos.component';
 import { MovimientosComponent } from './movimientos.component';
 import { TrasladosComponent } from './traslados/traslados.component';
-import { ReportesComponent } from './reportes/reportes.component';
+import { ReporteMovimientosComponent } from './reporte-movimientos/reporte-movimientos.component';
 
 const routes: Routes = [
   {
@@ -14,7 +14,7 @@ const routes: Routes = [
       { path: 'ingreso-productos', component: IngresosComponent },
       { path: 'inventarios', component: InventariosComponent },
       { path: 'traslados', component: TrasladosComponent },
-      { path: 'reportes', component: ReportesComponent },
+      { path: 'reportes', component: ReporteMovimientosComponent },
       {
         path: 'ajustes',
         loadChildren: () =>

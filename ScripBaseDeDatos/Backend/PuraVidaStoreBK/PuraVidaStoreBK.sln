@@ -5,6 +5,8 @@ VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PuraVidaStoreBK", "PuraVidaStoreBK\PuraVidaStoreBK.csproj", "{AB46AEDD-ABDE-4B8E-B33B-45753CC6B23A}"
 EndProject
+Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "ReportesPuraVida", "ReportesPuraVida\ReportesPuraVida.rptproj", "{04AC35DC-A837-4849-9687-F878731CF9A3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,6 +20,14 @@ Global
 		{AB46AEDD-ABDE-4B8E-B33B-45753CC6B23A}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
 		{AB46AEDD-ABDE-4B8E-B33B-45753CC6B23A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB46AEDD-ABDE-4B8E-B33B-45753CC6B23A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04AC35DC-A837-4849-9687-F878731CF9A3}.Debug|Any CPU.ActiveCfg = Debug
+		{04AC35DC-A837-4849-9687-F878731CF9A3}.Debug|Any CPU.Build.0 = Debug
+		{04AC35DC-A837-4849-9687-F878731CF9A3}.Debug|Any CPU.Deploy.0 = Debug
+		{04AC35DC-A837-4849-9687-F878731CF9A3}.DebugLocal|Any CPU.ActiveCfg = DebugLocal
+		{04AC35DC-A837-4849-9687-F878731CF9A3}.DebugLocal|Any CPU.Build.0 = DebugLocal
+		{04AC35DC-A837-4849-9687-F878731CF9A3}.Release|Any CPU.ActiveCfg = Release
+		{04AC35DC-A837-4849-9687-F878731CF9A3}.Release|Any CPU.Build.0 = Release
+		{04AC35DC-A837-4849-9687-F878731CF9A3}.Release|Any CPU.Deploy.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

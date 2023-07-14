@@ -4,8 +4,7 @@
 
 export const environment = {
   production: false,
-  urlBase:'https://localhost:44329/api/',
-  urlReporte:'http://desktop-4fjoi9v/Reports/report/ReportesPuraVida'
+  urlBase:'https://localhost:44329/api/'
 };
 
 /*
