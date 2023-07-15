@@ -12,13 +12,13 @@ export class ReportesService {
 
   constructor(private http: HttpClient) { }
 
-  obtenerDatosReportes(idBodega:number,fechaInico:Date,fechaFin:Date):Observable<ReporteMovimientoModel[]>
+  obteneReporteMovimientos(idBodega:number,fechaInico:Date,fechaFin:Date):Observable<ReporteMovimientoModel[]>
   {
     const params = new HttpParams()
-    .set('id', idBodega)
+    .set('IdBodega', idBodega)
     .set('FechaInicio', fechaInico.toDateString())
-    .set('FechaFin', fechaInico.toDateString());
-      return this.http.get<ReporteMovimientoModel[]>(`${this.baseUrl}Reportes/ReporteMovimeintos`);
+    .set('FechaFin', fechaFin.toDateString());
+      return this.http.get<ReporteMovimientoModel[]>(`${this.baseUrl}Reportes/ReporteMovimeintos`,{params});
 
   }
 }
