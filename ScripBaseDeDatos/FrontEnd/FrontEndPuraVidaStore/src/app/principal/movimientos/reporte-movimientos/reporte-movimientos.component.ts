@@ -145,7 +145,8 @@ export class ReporteMovimientosComponent implements OnInit {
       head: [titulos],
       body: listaBody,
       columnStyles: {
-        2: { cellWidth: 40 } // Ajusta el ancho de la columna de fecha (índice 2) a 40 unidades
+        2: { cellWidth: 30 }, // Ajusta el ancho de la columna de fecha (índice 2) a 40 unidades
+        5: { cellWidth: 40 }, // Ajusta el ancho de la columna de fecha (índice 2) a 40 unidades
       }
     });
 
