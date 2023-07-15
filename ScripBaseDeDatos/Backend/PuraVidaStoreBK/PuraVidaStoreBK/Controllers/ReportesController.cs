@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Net.Http;
+using PuraVidaStoreBK.ExecQuerys.Interfaces;
+using PuraVidaStoreBK.Models.DbContex;
+using PuraVidaStoreBK.Models.DTOS;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,40 +13,86 @@ namespace PuraVidaStoreBK.Controllers
     public class ReportesController : ControllerBase
     {
         private readonly IConfiguration _configuration;
+        private readonly IReportesQuery _reportes;
 
-        public ReportesController(IConfiguration configuration)
+        public ReportesController(IConfiguration configuration, IReportesQuery reportes)
         {
             _configuration = configuration;
+            _reportes = reportes;
         }
         // GET: api/<ReportesController>
-        [HttpGet ("ReporteMovimeintos")]
+        [HttpGet ("ReporteMovimeintos"),Authorize]
         public async Task<IActionResult> ReporteMovimientos(int IdBodega,DateTime FechaInicio,DateTime FechaFin)
         {
-            using (HttpClient httpClient = new HttpClient())
+            try
             {
-                var url = string.Format("{0}{1}", _configuration["Reportes:UrlPrincipal"], _configuration["Reportes:Movimientos"]);
+                var listaReporte = new List<ReporteMovimientosDTO>();
+                var listaMovimientos = await _reportes.ObtenerMovimientosPorBodega(IdBodega, FechaInicio, FechaFin);
+                var listafacturas = await _reportes.ObtenerFacturasPorBodega(IdBodega, FechaInicio, FechaFin);
 
-                UriBuilder uriBuilder = new UriBuilder(url);
-                var query = System.Web.HttpUtility.ParseQueryString(uriBuilder.Query);
-                query["IdBodega"] = IdBodega.ToString();
-                query["FechaInicio"] = FechaInicio.ToString();
-                query["FechaFin"] = FechaFin.ToString();
-                uriBuilder.Query = query.ToString();
-                url = uriBuilder.ToString();
-
-                HttpResponseMessage response = await httpClient.GetAsync(url);
-                if (response.IsSuccessStatusCode)
+                foreach (var movimiento in listaMovimientos)
                 {
-                    byte[] reporteBytes = await response.Content.ReadAsByteArrayAsync();
+                    var producto = new Producto();
+                    producto = movimiento.MvmIdProductoNavigation;
 
-                    return File(reporteBytes, "application/pdf", "reporte.pdf");
+                    var bodega = new Bodega();
+                    bodega = movimiento.MvmIdBodegaNavigation;
+
+                    var usuario = new Usuario();
+                    usuario = movimiento.MvmIdUsuarioNavigation;
+                    var reporte = new ReporteMovimientosDTO
+                    {
+                        Codigo = producto.PrdCodigo,
+                        DescripcionProducto = producto.PrdNombre,
+                        fecha = movimiento.MvmFecha,
+                        Responsable = movimiento.MvmIdUsuarioNavigation.UsrUser,
+                        Bodega = movimiento.MvmIdBodegaNavigation.BdgDescripcion,
+                        Descripcion = movimiento.MvmIdMotivoMovimientoNavigation.MtmDescripcion,
+                        Ingresos = movimiento.MvmIdMotivoMovimientoNavigation.MtmIdTipoMovimiento == 1 ? movimiento.MvmCantidad : 0,
+                        Salidas = movimiento.MvmIdMotivoMovimientoNavigation.MtmIdTipoMovimiento == 2 ? movimiento.MvmCantidad : 0
+
+                    };
+                    listaReporte.Add(reporte);
                 }
-                else
+
+                foreach (var factura in listafacturas)
                 {
-                    // Manejo de errores si la solicitud no fue exitosa
-                    return StatusCode((int)response.StatusCode);
-                }
+                    foreach (var detalle in factura.DetalleFacturas)
+                    {
+                        var producto = new Producto();
+                        producto = detalle.DtfIdProducto1;
+
+                        var bodega = new Bodega();
+                        bodega = factura.FtrBodegaNavigation;
+
+                        var usuario= new Usuario();
+                        usuario = factura.FtrIdUsuarioNavigation;
+
+                        var reporte = new ReporteMovimientosDTO
+                        {
+                            Codigo = producto.PrdCodigo,
+                            DescripcionProducto = detalle.DtfIdProducto1.PrdNombre,
+                            fecha = factura.FtrFecha,
+                            Responsable = usuario.UsrUser,
+                            Bodega = bodega.BdgDescripcion,
+                            Descripcion = factura.FtrEsFacturaNula != null && factura.FtrEsFacturaNula != true ? "Ventas N" + factura.FtrCodigoFactura: "Factura nula " + factura.FtrCodigoFactura,
+                            Ingresos = 0,
+                            Salidas = factura.FtrEsFacturaNula != null && factura.FtrEsFacturaNula != true ? detalle.DtfCantidad : 0
+
+                        };
+                        listaReporte.Add(reporte);
+                    }
+                };
+                listaReporte.OrderBy(x=>x.fecha);
+
+                return Ok(listaReporte);
             }
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
+
         }
     }
 }
