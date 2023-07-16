@@ -58,5 +58,31 @@ namespace PuraVidaStoreBK.ExecQuerys
             }
             return retorno;
         }
+
+        public async Task<List<Movimiento>> ObtenerMovimientosProdcto(int idBodega, DateTime fechaInicio, DateTime fechaFin,string producto) 
+        {
+            var retorno = new List<Movimiento>();
+            try
+            {
+                retorno = await _dbcontex.Movimientos
+                                .Include(x => x.MvmIdMotivoMovimientoNavigation)
+                                .Include(x => x.MvmIdBodegaNavigation)
+                                .Include(x => x.MvmIdProductoNavigation)
+                                .Include(x => x.MvmIdUsuarioNavigation)
+                                .Where(x => x.MvmIdBodega == idBodega &&
+                                       x.MvmFecha >= fechaInicio &&
+                                       x.MvmFecha <= fechaFin && 
+                                       (x.MvmIdProductoNavigation.PrdCodigo == producto || x.MvmIdProductoNavigation.PrdCodigoProvedor == producto))
+                                .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+
+                Log.Error(ex.StackTrace);
+            }
+            return retorno;
+        }
+
+        
     }
 }

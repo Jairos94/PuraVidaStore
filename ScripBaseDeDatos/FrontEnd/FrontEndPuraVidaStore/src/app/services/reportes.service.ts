@@ -17,8 +17,19 @@ export class ReportesService {
     const params = new HttpParams()
     .set('IdBodega', idBodega)
     .set('FechaInicio', fechaInico.toDateString())
-    .set('FechaFin', fechaFin.toDateString());
+    .set('FechaFin', fechaFin.toDateString()+' 23:59');
       return this.http.get<ReporteMovimientoModel[]>(`${this.baseUrl}Reportes/ReporteMovimeintos`,{params});
+
+  }
+
+  obteneReporteMovimientosProductos(idBodega:number,fechaInico:Date,fechaFin:Date,producto:string):Observable<ReporteMovimientoModel[]>
+  {
+    const params = new HttpParams()
+    .set('IdBodega', idBodega)
+    .set('FechaInicio', fechaInico.toDateString())
+    .set('FechaFin', fechaFin.toDateString()+' 23:59')
+    .set('Codigo', producto);
+      return this.http.get<ReporteMovimientoModel[]>(`${this.baseUrl}Reportes/ReporteMovimientosPorProductos`,{params});
 
   }
 }

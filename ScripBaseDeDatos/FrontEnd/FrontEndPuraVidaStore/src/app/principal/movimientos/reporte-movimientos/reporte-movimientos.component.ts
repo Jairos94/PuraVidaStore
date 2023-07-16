@@ -15,6 +15,7 @@ import { ReportesService } from 'src/app/services/reportes.service';
 export class ReporteMovimientosComponent implements OnInit {
   listaReporteMovimientos: ReporteMovimientoModel[] = [];
   listaBodegas: BodegaModel[] = [];
+  produto:string = '';
 
   bodegaSeleccionada: BodegaModel = activo.bodegaIngreso;
   idBodega: number = 0;
@@ -55,8 +56,24 @@ export class ReporteMovimientosComponent implements OnInit {
         },
         error: (_e) => console.log(),
       });
+  }
 
+  ejecutarConsultaBodegaProducto(){
+    this.reportesServicio.obteneReporteMovimientosProductos(
+      this.bodegaSeleccionada.bdgId,
+      this.fechaInicio!,
+      this.fechaFin!,
+      this.produto).subscribe(
+        {
+          next:x=>
+          {
+            this.listaReporteMovimientos=[];
+            this.listaReporteMovimientos=x
+            this.ExportarPDFMovimientosBodega()
+          },
+          error:_e=>console.log(_e)
 
+        });
   }
 
   ExportarPDFMovimientosBodega(){
