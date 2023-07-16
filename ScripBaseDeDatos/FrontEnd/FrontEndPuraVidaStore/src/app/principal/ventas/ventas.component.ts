@@ -21,6 +21,12 @@ export class VentasComponent implements OnInit {
         icon: 'pi pi-fw pi-file',
         routerLink: 'impuestos',
       },
+      {
+        label: 'Reportes',
+        icon: 'pi pi-fw pi-file',
+        routerLink: 'reportes',
+      },
+
     ];
   }
 }

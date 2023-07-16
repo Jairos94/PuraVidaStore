@@ -8,6 +8,7 @@ import { IngresosComponent } from './ingresos/ingresos.component';
 import { InventariosComponent } from './inventarios/inventarios.component';
 import { FormsModule } from '@angular/forms';
 import { TrasladosComponent } from './traslados/traslados.component';
+import { ReporteMovimientosComponent } from './reporte-movimientos/reporte-movimientos.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { TrasladosComponent } from './traslados/traslados.component';
     MovimientosComponent,
     IngresosComponent,
     InventariosComponent,
-    TrasladosComponent
+    TrasladosComponent,
+    ReporteMovimientosComponent,
   ],
   imports: [
     CommonModule,
