@@ -39,6 +39,43 @@ export class InventariosComponent implements OnInit {
   }
 
   exportarPDF(): void {
+    let fecha = new Date().toLocaleString('es-CR', {
+      hour12: true,
+      dateStyle: 'short',
+      timeStyle: 'short',
+    });
+    const generateHeader = () => {
+      // Logo
+      const logoImg = new Image();
+      logoImg.src = '../../../../assets/logoNegro.png';
+      doc.addImage(logoImg, 'PNG', 10, 10, 30, 30);
+
+      // Nombre del reporte y bodega
+      doc.setFontSize(16);
+      const reporteText = 'Productos con Existencia';
+      const bodegaText = activo.bodegaIngreso.bdgDescripcion;
+      const textWidth =
+        (doc.getStringUnitWidth(reporteText) * doc.internal.scaleFactor) /
+        doc.internal.scaleFactor;
+      const textOffset = (doc.internal.pageSize.getWidth() - textWidth) / 2;
+      doc.text(reporteText, textOffset - 20, 20, { align: 'justify' });
+      doc.text(bodegaText, textOffset, 30, { align: 'justify' });
+
+      // Nombre de la empresa, cédula y fecha
+
+      doc.setFontSize(12);
+      doc.setTextColor(100, 100, 100);
+      doc.text('Pura Vida Store', doc.internal.pageSize.getWidth() - 10, 20, {
+        align: 'right',
+      });
+      doc.text('1-1119-0707', doc.internal.pageSize.getWidth() - 10, 28, {
+        align: 'right',
+      });
+      doc.text(fecha, doc.internal.pageSize.getWidth() - 10, 36, {
+        align: 'right',
+      });
+    };
+
     const titulos: string[] = [
       'Nombre del artículo',
       'Código',
@@ -48,12 +85,6 @@ export class InventariosComponent implements OnInit {
     ];
 
     const doc = new jsPDF();
-
-    doc.text('Lista de articulos en existencia',70, 10);
-    doc.setFontSize(12);
-    var fecha =Date.now();
-    var fechaHoy = new Date(fecha);
-    doc.text(fechaHoy.toLocaleDateString(),150, 10);
 
 
     let lista: any[] = [];
@@ -83,9 +114,29 @@ export class InventariosComponent implements OnInit {
     });
     // Or use javascript directly:
     autoTable(doc, {
+      startY: 40,
+      headStyles: {
+        fillColor: [255, 255, 255], // Establece el color de fondo del encabezado a blanco
+        textColor: [0, 0, 0], // Establece el color del texto del encabezado a negro
+        fontStyle: 'bold', // Establece el estilo de fuente en negrita para el encabezado
+      },
+      bodyStyles: {
+        fillColor: [255, 255, 255], // Establece el color de fondo del cuerpo de la tabla a blanco
+        textColor: [0, 0, 0], // Establece el color del texto del cuerpo de la tabla a negro
+      },
+      tableLineColor: [0, 0, 0], // Establece el color de borde de la tabla a negro
+      //tableLineWidth: 0.2, // Establece el ancho del borde de la tabla
       head: [titulos],
       body: lista,
-    })
+
+    });
+
+    // Generar el encabezado en cada página
+    const totalPages = doc.internal.pages.length;
+    for (let i = 1; i <= totalPages; i++) {
+      doc.setPage(i);
+      generateHeader();
+    }
 
     doc.save(this.fileName + '.pdf');
   }
@@ -118,4 +169,5 @@ export class InventariosComponent implements OnInit {
         },
       });
   }
+
 }

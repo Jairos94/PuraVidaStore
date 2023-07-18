@@ -1,1 +1,52 @@
-<p>reportes works!</p>
+<div class="field">
+  <div class="field"><H3>Reporte de Ventas por Bodega</H3></div>
+
+  <div class="field">
+    <div class="grid">
+      <div class="col">
+        <div class="field">
+          <label> Bodega a Seleccionar </label>
+        </div>
+        <div class="field">
+          <p-dropdown
+            [options]="listaBodegas"
+            [(ngModel)]="bodegaSeleccionada"
+            optionLabel="bdgDescripcion"
+          ></p-dropdown>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="field">
+          <label> Fecha Inicio </label>
+        </div>
+
+        <div class="field">
+            <p-calendar [(ngModel)]="fechaInicio"></p-calendar>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="field">
+          <label>Fecha Fin</label>
+        </div>
+        <div class="field">
+          <p-calendar [(ngModel)]="fechaFin"></p-calendar>
+        </div>
+      </div>
+
+
+      <div class="col">
+        <div class="field"><label>Generar Reporte</label></div>
+        <div class="field">
+          <p-button
+            icon="pi pi-file-pdf"
+            styleClass="p-button-rounded p-button-danger p-button-outlined"
+            (onClick)="consultarFacturaPorBodegas()"
+            [disabled]="!fechaInicio && !fechaFin"
+          ></p-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

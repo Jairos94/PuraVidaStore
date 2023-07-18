@@ -206,5 +206,54 @@ namespace PuraVidaStoreBK.Controllers
                 return BadRequest();
             }
         }
+
+        [HttpGet("ReporteVentasBodega"), Authorize]
+        public async Task<IActionResult> ReporteMovimientosPorProductos(int IdBodega,DateTime FechaInicio,DateTime FechaFin) 
+        {
+            try
+            {
+                var reporte = new ReporteFacturaDTO();
+                decimal montoNoNulas = 0;
+                decimal montoNulas = 0;
+
+                var facturas = await _reportes.ObtenerReporteVentas(IdBodega,FechaInicio,FechaFin);
+                var listaFacturas = new List<ReporteFacturaListaDTO>();
+                foreach (var factura in facturas)
+                {
+                    var facturaResumen = new FacturaResumen();
+                    facturaResumen = factura.FacturaResumen.FirstOrDefault();
+                    var descripcion = "";
+                    if ((bool)factura.FtrEsFacturaNula) 
+                    {
+                        descripcion ="Factura se encuentra nula por la siguiente razón:\n" + factura.HistorialFacturasAnulada.FirstOrDefault().HlfRazon;
+                        montoNulas += facturaResumen.FtrMontoTotal;
+                    }
+                    else 
+                    {
+                        descripcion = "Venta";
+                        montoNoNulas += facturaResumen.FtrMontoTotal;
+                    }
+                    var facturaReporte = new ReporteFacturaListaDTO
+                    {
+                        CodigoFactura = factura.FtrCodigoFactura,
+                        Usuario = factura.FtrIdUsuarioNavigation.UsrUser,
+                        Fecha = factura.FtrFecha,
+                        MontoFactura = facturaResumen.FtrMontoTotal,
+                        DescripcionFactura = descripcion
+                    };
+                    listaFacturas.Add(facturaReporte);
+                }
+                reporte.MontoTotal = montoNoNulas;
+                reporte.MontoTotalNulas = montoNoNulas;
+                listaFacturas = listaFacturas.OrderByDescending(x=>x.Fecha).ToList();
+                reporte.Lista = listaFacturas;
+                return Ok(reporte);
+            }
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
+        }
     }
 }

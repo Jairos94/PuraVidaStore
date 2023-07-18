@@ -83,6 +83,29 @@ namespace PuraVidaStoreBK.ExecQuerys
             return retorno;
         }
 
-        
+        public async Task<List<Factura>> ObtenerReporteVentas(int idBodega, DateTime fechaInicio, DateTime fechaFin) 
+        {
+            var facturas = new List<Factura>();   
+            try
+            {
+                facturas = await _dbcontex.Facturas
+                                .Include(x=>x.FtrIdUsuarioNavigation)
+                                .Include(x=>x.FtrBodegaNavigation)
+                                .Include(x=>x.HistorialFacturasAnulada)
+                                .Include(x=>x.FacturaResumen)
+                                .Where(x=>
+                                            x.FtrBodega==idBodega && 
+                                            x.FtrFecha>=fechaInicio &&
+                                            x.FtrFecha<=fechaFin
+                                            )
+                                .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.StackTrace);
+               
+            }
+            return facturas;
+        }
     }
 }
