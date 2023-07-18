@@ -9,6 +9,6 @@ export interface UsuarioModel {
     usrIdRol: number;
     usrIdPersona: number;
     usrActivo: boolean | null;
-    persona: PersonaModel 
-    rol: RolModel 
+    persona: PersonaModel |null
+    rol: RolModel |null
 }

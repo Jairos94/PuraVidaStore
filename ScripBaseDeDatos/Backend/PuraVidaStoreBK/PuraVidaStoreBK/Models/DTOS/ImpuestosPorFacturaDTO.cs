@@ -11,6 +11,6 @@ namespace PuraVidaStoreBK.Models.DTOS
         public int IpfIdImpuesto { get; set; }
 
         public decimal? IpfPorcentaje { get; set; }
-        public virtual ImpuestosDTO? IpfIdFactura1 { get; set; } 
+        public virtual ImpuestosDTO? IpfIdImpuestoNavigation { get; set; } 
     }
 }
