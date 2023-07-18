@@ -467,7 +467,7 @@ this.parametrosGlobales.impuestosPorParametros?.forEach(x=>
       ipfId: 0,
       ipfIdFactura: 0,
       ipfIdImpuesto: x.impPidImpuestoNavigation?.impId!,
-      ipfIdFactura1: null,
+      ipfIdImpuestoNavigation:null,
       ipfPorcentaje: x.impPidImpuestoNavigation?.impPorcentaje!,
       ipfIdFacturaNavigation: null
 

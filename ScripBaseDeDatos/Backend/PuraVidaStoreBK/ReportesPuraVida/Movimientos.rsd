@@ -4,50 +4,55 @@
     <Query>
       <DataSourceReference>PuraVida</DataSourceReference>
       <DataSetParameters>
-        <DataSetParameter Name="FechaInico">
+        <DataSetParameter Name="@IdBodega">
           <ReadOnly>false</ReadOnly>
           <Nullable>false</Nullable>
           <OmitFromQuery>false</OmitFromQuery>
-          <rd:UserDefined>true</rd:UserDefined>
-          <rd:DbType>DateTime</rd:DbType>
+          <rd:DbType>Int32</rd:DbType>
         </DataSetParameter>
-        <DataSetParameter Name="FechaFin">
+        <DataSetParameter Name="@FechaInicio">
           <ReadOnly>false</ReadOnly>
           <Nullable>false</Nullable>
           <OmitFromQuery>false</OmitFromQuery>
-          <rd:UserDefined>true</rd:UserDefined>
-          <rd:DbType>DateTime</rd:DbType>
+          <rd:DbType>Date</rd:DbType>
+        </DataSetParameter>
+        <DataSetParameter Name="@FechaFin">
+          <ReadOnly>false</ReadOnly>
+          <Nullable>false</Nullable>
+          <OmitFromQuery>false</OmitFromQuery>
+          <rd:DbType>Date</rd:DbType>
         </DataSetParameter>
       </DataSetParameters>
-      <CommandText>SELECT * FROM Movimientos </CommandText>
+      <CommandType>StoredProcedure</CommandType>
+      <CommandText>ReporteMovimientos</CommandText>
     </Query>
     <Fields>
-      <Field Name="MvmId">
-        <DataField>MvmId</DataField>
-        <rd:TypeName>System.Int64</rd:TypeName>
+      <Field Name="Codigo">
+        <DataField>Codigo</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
       </Field>
-      <Field Name="MvmIdProducto">
-        <DataField>MvmIdProducto</DataField>
-        <rd:TypeName>System.Int64</rd:TypeName>
+      <Field Name="DescripcionProducto">
+        <DataField>DescripcionProducto</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
       </Field>
-      <Field Name="MvmCantidad">
-        <DataField>MvmCantidad</DataField>
-        <rd:TypeName>System.Int32</rd:TypeName>
-      </Field>
-      <Field Name="MvmFecha">
-        <DataField>MvmFecha</DataField>
+      <Field Name="fecha">
+        <DataField>fecha</DataField>
         <rd:TypeName>System.DateTime</rd:TypeName>
       </Field>
-      <Field Name="MvmIdMotivoMovimiento">
-        <DataField>MvmIdMotivoMovimiento</DataField>
+      <Field Name="Responsable">
+        <DataField>Responsable</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="Descripcion">
+        <DataField>Descripcion</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="Ingresos">
+        <DataField>Ingresos</DataField>
         <rd:TypeName>System.Int32</rd:TypeName>
       </Field>
-      <Field Name="MvmIdUsuario">
-        <DataField>MvmIdUsuario</DataField>
-        <rd:TypeName>System.Int32</rd:TypeName>
-      </Field>
-      <Field Name="MvmIdBodega">
-        <DataField>MvmIdBodega</DataField>
+      <Field Name="Salidas">
+        <DataField>Salidas</DataField>
         <rd:TypeName>System.Int32</rd:TypeName>
       </Field>
     </Fields>

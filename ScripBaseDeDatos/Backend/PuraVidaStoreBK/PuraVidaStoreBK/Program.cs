@@ -79,7 +79,7 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.File("C:\\_LogsPuraVidaStore\\ApiLog-.txt", rollingInterval: RollingInterval.Day)
      .CreateLogger();
 
-//dbcontex
+//_dbcontex
 var configuracion = builder.Configuration;
 Estaticas.SqlServerConexcion = configuracion.GetConnectionString("sqlServer");
 builder.Services.AddDbContext<PuraVidaStoreContext>(options =>
@@ -106,7 +106,7 @@ builder.Services.AddScoped<ICorreoQuery, CorreoQuery>();
 builder.Services.AddScoped<IParametrosGeneralesQuery, ParametrosGeneralesQuery>();
 builder.Services.AddScoped<IImpuestosQuery, ImpuestosQuery>();
 builder.Services.AddScoped<IEnvioCorreo, EnvioCorreo>();
-
+builder.Services.AddScoped<IReportesQuery, ReportesQuery>();
 
 
 #endregion

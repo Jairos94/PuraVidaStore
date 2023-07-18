@@ -32,6 +32,8 @@ namespace PuraVidaStoreBK.Models
 
             CreateMap<HistorialClienteMayorista, HistorialClienteMayoristaDTO>().ReverseMap();
 
+            CreateMap<HistorialFacturasAnulada, HistorialFacturasAnuladaDTO>().ReverseMap();
+
             CreateMap<Movimiento, MovimientosDTO>().ReverseMap();
 
             CreateMap<MotivosMovimiento, MotivosMovimientoDTO>().ReverseMap();
