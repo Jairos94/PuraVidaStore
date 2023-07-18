@@ -22,6 +22,12 @@ export class VentasComponent implements OnInit {
         routerLink: 'impuestos',
       },
       {
+        label: 'Anular Factura',
+        icon: 'pi pi-fw pi-file',
+        routerLink: 'anular-factura',
+      },
+
+      {
         label: 'Reportes',
         icon: 'pi pi-fw pi-file',
         routerLink: 'reportes',

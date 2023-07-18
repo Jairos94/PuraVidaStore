@@ -6,6 +6,6 @@ export interface ImpuestosPorFacturaModel {
     ipfIdFactura: number;
     ipfIdImpuesto: number;
     ipfPorcentaje: number | null;
-    ipfIdFactura1: ImpuestosModel | null;
+    ipfIdImpuestoNavigation: ImpuestosModel | null;
     ipfIdFacturaNavigation: FacturaModel | null;
 }

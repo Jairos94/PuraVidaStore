@@ -1,0 +1,189 @@
+<div class="field w-full">
+  <div class="p-inputgroup">
+    <input type="text" class="w-full" pInputText placeholder="Buscar factura" [(ngModel)]="buscador"/>
+    <button
+      type="button"
+      pButton
+      icon="pi pi-search"
+      styleClass="p-button-warn"
+      (click)="consultarFactura(buscador)"
+    ></button>
+  </div>
+</div>
+<div class="field">
+  <p-table
+    [value]="listaFacturas"
+    [paginator]="true"
+    [rows]="5"
+    [rowsPerPageOptions]="[10, 25, 50]"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Numero de factura</th>
+        <th>Fecha</th>
+        <th>Estado de factura</th>
+        <th>Total</th>
+        <th>Acciones</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-factura>
+      <tr>
+        <td>{{ factura.numeroFctura }}</td>
+        <td>{{ factura.fecha | date : "dd/MM/YYYY hh:mm a" }}</td>
+        <td>{{ factura.estadoFactura }}</td>
+        <td>{{ factura.total }}</td>
+        <td>
+          <p-button
+            icon="pi pi-eye"
+            styleClass="p-button-rounded p-button-outlined"
+            (onClick)="consultarFactura(factura.numeroFctura)"
+          ></p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-dialog
+  header="Anular factura"
+  [(visible)]="habilitarModal"
+  [maximizable]="true"
+>
+  <H4>Número de factura: {{ facturaseleccionada.ftrCodigoFactura }}</H4>
+  <div class="field">
+    <label
+      >Fecha Factura:
+      {{ facturaseleccionada.ftrFecha | date : "dd/MM/YYYY hh:mm a" }}</label
+    >
+  </div>
+
+  <div class="field" *ngIf="facturaseleccionada.ftrEsFacturaNula">
+    <label class="text-red-500">Factura nula</label>
+  </div>
+
+  <div class="field" *ngIf="facturaseleccionada.ftrMayorista! > 0">
+    <label
+      >Cliente Mayorista: {{ personaMayorista.psrNombre }}
+      {{ personaMayorista.psrApellido1 }} {{ personaMayorista.psrApellido2 }}
+    </label>
+  </div>
+  <div class="field">
+    <label>Hech por: {{ usurioFactura.usrUser }}</label>
+  </div>
+
+  <div class="field">
+    <h4>Detalle de la factura</h4>
+    <p-table
+      [value]="facturaseleccionada.detalleFacturas!"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      [paginator]="true"
+      [rows]="5"
+      [rowsPerPageOptions]="[10, 25, 50]"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Código produco</th>
+          <th>Descripcion</th>
+          <th>Cantidad</th>
+          <th>Precio</th>
+          <th>Impuestos</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-producto>
+        <tr>
+          <td>
+            {{ producto.dtfIdProducto1.prdCodigo }} /
+            {{ producto.dtfIdProducto1.prdCodigoProvedor }}
+          </td>
+          <td>{{ producto.dtfIdProducto1.prdNombre }}</td>
+          <td>{{ producto.dtfCantidad }}</td>
+          <td>{{ producto.dtfPrecio }}</td>
+          <td>{{ producto.dtfMontoImpuestos }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <div class="field">
+    <h4>Impuestos</h4>
+    <p-table
+      [value]="listaImpuestosFactura"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      [paginator]="true"
+      [rows]="5"
+      [rowsPerPageOptions]="[10, 25, 50]"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Impuesto</th>
+          <th>%</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-impuesto>
+        <tr>
+          <td>
+            {{ impuesto.ipfIdImpuestoNavigation.impDescripcion }}
+          </td>
+          <td>{{ impuesto.ipfPorcentaje }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <div class="grid">
+    <div class="col">
+      <div class="field">
+        <label
+          >Subtotal:
+          {{
+            facturaResumen.ftrMontoTotal - facturaResumen.ftrMontoImpuestos
+          }}</label
+        >
+      </div>
+      <div class="field">
+        <label>Impuestos: {{ facturaResumen.ftrMontoImpuestos }}</label>
+      </div>
+      <div class="field">
+        <label>Total: {{ facturaResumen.ftrMontoTotal }}</label>
+      </div>
+    </div>
+
+    <div class="col">
+      <p-button
+        label="Anular"
+        icon="pi pi-ban"
+        styleClass="p-button-danger"
+        [disabled]="facturaseleccionada.ftrEsFacturaNula!"
+        (onClick)="habilitarRazon=true"
+      ></p-button>
+    </div>
+  </div>
+</p-dialog>
+
+
+<p-dialog
+  header="Anular Factura"
+  [(visible)]="habilitarRazon"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <h2>Describa la razón pora anular la factur a</h2>
+  <div class="p-inputgroup w-full">
+    <span class="p-inputgroup-addon">
+        <i class="pi pi-times"></i>
+    </span>
+    <input class="w-full" [(ngModel)]="razonAnular" pInputText placeholder="Describa la razón" />
+</div>
+<div class="field my-1">
+  <p-button
+  label="Anular"
+  icon="pi pi-ban"
+  styleClass="p-button-danger"
+  (onClick)="anularFactura()"
+[disabled]="razonAnular===''"
+></p-button>
+</div>
+</p-dialog>
+

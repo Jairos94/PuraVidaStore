@@ -8,6 +8,7 @@ import { PrimeNgPrincipalModule } from '../prime-ng-principal.module';
 import { FormsModule } from '@angular/forms';
 import { ImpuestosComponent } from './impuestos/impuestos.component';
 import { ReportesComponent } from './reportes/reportes.component';
+import { AnularFacturasComponent } from './anular-facturas/anular-facturas.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { ReportesComponent } from './reportes/reportes.component';
     VentasComponent,
     FacturacionComponent,
     ImpuestosComponent,
-    ReportesComponent
+    ReportesComponent,
+    AnularFacturasComponent
   ],
   imports: [
     CommonModule,

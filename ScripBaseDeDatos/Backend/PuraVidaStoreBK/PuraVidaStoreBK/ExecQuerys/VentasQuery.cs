@@ -138,5 +138,82 @@ namespace PuraVidaStoreBK.ExecQuerys
 				return new List<FormaPago>();
 			}
         }
+
+        public async Task<List<Factura>> facturasMes(int IdBodega) 
+        {
+            var listaFacturas  =new List<Factura>();
+            try
+            {
+                var fechaActual =  DateTime.Now;
+                listaFacturas = await dbContex.Facturas
+                                      .Include(x=>x.FtrIdUsuarioNavigation)
+                                      .Include(x=>x.FacturaResumen)
+                                      //.Include(x=>x.FtrMayoristaNavigation)
+                                      //.Include(x => x.DetalleFacturas).ThenInclude(x=>x.DtfIdProducto1)
+                                      .Where(x => x.FtrBodega==IdBodega &&
+                                                  x.FtrFecha.Year == fechaActual.Year && 
+                                                  x.FtrFecha.Month == fechaActual.Month).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+
+                Log.Error(ex.StackTrace);
+            }
+            return listaFacturas;
+        }
+        public async Task<HistorialFacturasAnulada> ingresarHistorialNulas(HistorialFacturasAnulada facturaNula) 
+        {
+            try
+            {
+                dbContex.HistorialFacturasAnuladas.Add(facturaNula);
+                await dbContex.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                facturaNula = new HistorialFacturasAnulada();
+                Log.Error(ex.StackTrace);
+            }
+            return facturaNula;
+        }
+        public async Task<Factura> consultarFactura(string codigo) 
+        {
+            var retorno = new Factura();
+            try
+            {
+                retorno = await dbContex.Facturas
+                    .Include(x => x.FacturaResumen)
+                    .Include(x => x.FtrMayoristaNavigation).ThenInclude(x=>x.ClmIdPersonaNavigation)
+                    .Include(x => x.ImpuestosPorFacturas).ThenInclude(x => x.IpfIdImpuestoNavigation)
+                    .Include(x => x.FtrIdUsuarioNavigation)
+                    //.Include(x => x.HistorialFacturasAnulada)
+                    .Where(x=>x.FtrCodigoFactura== codigo ||
+                              x.FtrId.ToString()==codigo)
+                    .FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+
+                Log.Error(ex.StackTrace);
+            }
+            return retorno;
+        }
+
+        public async Task<List<DetalleFactura>> consultarDetallePorFactura(long idFactura) 
+        {
+            var listaDetalles= new List<DetalleFactura>();
+            try
+            {
+                listaDetalles = await dbContex.DetalleFacturas
+                                    .Include(x=>x.DtfIdProducto1)
+                                    .Where(x=>x.DtfIdFactura== idFactura).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+
+                Log.Error(ex.StackTrace);
+            }
+            return listaDetalles;
+        }
+        
     }
 }
