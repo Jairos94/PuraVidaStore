@@ -295,7 +295,9 @@ export class FacturacionComponent implements OnInit {
         });
       }
 
-      if (this.mayorista.clmId > 0) {
+      let fecha = new Date();
+      if (this.mayorista.clmId > 0 && new Date(this.mayorista.clmFechaVencimiento!)>= fecha)
+      {
         x.dtfPrecio = x.dtfIdProducto1?.prdPrecioVentaMayorista!;
         x.dtfMontoImpuestos = totalImpuestosMayorista;
         this.montoTotalImpuestos =
@@ -325,8 +327,8 @@ export class FacturacionComponent implements OnInit {
           totalImpuestosMinorista = totalImpuestosMinorista + porcentaje * x.dtfIdProducto1?.prdPrecioVentaMinorista!;
         });
       }
-
-      if (this.mayorista.clmId > 0) {
+let fecha = new Date();
+      if (this.mayorista.clmId > 0 && new Date(this.mayorista.clmFechaVencimiento!)>= fecha) {
         x.dtfPrecio =
           x.dtfIdProducto1?.prdPrecioVentaMayorista! - totalImpuestosMayorista;
         x.dtfMontoImpuestos = totalImpuestosMayorista;
@@ -346,8 +348,11 @@ export class FacturacionComponent implements OnInit {
   }
 
   SumarSinImpuestos() {
+    let fecha = new Date();
     this.listaDtealle.forEach((x) => {
-      if (this.mayorista.clmId > 0) {
+
+      if (this.mayorista.clmId > 0 && new Date(this.mayorista.clmFechaVencimiento!)>= fecha)
+      {
         x.dtfPrecio = x.dtfIdProducto1?.prdPrecioVentaMayorista!;
       } else {
         x.dtfPrecio = x.dtfIdProducto1?.prdPrecioVentaMinorista!;
@@ -358,6 +363,7 @@ export class FacturacionComponent implements OnInit {
   }
 
   ConsultarClienteMayorista() {
+    let fechaActual= new Date();
     this.servicioMayorista
       .obtenerMayoristaPorCedula(this.buscadorCedulaOId)
       .subscribe(
@@ -366,7 +372,8 @@ export class FacturacionComponent implements OnInit {
           this.limpiarMayorista();
           this.buscadorCedulaOId = '';
           this.mayorista = x;
-          this.sumarTotal();
+
+
 
           if (x == null) {
             this.limpiarMayorista();
@@ -374,6 +381,15 @@ export class FacturacionComponent implements OnInit {
 
           if (this.mayorista.clmIdPersonaNavigation != null) {
             this.personaMayorista = this.mayorista.clmIdPersonaNavigation;
+          }
+
+          if(new Date( this.mayorista.clmFechaVencimiento!) <fechaActual)
+          {
+            this.verMayoristaModal = false;
+            this.verAgregarMayoristaModal = true;
+          }
+          else{
+            this.sumarTotal();
           }
         },
         (_e) => {

@@ -17,11 +17,13 @@ namespace PuraVidaStoreBK.Controllers
     {
         private readonly IVentasQuery _ventas;
         private readonly IMapper _mapper;
+        private readonly IMayoristaQuery _mayorista;
 
-        public VentasController(IVentasQuery ventas, IMapper mapper)
+        public VentasController(IVentasQuery ventas, IMapper mapper, IMayoristaQuery mayorista)
         {
             _ventas = ventas;
             _mapper = mapper;
+            _mayorista = mayorista;
         }
 
         // GET api/<VentasController>/5
@@ -99,7 +101,7 @@ namespace PuraVidaStoreBK.Controllers
                     });
                     listaImpuestos = await _ventas.ingresarImpuestosPorFactura(listaImpuestos);
                 }
-
+            
 
                 var consulta = await _ventas.buscarFacturaPorCodigo(nuevaFactura.FtrCodigoFactura);
                 var retorno = _mapper.Map<FacturaDTO>(consulta);
