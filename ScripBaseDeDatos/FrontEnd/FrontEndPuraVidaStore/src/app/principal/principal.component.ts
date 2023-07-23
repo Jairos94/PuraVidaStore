@@ -59,7 +59,7 @@ export class PrincipalComponent implements OnInit {
       },
       {
         label: 'Clientes',
-        icon: 'pi pi-comments',
+        icon: 'pi pi-users',
         routerLink: 'clientes',
       },
     ];
