@@ -43,7 +43,7 @@ export class AgregarEditarComponent implements OnInit {
     prcioVentaMinorista: [this.productoEditarAgregar.prdPrecioVentaMinorista, [Validators.required]],
     UnidadesMinimas: [this.productoEditarAgregar.prdUnidadesMinimas, [Validators.required]],
     IdTipoProducto: [this.productoEditarAgregar.prdIdTipoProducto, [Validators.required]],
-    CodigoProveedor: [this.productoEditarAgregar.prdCodigoProvedor, [Validators.required]],
+    CodigoProveedor: [this.productoEditarAgregar.prdCodigoProvedor],
     Foto: [this.productoEditarAgregar.pdrFoto]
 
   });
@@ -92,9 +92,14 @@ export class AgregarEditarComponent implements OnInit {
     this.productoEditarAgregar.prdIdTipoProducto = this.productoForm.get('IdTipoProducto')?.value!;
     this.productoEditarAgregar.prdCodigoProvedor = this.productoForm.get('CodigoProveedor')?.value!;
 
+if(this.productoEditarAgregar.prdCodigo===null|| this.productoEditarAgregar.prdCodigo===undefined ||this.productoEditarAgregar.prdCodigo===''){
+  this.productoEditarAgregar.prdCodigo==null;
+}
+
     this.listaTipoProductos.forEach(x => {
       if (x.tppId === this.productoEditarAgregar.prdIdTipoProducto) {
         this.productoEditarAgregar.prdIdTipoProductoNavigation = x
+
       }
     });
 
@@ -130,7 +135,7 @@ export class AgregarEditarComponent implements OnInit {
         prcioVentaMinorista: [this.productoEditarAgregar.prdPrecioVentaMinorista, [Validators.required]],
         UnidadesMinimas: [this.productoEditarAgregar.prdUnidadesMinimas, [Validators.required]],
         IdTipoProducto: [this.productoEditarAgregar.prdIdTipoProducto, [Validators.required]],
-        CodigoProveedor: [this.productoEditarAgregar.prdCodigoProvedor, [Validators.required]],
+        CodigoProveedor: [this.productoEditarAgregar.prdCodigoProvedor],
         Foto: [this.productoEditarAgregar.pdrFoto]
 
       });

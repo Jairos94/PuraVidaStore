@@ -14,13 +14,13 @@ export class ClientesComponent {
     this.items = [
       {
         label: 'Agregar Cliente Mayorista',
-        icon: 'pi pi-fw pi-file',
+        icon: 'pi pi-fw pi-user-plus',
         routerLink: 'editar-nuevo/0',
         visible:activo.esAministrador()
       },
       {
         label: 'Lista de clientes Mayoristas',
-        icon: 'pi pi-fw pi-file',
+        icon: 'pi pi-fw pi-users',
         routerLink: 'mayorista',
       }
 

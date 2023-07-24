@@ -14,22 +14,22 @@ export class VentasComponent implements OnInit {
     this.items = [
       {
         label: 'Facturación',
-        icon: 'pi pi-fw pi-file',
+        icon: 'pi pi-fw pi-wallet',
         routerLink: 'facturacion',
       }, {
         label: 'Impuestos',
-        icon: 'pi pi-fw pi-file',
+        icon: 'pi pi-fw pi-percentage',
         routerLink: 'impuestos',
       },
       {
         label: 'Anular Factura',
-        icon: 'pi pi-fw pi-file',
+        icon: 'pi pi-fw pi-ban',
         routerLink: 'anular-factura',
       },
 
       {
         label: 'Reportes',
-        icon: 'pi pi-fw pi-file',
+        icon: 'pi pi-fw pi-chart-line',
         routerLink: 'reportes',
       },
 

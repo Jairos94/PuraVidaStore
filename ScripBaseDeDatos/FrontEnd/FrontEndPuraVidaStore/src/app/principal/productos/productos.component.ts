@@ -16,18 +16,18 @@ export class ProductosComponent implements OnInit {
     this.items = [
       {
         label: 'Productos',
-        icon: 'pi pi-pw pi-file',
+        icon: 'pi pi-pw pi-box',
         routerLink: 'productos',
         items: [
           {
             label: 'Agregar',
-            icon: 'pi pi-pw pi-file',
+            icon: 'pi pi-pw pi-plus',
             routerLink: 'productos/agregar-editar/0',
             visible:activo.esAministrador()
           },
           {
             label: 'Lista de productos',
-            icon: 'pi pi-pw pi-file',
+            icon: 'pi pi-pw pi-book',
             routerLink: 'productos/lista-productos',
           },
         ]
@@ -35,13 +35,13 @@ export class ProductosComponent implements OnInit {
       {
 
         label: 'Tipo de producto',
-        icon: 'pi pi-pw pi-file',
+        icon: 'pi pi-pw pi-tags',
         routerLink: 'tipo-producto',
       },
       {
 
         label: 'Consultar producto',
-        icon: 'pi pi-pw pi-file',
+        icon: 'pi pi-pw pi-search',
         routerLink: 'consulta-producto',
       },
 
