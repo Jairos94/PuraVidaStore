@@ -151,7 +151,7 @@ namespace PuraVidaStoreBK.Controllers
 
                 foreach (var factura in listafacturas)
                 {
-                    factura.DetalleFacturas.Where(x=>x.DtfIdProducto1.PrdCodigo == Codigo || x.DtfIdProducto1.PrdCodigoProvedor == Codigo);
+                    factura.DetalleFacturas= factura.DetalleFacturas.Where(x=>x.DtfIdProducto1.PrdCodigo == Codigo || x.DtfIdProducto1.PrdCodigoProvedor == Codigo).ToList();
                     foreach (var detalle in factura.DetalleFacturas)
                     {
                         var producto = new Producto();
