@@ -44,6 +44,7 @@ export class TipoProductoComponent implements OnInit {
       this.listaTipoProductos.forEach(r => {
         if (r.tppId === this.TipoProductoEditar.tppId) {
           this.TipoProductoEditar.tppVisible = r.tppVisible
+          this.TipoProductoEditar=r
         }
       });
     }
