@@ -172,7 +172,7 @@ namespace PuraVidaStoreBK.Controllers
             }
         }
 
-        [HttpPut("AnularFactura"), Authorize]
+        [HttpPost("AnularFactura"), Authorize]
         public async Task<IActionResult> AnularFactura([FromBody] IngresarHistorialDTO ingreso) 
         {
             try
@@ -187,8 +187,8 @@ namespace PuraVidaStoreBK.Controllers
                     HlfIdFctura= ingreso.IdFactura,
                     HlfRazon = ingreso.Descripcion
                 };
-                await _ventas.ingresarHistorialNulas(historial);
-                return Ok();
+               var retorno= await _ventas.ingresarHistorialNulas(_mapper.Map<HistorialFacturasAnulada>( historial));
+                return Ok(retorno);
                 
             }
             catch (Exception)
