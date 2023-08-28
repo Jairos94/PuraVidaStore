@@ -3,10 +3,10 @@ import { FacturaModel } from 'src/app/models/factura-model';
 import { Component, OnInit } from '@angular/core';
 import { activo } from 'src/app/activo';
 import { EstructuraFacturaModel } from 'src/app/models/estructura-factura-model';
-import { VentasService } from 'src/app/services/ventas.service';
 import { PersonaModel } from 'src/app/models/persona-model';
 import { UsuarioModel } from 'src/app/models/usuario-model';
 import { FacturaResumenModel } from 'src/app/models/factura-resumen-model';
+import { VentasService } from 'src/app/services/ventas.service';
 
 @Component({
   selector: 'app-anular-facturas',
