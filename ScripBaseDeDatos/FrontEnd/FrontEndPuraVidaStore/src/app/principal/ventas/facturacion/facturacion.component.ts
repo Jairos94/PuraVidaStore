@@ -40,6 +40,7 @@ export class FacturacionComponent implements OnInit {
   verModalPago: boolean = false;
   verMayoristaModal: boolean = false;
   verAgregarMayoristaModal: boolean = false;
+  correEnviarCliente:string='';
   parametrosGlobales: ParametrosGlobalesModel = activo.parametrosGlobales;
   listaDtealle: DetalleFacturaModel[] = [];
   listaFormaPago: FormaPagoModel[] = [];
@@ -108,6 +109,7 @@ export class FacturacionComponent implements OnInit {
     ftrFormaPago: 0,
     ftrEsFacturaNula: false,
     ftrCodigoFactura: '',
+    ftrCorreoEnvio:this.correEnviarCliente,
     detalleFacturas: null,
     facturaResumen: null,
     ftrBodegaNavigation: null,
@@ -460,6 +462,7 @@ listaResumen.push(this.facturaResumen);
     ftrFormaPago: this.formaPagoSeleccionado.frpId,
     ftrEsFacturaNula: false,
     ftrCodigoFactura: '',
+    ftrCorreoEnvio: this.correEnviarCliente, //Campo agregar
     detalleFacturas: this.listaDtealle,
     facturaResumen: listaResumen,
     ftrBodegaNavigation: null,
@@ -491,16 +494,30 @@ this.parametrosGlobales.impuestosPorParametros?.forEach(x=>
     impuestosPorFacturaModel.push(nuevoImpuestoParametro);
   })
   this.factura.impuestosPorFacturas = impuestosPorFacturaModel;
-  this.servicioVenta.IngresarVenta(this.factura).subscribe(
-    {
-      next:x=>{
-        this.showSuccess('Ingreso de venta','Número factura '+ x.ftrCodigoFactura!)
-        this.verModalPago=false;
-        this.cancelar();
-      },
-      error:_e=>console.log(_e)
+  let huboError=false;
+  if(this.factura.ftrCorreoEnvio==='' || this.facturaResumen.ftrMontoPagado!=null && (this.factura.ftrFormaPago ===1  && this.facturaResumen.ftrMontoPagado <this.facturaResumen.ftrMontoTotal))
+  {
+   huboError = true;
+   if(this.factura.ftrCorreoEnvio==='')
+   {
+    this.showError('Falta correo','Se requiere el correo de para enviar la factura');
+   }else{
+    this.showError('Monto menor a la venta','Se requiere que se ingrense un monto mayor o igual a la venta');
+   }
+  }
+  if(!huboError){
+    this.servicioVenta.IngresarVenta(this.factura).subscribe(
+      {
+        next:x=>{
+          this.showSuccess('Ingreso de venta','Número factura '+ x.ftrCodigoFactura!)
+          this.verModalPago=false;
+          this.cancelar();
+        },
+        error:_e=>console.log(_e)
 
-    });
+      });
+  }
+
 }
 
   deshabilitarCambio() {
@@ -675,6 +692,7 @@ this.parametrosGlobales.impuestosPorParametros?.forEach(x=>
       ftrFormaPago: 0,
       ftrEsFacturaNula: false,
       ftrCodigoFactura: '',
+      ftrCorreoEnvio: '',
       detalleFacturas: null,
       facturaResumen: null,
       ftrBodegaNavigation: null,
