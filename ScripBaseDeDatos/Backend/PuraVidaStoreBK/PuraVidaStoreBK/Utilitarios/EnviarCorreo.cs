@@ -54,10 +54,6 @@ namespace PuraVidaStoreBK.Utilitarios
         }
         private void AgregarEncabezado(Document doc, Factura factura)
         {
-            // Agregar logo (alineado a la derecha)
-            // Image logo = Image.GetInstance(_configuration["rutaLogo"]);
-            // logo.Alignment = Image.RIGHT_ALIGN;
-            // doc.Add(logo);
 
             // Crear una tabla para el encabezado
             PdfPTable encabezado = new PdfPTable(1);
@@ -197,6 +193,15 @@ namespace PuraVidaStoreBK.Utilitarios
 
             // Ajustar el tamaño de la imagen del código de barras si es necesario
             barcodeImage.ScaleToFit(200, 50); // Ancho y alto del código de barras
+
+            // Obtener el tamaño de la página
+            float pageSizeWidth = doc.PageSize.Width;
+
+            // Calcular la posición X para centrar horizontalmente
+            float x = (pageSizeWidth - barcodeImage.ScaledWidth) / 2;
+
+            // Establecer la posición absoluta en el centro horizontal
+            barcodeImage.SetAbsolutePosition(x, barcodeImage.AbsoluteY);
 
             // Agregar el código de barras al documento
             doc.Add(barcodeImage);

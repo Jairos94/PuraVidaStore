@@ -19,7 +19,9 @@ export class AnularFacturasComponent implements OnInit {
   listaImpuestosFactura: ImpuestosPorFacturaModel[] = [];
   habilitarModal: boolean = false;
   habilitarRazon: boolean = false;
+  habilitarCorreo:boolean = false;
   razonAnular: string = '';
+  correo:string="";
   buscador: string = '';
   facturaResumen: FacturaResumenModel = {
     ftrId: 0,
@@ -166,19 +168,29 @@ export class AnularFacturasComponent implements OnInit {
       hlfIdFctura: this.facturaseleccionada.ftrId,
       hlfRazon: this.razonAnular,
     };
-    this.ventas.AnularFacturas(facturaNula).subscribe({
-      next: (x) => {
-        this.limpiarFacturaSeleccionada();
-        this.habilitarRazon = false;
-        this.habilitarModal = false;
-        this.ObtenerFacturas();
-      },
-      error: (_e) =>{
-        this.limpiarFacturaSeleccionada();
-        this.habilitarRazon = false;
-        this.habilitarModal = false;
-        this.ObtenerFacturas();
-      }
+    this.ventas.AnularFacturas(facturaNula).subscribe(x=>{
+      this.limpiarFacturaSeleccionada();
+      this.habilitarRazon = false;
+      this.habilitarModal = false;
+      this.ObtenerFacturas();
+    },_e=>{
+      this.limpiarFacturaSeleccionada();
+      this.habilitarRazon = false;
+      this.habilitarModal = false;
+      this.ObtenerFacturas();
     });
+
+  }
+
+  asignarCorreo(){
+    this.correo = this.facturaseleccionada.ftrCorreoEnvio!;
+    this.habilitarCorreo = true;
+  }
+  reenviarFactura() {
+    this.ventas.ReenviarFactura(this.facturaseleccionada.ftrId.toString(), this.correo).subscribe(x=>
+      {this.habilitarCorreo =false;},
+      _e=>{
+        this.habilitarCorreo =false;
+      });
   }
 }
