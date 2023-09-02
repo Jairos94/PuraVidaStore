@@ -38,15 +38,17 @@ export class VentasService {
   }
 
 
-  AnularFacturas(IdFactura:number,IdUsuario:number,Razon:string):Observable<HistorialFacturasNulasModel>{
-    let datos:any={
-      idFactura:IdFactura,
-      idUsuario:IdUsuario,
-      descripcion:Razon
-    }
+  AnularFacturas(facturaNula:HistorialFacturasNulasModel):Observable<HistorialFacturasNulasModel>{
 
 
-    return this.http.post<HistorialFacturasNulasModel>(`${this.baseUrl}Ventas/AnularFactura`,datos);
+    return this.http.post<HistorialFacturasNulasModel>(`${this.baseUrl}Ventas/FacturaNula`,facturaNula);
 
+  }
+
+  ReenviarFactura(factura:string,correo:string):Observable<string>{
+    const params = new HttpParams()
+    .set('idFactura', factura)
+    .set('correo', correo);
+    return this.http.get<string>(`${this.baseUrl}Ventas/ReenviarFactura`,{params});
   }
 }

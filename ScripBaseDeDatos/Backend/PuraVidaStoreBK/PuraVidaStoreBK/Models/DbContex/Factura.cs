@@ -23,6 +23,8 @@ public partial class Factura
 
     public string? FtrCodigoFactura { get; set; }
 
+    public string? FtrCorreoEnvio { get; set; }
+
     public virtual ICollection<DetalleFactura> DetalleFacturas { get; set; } = new List<DetalleFactura>();
 
     public virtual ICollection<FacturaResumen> FacturaResumen { get; set; } = new List<FacturaResumen>();

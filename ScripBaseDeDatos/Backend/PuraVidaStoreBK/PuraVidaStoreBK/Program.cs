@@ -107,8 +107,8 @@ builder.Services.AddScoped<IVentasQuery, VentasQuery>();
 builder.Services.AddScoped<ICorreoQuery, CorreoQuery>();
 builder.Services.AddScoped<IParametrosGeneralesQuery, ParametrosGeneralesQuery>();
 builder.Services.AddScoped<IImpuestosQuery, ImpuestosQuery>();
-builder.Services.AddScoped<IEnvioCorreo, EnvioCorreo>();
 builder.Services.AddScoped<IReportesQuery, ReportesQuery>();
+builder.Services.AddScoped<IEnvioCorreo, EnviarCorreo>();
 
 
 #endregion
