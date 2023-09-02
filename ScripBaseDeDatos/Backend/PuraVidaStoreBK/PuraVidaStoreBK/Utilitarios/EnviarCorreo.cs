@@ -54,31 +54,41 @@ namespace PuraVidaStoreBK.Utilitarios
         }
         private void AgregarEncabezado(Document doc, Factura factura)
         {
-            // Agregar logo
-            //Image logo = Image.GetInstance(_configuration["rutaLogo"]);
-            //logo.Alignment = Image.LEFT_ALIGN;
-            //doc.Add(logo);
+            // Agregar logo (alineado a la derecha)
+            // Image logo = Image.GetInstance(_configuration["rutaLogo"]);
+            // logo.Alignment = Image.RIGHT_ALIGN;
+            // doc.Add(logo);
 
-            // Agregar número de factura y código de barras
-            Paragraph numeroFactura = new Paragraph($"Número de Factura: {factura.FtrCodigoFactura}");
-            doc.Add(numeroFactura);
+            // Crear una tabla para el encabezado
+            PdfPTable encabezado = new PdfPTable(1);
+            encabezado.WidthPercentage = 100;
 
+            // Nombre de la empresa (en el centro)
+            PdfPCell nombreEmpresaCell = new PdfPCell(new Phrase("Nombre de la empresa"));
+            nombreEmpresaCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            nombreEmpresaCell.Border = PdfPCell.NO_BORDER;
+            encabezado.AddCell(nombreEmpresaCell);
 
-            // Agregar sucursal
-            Paragraph sucursal = new Paragraph("Sucursal: "+ factura.FtrBodegaNavigation.BdgDescripcion);
-            doc.Add(sucursal);
+            // Sucursal
+            PdfPCell sucursalCell = new PdfPCell(new Phrase("Sucursal: " + factura.FtrBodegaNavigation.BdgDescripcion));
+            sucursalCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            sucursalCell.Border = PdfPCell.NO_BORDER;
+            encabezado.AddCell(sucursalCell);
 
-            // Agregar nombre de la empresa, cedula y fecha de factura
-            PdfPTable infoEmpresa = new PdfPTable(3);
-            infoEmpresa.DefaultCell.Border = PdfPCell.NO_BORDER;
-            infoEmpresa.DefaultCell.HorizontalAlignment = Element.ALIGN_RIGHT;
-            infoEmpresa.WidthPercentage = 100;
-            infoEmpresa.SetWidths(new float[] { 1f, 1f, 1f });
+            // Número de factura
+            PdfPCell numeroFacturaCell = new PdfPCell(new Phrase($"Número de Factura: {factura.FtrCodigoFactura}"));
+            numeroFacturaCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            numeroFacturaCell.Border = PdfPCell.NO_BORDER;
+            encabezado.AddCell(numeroFacturaCell);
 
-            infoEmpresa.AddCell("Cédula: 1234567890");
-            infoEmpresa.AddCell($"Fecha de Factura: {factura.FtrFecha.ToString("MM/dd/yyyy hh:mm tt")}");
+            // Fecha de factura
+            PdfPCell fechaFacturaCell = new PdfPCell(new Phrase($"Fecha de Factura: {factura.FtrFecha.ToString("MM/dd/yyyy hh:mm tt")}"));
+            fechaFacturaCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            fechaFacturaCell.Border = PdfPCell.NO_BORDER;
+            encabezado.AddCell(fechaFacturaCell);
 
-            doc.Add(infoEmpresa);
+            // Agregar la tabla de encabezado al documento
+            doc.Add(encabezado);
 
             // Agregar espacio en blanco
             doc.Add(new Paragraph(" "));

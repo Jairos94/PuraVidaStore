@@ -126,14 +126,6 @@ namespace PuraVidaStoreBK.Controllers
 
 
 
-                //var backgroundTask = Task.Run(async () =>
-                //{
-                 
-                    
-                    
-
-                //});
-
                 return Ok(retorno);
 
             }
