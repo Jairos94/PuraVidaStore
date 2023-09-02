@@ -182,6 +182,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             {
                 retorno = await dbContex.Facturas
                     .Include(x => x.FacturaResumen)
+                    .Include(x=>x.FtrFormaPagoNavigation)
                     .Include(x => x.FtrMayoristaNavigation).ThenInclude(x=>x.ClmIdPersonaNavigation)
                     .Include(x => x.ImpuestosPorFacturas).ThenInclude(x => x.IpfIdImpuestoNavigation)
                     .Include(x => x.FtrIdUsuarioNavigation)
@@ -214,6 +215,8 @@ namespace PuraVidaStoreBK.ExecQuerys
             }
             return listaDetalles;
         }
+
+        
         
     }
 }

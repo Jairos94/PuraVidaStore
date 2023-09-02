@@ -1,3 +1,4 @@
+import { HistorialFacturasNulasModel } from './../../../models/historial-facturas-nulas-model';
 import { ImpuestosPorFacturaModel } from './../../../models/impuestos-por-factura-model';
 import { FacturaModel } from 'src/app/models/factura-model';
 import { Component, OnInit } from '@angular/core';
@@ -19,7 +20,7 @@ export class AnularFacturasComponent implements OnInit {
   habilitarModal: boolean = false;
   habilitarRazon: boolean = false;
   razonAnular: string = '';
-  buscador:string='';
+  buscador: string = '';
   facturaResumen: FacturaResumenModel = {
     ftrId: 0,
     ftrFactura: 0,
@@ -57,7 +58,7 @@ export class AnularFacturasComponent implements OnInit {
     ftrFormaPago: 0,
     ftrEsFacturaNula: false,
     ftrCodigoFactura: '',
-    ftrCorreoEnvio:'',
+    ftrCorreoEnvio: '',
     detalleFacturas: null,
     facturaResumen: null,
     ftrBodegaNavigation: null,
@@ -116,7 +117,7 @@ export class AnularFacturasComponent implements OnInit {
       ftrFormaPago: 0,
       ftrEsFacturaNula: false,
       ftrCodigoFactura: '',
-      ftrCorreoEnvio:'',
+      ftrCorreoEnvio: '',
       detalleFacturas: null,
       facturaResumen: null,
       ftrBodegaNavigation: null,
@@ -159,19 +160,20 @@ export class AnularFacturasComponent implements OnInit {
   }
 
   anularFactura() {
-    this.ventas
-      .AnularFacturas(
-        this.facturaseleccionada.ftrId,
-        activo.usuarioPrograma.usrId,
-        this.razonAnular
-      )
-      .subscribe({
-        next: (x) => {
-          this.limpiarFacturaSeleccionada();
-          this.habilitarRazon=false;
-          this.habilitarModal= false;
-          this.ObtenerFacturas();
-        },
-      });
+    const facturaNula: HistorialFacturasNulasModel = {
+      hlfId: 0,
+      hlfIdUsuario: activo.usuarioPrograma.usrId,
+      hlfIdFctura: this.facturaseleccionada.ftrId,
+      hlfRazon: this.razonAnular,
+    };
+    this.ventas.AnularFacturas(facturaNula).subscribe({
+      next: (x) => {
+        this.limpiarFacturaSeleccionada();
+        this.habilitarRazon = false;
+        this.habilitarModal = false;
+        this.ObtenerFacturas();
+      },
+      error: (_e) => console.log(_e),
+    });
   }
 }

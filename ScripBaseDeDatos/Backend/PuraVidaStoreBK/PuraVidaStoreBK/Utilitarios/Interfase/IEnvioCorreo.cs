@@ -1,7 +1,9 @@
-﻿namespace PuraVidaStoreBK.Utilitarios.Interfase
+﻿using PuraVidaStoreBK.Models.DbContex;
+
+namespace PuraVidaStoreBK.Utilitarios.Interfase
 {
     public interface IEnvioCorreo
     {
-        public Task<bool> enviarCorrreo();
+        void EnviarFactura(Factura factura, ParametrosEmail email, List<string> correosDestinatarios);
     }
 }

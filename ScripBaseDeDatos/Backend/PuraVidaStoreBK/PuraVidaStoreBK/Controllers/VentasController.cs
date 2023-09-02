@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using PuraVidaStoreBK.ExecQuerys.Interfaces;
 using PuraVidaStoreBK.Models.DbContex;
 using PuraVidaStoreBK.Models.DTOS;
+using PuraVidaStoreBK.Utilitarios.Interfase;
 using XAct;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -18,12 +19,16 @@ namespace PuraVidaStoreBK.Controllers
         private readonly IVentasQuery _ventas;
         private readonly IMapper _mapper;
         private readonly IMayoristaQuery _mayorista;
+        private readonly IParametrosGeneralesQuery _parametros;
+        private readonly IEnvioCorreo _envioCorreo;
 
-        public VentasController(IVentasQuery ventas, IMapper mapper, IMayoristaQuery mayorista)
+        public VentasController(IVentasQuery ventas, IMapper mapper, IMayoristaQuery mayorista, IParametrosGeneralesQuery parametros, IEnvioCorreo envioCorreo)
         {
             _ventas = ventas;
             _mapper = mapper;
             _mayorista = mayorista;
+            _parametros = parametros;
+            _envioCorreo = envioCorreo;
         }
 
         // GET api/<VentasController>/5
@@ -105,6 +110,26 @@ namespace PuraVidaStoreBK.Controllers
 
                 var consulta = await _ventas.buscarFacturaPorCodigo(nuevaFactura.FtrCodigoFactura);
                 var retorno = _mapper.Map<FacturaDTO>(consulta);
+
+
+                var parametrosGlobales = await _parametros.ObtenerParametrosId(retorno.FtrBodega);
+                if (parametrosGlobales != null && parametrosGlobales.ParametrosEmail != null)
+                {
+                    var facturaEmail = await _ventas.consultarFactura(retorno.FtrCodigoFactura);
+                    var listaCorreo = new List<string> { facturaEmail.FtrCorreoEnvio };
+                    _envioCorreo.EnviarFactura(facturaEmail, parametrosGlobales.ParametrosEmail, listaCorreo);
+                }
+
+
+
+                //var backgroundTask = Task.Run(async () =>
+                //{
+                 
+                    
+                    
+
+                //});
+
                 return Ok(retorno);
 
             }
@@ -172,20 +197,20 @@ namespace PuraVidaStoreBK.Controllers
             }
         }
 
-        [HttpPost("AnularFactura"), Authorize]
-        public async Task<IActionResult> AnularFactura([FromBody] IngresarHistorialDTO ingreso) 
+        [HttpPost("FacturaNula"), Authorize]
+        public async Task<IActionResult> AnularFactura([FromBody] HistorialFacturasAnuladaDTO ingreso) 
         {
             try
             {
-                var factura = await _ventas.consultarFactura(ingreso.IdFactura.ToString());
+                var factura = await _ventas.consultarFactura(ingreso.HlfIdFctura.ToString());
                 factura.FtrEsFacturaNula = true;
                 await _ventas.actualizarFactura(factura);
                 var historial = new HistorialFacturasAnulada 
                 {
                     HlfId=0,
-                    HlfIdUsuario=ingreso.idUsuario,
-                    HlfIdFctura= ingreso.IdFactura,
-                    HlfRazon = ingreso.Descripcion
+                    HlfIdUsuario=ingreso.HlfIdUsuario,
+                    HlfIdFctura= ingreso.HlfIdFctura,
+                    HlfRazon = ingreso.HlfRazon
                 };
                var retorno= await _ventas.ingresarHistorialNulas(_mapper.Map<HistorialFacturasAnulada>( historial));
                 return Ok(retorno);

@@ -4,10 +4,11 @@ using PuraVidaStoreBK.Utilitarios.Interfase;
 using System.Net.Mail;
 using System.Net;
 using PuraVidaStoreBK.Models.DbContex;
+using Serilog;
 
 namespace PuraVidaStoreBK.Utilitarios
 {
-    public class EnviarCorreo: IEnviarCorreo
+    public class EnviarCorreo: IEnvioCorreo
     {
         public void EnviarFactura(Factura factura,ParametrosEmail email, List<string> correosDestinatarios) 
         {
@@ -17,23 +18,38 @@ namespace PuraVidaStoreBK.Utilitarios
             doc.Open();
 
             AgregarEncabezado(doc, factura);
-            //AgregarTablaProductos(doc, factura.Productos);
-            //AgregarTablaImpuestos(doc, factura.Impuestos);
+            if (factura.DetalleFacturas != null) 
+            {
+                AgregarTablaProductos(doc, (List<DetalleFactura>)factura.DetalleFacturas);
+            }
+            if (factura.ImpuestosPorFacturas!=null) 
+            {
+                AgregarTablaImpuestos(doc, (List<ImpuestosPorFactura>)factura.ImpuestosPorFacturas);
+            }
+           
             AgregarTotales(doc, factura);
 
             doc.Close();
 
             byte[] pdfBytes = memoryStream.ToArray();
             memoryStream.Close();
+            try
+            {
+                EnviarCorreoConPDF(factura, pdfBytes, email, correosDestinatarios, factura.FtrCodigoFactura);
+            }
+            catch (Exception ex)
+            {
 
-            EnviarCorreoConPDF(factura, pdfBytes,email,correosDestinatarios,factura.FtrCodigoFactura);
+                Log.Error(ex.StackTrace);
+            }
+         
         }
         private void AgregarEncabezado(Document doc, Factura factura)
         {
             // Agregar logo
-            Image logo = Image.GetInstance("ruta_del_logo.png");
-            logo.Alignment = Image.LEFT_ALIGN;
-            doc.Add(logo);
+            //Image logo = Image.GetInstance("ruta_del_logo.png");
+            //logo.Alignment = Image.LEFT_ALIGN;
+            //doc.Add(logo);
 
             // Agregar número de factura y código de barras
             Paragraph numeroFactura = new Paragraph($"Número de Factura: {factura.FtrCodigoFactura}");
@@ -60,7 +76,7 @@ namespace PuraVidaStoreBK.Utilitarios
             doc.Add(new Paragraph(" "));
         }
 
-        private void AgregarTablaProductos(Document doc, List<Producto> productos)
+        private void AgregarTablaProductos(Document doc, List<DetalleFactura> productos)
         {
             PdfPTable tablaProductos = new PdfPTable(5);
             tablaProductos.WidthPercentage = 100;
@@ -76,11 +92,15 @@ namespace PuraVidaStoreBK.Utilitarios
             // Agregar productos
             foreach (var producto in productos)
             {
-                //tablaProductos.AddCell(producto.Codigo);
-                //tablaProductos.AddCell(producto.Descripcion);
-                //tablaProductos.AddCell(producto.Cantidad.ToString());
-                //tablaProductos.AddCell(producto.Precio.ToString());
-                //tablaProductos.AddCell(producto.MontoImpuestos.ToString());
+                if (producto.DtfIdProducto1 != null) 
+                {
+                    tablaProductos.AddCell(producto.DtfIdProducto1.PrdCodigo);
+                    tablaProductos.AddCell(producto.DtfIdProducto1.PrdNombre);
+                    tablaProductos.AddCell(producto.DtfCantidad.ToString());
+                    tablaProductos.AddCell(producto.DtfPrecio.ToString());
+                    tablaProductos.AddCell(producto.DtfMontoImpuestos.ToString());
+                }
+                ;
             }
 
             doc.Add(tablaProductos);
@@ -89,7 +109,7 @@ namespace PuraVidaStoreBK.Utilitarios
             doc.Add(new Paragraph(" "));
         }
 
-        private void AgregarTablaImpuestos(Document doc, List<Impuesto> impuestos)
+        private void AgregarTablaImpuestos(Document doc, List<ImpuestosPorFactura> impuestos)
         {
             PdfPTable tablaImpuestos = new PdfPTable(2);
             tablaImpuestos.WidthPercentage = 50;
@@ -100,8 +120,12 @@ namespace PuraVidaStoreBK.Utilitarios
 
             foreach (var impuesto in impuestos)
             {
-                //tablaImpuestos.AddCell(impuesto.Nombre);
-                //tablaImpuestos.AddCell(impuesto.Porcentaje.ToString());
+                if(impuesto.IpfIdImpuestoNavigation != null) 
+                {
+                    tablaImpuestos.AddCell(impuesto.IpfIdImpuestoNavigation.ImpDescripcion);
+                    tablaImpuestos.AddCell(impuesto.IpfIdImpuestoNavigation.ImpPorcentaje.ToString() +"%");
+                }
+                
             }
 
             doc.Add(tablaImpuestos);
@@ -144,11 +168,15 @@ namespace PuraVidaStoreBK.Utilitarios
             SmtpClient smtp = new SmtpClient(smtpHost, smtpPort);
 
             correo.From = new MailAddress(smtpUsername);
-            correosDestinatarios.ForEach(x => 
+            foreach (var c in correosDestinatarios) 
             {
-                correo.To.Add(x);
-            });
-            
+                correo.To.Add(c);
+            }
+            //correosDestinatarios.ForEach(x => 
+            //{
+            //    correo.To.Add(x);
+            //});
+
             correo.Subject =string.Format("Factura {0}",numeroFactura) ;
             correo.Body = "Adjuntamos la factura en formato PDF.";
 
@@ -160,9 +188,9 @@ namespace PuraVidaStoreBK.Utilitarios
             smtp.UseDefaultCredentials = false;
             smtp.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
             smtp.EnableSsl = email.PreSsl;
+            smtp.Host = smtpHost;
 
-            try
-            {
+            try { 
                 smtp.Send(correo);
             }
             catch (Exception ex)
