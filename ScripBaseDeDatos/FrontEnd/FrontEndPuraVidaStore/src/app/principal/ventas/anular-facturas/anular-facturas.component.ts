@@ -1,12 +1,13 @@
+import { HistorialFacturasNulasModel } from './../../../models/historial-facturas-nulas-model';
 import { ImpuestosPorFacturaModel } from './../../../models/impuestos-por-factura-model';
 import { FacturaModel } from 'src/app/models/factura-model';
 import { Component, OnInit } from '@angular/core';
 import { activo } from 'src/app/activo';
 import { EstructuraFacturaModel } from 'src/app/models/estructura-factura-model';
-import { VentasService } from 'src/app/services/ventas.service';
 import { PersonaModel } from 'src/app/models/persona-model';
 import { UsuarioModel } from 'src/app/models/usuario-model';
 import { FacturaResumenModel } from 'src/app/models/factura-resumen-model';
+import { VentasService } from 'src/app/services/ventas.service';
 
 @Component({
   selector: 'app-anular-facturas',
@@ -18,8 +19,10 @@ export class AnularFacturasComponent implements OnInit {
   listaImpuestosFactura: ImpuestosPorFacturaModel[] = [];
   habilitarModal: boolean = false;
   habilitarRazon: boolean = false;
+  habilitarCorreo:boolean = false;
   razonAnular: string = '';
-  buscador:string='';
+  correo:string="";
+  buscador: string = '';
   facturaResumen: FacturaResumenModel = {
     ftrId: 0,
     ftrFactura: 0,
@@ -57,6 +60,7 @@ export class AnularFacturasComponent implements OnInit {
     ftrFormaPago: 0,
     ftrEsFacturaNula: false,
     ftrCodigoFactura: '',
+    ftrCorreoEnvio: '',
     detalleFacturas: null,
     facturaResumen: null,
     ftrBodegaNavigation: null,
@@ -115,6 +119,7 @@ export class AnularFacturasComponent implements OnInit {
       ftrFormaPago: 0,
       ftrEsFacturaNula: false,
       ftrCodigoFactura: '',
+      ftrCorreoEnvio: '',
       detalleFacturas: null,
       facturaResumen: null,
       ftrBodegaNavigation: null,
@@ -157,19 +162,35 @@ export class AnularFacturasComponent implements OnInit {
   }
 
   anularFactura() {
-    this.ventas
-      .AnularFacturas(
-        this.facturaseleccionada.ftrId,
-        activo.usuarioPrograma.usrId,
-        this.razonAnular
-      )
-      .subscribe({
-        next: (x) => {
-          this.limpiarFacturaSeleccionada();
-          this.habilitarRazon=false;
-          this.habilitarModal= false;
-          this.ObtenerFacturas();
-        },
+    const facturaNula: HistorialFacturasNulasModel = {
+      hlfId: 0,
+      hlfIdUsuario: activo.usuarioPrograma.usrId,
+      hlfIdFctura: this.facturaseleccionada.ftrId,
+      hlfRazon: this.razonAnular,
+    };
+    this.ventas.AnularFacturas(facturaNula).subscribe(x=>{
+      this.limpiarFacturaSeleccionada();
+      this.habilitarRazon = false;
+      this.habilitarModal = false;
+      this.ObtenerFacturas();
+    },_e=>{
+      this.limpiarFacturaSeleccionada();
+      this.habilitarRazon = false;
+      this.habilitarModal = false;
+      this.ObtenerFacturas();
+    });
+
+  }
+
+  asignarCorreo(){
+    this.correo = this.facturaseleccionada.ftrCorreoEnvio!;
+    this.habilitarCorreo = true;
+  }
+  reenviarFactura() {
+    this.ventas.ReenviarFactura(this.facturaseleccionada.ftrId.toString(), this.correo).subscribe(x=>
+      {this.habilitarCorreo =false;},
+      _e=>{
+        this.habilitarCorreo =false;
       });
   }
 }

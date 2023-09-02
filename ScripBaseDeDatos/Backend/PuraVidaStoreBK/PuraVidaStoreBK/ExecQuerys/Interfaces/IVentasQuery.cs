@@ -14,6 +14,7 @@ namespace PuraVidaStoreBK.ExecQuerys.Interfaces
         Task<List<Factura>> facturasMes(int IdBodeg);
         Task<HistorialFacturasAnulada> ingresarHistorialNulas(HistorialFacturasAnulada facturaNula);
         Task<Factura> consultarFactura(string codigo);
-        Task<List<DetalleFactura>> consultarDetallePorFactura(long idFactura);
+        Task<List<DetalleFactura>> ConsultarDetallePorFactura(long idFactura);
+        Task<Factura> ConsultarFormaPagoPorFactura(long idFactura);
     }
 }

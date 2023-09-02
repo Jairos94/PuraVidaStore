@@ -3,7 +3,7 @@ import { activo } from 'src/app/activo';
 import { MovimientosService } from './../../../services/movimientos.service';
 import { Component, OnInit } from '@angular/core';
 import { InventariosModel } from 'src/app/models/inventarios-model';
-import * as XLSX from 'xlsx';
+//import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { InventariosVisualizarModels } from 'src/app/models/inventarios-visualizar-models';
@@ -26,17 +26,17 @@ export class InventariosComponent implements OnInit {
     this.existencias();
   }
 
-  exportarExcel(): void {
-    let element = document.getElementById('Inventarios');
-    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
+  // exportarExcel(): void {
+  //   let element = document.getElementById('Inventarios');
+  //   const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
 
-    /* generate workbook and add the worksheet */
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Hoja 1');
+  //   /* generate workbook and add the worksheet */
+  //   const wb: XLSX.WorkBook = XLSX.utils.book_new();
+  //   XLSX.utils.book_append_sheet(wb, ws, 'Hoja 1');
 
-    /* save to file */
-    XLSX.writeFile(wb, this.fileName + '.xlsx');
-  }
+  //   /* save to file */
+  //   XLSX.writeFile(wb, this.fileName + '.xlsx');
+  // }
 
   exportarPDF(): void {
     let fecha = new Date().toLocaleString('es-CR', {

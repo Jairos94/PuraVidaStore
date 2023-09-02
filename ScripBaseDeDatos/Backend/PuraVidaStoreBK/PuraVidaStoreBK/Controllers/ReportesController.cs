@@ -15,11 +15,15 @@ namespace PuraVidaStoreBK.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly IReportesQuery _reportes;
+        private readonly IVentasQuery _ventas;
+        private readonly IBodegaQuery _bodega;
 
-        public ReportesController(IConfiguration configuration, IReportesQuery reportes)
+        public ReportesController(IConfiguration configuration, IReportesQuery reportes, IVentasQuery ventas, IBodegaQuery bodega)
         {
             _configuration = configuration;
             _reportes = reportes;
+            _ventas = ventas;
+            _bodega = bodega;
         }
         // GET: api/<ReportesController>
         [HttpGet("ReporteMovimeintos"), Authorize]
@@ -29,7 +33,7 @@ namespace PuraVidaStoreBK.Controllers
             {
                 var listaReporte = new List<ReporteMovimientosDTO>();
                 var listaMovimientos = await _reportes.ObtenerMovimientosPorBodega(IdBodega, FechaInicio, FechaFin);
-                var listafacturas = await _reportes.ObtenerFacturasPorBodega(IdBodega, FechaInicio, FechaFin);
+                var detallesFacturas = await _reportes.ObtenerDetallesFacturas(IdBodega, FechaInicio, FechaFin);
 
                 foreach (var movimiento in listaMovimientos)
                 {
@@ -57,50 +61,49 @@ namespace PuraVidaStoreBK.Controllers
                     listaReporte.Add(reporte);
                 }
 
-                foreach (var factura in listafacturas)
+                foreach (var detalle in detallesFacturas)
                 {
-                    foreach (var detalle in factura.DetalleFacturas)
+                    detalle.DtfIdProductoNavigation = await _ventas.consultarFactura(detalle.DtfIdFactura.ToString());
+                    var bodega = new Bodega();
+                    bodega =await _bodega.BodegaPorId(detalle.DtfIdProductoNavigation.FtrBodega);
+
+                    var usuario = new Usuario();
+                    usuario = detalle.DtfIdProductoNavigation.FtrIdUsuarioNavigation;
+                    var producto = new Producto();
+                    producto = detalle.DtfIdProducto1;
+
+                    var cantidad = 0;
+
+                    var descripcion = "";
+                    if (detalle.DtfIdProductoNavigation.FtrEsFacturaNula != null && detalle.DtfIdProductoNavigation.FtrEsFacturaNula == true)
                     {
-                        var producto = new Producto();
-                        producto = detalle.DtfIdProducto1;
-
-                        var bodega = new Bodega();
-                        bodega = factura.FtrBodegaNavigation;
-
-                        var usuario = new Usuario();
-                        usuario = factura.FtrIdUsuarioNavigation;
-
-                        var cantidad = 0;
-
-                        var descripcion = "";
-                        if (factura.FtrEsFacturaNula != null && factura.FtrEsFacturaNula == true)
-                        {
-                            descripcion = "Ventas N°" + factura.FtrCodigoFactura;
-                            cantidad = detalle.DtfCantidad;
-                        }
-                        else
-                        {
-                            if (factura.FtrEsFacturaNula != null && factura.FtrEsFacturaNula == false)
-                            {
-                                descripcion = "Factura nula N°" + factura.FtrCodigoFactura;
-                                cantidad = 0;
-                            }
-                        }
-
-                        var reporte = new ReporteMovimientosDTO
-                        {
-                            Codigo = producto.PrdCodigo,
-                            DescripcionProducto = detalle.DtfIdProducto1.PrdNombre,
-                            fecha = factura.FtrFecha,
-                            Responsable = usuario.UsrUser,
-                            Bodega = bodega.BdgDescripcion,
-                            Descripcion = descripcion,
-                            Ingresos = 0,
-                            Salidas = cantidad
-
-                        };
-                        listaReporte.Add(reporte);
+                        descripcion = "Factura nula N°" + detalle.DtfIdProductoNavigation.FtrCodigoFactura;
+                        cantidad = 0;
                     }
+                    else
+                    {
+                        if (detalle.DtfIdProductoNavigation.FtrEsFacturaNula != null && detalle.DtfIdProductoNavigation.FtrEsFacturaNula == false)
+                        {
+                            descripcion = "Ventas N°" + detalle.DtfIdProductoNavigation.FtrCodigoFactura;
+                            cantidad = detalle.DtfCantidad;
+
+                        }
+                    }
+
+                    var reporte = new ReporteMovimientosDTO
+                    {
+                        Codigo = producto.PrdCodigo,
+                        DescripcionProducto = detalle.DtfIdProducto1.PrdNombre,
+                        fecha = detalle.DtfIdProductoNavigation.FtrFecha,
+                        Responsable = usuario.UsrUser,
+                        Bodega = bodega.BdgDescripcion,
+                        Descripcion = descripcion,
+                        Ingresos = 0,
+                        Salidas = cantidad
+
+                    };
+                    listaReporte.Add(reporte);
+                   
                 };
                 listaReporte =listaReporte.OrderByDescending(x => x.fecha).ToList();
 
@@ -121,8 +124,8 @@ namespace PuraVidaStoreBK.Controllers
             {
                 var listaReporte = new List<ReporteMovimientosDTO>();
                 var listaMovimientos = await _reportes.ObtenerMovimientosProdcto(IdBodega, FechaInicio, FechaFin, Codigo);
-                var listafacturas = await _reportes.ObtenerFacturasPorBodega(IdBodega, FechaInicio, FechaFin);
-
+                var detallesFacturas = await _reportes.ObtenerDetallesFacturas(IdBodega, FechaInicio, FechaFin);
+                detallesFacturas=detallesFacturas.Where(x=>x.DtfIdProducto1.PrdId.ToString()==Codigo || x.DtfIdProducto1.PrdCodigo==Codigo || x.DtfIdProducto1.PrdCodigoProvedor == Codigo).ToList();
                 foreach (var movimiento in listaMovimientos)
                 {
                     var producto = new Producto();
@@ -149,53 +152,54 @@ namespace PuraVidaStoreBK.Controllers
                     listaReporte.Add(reporte);
                 }
 
-                foreach (var factura in listafacturas)
+
+                foreach (var detalle in detallesFacturas)
                 {
-                    factura.DetalleFacturas.Where(x=>x.DtfIdProducto1.PrdCodigo == Codigo || x.DtfIdProducto1.PrdCodigoProvedor == Codigo);
-                    foreach (var detalle in factura.DetalleFacturas)
+                    detalle.DtfIdProductoNavigation = new Factura();
+                    detalle.DtfIdProductoNavigation = await _ventas.consultarFactura(detalle.DtfIdFactura.ToString());
+                    var bodega = new Bodega();
+                    bodega = await _bodega.BodegaPorId(detalle.DtfIdProductoNavigation.FtrBodega);
+
+                    var usuario = new Usuario();
+                    usuario = detalle.DtfIdProductoNavigation.FtrIdUsuarioNavigation;
+                    var producto = new Producto();
+                    producto = detalle.DtfIdProducto1;
+
+                    var cantidad = 0;
+
+                    var descripcion = "";
+                    if (detalle.DtfIdProductoNavigation.FtrEsFacturaNula != null && detalle.DtfIdProductoNavigation.FtrEsFacturaNula == true)
                     {
-                        var producto = new Producto();
-                        producto = detalle.DtfIdProducto1;
-
-                        var bodega = new Bodega();
-                        bodega = factura.FtrBodegaNavigation;
-
-                        var usuario = new Usuario();
-                        usuario = factura.FtrIdUsuarioNavigation;
-
-                        var cantidad = 0;
-
-                        var descripcion = "";
-                        if (factura.FtrEsFacturaNula != null && factura.FtrEsFacturaNula == true)
-                        {
-                            descripcion = "Ventas N°" + factura.FtrCodigoFactura;
-                            cantidad = detalle.DtfCantidad;
-                        }
-                        else
-                        {
-                            if (factura.FtrEsFacturaNula != null && factura.FtrEsFacturaNula == false)
-                            {
-                                descripcion = "Factura nula N°" + factura.FtrCodigoFactura;
-                                cantidad = 0;
-                            }
-                        }
-
-                        var reporte = new ReporteMovimientosDTO
-                        {
-                            Codigo = producto.PrdCodigo,
-                            DescripcionProducto = detalle.DtfIdProducto1.PrdNombre,
-                            fecha = factura.FtrFecha,
-                            Responsable = usuario.UsrUser,
-                            Bodega = bodega.BdgDescripcion,
-                            Descripcion = descripcion,
-                            Ingresos = 0,
-                            Salidas = cantidad
-
-                        };
-                        listaReporte.Add(reporte);
+                        descripcion = "Factura nula N°" + detalle.DtfIdProductoNavigation.FtrCodigoFactura;
+                        cantidad = 0;
                     }
+                    else
+                    {
+                        if (detalle.DtfIdProductoNavigation.FtrEsFacturaNula != null && detalle.DtfIdProductoNavigation.FtrEsFacturaNula == false)
+                        {
+                            descripcion = "Ventas N°" + detalle.DtfIdProductoNavigation.FtrCodigoFactura;
+                            cantidad = detalle.DtfCantidad;
+
+                        }
+                    }
+
+                    var reporte = new ReporteMovimientosDTO
+                    {
+                        Codigo = producto.PrdCodigo,
+                        DescripcionProducto = detalle.DtfIdProducto1.PrdNombre,
+                        fecha = detalle.DtfIdProductoNavigation.FtrFecha,
+                        Responsable = usuario.UsrUser,
+                        Bodega = bodega.BdgDescripcion,
+                        Descripcion = descripcion,
+                        Ingresos = 0,
+                        Salidas = cantidad
+
+                    };
+                    listaReporte.Add(reporte);
+
                 };
                 listaReporte = listaReporte.OrderByDescending(x => x.fecha).ToList();
+       
 
 
                 return Ok(listaReporte);

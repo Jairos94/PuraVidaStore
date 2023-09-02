@@ -36,20 +36,21 @@ namespace PuraVidaStoreBK.ExecQuerys
             return retorno;
         }
 
-        public async Task<List<Factura>> ObtenerFacturasPorBodega(int idBodega, DateTime fechaInicio, DateTime fechaFin) 
+        public async Task<List<DetalleFactura>> ObtenerDetallesFacturas(int idBodega, DateTime fechaInicio, DateTime fechaFin) 
         {
-            var retorno = new List<Factura>();
+            var retorno = new List<DetalleFactura>();
             try
             {
-                retorno = await _dbcontex.Facturas
-                             .Include(x => x.FtrBodegaNavigation)
-                             .Include(x => x.FtrIdUsuarioNavigation)
-                             .Include(x => x.DetalleFacturas)
-                             .ThenInclude(x=>x.DtfIdProducto1)
-                             .Where(x => x.FtrBodega == idBodega &&
-                                    x.FtrFecha >= fechaInicio &&
-                                    x.FtrFecha <= fechaFin)
-                             .ToListAsync();
+                retorno = await _dbcontex.DetalleFacturas
+                            .Include(x => x.DtfIdProducto1)
+                            .Include(x => x.DtfIdProductoNavigation)
+                                .ThenInclude(x => x.FtrIdUsuarioNavigation)
+                            .Include(x => x.DtfIdProductoNavigation)
+                                .ThenInclude(x => x.FtrBodegaNavigation)
+                            .Where(x => x.DtfIdProductoNavigation.FtrBodega == idBodega &&
+                                        x.DtfIdProductoNavigation.FtrFecha >= fechaInicio &&
+                                        x.DtfIdProductoNavigation.FtrFecha <= fechaFin)
+                            .ToListAsync();
             }
             catch (Exception ex)
             {

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using PuraVidaStoreBK.ExecQuerys.Interfaces;
 using PuraVidaStoreBK.Models.DbContex;
 using PuraVidaStoreBK.Models.DTOS;
+using PuraVidaStoreBK.Utilitarios.Interfase;
 using XAct;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -18,12 +19,16 @@ namespace PuraVidaStoreBK.Controllers
         private readonly IVentasQuery _ventas;
         private readonly IMapper _mapper;
         private readonly IMayoristaQuery _mayorista;
+        private readonly IParametrosGeneralesQuery _parametros;
+        private readonly IEnvioCorreo _envioCorreo;
 
-        public VentasController(IVentasQuery ventas, IMapper mapper, IMayoristaQuery mayorista)
+        public VentasController(IVentasQuery ventas, IMapper mapper, IMayoristaQuery mayorista, IParametrosGeneralesQuery parametros, IEnvioCorreo envioCorreo)
         {
             _ventas = ventas;
             _mapper = mapper;
             _mayorista = mayorista;
+            _parametros = parametros;
+            _envioCorreo = envioCorreo;
         }
 
         // GET api/<VentasController>/5
@@ -101,10 +106,26 @@ namespace PuraVidaStoreBK.Controllers
                     });
                     listaImpuestos = await _ventas.ingresarImpuestosPorFactura(listaImpuestos);
                 }
-            
+
 
                 var consulta = await _ventas.buscarFacturaPorCodigo(nuevaFactura.FtrCodigoFactura);
                 var retorno = _mapper.Map<FacturaDTO>(consulta);
+
+
+                var parametrosGlobales = await _parametros.ObtenerParametrosId(retorno.FtrBodega);
+                if (parametrosGlobales != null && parametrosGlobales.ParametrosEmail != null)
+                {
+                    var facturaEmail = await _ventas.consultarFactura(retorno.FtrCodigoFactura);
+                    facturaEmail.DetalleFacturas = await _ventas.ConsultarDetallePorFactura(facturaEmail.FtrId);
+                    var facturaFaltantes = await _ventas.ConsultarFormaPagoPorFactura(facturaEmail.FtrId);
+                    facturaEmail.FtrFormaPagoNavigation = facturaFaltantes.FtrFormaPagoNavigation;
+                    facturaEmail.FtrBodegaNavigation = facturaFaltantes.FtrBodegaNavigation;
+                    var listaCorreo = new List<string> { facturaEmail.FtrCorreoEnvio };
+                    _envioCorreo.EnviarFactura(facturaEmail, parametrosGlobales.ParametrosEmail, listaCorreo);
+                }
+
+
+
                 return Ok(retorno);
 
             }
@@ -116,16 +137,16 @@ namespace PuraVidaStoreBK.Controllers
         }
 
         [HttpGet("ObtenerFacturasDelMes"), Authorize]
-        public async Task<IActionResult> ObtenerFacturasDelMes(int IdBodega) 
+        public async Task<IActionResult> ObtenerFacturasDelMes(int IdBodega)
         {
             try
-            { 
-                var facturas =await _ventas.facturasMes(IdBodega);
+            {
+                var facturas = await _ventas.facturasMes(IdBodega);
                 var retorno = new List<EstructuraFacturaDTO>();
-                foreach (var factura in facturas) 
+                foreach (var factura in facturas)
                 {
                     var resumen = new FacturaResumen();
-                    foreach (var datoResumen in factura.FacturaResumen) 
+                    foreach (var datoResumen in factura.FacturaResumen)
                     {
                         resumen = datoResumen;
                     };
@@ -152,13 +173,13 @@ namespace PuraVidaStoreBK.Controllers
         }
 
         [HttpGet("ObtenerFacturaPorCodigo"), Authorize]
-        public async Task<IActionResult> ObtenerFacturaPorCodigo(string codigo) 
+        public async Task<IActionResult> ObtenerFacturaPorCodigo(string codigo)
         {
             try
             {
                 var factura = await _ventas.consultarFactura(codigo);
-                factura.DetalleFacturas = await _ventas.consultarDetallePorFactura(factura.FtrId);
-                factura.DetalleFacturas.ForEach(x=> 
+                factura.DetalleFacturas = await _ventas.ConsultarDetallePorFactura(factura.FtrId);
+                factura.DetalleFacturas.ForEach(x =>
                 {
                     x.DtfIdProducto1.PdrFoto = null;
                     x.DtfIdProductoNavigation = null;
@@ -172,24 +193,24 @@ namespace PuraVidaStoreBK.Controllers
             }
         }
 
-        [HttpPut("AnularFactura"), Authorize]
-        public async Task<IActionResult> AnularFactura([FromBody] IngresarHistorialDTO ingreso) 
+        [HttpPost("FacturaNula"), Authorize]
+        public async Task<IActionResult> AnularFactura([FromBody] HistorialFacturasAnuladaDTO ingreso)
         {
             try
             {
-                var factura = await _ventas.consultarFactura(ingreso.IdFactura.ToString());
+                var factura = await _ventas.consultarFactura(ingreso.HlfIdFctura.ToString());
                 factura.FtrEsFacturaNula = true;
                 await _ventas.actualizarFactura(factura);
-                var historial = new HistorialFacturasAnulada 
+                var historial = new HistorialFacturasAnulada
                 {
-                    HlfId=0,
-                    HlfIdUsuario=ingreso.idUsuario,
-                    HlfIdFctura= ingreso.IdFactura,
-                    HlfRazon = ingreso.Descripcion
+                    HlfId = 0,
+                    HlfIdUsuario = ingreso.HlfIdUsuario,
+                    HlfIdFctura = ingreso.HlfIdFctura,
+                    HlfRazon = ingreso.HlfRazon
                 };
-                await _ventas.ingresarHistorialNulas(historial);
-                return Ok();
-                
+                var retorno = await _ventas.ingresarHistorialNulas(_mapper.Map<HistorialFacturasAnulada>(historial));
+                return Ok(retorno);
+
             }
             catch (Exception)
             {
@@ -198,5 +219,32 @@ namespace PuraVidaStoreBK.Controllers
             }
         }
 
+        [HttpGet ("ReenviarFactura"), Authorize]
+        public async Task<IActionResult> ReenviarFactura(string idFactura, string correo) 
+        {
+            try
+            {
+                var facturaEmail = await _ventas.consultarFactura(idFactura);
+                var parametrosGlobales = await _parametros.ObtenerParametrosId(facturaEmail.FtrBodega);
+                if (parametrosGlobales != null && parametrosGlobales.ParametrosEmail != null)
+                {
+
+                    facturaEmail.DetalleFacturas = await _ventas.ConsultarDetallePorFactura(facturaEmail.FtrId);
+                    var facturaFaltantes = await _ventas.ConsultarFormaPagoPorFactura(facturaEmail.FtrId);
+                    facturaEmail.FtrFormaPagoNavigation = facturaFaltantes.FtrFormaPagoNavigation;
+                    facturaEmail.FtrBodegaNavigation = facturaFaltantes.FtrBodegaNavigation;
+                    var listaCorreo = new List<string> { correo };
+                    _envioCorreo.EnviarFactura(facturaEmail, parametrosGlobales.ParametrosEmail, listaCorreo);
+                }
+                return Ok("Se hizo el envio del correo");
+            }
+            catch (Exception)
+            {
+
+                return BadRequest("Hubo un error a la hora de enviar");
+            }
+  
+
+        }
     }
 }

@@ -22,16 +22,6 @@
           ></button>
         </div>
       </div>
-<!--
-      <div class="col-3">
-        <p-button
-          (click)="showResponsiveDialog()"
-          icon="pi pi-external-link"
-          label="Ver productos"
-        ></p-button>
-
-      </div>
-      -->
     </div>
   </div>
 
@@ -228,6 +218,15 @@
   [draggable]="false"
   [resizable]="false"
 >
+  <div class="field my-2">
+    <div class="p-inputgroup">
+      <span class="p-inputgroup-addon">
+        <i class="pi pi-at"></i>
+      </span>
+      <input pInputText placeholder="Correo" [(ngModel)]="correEnviarCliente"/>
+    </div>
+  </div>
+
   <p>
     Seleccione una forma de pago:
     <p-dropdown
@@ -422,7 +421,11 @@
     </div>
 
     <div class="field">
-      <p-button icon="pi pi-check" label="Guardar" (onClick)="GuardarClienteMayorista()"></p-button>
+      <p-button
+        icon="pi pi-check"
+        label="Guardar"
+        (onClick)="GuardarClienteMayorista()"
+      ></p-button>
     </div>
   </div>
 </p-dialog>

@@ -21,6 +21,7 @@ namespace PuraVidaStoreBK.Models.DTOS
         public bool? FtrEsFacturaNula { get; set; }
 
         public string? FtrCodigoFactura { get; set; }
+        public string? FtrCorreoEnvio { get; set; }
 
         public virtual ICollection<DetalleFacturaDTO>? DetalleFacturas { get; set; } = new List<DetalleFacturaDTO>();
 

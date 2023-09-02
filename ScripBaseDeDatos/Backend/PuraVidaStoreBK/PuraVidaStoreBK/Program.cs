@@ -25,18 +25,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 
-builder.Services.AddSwaggerGen(options =>
-{
-    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme 
-    {
-        Description="Standar Authorization header using the Bearer scheme (\"bearer {token}\")",
-        In= ParameterLocation.Header,
-        Name="Authorization",
-        Type= SecuritySchemeType.ApiKey
-    });
 
-    options.OperationFilter<SecurityRequirementsOperationFilter>();
-});
 
 #region Cors
 builder.Services.AddCors();
@@ -54,6 +43,19 @@ builder.Services.AddCors(options =>
 
 
 //Jw Token
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    {
+        Description = "Standar Authorization header using the Bearer scheme (\"bearer {token}\")",
+        In = ParameterLocation.Header,
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey
+    });
+
+    options.OperationFilter<SecurityRequirementsOperationFilter>();
+});
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => {
         options.TokenValidationParameters = new TokenValidationParameters
@@ -105,8 +107,8 @@ builder.Services.AddScoped<IVentasQuery, VentasQuery>();
 builder.Services.AddScoped<ICorreoQuery, CorreoQuery>();
 builder.Services.AddScoped<IParametrosGeneralesQuery, ParametrosGeneralesQuery>();
 builder.Services.AddScoped<IImpuestosQuery, ImpuestosQuery>();
-builder.Services.AddScoped<IEnvioCorreo, EnvioCorreo>();
 builder.Services.AddScoped<IReportesQuery, ReportesQuery>();
+builder.Services.AddScoped<IEnvioCorreo, EnviarCorreo>();
 
 
 #endregion

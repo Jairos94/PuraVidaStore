@@ -67,9 +67,16 @@
       {{ personaMayorista.psrApellido1 }} {{ personaMayorista.psrApellido2 }}
     </label>
   </div>
+
   <div class="field">
-    <label>Hech por: {{ usurioFactura.usrUser }}</label>
+    <label>Correo de envio factura: {{ facturaseleccionada.ftrCorreoEnvio}}</label>
   </div>
+
+  <div class="field">
+    <label>Hecho por: {{ usurioFactura.usrUser }}</label>
+  </div>
+
+
 
   <div class="field">
     <h4>Detalle de la factura</h4>
@@ -156,6 +163,14 @@
         [disabled]="facturaseleccionada.ftrEsFacturaNula!"
         (onClick)="habilitarRazon=true"
       ></p-button>
+
+      <p-button
+      label="Reenviar correo"
+      icon="pi pi-send"
+      styleClass="mx-2 p-button-success"
+      [disabled]="facturaseleccionada.ftrEsFacturaNula!"
+      (onClick)="asignarCorreo()"
+    ></p-button>
     </div>
   </div>
 </p-dialog>
@@ -183,6 +198,34 @@
   styleClass="p-button-danger"
   (onClick)="anularFactura()"
 [disabled]="razonAnular===''"
+></p-button>
+</div>
+</p-dialog>
+
+
+
+<p-dialog
+  header="Correo para enviar"
+  [(visible)]="habilitarCorreo"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <h2>Escriba el correo para enviar</h2>
+  <div class="p-inputgroup w-full">
+    <span class="p-inputgroup-addon">
+        <i class="pi pi-at"></i>
+    </span>
+    <input class="w-full" [(ngModel)]="correo" pInputText placeholder="Correo" />
+</div>
+<div class="field my-1">
+  <p-button
+  label="Enviar"
+  icon="pi pi-send"
+  styleClass="p-button-success"
+  (onClick)="reenviarFactura()"
+[disabled]="correo===''"
 ></p-button>
 </div>
 </p-dialog>

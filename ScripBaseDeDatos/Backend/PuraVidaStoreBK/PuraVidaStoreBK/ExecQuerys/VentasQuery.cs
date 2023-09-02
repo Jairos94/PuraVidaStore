@@ -198,7 +198,7 @@ namespace PuraVidaStoreBK.ExecQuerys
             return retorno;
         }
 
-        public async Task<List<DetalleFactura>> consultarDetallePorFactura(long idFactura) 
+        public async Task<List<DetalleFactura>> ConsultarDetallePorFactura(long idFactura) 
         {
             var listaDetalles= new List<DetalleFactura>();
             try
@@ -214,6 +214,26 @@ namespace PuraVidaStoreBK.ExecQuerys
             }
             return listaDetalles;
         }
-        
+
+        public async Task<Factura> ConsultarFormaPagoPorFactura(long idFactura) 
+        {
+            var retorno = new Factura();
+            try
+            {
+                 retorno = await dbContex.Facturas
+                    .Include(x => x.FtrFormaPagoNavigation)
+                    .Include(x => x.FtrBodegaNavigation)
+                    .Where(x =>  x.FtrId== idFactura)
+                    .FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+
+                Log.Error(ex.StackTrace);
+            }
+            return retorno;
+        }
+
+
     }
 }

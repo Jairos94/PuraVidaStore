@@ -1,11 +1,11 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { FormaPagoModel } from '../models/forma-pago-model';
 import { FacturaModel } from '../models/factura-model';
 import { EstructuraFacturaModel } from '../models/estructura-factura-model';
 import { HistorialFacturasNulasModel } from '../models/historial-facturas-nulas-model';
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -38,15 +38,17 @@ export class VentasService {
   }
 
 
-  AnularFacturas(IdFactura:number,IdUsuario:number,Razon:string):Observable<HistorialFacturasNulasModel>{
-    let datos:any={
-      IdFactura:IdFactura,
-      idUsuario:IdUsuario,
-      Descripcion:Razon
-    }
+  AnularFacturas(facturaNula:HistorialFacturasNulasModel):Observable<HistorialFacturasNulasModel>{
 
 
-    return this.http.put<HistorialFacturasNulasModel>(`${this.baseUrl}Ventas/AnularFactura`,datos);
+    return this.http.post<HistorialFacturasNulasModel>(`${this.baseUrl}Ventas/FacturaNula`,facturaNula);
 
+  }
+
+  ReenviarFactura(factura:string,correo:string):Observable<string>{
+    const params = new HttpParams()
+    .set('idFactura', factura)
+    .set('correo', correo);
+    return this.http.get<string>(`${this.baseUrl}Ventas/ReenviarFactura`,{params});
   }
 }

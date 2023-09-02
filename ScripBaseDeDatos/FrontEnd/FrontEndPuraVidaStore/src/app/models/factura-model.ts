@@ -18,6 +18,7 @@ export interface FacturaModel {
   ftrFormaPago: number;
   ftrEsFacturaNula: boolean | null;
   ftrCodigoFactura: string | null;
+  ftrCorreoEnvio: string | null;
   detalleFacturas: DetalleFacturaModel[] | null;
   facturaResumen: FacturaResumenModel[] | null;
   ftrBodegaNavigation: BodegaModel | null;

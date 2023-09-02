@@ -10,3 +10,5 @@ Scaffold-DbContext "Server=<servidor>;Database=<baseDatos>;User ID=<usuario>;Pas
 
 ejemplo
 Scaffold-DbContext "Server=.\SQLExpress;Database=SchoolDB;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
+
+[Video de configuracion de gmail](https://www.youtube.com/watch?v=VZIIl78Ps5c)

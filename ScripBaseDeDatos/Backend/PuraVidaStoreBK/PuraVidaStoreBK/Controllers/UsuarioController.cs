@@ -73,7 +73,7 @@ namespace PuraVidaStoreBK.Controllers
             bool HuboError = false;
             string MensajeError="";
             var UsuarioIngreso = _mapper.Map<Usuario>(UsuarioParametro);
-
+            
 
             //Valida si esta agregdo
             if (ListaPersonasPorCedula.Count == 0 || ListaPersonasPorCedula == null)
@@ -86,8 +86,10 @@ namespace PuraVidaStoreBK.Controllers
             else 
             {
                 PersonaIngreso = ListaPersonasPorCedula[0];
+               
                 if (agregar) 
                 {
+                    UsuarioIngreso.UsrIdPersonaNavigation = _mapper.Map<Persona>(UsuarioParametro.Persona);
                     UsuarioIngreso.UsrIdPersona = UsuarioIngreso.UsrIdPersonaNavigation.PsrId;
                 }
                 
