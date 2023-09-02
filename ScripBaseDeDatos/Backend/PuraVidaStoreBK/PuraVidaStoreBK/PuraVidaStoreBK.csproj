@@ -33,6 +33,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.4" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
     <PackageReference Include="XAct.Core.PCL" Version="0.0.5014" />
+    <PackageReference Include="ZXing.Net" Version="0.16.9" />
   </ItemGroup>
 
 </Project>

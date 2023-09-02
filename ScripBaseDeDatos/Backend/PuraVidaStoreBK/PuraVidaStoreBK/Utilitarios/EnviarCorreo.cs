@@ -5,11 +5,18 @@ using System.Net.Mail;
 using System.Net;
 using PuraVidaStoreBK.Models.DbContex;
 using Serilog;
+using System.IO;
 
 namespace PuraVidaStoreBK.Utilitarios
 {
     public class EnviarCorreo: IEnvioCorreo
     {
+        private readonly IConfiguration _configuration;
+
+        public EnviarCorreo(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
         public void EnviarFactura(Factura factura,ParametrosEmail email, List<string> correosDestinatarios) 
         {
             MemoryStream memoryStream = new MemoryStream();
@@ -20,14 +27,15 @@ namespace PuraVidaStoreBK.Utilitarios
             AgregarEncabezado(doc, factura);
             if (factura.DetalleFacturas != null) 
             {
-                AgregarTablaProductos(doc, (List<DetalleFactura>)factura.DetalleFacturas);
+                AgregarTablaProductos(doc, factura.DetalleFacturas);
             }
             if (factura.ImpuestosPorFacturas!=null) 
             {
-                AgregarTablaImpuestos(doc, (List<ImpuestosPorFactura>)factura.ImpuestosPorFacturas);
+                AgregarTablaImpuestos(doc, factura.ImpuestosPorFacturas);
             }
            
             AgregarTotales(doc, factura);
+            AgregarCodigoBarras(doc, writer, factura.FtrCodigoFactura);
 
             doc.Close();
 
@@ -47,7 +55,7 @@ namespace PuraVidaStoreBK.Utilitarios
         private void AgregarEncabezado(Document doc, Factura factura)
         {
             // Agregar logo
-            //Image logo = Image.GetInstance("ruta_del_logo.png");
+            //Image logo = Image.GetInstance(_configuration["rutaLogo"]);
             //logo.Alignment = Image.LEFT_ALIGN;
             //doc.Add(logo);
 
@@ -55,8 +63,9 @@ namespace PuraVidaStoreBK.Utilitarios
             Paragraph numeroFactura = new Paragraph($"Número de Factura: {factura.FtrCodigoFactura}");
             doc.Add(numeroFactura);
 
+
             // Agregar sucursal
-            Paragraph sucursal = new Paragraph("Sucursal: NombreSucursal");
+            Paragraph sucursal = new Paragraph("Sucursal: "+ factura.FtrBodegaNavigation.BdgDescripcion);
             doc.Add(sucursal);
 
             // Agregar nombre de la empresa, cedula y fecha de factura
@@ -66,9 +75,8 @@ namespace PuraVidaStoreBK.Utilitarios
             infoEmpresa.WidthPercentage = 100;
             infoEmpresa.SetWidths(new float[] { 1f, 1f, 1f });
 
-            infoEmpresa.AddCell("Nombre de la Empresa");
             infoEmpresa.AddCell("Cédula: 1234567890");
-            infoEmpresa.AddCell($"Fecha de Factura: {factura.FtrFecha.ToShortDateString()}");
+            infoEmpresa.AddCell($"Fecha de Factura: {factura.FtrFecha.ToString("MM/dd/yyyy hh:mm tt")}");
 
             doc.Add(infoEmpresa);
 
@@ -76,7 +84,7 @@ namespace PuraVidaStoreBK.Utilitarios
             doc.Add(new Paragraph(" "));
         }
 
-        private void AgregarTablaProductos(Document doc, List<DetalleFactura> productos)
+        private void AgregarTablaProductos(Document doc, ICollection<DetalleFactura> productos)
         {
             PdfPTable tablaProductos = new PdfPTable(5);
             tablaProductos.WidthPercentage = 100;
@@ -109,7 +117,7 @@ namespace PuraVidaStoreBK.Utilitarios
             doc.Add(new Paragraph(" "));
         }
 
-        private void AgregarTablaImpuestos(Document doc, List<ImpuestosPorFactura> impuestos)
+        private void AgregarTablaImpuestos(Document doc, ICollection<ImpuestosPorFactura> impuestos)
         {
             PdfPTable tablaImpuestos = new PdfPTable(2);
             tablaImpuestos.WidthPercentage = 50;
@@ -142,17 +150,46 @@ namespace PuraVidaStoreBK.Utilitarios
             tablaTotales.DefaultCell.HorizontalAlignment = Element.ALIGN_RIGHT;
             tablaTotales.WidthPercentage = 50;
             tablaTotales.SetWidths(new float[] { 1f, 1f });
-
+            FacturaResumen resumen = new FacturaResumen();
+            foreach (var r in factura.FacturaResumen) 
+            {
+                resumen = r;
+            }
             tablaTotales.AddCell("Subtotal");
-            //tablaTotales.AddCell(factura.Subtotal.ToString());
+            var subTotal = resumen.FtrMontoTotal - resumen.FtrMontoImpuestos;
+            tablaTotales.AddCell(subTotal.ToString());
 
             tablaTotales.AddCell("Monto Impuestos");
-            //tablaTotales.AddCell(factura.MontoImpuestos.ToString());
+            tablaTotales.AddCell(resumen.FtrMontoImpuestos.ToString());
 
             tablaTotales.AddCell("Monto Total");
-            //tablaTotales.AddCell(factura.MontoTotal.ToString());
+            tablaTotales.AddCell(resumen.FtrMontoTotal.ToString());
+
+            tablaTotales.AddCell("Forma de pago");
+            tablaTotales.AddCell(factura.FtrFormaPagoNavigation.FrpDescripcion);
 
             doc.Add(tablaTotales);
+        }
+
+        private void AgregarCodigoBarras(Document doc, PdfWriter writer, string codigoFactura)
+        {
+            // Crear un objeto Barcode128 de iTextSharp para el código de barras CODE-128
+            Barcode128 barcode = new Barcode128();
+            barcode.Code = codigoFactura;
+            barcode.StartStopText = false; // Opcional: para quitar el texto de inicio y final del código
+
+            // Crear una imagen del código de barras
+            iTextSharp.text.Image barcodeImage = barcode.CreateImageWithBarcode(
+                writer.DirectContent,
+                BaseColor.BLACK,
+                BaseColor.BLACK
+            );
+
+            // Ajustar el tamaño de la imagen del código de barras si es necesario
+            barcodeImage.ScaleToFit(200, 50); // Ancho y alto del código de barras
+
+            // Agregar el código de barras al documento
+            doc.Add(barcodeImage);
         }
 
         private void EnviarCorreoConPDF(Factura factura,byte[] pdfBytes, ParametrosEmail email, List<string>  correosDestinatarios , string numeroFactura)
@@ -182,7 +219,7 @@ namespace PuraVidaStoreBK.Utilitarios
 
             // Adjuntar el PDF al correo
             MemoryStream pdfStream = new MemoryStream(pdfBytes);
-            correo.Attachments.Add(new Attachment(pdfStream, "factura.pdf"));
+            correo.Attachments.Add(new Attachment(pdfStream, "Factura "+numeroFactura+".pdf"));
 
             // Autenticación para el servidor SMTP
             smtp.UseDefaultCredentials = false;

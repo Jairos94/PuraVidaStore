@@ -173,7 +173,12 @@ export class AnularFacturasComponent implements OnInit {
         this.habilitarModal = false;
         this.ObtenerFacturas();
       },
-      error: (_e) => console.log(_e),
+      error: (_e) =>{
+        this.limpiarFacturaSeleccionada();
+        this.habilitarRazon = false;
+        this.habilitarModal = false;
+        this.ObtenerFacturas();
+      }
     });
   }
 }

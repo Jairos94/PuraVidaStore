@@ -116,6 +116,10 @@ namespace PuraVidaStoreBK.Controllers
                 if (parametrosGlobales != null && parametrosGlobales.ParametrosEmail != null)
                 {
                     var facturaEmail = await _ventas.consultarFactura(retorno.FtrCodigoFactura);
+                    facturaEmail.DetalleFacturas = await _ventas.ConsultarDetallePorFactura(facturaEmail.FtrId);
+                    var facturaFaltantes = await _ventas.ConsultarFormaPagoPorFactura(facturaEmail.FtrId);
+                    facturaEmail.FtrFormaPagoNavigation = facturaFaltantes.FtrFormaPagoNavigation;
+                    facturaEmail.FtrBodegaNavigation = facturaFaltantes.FtrBodegaNavigation;
                     var listaCorreo = new List<string> { facturaEmail.FtrCorreoEnvio };
                     _envioCorreo.EnviarFactura(facturaEmail, parametrosGlobales.ParametrosEmail, listaCorreo);
                 }
@@ -182,7 +186,7 @@ namespace PuraVidaStoreBK.Controllers
             try
             {
                 var factura = await _ventas.consultarFactura(codigo);
-                factura.DetalleFacturas = await _ventas.consultarDetallePorFactura(factura.FtrId);
+                factura.DetalleFacturas = await _ventas.ConsultarDetallePorFactura(factura.FtrId);
                 factura.DetalleFacturas.ForEach(x=> 
                 {
                     x.DtfIdProducto1.PdrFoto = null;
