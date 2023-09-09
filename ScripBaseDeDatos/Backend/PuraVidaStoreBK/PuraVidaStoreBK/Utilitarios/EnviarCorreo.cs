@@ -60,7 +60,7 @@ namespace PuraVidaStoreBK.Utilitarios
             encabezado.WidthPercentage = 100;
 
             // Nombre de la empresa (en el centro)
-            PdfPCell nombreEmpresaCell = new PdfPCell(new Phrase("Nombre de la empresa"));
+            PdfPCell nombreEmpresaCell = new PdfPCell(new Phrase(_configuration["NombreTienda"]));
             nombreEmpresaCell.HorizontalAlignment = Element.ALIGN_CENTER;
             nombreEmpresaCell.Border = PdfPCell.NO_BORDER;
             encabezado.AddCell(nombreEmpresaCell);
