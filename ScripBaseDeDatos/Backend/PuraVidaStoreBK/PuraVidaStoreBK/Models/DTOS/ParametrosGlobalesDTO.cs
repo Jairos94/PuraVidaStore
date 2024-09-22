@@ -22,8 +22,13 @@ namespace PuraVidaStoreBK.Models.DTOS
 
         public int? PrgCantidadTiempo { get; set; }
 
+		public string? PrgImpresora { get; set; }
 
-        public virtual ICollection<ImpuestosPorParametroDTO>? ImpuestosPorParametros { get; set; } = new List<ImpuestosPorParametroDTO>();
+		public string? PrgNombreNegocio { get; set; }
+
+		public string? PrgCedula { get; set; }
+
+		public virtual ICollection<ImpuestosPorParametroDTO>? ImpuestosPorParametros { get; set; } = new List<ImpuestosPorParametroDTO>();
 
         public virtual ParametrosEmailDTO? ParametrosEmail { get; set; }
 
