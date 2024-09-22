@@ -399,6 +399,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "PuraVidaStoreBK.Controllers.ParametrosController",
+    "Method": "ObtnerImpresar",
+    "RelativePath": "api/Parametros/ObtnerImpresar",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "PuraVidaStoreBK.Controllers.personaController",
     "Method": "buscarPersonaPorCedula",
     "RelativePath": "api/persona/buscarPersonaPorCedula",

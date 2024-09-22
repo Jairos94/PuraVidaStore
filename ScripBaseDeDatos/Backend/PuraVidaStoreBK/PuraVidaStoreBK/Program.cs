@@ -109,7 +109,7 @@ builder.Services.AddScoped<IParametrosGeneralesQuery, ParametrosGeneralesQuery>(
 builder.Services.AddScoped<IImpuestosQuery, ImpuestosQuery>();
 builder.Services.AddScoped<IReportesQuery, ReportesQuery>();
 builder.Services.AddScoped<IEnvioCorreo, EnviarCorreo>();
-
+builder.Services.AddScoped<IObtenerImpresoras,ObtenerImpresoras>();
 
 #endregion
 

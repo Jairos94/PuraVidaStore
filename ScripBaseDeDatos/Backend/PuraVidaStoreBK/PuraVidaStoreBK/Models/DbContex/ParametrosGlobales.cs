@@ -21,6 +21,12 @@ public partial class ParametrosGlobales
 
     public int? PrgCantidadTiempo { get; set; }
 
+    public string? PrgImpresora { get; set; }
+
+    public string? PrgNombreNegocio { get; set; }
+
+    public string? PrgCedula { get; set; }
+
     public virtual ICollection<ImpuestosPorParametro> ImpuestosPorParametros { get; set; } = new List<ImpuestosPorParametro>();
 
     public virtual ParametrosEmail? ParametrosEmail { get; set; }
