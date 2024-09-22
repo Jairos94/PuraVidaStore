@@ -38,6 +38,8 @@ export class LoginComponent implements OnInit {
   }
 
   validar() {
+    console.log(EncripDesencrip.decryptUsingAES256(this.Contrasena));
+    
     this.servicio
       .login(this.Usuario, EncripDesencrip.encryptUsingAES256(this.Contrasena))
       .subscribe(

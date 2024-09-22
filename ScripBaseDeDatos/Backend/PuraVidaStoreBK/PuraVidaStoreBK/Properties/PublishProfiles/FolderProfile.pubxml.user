@@ -4,8 +4,8 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 -->
 <Project>
   <PropertyGroup>
-    <_PublishTargetUrl>C:\inetpub\wwwroot\Tienda\API</_PublishTargetUrl>
-    <History>True|2024-01-06T18:01:16.8233637Z;False|2024-01-06T11:59:49.0709736-06:00;</History>
+    <_PublishTargetUrl>D:\Publicados\Publicados\Api</_PublishTargetUrl>
+    <History>True|2024-09-21T21:20:21.2438246Z||;</History>
     <LastFailureDetails />
   </PropertyGroup>
 </Project>
