@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace PuraVidaStoreBK.Models.DbContex;
 
@@ -67,7 +65,7 @@ public partial class PuraVidaStoreContext : DbContext
 
     public virtual DbSet<RolUsiario> RolUsiarios { get; set; }
 
-    public virtual DbSet<TiempoParaRenovar> TiempoParaRenovars { get; set; }
+    public virtual DbSet<TiempoParaRenovar> TiempoParaRenovar { get; set; }
 
     public virtual DbSet<TipoMovimiento> TipoMovimientos { get; set; }
 

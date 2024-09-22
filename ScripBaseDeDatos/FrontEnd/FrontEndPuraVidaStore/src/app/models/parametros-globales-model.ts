@@ -11,6 +11,9 @@ export interface ParametrosGlobalesModel {
   prgIdBodega: number;
   prgIdTiempo: number | null;
   prgCantidadTiempo: number | null;
+  prgImpresora: string | null;
+  prgNombreNegocio: string | null;
+  prgCedula: string | null;
   impuestosPorParametros: ParametrosImpuestoModel[] | null;
   parametrosEmail: ParametrosEmailModel  | null;
   prgIdBodegaNavigation: BodegaModel | null;
