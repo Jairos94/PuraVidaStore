@@ -1,7 +1,7 @@
-﻿using System.Drawing;
-using System.Drawing.Printing;
-using PuraVidaStoreBK.Models.DbContex;
+﻿using PuraVidaStoreBK.Models.DbContex;
 using PuraVidaStoreBK.Utilitarios.Interfase;
+using System.Drawing;
+using System.Drawing.Printing;
 
 namespace PuraVidaStoreBK.Utilitarios
 {
@@ -16,116 +16,89 @@ namespace PuraVidaStoreBK.Utilitarios
 
 		public void Imprimir(Factura factura, ParametrosGlobales parametros)
 		{
-			PrintDocument printDocument = new PrintDocument();
-			printDocument.PrinterSettings.PrinterName = parametros.PrgImpresora;
+			var pd = new PrintDocument();
+			PrinterSettings ps = new PrinterSettings();
 
-			// Manejar el evento PrintPage
-			printDocument.PrintPage += (sender, e) => OnPrintPage(sender, e, factura);
+			// Establecer la impresora
+			ps.PrinterName = parametros.PrgImpresora;
+			pd.PrinterSettings = ps;
 
-			// Iniciar la impresión
-			try
-			{
-				printDocument.Print();
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine($"Error al imprimir: {ex.Message}");
-			}
-		}
+			// Pasar la factura a ImprimirDocumento
+			pd.PrintPage += (sender, e) => ImprimirDocumento(sender, e, factura);
 
-		private void OnPrintPage(object sender, PrintPageEventArgs e, Factura factura)
-		{
-			Graphics graphics = e.Graphics;
-
-			// Establecer la fuente y el tamaño
-			Font font = new Font("Arial", 10);
-			float yPos = 0;
-			float leftMargin = e.MarginBounds.Left;
-
-			// Imprimir el encabezado
-			yPos += PrintHeader(graphics, factura, font, 0, yPos);
-
-			// Imprimir los productos
-			yPos += PrintProducts(graphics, factura.DetalleFacturas, font, 0, ref yPos, e);
-
-			// Imprimir totales
-			yPos += PrintTotals(graphics, factura, font, 0, yPos);
-
-			// Espacio adicional para el corte
-			yPos += 20;
-
-			// Comprobar si hay más contenido
-			e.HasMorePages = yPos > e.MarginBounds.Bottom; // Si excede el límite, hay más páginas
-		}
-
-		private float PrintProducts(Graphics graphics, ICollection<DetalleFactura> productos, Font font, float leftMargin, ref float yPos, PrintPageEventArgs e)
-		{
-			foreach (var producto in productos)
-			{
-				if (producto.DtfIdProducto1 != null)
-				{
-					var total = producto.DtfCantidad * (producto.DtfPrecio + (producto.DtfMontoImpuestos != null ? producto.DtfMontoImpuestos : 0)); 
-					string line = $"{producto.DtfIdProducto1.PrdCodigo} - {producto.DtfIdProducto1.PrdNombre} - " +
-								  $"{producto.DtfCantidad} - {total.ToString("N0")}";
-					graphics.DrawString(line, font, Brushes.Black, leftMargin, yPos);
-					yPos += 20;
-				}
-			}
-
-			// Agregar una línea de separación después de los productos
-			graphics.DrawString(new string('-', 60), font, Brushes.Black, leftMargin, yPos);
-			yPos += 5; // Incrementar la posición después de la línea
-
-			return yPos; // Retornar la posición actual para continuar con los totales
+			// Iniciar impresión
+			pd.Print();
 		}
 
 
-		private float PrintHeader(Graphics graphics, Factura factura, Font font, float leftMargin, float yPos)
+		private void ImprimirDocumento(object sender, PrintPageEventArgs e, Factura factura) 
 		{
-			graphics.DrawString($"Cédula: {_configuration["NumeroCedula"]}", font, Brushes.Black, leftMargin, yPos);
-			yPos += font.GetHeight(graphics);
+			/*
+			 * Fuente para el titulo
+			 * Variables para e sistema
+			 */
+			Font fuenteTitulo = new Font("Arial", 14, FontStyle.Bold, GraphicsUnit.Point);
+			Font sistemaTitulo = new Font("Arial", 12, FontStyle.Regular, GraphicsUnit.Point);
 
-			graphics.DrawString($"Tienda: {_configuration["NombreTienda"]}", font, Brushes.Black, leftMargin, yPos);
-			yPos += font.GetHeight(graphics);
 
-			graphics.DrawString($"Sucursal: {factura.FtrBodegaNavigation.BdgDescripcion}", font, Brushes.Black, leftMargin, yPos);
-			yPos += font.GetHeight(graphics);
+			/*
+			 * new RectangleF(Espacio en X,Espacio en Y,Ancho del papel,Tamanio del rectangulo a lo ancho)
+			 */
 
-			graphics.DrawString($"Fecha: {factura.FtrFecha.ToString("MM/dd/yyyy hh:mm tt")}", font, Brushes.Black, leftMargin, yPos);
-			yPos += font.GetHeight(graphics);
+			float ancho = 200;
+			float y = 10;
+			string separador = new string('-', 400);
 
-			graphics.DrawString($"Factura No: {factura.FtrCodigoFactura}", font, Brushes.Black, leftMargin, yPos);
-			yPos += font.GetHeight(graphics);
+			e.Graphics.DrawString(_configuration["NombreTienda"], fuenteTitulo, Brushes.Black, new RectangleF(10,y,ancho,20));
+			y = +45;
 
-			graphics.DrawString(new string('-', 60), font, Brushes.Black, leftMargin, yPos);
-			yPos += font.GetHeight(graphics);
+			/*Estan en la misma linea*/
+			e.Graphics.DrawString(factura.FtrBodegaNavigation.BdgDescripcion, sistemaTitulo, Brushes.Black, new RectangleF(0,y,ancho,20));
+			e.Graphics.DrawString(factura.FtrFecha.ToString("dd/MM/yyyy"), sistemaTitulo, Brushes.Black, new RectangleF(150,y,ancho,20));
+			y += 20;
+			
+			/*Esta en la misma linea*/
+			e.Graphics.DrawString(_configuration["Telefono"], sistemaTitulo, Brushes.Black, new RectangleF(0, y, ancho, 20));
+			e.Graphics.DrawString(factura.FtrFecha.ToString("h:mm tt").ToLower(), sistemaTitulo, Brushes.Black, new RectangleF(150, y, ancho, 20));
+			y += 20;
 
-			return yPos;
-		}
+			e.Graphics.DrawString(separador, sistemaTitulo, Brushes.Black, new RectangleF(0, y, ancho +100, 20));
+			y += 20;
 
-		private float PrintTotals(Graphics graphics, Factura factura, Font font, float leftMargin, float yPos)
-		{
-			var resumen = factura.FacturaResumen.FirstOrDefault(); // Asegúrate de que hay un resumen
+			var numeroRecibo = $"Recibo: {factura.FtrCodigoFactura}";
+			e.Graphics.DrawString(numeroRecibo, sistemaTitulo, Brushes.Black, new RectangleF(0, y, ancho, 20));
+			y += 20;
 
-			if (resumen != null)
+			e.Graphics.DrawString(separador, sistemaTitulo, Brushes.Black, new RectangleF(0, y, ancho + 100, 20));
+			y += 20;
+
+			var listaArticus = factura.DetalleFacturas;
+
+			/*Fonts para los articlos*/
+			Font resaltar = new Font("Arial", 12, FontStyle.Bold, GraphicsUnit.Point);
+
+			e.Graphics.DrawString("Cant", resaltar, Brushes.Black, new RectangleF(0, y, ancho, 20));
+			e.Graphics.DrawString("Precio Unitario", resaltar, Brushes.Black, new RectangleF(50, y, ancho, 20));
+			e.Graphics.DrawString("Total", resaltar, Brushes.Black, new RectangleF(200, y, ancho, 20));
+			y += 30;
+			foreach (var articulo in listaArticus) 
 			{
-				graphics.DrawString($"Subtotal: {Math.Round(resumen.FtrMontoTotal - resumen.FtrMontoImpuestos, 0):C}", font, Brushes.Black, leftMargin, yPos);
-				yPos += font.GetHeight(graphics);
-				graphics.DrawString($"Monto Impuestos: {Math.Round(resumen.FtrMontoImpuestos, 0):C}", font, Brushes.Black, leftMargin, yPos);
-				yPos += font.GetHeight(graphics);
-				graphics.DrawString($"Total: {Math.Round(resumen.FtrMontoTotal, 0):C}", font, Brushes.Black, leftMargin, yPos);
-				yPos += font.GetHeight(graphics);
+				decimal total = articulo.DtfCantidad * articulo.DtfPrecio;
+				total += articulo.DtfMontoImpuestos != null ? articulo.DtfMontoImpuestos : 0;
+				e.Graphics.DrawString(articulo.DtfCantidad.ToString(), resaltar, Brushes.Black, new RectangleF(0, y, ancho, 20));
+				e.Graphics.DrawString(articulo.DtfPrecio.ToString("N0"), sistemaTitulo, Brushes.Black, new RectangleF(50, y, ancho, 20));
+				e.Graphics.DrawString(total.ToString("N2"), sistemaTitulo, Brushes.Black, new RectangleF(200, y, ancho, 20));
+				y += 20;
+
+				e.Graphics.DrawString(articulo.DtfIdProducto1.PrdCodigo, resaltar, Brushes.Black, new RectangleF(0, y, ancho, 20));
+				e.Graphics.DrawString(articulo.DtfIdProducto1.PrdNombre, sistemaTitulo, Brushes.Black, new RectangleF(100, y, ancho, 20));
+				y += 40;
 			}
 
-			// Espacio adicional antes del mensaje final
-			yPos += 10; // Mantener el espacio antes del mensaje
-			graphics.DrawString("Gracias por su compra!", font, Brushes.Black, leftMargin, yPos);
-			yPos += font.GetHeight(graphics); // Aumentar la posición después del mensaje
+			e.Graphics.DrawString(separador, sistemaTitulo, Brushes.Black, new RectangleF(0, y, ancho + 100, 20));
+			y += 20;
 
-			return yPos;
+			var resumen = factura.FacturaResumen.FirstOrDefault();
 		}
-
-
-
 	}
 }
