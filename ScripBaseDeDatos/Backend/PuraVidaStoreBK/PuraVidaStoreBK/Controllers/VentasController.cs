@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PuraVidaStoreBK.ExecQuerys.Interfaces;
 using PuraVidaStoreBK.Models.DbContex;
 using PuraVidaStoreBK.Models.DTOS;
@@ -12,7 +11,7 @@ using XAct;
 
 namespace PuraVidaStoreBK.Controllers
 {
-    [Route("api/[controller]")]
+	[Route("api/[controller]")]
     [ApiController]
     public class VentasController : ControllerBase
     {
@@ -21,15 +20,17 @@ namespace PuraVidaStoreBK.Controllers
         private readonly IMayoristaQuery _mayorista;
         private readonly IParametrosGeneralesQuery _parametros;
         private readonly IEnvioCorreo _envioCorreo;
+		private readonly IImprimirTiquete _imprimir;
 
-        public VentasController(IVentasQuery ventas, IMapper mapper, IMayoristaQuery mayorista, IParametrosGeneralesQuery parametros, IEnvioCorreo envioCorreo)
+		public VentasController(IVentasQuery ventas, IMapper mapper, IMayoristaQuery mayorista, IParametrosGeneralesQuery parametros, IEnvioCorreo envioCorreo,IImprimirTiquete imprimir)
         {
             _ventas = ventas;
             _mapper = mapper;
             _mayorista = mayorista;
             _parametros = parametros;
             _envioCorreo = envioCorreo;
-        }
+			_imprimir = imprimir;
+		}
 
         // GET api/<VentasController>/5
         [HttpGet("ObtenerFormasPago"), Authorize]
@@ -113,7 +114,7 @@ namespace PuraVidaStoreBK.Controllers
 
 
                 var parametrosGlobales = await _parametros.ObtenerParametrosId(retorno.FtrBodega);
-                if (parametrosGlobales != null && parametrosGlobales.ParametrosEmail != null)
+                if (parametrosGlobales != null /*&& parametrosGlobales.ParametrosEmail != null*/)
                 {
                     var facturaEmail = await _ventas.consultarFactura(retorno.FtrCodigoFactura);
                     facturaEmail.DetalleFacturas = await _ventas.ConsultarDetallePorFactura(facturaEmail.FtrId);
@@ -121,7 +122,8 @@ namespace PuraVidaStoreBK.Controllers
                     facturaEmail.FtrFormaPagoNavigation = facturaFaltantes.FtrFormaPagoNavigation;
                     facturaEmail.FtrBodegaNavigation = facturaFaltantes.FtrBodegaNavigation;
                     var listaCorreo = new List<string> { facturaEmail.FtrCorreoEnvio };
-                    _envioCorreo.EnviarFactura(facturaEmail, parametrosGlobales.ParametrosEmail, listaCorreo);
+                   // _envioCorreo.EnviarFactura(facturaEmail, parametrosGlobales.ParametrosEmail, listaCorreo);
+                    _imprimir.Imprimir(facturaEmail, parametrosGlobales);
                 }
 
 

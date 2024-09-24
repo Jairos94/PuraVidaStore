@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PuraVidaStoreBK")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7cfb01b8bc2417b01ff382d9764c8eaf8aafe0af")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+721b6906143f7757f24d39fbcf55e072a503dcd9")]
 [assembly: System.Reflection.AssemblyProductAttribute("PuraVidaStoreBK")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PuraVidaStoreBK")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

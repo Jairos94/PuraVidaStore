@@ -110,6 +110,7 @@ builder.Services.AddScoped<IImpuestosQuery, ImpuestosQuery>();
 builder.Services.AddScoped<IReportesQuery, ReportesQuery>();
 builder.Services.AddScoped<IEnvioCorreo, EnviarCorreo>();
 builder.Services.AddScoped<IObtenerImpresoras,ObtenerImpresoras>();
+builder.Services.AddScoped<IImprimirTiquete, ImprimirTiquete>();
 
 #endregion
 
