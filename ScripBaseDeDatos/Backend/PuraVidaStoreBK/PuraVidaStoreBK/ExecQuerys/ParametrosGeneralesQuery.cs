@@ -100,7 +100,7 @@ namespace PuraVidaStoreBK.ExecQuerys
         }
         public async Task<bool> EliminarImpustoPorParametro(List<ImpuestosPorParametro> datosElimnar) 
         {
-             dbContex.ImpuestosPorParametros.RemoveRange(datosElimnar);
+            dbContex.ImpuestosPorParametros.RemoveRange(datosElimnar);
              await dbContex.SaveChangesAsync();
              return true;
         }

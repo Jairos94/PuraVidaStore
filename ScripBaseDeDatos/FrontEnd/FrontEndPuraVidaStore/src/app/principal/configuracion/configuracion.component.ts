@@ -225,19 +225,25 @@ export class ConfiguracionComponent implements OnInit {
     }
     if (this.ImpuestosAgregar.length > 0) {
       let listaImpuestos: ParametrosImpuestoModel[] = [];
+      let idsAgregados = new Set<number>(); // Usar un Set para rastrear IDs únicos
+    
       this.ImpuestosAgregar.forEach((x) => {
-        let nuevoImpuesto: ParametrosImpuestoModel = {
-          impPid: 0,
-          impPidParametroGlobal: this.parametrosGlobales.prgId,
-          impPidImpuesto: x.impId,
-          impPidImpuestoNavigation: null,
-          impPidParametroGlobalNavigation: null,
-        };
-        listaImpuestos.push(nuevoImpuesto);
+        if (!idsAgregados.has(x.impId)) { // Verificar si el ID ya ha sido agregado
+          let nuevoImpuesto: ParametrosImpuestoModel = {
+            impPid: 0,
+            impPidParametroGlobal: this.parametrosGlobales.prgId,
+            impPidImpuesto: x.impId,
+            impPidImpuestoNavigation: null,
+            impPidParametroGlobalNavigation: null,
+          };
+          listaImpuestos.push(nuevoImpuesto);
+          idsAgregados.add(x.impId); // Agregar el ID al Set
+        }
       });
-      this.parametrosGlobales.impuestosPorParametros = [];
-      this.parametrosGlobales.impuestosPorParametros = listaImpuestos;
-    } else {
+    
+      this.parametrosGlobales.impuestosPorParametros = listaImpuestos; // Asignar la lista sin duplicados
+    }
+    else {
       this.parametrosGlobales.impuestosPorParametros = null;
     }
     if (!huboError) {

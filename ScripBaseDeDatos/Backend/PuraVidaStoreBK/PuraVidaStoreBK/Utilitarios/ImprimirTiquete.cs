@@ -99,6 +99,34 @@ namespace PuraVidaStoreBK.Utilitarios
 			y += 20;
 
 			var resumen = factura.FacturaResumen.FirstOrDefault();
+			var subtotal = resumen.FtrMontoTotal - (resumen.FtrMontoImpuestos != null ? resumen.FtrMontoImpuestos : 0);
+			var montoTotal = subtotal + (resumen.FtrMontoImpuestos != null ? resumen.FtrMontoImpuestos : 0);
+			e.Graphics.DrawString("Subtotal", sistemaTitulo, Brushes.Black, new RectangleF(0, y, ancho, 20));
+			e.Graphics.DrawString(subtotal.ToString("N2"), sistemaTitulo, Brushes.Black, new RectangleF(150, y, ancho, 20));
+			y += 20;
+
+			
+			e.Graphics.DrawString("Impuestos", sistemaTitulo, Brushes.Black, new RectangleF(0, y, ancho, 20));
+			e.Graphics.DrawString(resumen.FtrMontoImpuestos.ToString("N2"), sistemaTitulo, Brushes.Black, new RectangleF(150, y, ancho, 20));
+			y += 20;
+
+			e.Graphics.DrawString("Total", sistemaTitulo, Brushes.Black, new RectangleF(0, y, ancho, 20));
+			e.Graphics.DrawString(montoTotal.ToString("N2"), sistemaTitulo, Brushes.Black, new RectangleF(150, y, ancho, 20));
+			y += 20;
+
+
+			e.Graphics.DrawString("Forma de pago", sistemaTitulo, Brushes.Black, new RectangleF(0, y, ancho, 20));
+			e.Graphics.DrawString(factura.FtrFormaPagoNavigation.FrpDescripcion, sistemaTitulo, Brushes.Black, new RectangleF(150, y, ancho, 20));
+			y += 20;
+
+			e.Graphics.DrawString("Paga con", sistemaTitulo, Brushes.Black, new RectangleF(0, y, ancho, 20));
+			e.Graphics.DrawString(resumen.FtrMontoPagado.HasValue ? resumen.FtrMontoPagado.Value.ToString("N2") : "", sistemaTitulo, Brushes.Black, new RectangleF(150, y, ancho, 20));
+			y += 20;
+
+			e.Graphics.DrawString("Cambio", sistemaTitulo, Brushes.Black, new RectangleF(0, y, ancho, 20));
+			e.Graphics.DrawString(resumen.FtrCambio.HasValue ? resumen.FtrCambio.Value.ToString("N2") : "", sistemaTitulo, Brushes.Black, new RectangleF(150, y, ancho, 20));
+			y += 20;
+
 		}
 	}
 }

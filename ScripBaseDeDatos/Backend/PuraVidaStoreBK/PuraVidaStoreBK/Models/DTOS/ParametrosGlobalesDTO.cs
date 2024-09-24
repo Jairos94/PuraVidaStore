@@ -12,11 +12,11 @@ namespace PuraVidaStoreBK.Models.DTOS
 
         public int PrgUndsAgregarMayorista { get; set; }
 
-        public bool PrgHabilitarImpuestos { get; set; }
+		public bool PrgHabilitarImpuestos { get; set; }
 
-        public bool PrgImpustosIncluidos { get; set; }
+		public bool PrgImpustosIncluidos { get; set; }
 
-        public int PrgIdBodega { get; set; }
+		public int PrgIdBodega { get; set; }
 
         public int? PrgIdTiempo { get; set; }
 
