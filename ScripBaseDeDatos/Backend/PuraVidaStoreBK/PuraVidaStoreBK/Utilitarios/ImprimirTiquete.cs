@@ -49,8 +49,16 @@ namespace PuraVidaStoreBK.Utilitarios
 			float y = 10;
 			string separador = new string('-', 400);
 
+			string rutaLogo = _configuration["rutaLogo"];
+			if (File.Exists(rutaLogo))
+			{
+				Image logo = Image.FromFile(rutaLogo);
+				e.Graphics.DrawImage(logo, new RectangleF(70, y, 100, 50));
+				y+=45;  // Ajusta el incremento
+			}
+
 			e.Graphics.DrawString(_configuration["NombreTienda"], fuenteTitulo, Brushes.Black, new RectangleF(10,y,ancho,20));
-			y = +45;
+			y +=30;
 
 			/*Estan en la misma linea*/
 			e.Graphics.DrawString(factura.FtrBodegaNavigation.BdgDescripcion, sistemaTitulo, Brushes.Black, new RectangleF(0,y,ancho,20));
@@ -127,6 +135,8 @@ namespace PuraVidaStoreBK.Utilitarios
 			e.Graphics.DrawString(resumen.FtrCambio.HasValue ? resumen.FtrCambio.Value.ToString("N2") : "", sistemaTitulo, Brushes.Black, new RectangleF(150, y, ancho, 20));
 			y += 20;
 
+			e.Graphics.DrawString(separador, sistemaTitulo, Brushes.Black, new RectangleF(0, y, ancho + 100, 20));
+			y += 20;
 		}
 	}
 }
