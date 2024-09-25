@@ -1,0 +1,172 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\PuraVida\\PuraVidaStore\\ScripBaseDeDatos\\Backend\\PuraVidaStoreBK\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{AB46AEDD-ABDE-4B8E-B33B-45753CC6B23A}|PuraVidaStoreBK\\PuraVidaStoreBK.csproj|e:\\puravida\\puravidastore\\scripbasededatos\\backend\\puravidastorebk\\puravidastorebk\\utilitarios\\imprimirtiquete.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AB46AEDD-ABDE-4B8E-B33B-45753CC6B23A}|PuraVidaStoreBK\\PuraVidaStoreBK.csproj|solutionrelative:puravidastorebk\\utilitarios\\imprimirtiquete.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AB46AEDD-ABDE-4B8E-B33B-45753CC6B23A}|PuraVidaStoreBK\\PuraVidaStoreBK.csproj|e:\\puravida\\puravidastore\\scripbasededatos\\backend\\puravidastorebk\\puravidastorebk\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{AB46AEDD-ABDE-4B8E-B33B-45753CC6B23A}|PuraVidaStoreBK\\PuraVidaStoreBK.csproj|solutionrelative:puravidastorebk\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AB46AEDD-ABDE-4B8E-B33B-45753CC6B23A}|PuraVidaStoreBK\\PuraVidaStoreBK.csproj|e:\\puravida\\puravidastore\\scripbasededatos\\backend\\puravidastorebk\\puravidastorebk\\utilitarios\\interfase\\iimprimirtiquete.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AB46AEDD-ABDE-4B8E-B33B-45753CC6B23A}|PuraVidaStoreBK\\PuraVidaStoreBK.csproj|solutionrelative:puravidastorebk\\utilitarios\\interfase\\iimprimirtiquete.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AB46AEDD-ABDE-4B8E-B33B-45753CC6B23A}|PuraVidaStoreBK\\PuraVidaStoreBK.csproj|e:\\puravida\\puravidastore\\scripbasededatos\\backend\\puravidastorebk\\puravidastorebk\\models\\dbcontex\\parametrosglobales.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AB46AEDD-ABDE-4B8E-B33B-45753CC6B23A}|PuraVidaStoreBK\\PuraVidaStoreBK.csproj|solutionrelative:puravidastorebk\\models\\dbcontex\\parametrosglobales.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AB46AEDD-ABDE-4B8E-B33B-45753CC6B23A}|PuraVidaStoreBK\\PuraVidaStoreBK.csproj|e:\\puravida\\puravidastore\\scripbasededatos\\backend\\puravidastorebk\\puravidastorebk\\models\\dtos\\parametrosglobalesdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AB46AEDD-ABDE-4B8E-B33B-45753CC6B23A}|PuraVidaStoreBK\\PuraVidaStoreBK.csproj|solutionrelative:puravidastorebk\\models\\dtos\\parametrosglobalesdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AB46AEDD-ABDE-4B8E-B33B-45753CC6B23A}|PuraVidaStoreBK\\PuraVidaStoreBK.csproj|e:\\puravida\\puravidastore\\scripbasededatos\\backend\\puravidastorebk\\puravidastorebk\\controllers\\parametroscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AB46AEDD-ABDE-4B8E-B33B-45753CC6B23A}|PuraVidaStoreBK\\PuraVidaStoreBK.csproj|solutionrelative:puravidastorebk\\controllers\\parametroscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AB46AEDD-ABDE-4B8E-B33B-45753CC6B23A}|PuraVidaStoreBK\\PuraVidaStoreBK.csproj|e:\\puravida\\puravidastore\\scripbasededatos\\backend\\puravidastorebk\\puravidastorebk\\controllers\\ventascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AB46AEDD-ABDE-4B8E-B33B-45753CC6B23A}|PuraVidaStoreBK\\PuraVidaStoreBK.csproj|solutionrelative:puravidastorebk\\controllers\\ventascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AB46AEDD-ABDE-4B8E-B33B-45753CC6B23A}|PuraVidaStoreBK\\PuraVidaStoreBK.csproj|e:\\puravida\\puravidastore\\scripbasededatos\\backend\\puravidastorebk\\puravidastorebk\\execquerys\\parametrosgeneralesquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AB46AEDD-ABDE-4B8E-B33B-45753CC6B23A}|PuraVidaStoreBK\\PuraVidaStoreBK.csproj|solutionrelative:puravidastorebk\\execquerys\\parametrosgeneralesquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AB46AEDD-ABDE-4B8E-B33B-45753CC6B23A}|PuraVidaStoreBK\\PuraVidaStoreBK.csproj|e:\\puravida\\puravidastore\\scripbasededatos\\backend\\puravidastorebk\\puravidastorebk\\models\\dbcontex\\puravidastorecontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AB46AEDD-ABDE-4B8E-B33B-45753CC6B23A}|PuraVidaStoreBK\\PuraVidaStoreBK.csproj|solutionrelative:puravidastorebk\\models\\dbcontex\\puravidastorecontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ImprimirTiquete.cs",
+              "DocumentMoniker": "E:\\PuraVida\\PuraVidaStore\\ScripBaseDeDatos\\Backend\\PuraVidaStoreBK\\PuraVidaStoreBK\\Utilitarios\\ImprimirTiquete.cs",
+              "RelativeDocumentMoniker": "PuraVidaStoreBK\\Utilitarios\\ImprimirTiquete.cs",
+              "ToolTip": "E:\\PuraVida\\PuraVidaStore\\ScripBaseDeDatos\\Backend\\PuraVidaStoreBK\\PuraVidaStoreBK\\Utilitarios\\ImprimirTiquete.cs",
+              "RelativeToolTip": "PuraVidaStoreBK\\Utilitarios\\ImprimirTiquete.cs",
+              "ViewState": "AgIAAEoAAAAAAAAAAAApwIgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-23T00:03:35.124Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ParametrosGlobales.cs",
+              "DocumentMoniker": "E:\\PuraVida\\PuraVidaStore\\ScripBaseDeDatos\\Backend\\PuraVidaStoreBK\\PuraVidaStoreBK\\Models\\DbContex\\ParametrosGlobales.cs",
+              "RelativeDocumentMoniker": "PuraVidaStoreBK\\Models\\DbContex\\ParametrosGlobales.cs",
+              "ToolTip": "E:\\PuraVida\\PuraVidaStore\\ScripBaseDeDatos\\Backend\\PuraVidaStoreBK\\PuraVidaStoreBK\\Models\\DbContex\\ParametrosGlobales.cs",
+              "RelativeToolTip": "PuraVidaStoreBK\\Models\\DbContex\\ParametrosGlobales.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAA/wA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-24T02:56:34.399Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "IImprimirTiquete.cs",
+              "DocumentMoniker": "E:\\PuraVida\\PuraVidaStore\\ScripBaseDeDatos\\Backend\\PuraVidaStoreBK\\PuraVidaStoreBK\\Utilitarios\\Interfase\\IImprimirTiquete.cs",
+              "RelativeDocumentMoniker": "PuraVidaStoreBK\\Utilitarios\\Interfase\\IImprimirTiquete.cs",
+              "ToolTip": "E:\\PuraVida\\PuraVidaStore\\ScripBaseDeDatos\\Backend\\PuraVidaStoreBK\\PuraVidaStoreBK\\Utilitarios\\Interfase\\IImprimirTiquete.cs",
+              "RelativeToolTip": "PuraVidaStoreBK\\Utilitarios\\Interfase\\IImprimirTiquete.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-23T00:28:26.72Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ParametrosController.cs",
+              "DocumentMoniker": "E:\\PuraVida\\PuraVidaStore\\ScripBaseDeDatos\\Backend\\PuraVidaStoreBK\\PuraVidaStoreBK\\Controllers\\ParametrosController.cs",
+              "RelativeDocumentMoniker": "PuraVidaStoreBK\\Controllers\\ParametrosController.cs",
+              "ToolTip": "E:\\PuraVida\\PuraVidaStore\\ScripBaseDeDatos\\Backend\\PuraVidaStoreBK\\PuraVidaStoreBK\\Controllers\\ParametrosController.cs",
+              "RelativeToolTip": "PuraVidaStoreBK\\Controllers\\ParametrosController.cs",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAawCAAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-23T00:25:58.699Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "E:\\PuraVida\\PuraVidaStore\\ScripBaseDeDatos\\Backend\\PuraVidaStoreBK\\PuraVidaStoreBK\\appsettings.json",
+              "RelativeDocumentMoniker": "PuraVidaStoreBK\\appsettings.json",
+              "ToolTip": "E:\\PuraVida\\PuraVidaStore\\ScripBaseDeDatos\\Backend\\PuraVidaStoreBK\\PuraVidaStoreBK\\appsettings.json",
+              "RelativeToolTip": "PuraVidaStoreBK\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-09-23T00:12:17.93Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "VentasController.cs",
+              "DocumentMoniker": "E:\\PuraVida\\PuraVidaStore\\ScripBaseDeDatos\\Backend\\PuraVidaStoreBK\\PuraVidaStoreBK\\Controllers\\VentasController.cs",
+              "RelativeDocumentMoniker": "PuraVidaStoreBK\\Controllers\\VentasController.cs",
+              "ToolTip": "E:\\PuraVida\\PuraVidaStore\\ScripBaseDeDatos\\Backend\\PuraVidaStoreBK\\PuraVidaStoreBK\\Controllers\\VentasController.cs",
+              "RelativeToolTip": "PuraVidaStoreBK\\Controllers\\VentasController.cs",
+              "ViewState": "AgIAAKQAAAAAAAAAAAAhwIUAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-23T00:00:00.257Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "PuraVidaStoreContext.cs",
+              "DocumentMoniker": "E:\\PuraVida\\PuraVidaStore\\ScripBaseDeDatos\\Backend\\PuraVidaStoreBK\\PuraVidaStoreBK\\Models\\DbContex\\PuraVidaStoreContext.cs",
+              "RelativeDocumentMoniker": "PuraVidaStoreBK\\Models\\DbContex\\PuraVidaStoreContext.cs",
+              "ToolTip": "E:\\PuraVida\\PuraVidaStore\\ScripBaseDeDatos\\Backend\\PuraVidaStoreBK\\PuraVidaStoreBK\\Models\\DbContex\\PuraVidaStoreContext.cs",
+              "RelativeToolTip": "PuraVidaStoreBK\\Models\\DbContex\\PuraVidaStoreContext.cs",
+              "ViewState": "AgIAACgAAAAAAAAAAADwvzcAAABIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-22T20:16:55.872Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ParametrosGeneralesQuery.cs",
+              "DocumentMoniker": "E:\\PuraVida\\PuraVidaStore\\ScripBaseDeDatos\\Backend\\PuraVidaStoreBK\\PuraVidaStoreBK\\ExecQuerys\\ParametrosGeneralesQuery.cs",
+              "RelativeDocumentMoniker": "PuraVidaStoreBK\\ExecQuerys\\ParametrosGeneralesQuery.cs",
+              "ToolTip": "E:\\PuraVida\\PuraVidaStore\\ScripBaseDeDatos\\Backend\\PuraVidaStoreBK\\PuraVidaStoreBK\\ExecQuerys\\ParametrosGeneralesQuery.cs",
+              "RelativeToolTip": "PuraVidaStoreBK\\ExecQuerys\\ParametrosGeneralesQuery.cs",
+              "ViewState": "AgIAAF8AAAAAAAAAAAAEwGgAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-22T20:15:24.249Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ParametrosGlobalesDTO.cs",
+              "DocumentMoniker": "E:\\PuraVida\\PuraVidaStore\\ScripBaseDeDatos\\Backend\\PuraVidaStoreBK\\PuraVidaStoreBK\\Models\\DTOS\\ParametrosGlobalesDTO.cs",
+              "RelativeDocumentMoniker": "PuraVidaStoreBK\\Models\\DTOS\\ParametrosGlobalesDTO.cs",
+              "ToolTip": "E:\\PuraVida\\PuraVidaStore\\ScripBaseDeDatos\\Backend\\PuraVidaStoreBK\\PuraVidaStoreBK\\Models\\DTOS\\ParametrosGlobalesDTO.cs",
+              "RelativeToolTip": "PuraVidaStoreBK\\Models\\DTOS\\ParametrosGlobalesDTO.cs",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAxwA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-22T20:11:51.611Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
