@@ -140,39 +140,38 @@ namespace PuraVidaStoreBK.ExecQuerys
             var ListaProductos = new List<Inventarios>();
             try
             {
-                
-                    foreach (var ProductoCantidad in listaIds) 
-                    {
-                        var producto = await _dbContex.Productos.Where(x=>x.PrdId==ProductoCantidad.idProducto)
-                                                         .Include(x=>x.PrdIdTipoProductoNavigation)
-                                                         .FirstOrDefaultAsync();
-                       
-                        var inventario = new Inventarios();
-                        inventario.producto = producto;
-                        inventario.CantidadExistencia = ProductoCantidad.Cantidad;
-                        if (inventario.CantidadExistencia != 0)
-                        {
-                            if (producto.PdrTieneExistencias == false || producto.PdrTieneExistencias == null || producto.PdrVisible == false || producto.PdrVisible == null)
-                            {
-                                producto.PdrVisible = true;
-                                producto.PdrTieneExistencias = true;
 
-                                _dbContex.Productos.Update(producto);
-                                await _dbContex.SaveChangesAsync();
-                            }
-                            ListaProductos.Add(inventario);
-                        }
-                        else 
-                        {
-                            producto.PdrTieneExistencias = false;
+				var productoIds = listaIds.Select(id => id.idProducto).ToList(); // Cargar los IDs
 
-                            _dbContex.Productos.Update(producto);
-                            await _dbContex.SaveChangesAsync();
-                        }
-                    }
-                
-                   
-            }
+				var productos = await _dbContex.Productos
+					.Where(prod => productoIds.Contains(prod.PrdId))
+					.Include(prod => prod.PrdIdTipoProductoNavigation) // Cargar la navegación si es necesario
+					.ToListAsync(); // Traer todos los productos que coinciden
+
+				var inventarios = productos.Select(prod => new Inventarios
+				{
+					producto = prod,
+					CantidadExistencia = listaIds.FirstOrDefault(id => id.idProducto == prod.PrdId).Cantidad // Asignar la cantidad
+				}).ToList();
+
+				var listaUpdate0 = inventarios.Where(x => x.CantidadExistencia ==0).ToList();
+				if (listaUpdate0 != null && listaUpdate0.Count>0)
+				{
+					foreach (var item in listaUpdate0)
+					{
+
+						item.producto.PdrVisible = false;
+
+						_dbContex.Productos.Update(item.producto);
+						await _dbContex.SaveChangesAsync();
+					}
+				}
+
+                ListaProductos = inventarios.Where(x => x.CantidadExistencia != 0).ToList();
+
+
+
+			}
             catch (Exception ex)
             {
 
