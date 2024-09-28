@@ -70,6 +70,9 @@ namespace PuraVidaStoreBK.Utilitarios
 			e.Graphics.DrawString(factura.FtrFecha.ToString("h:mm tt").ToLower(), sistemaTitulo, Brushes.Black, new RectangleF(150, y, ancho, 20));
 			y += 20;
 
+			e.Graphics.DrawString($"Cédula: {_configuration["NumeroCedula"]}", sistemaTitulo, Brushes.Black, new RectangleF(0, y, ancho, 20));
+			y += 20;
+
 			e.Graphics.DrawString(separador, sistemaTitulo, Brushes.Black, new RectangleF(0, y, ancho +100, 20));
 			y += 20;
 
@@ -89,6 +92,7 @@ namespace PuraVidaStoreBK.Utilitarios
 			e.Graphics.DrawString("Precio Unitario", resaltar, Brushes.Black, new RectangleF(50, y, ancho, 20));
 			e.Graphics.DrawString("Total", resaltar, Brushes.Black, new RectangleF(200, y, ancho, 20));
 			y += 30;
+			listaArticus = listaArticus.OrderBy(x=>x.DtfLinea).ToList();
 			foreach (var articulo in listaArticus) 
 			{
 				decimal total = articulo.DtfCantidad * articulo.DtfPrecio;

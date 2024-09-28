@@ -7,6 +7,7 @@ import { EncripDesencrip } from '../utils/EncripDesencrip';
 import { BodegaService } from '../services/bodega.service';
 import { BodegaModel } from '../models/bodega-model';
 import { ParametrosService } from '../services/parametros.service';
+import { firstValueFrom } from 'rxjs'; // Importar firstValueFrom
 
 @Component({
   selector: 'app-login',
@@ -23,6 +24,7 @@ export class LoginComponent implements OnInit {
     bdgDescripcion: '',
     bdgVisible: true,
   };
+
   constructor(
     private servicio: UsuarioServiceService,
     private servicioBodega: BodegaService,
@@ -32,62 +34,56 @@ export class LoginComponent implements OnInit {
     private primengConfig: PrimeNGConfig
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.primengConfig.ripple = true;
     this.obtenerBodegas();
   }
 
-  validar() {
-    
-    this.servicio
-      .login(this.Usuario, EncripDesencrip.encryptUsingAES256(this.Contrasena))
-      .subscribe(
-        (u) => {
-          activo.usuarioPrograma = u.usuario;
-          activo.token = u.token;
-          activo.bodegaIngreso = this.bodegaSeleccionada;
-          this.obtenerParametrosGlabales(activo.bodegaIngreso.bdgId)
-          this.route.navigate(['/principal']);
-        },
-        (_error) => {
-          let datoError = '';
-          try {
-            datoError = _error.error;
-            this.showError(datoError);
-          } catch (error) {
-            datoError = 'Error de conexcion';
-          }
-
-          console.log(datoError);
-        }
+  async validar() {
+    try {
+      const u = await firstValueFrom(
+        this.servicio.login(this.Usuario, EncripDesencrip.encryptUsingAES256(this.Contrasena))
       );
+  
+      activo.usuarioPrograma = u.usuario;
+      activo.token = u.token;
+      activo.bodegaIngreso = this.bodegaSeleccionada;
+  
+      await this.obtenerParametrosGlabales(activo.bodegaIngreso.bdgId);
+      this.route.navigate(['/principal']);
+    } catch (error: any) { // Especificamos que 'error' puede ser de cualquier tipo
+      let datoError = '';
+      if (error.error) {
+        datoError = error.error; // Aquí aseguramos que existe 'error'
+      } else {
+        datoError = 'Error de conexión';
+      }
+  
+      this.showError(datoError);
+      console.log(datoError);
+    }
   }
+  
 
   obtenerBodegas() {
     this.servicioBodega.listaBodegas().subscribe(
       (x) => {
-        this.listaBodegas = [];
         this.listaBodegas = x;
       },
       (_e) => console.error(_e)
     );
   }
 
-  obtenerParametrosGlabales(idBodega: number) {
-    this.servicioParametros.ObtenerPametros(idBodega).subscribe({
-      next: (x) => {
-        activo.parametrosGlobales = x;
-        activo.parametrosGlobales.impuestosPorParametros?.forEach(
-          (impuesto) => {
-            if (impuesto.impPidImpuestoNavigation != null) {
-              activo.listaImpuestos.push(impuesto.impPidImpuestoNavigation);
-            }
-          }
-        );
-      },
-      error: (_e) => {console.log(_e);
-      },
-    });
+  async obtenerParametrosGlabales(idBodega: number) {
+    try {
+      const x = await firstValueFrom(this.servicioParametros.ObtenerPametros(idBodega));
+      activo.parametrosGlobales = x;
+      activo.listaImpuestos = activo.parametrosGlobales.impuestosPorParametros
+        ?.filter(impuesto => impuesto.impPidImpuestoNavigation != null)
+        .map(impuesto => impuesto.impPidImpuestoNavigation!) || [];
+    } catch (_e) {
+      console.log(_e);
+    }
   }
 
   showError(MensajeError: string) {
