@@ -34,7 +34,7 @@ export class ConfiguracionComponent implements OnInit {
   ImpuestosSugerencia: ImpuestosModel[] = [];
   ImpuestosAgregar: ImpuestosModel[] = []; //Impuestos que se agregan a la tabla
   ListTiempos: TiempoParaRenovarModel[] = [];
-  CorreoHbilitado: boolean = true;
+  CorreoHbilitado: boolean = false;
 
   parametrosGlobales: ParametrosGlobalesModel = {
     prgId: 0,
@@ -82,7 +82,10 @@ export class ConfiguracionComponent implements OnInit {
     usuario: new FormControl(this.emial.preUser),
     clave: new FormControl(this.emial.preClave),
     ssl: new FormControl(this.emial.preSsl),
+    impresora: new FormControl<string | null>(null) // O asegúrate de que el tipo permita 'undefined' si es necesario
+
   });
+  listaImpresoras:string[]=[];
 
   constructor(
     private impuestoServicio: ImpuestoService,
@@ -95,6 +98,7 @@ export class ConfiguracionComponent implements OnInit {
     this.CargarImpuestos();
     this.obtenerParametros();
     this.obtenerTiempoParaRenovar();
+    this.CargarImpresoras();
   }
 
   CargarImpuestos() {
@@ -107,6 +111,19 @@ export class ConfiguracionComponent implements OnInit {
         console.log(_e);
       },
     });
+  }
+
+  CargarImpresoras(){
+    this.parametrosServicio.ObtenerImpresoras().subscribe(
+      {
+        next: (x) => {
+          this.listaImpresoras = [];
+          this.listaImpresoras = x;
+        },
+        error: (_e) => {
+          console.log(_e);
+        },
+      })
   }
 
   obtenerTiempoParaRenovar() {
@@ -177,6 +194,7 @@ export class ConfiguracionComponent implements OnInit {
   }
 
   guardar() {
+
     let contadorImpuestos: number = 0;
     let huboError: boolean = false;
 
@@ -195,6 +213,7 @@ export class ConfiguracionComponent implements OnInit {
       this.ParametrosForm.get('tiempoParaRenovar')?.value!;
       this.parametrosGlobales.prgIdTiempo =
       this.ParametrosForm.get('tiempoParaRenovarId')?.value!;
+      this.parametrosGlobales.prgImpresora = this.ParametrosForm.get('impresora')?.value!;
 
     if (this.CorreoHbilitado) {
       this.emial.preHost = this.ParametrosForm.get('host')?.value!;
@@ -223,6 +242,7 @@ export class ConfiguracionComponent implements OnInit {
     } else {
       this.parametrosGlobales.parametrosEmail = null;
     }
+
     if (this.ImpuestosAgregar.length > 0) {
       let listaImpuestos: ParametrosImpuestoModel[] = [];
       let idsAgregados = new Set<number>(); // Usar un Set para rastrear IDs únicos
@@ -246,6 +266,7 @@ export class ConfiguracionComponent implements OnInit {
     else {
       this.parametrosGlobales.impuestosPorParametros = null;
     }
+
     if (!huboError) {
       this.parametrosServicio
         .GuardarParametros(this.parametrosGlobales)
@@ -271,10 +292,11 @@ export class ConfiguracionComponent implements OnInit {
       habilitarImpuestos: datos.prgHabilitarImpuestos,
       impuestosIncluidos: datos.prgImpustosIncluidos,
       tiempoParaRenovar: datos.prgCantidadTiempo,
-      tiempoParaRenovarId:datos.prgIdTiempo
-
+      tiempoParaRenovarId: datos.prgIdTiempo,
+      impresora: datos.prgImpresora ?? null // Asigna null si el valor es undefined
     });
   }
+  
 
   cargarDatosEmail(datos: ParametrosEmailModel) {
     this.ParametrosForm.patchValue({

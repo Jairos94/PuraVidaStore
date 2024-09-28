@@ -66,9 +66,21 @@
                 optionValue="trpId"
               ></p-dropdown>
             </div>
+
+            <div class="field">
+              <label htmlFor="lblUnidadesHabilitarMayorista"
+                >Impresoras
+              </label>
+
+              <p-dropdown
+                formControlName="impresora"
+                [options]="listaImpresoras"
+              ></p-dropdown>
+            </div>
+
           </p-accordionTab>
 
-          <p-accordionTab header="Configuración del correo">
+          <!-- <p-accordionTab header="Configuración del correo">
             <div class="field">
               Habilitar correo
               <p-inputSwitch
@@ -144,7 +156,8 @@
                 <p-inputSwitch formControlName="ssl"></p-inputSwitch>
               </div>
             </div>
-          </p-accordionTab>
+          </p-accordionTab> -->
+
         </div>
         <div class="sm:col md:col-1">
           <button
