@@ -86,10 +86,11 @@ namespace PuraVidaStoreBK.Utilitarios
 			var listaArticus = factura.DetalleFacturas;
 
 			/*Fonts para los articlos*/
-			Font resaltar = new Font("Arial", 12, FontStyle.Bold, GraphicsUnit.Point);
+			Font resaltar = new Font("Arial", 10, FontStyle.Bold, GraphicsUnit.Point);
+			Font fontForeache = new Font("Arial", 10, FontStyle.Regular, GraphicsUnit.Point);
 
 			e.Graphics.DrawString("Cant", resaltar, Brushes.Black, new RectangleF(0, y, ancho, 20));
-			e.Graphics.DrawString("Precio Unitario", resaltar, Brushes.Black, new RectangleF(50, y, ancho, 20));
+			e.Graphics.DrawString("Precio", resaltar, Brushes.Black, new RectangleF(50, y, ancho, 20));
 			e.Graphics.DrawString("Total", resaltar, Brushes.Black, new RectangleF(200, y, ancho, 20));
 			y += 30;
 			listaArticus = listaArticus.OrderBy(x=>x.DtfLinea).ToList();
@@ -98,13 +99,13 @@ namespace PuraVidaStoreBK.Utilitarios
 				decimal total = articulo.DtfCantidad * articulo.DtfPrecio;
 				total += articulo.DtfMontoImpuestos != null ? articulo.DtfMontoImpuestos : 0;
 				e.Graphics.DrawString(articulo.DtfCantidad.ToString(), resaltar, Brushes.Black, new RectangleF(0, y, ancho, 20));
-				e.Graphics.DrawString(articulo.DtfPrecio.ToString("N0"), sistemaTitulo, Brushes.Black, new RectangleF(50, y, ancho, 20));
-				e.Graphics.DrawString(total.ToString("N2"), sistemaTitulo, Brushes.Black, new RectangleF(200, y, ancho, 20));
+				e.Graphics.DrawString(articulo.DtfPrecio.ToString("N0"), fontForeache, Brushes.Black, new RectangleF(50, y, ancho, 20));
+				e.Graphics.DrawString(total.ToString("N2"), fontForeache, Brushes.Black, new RectangleF(200, y, ancho, 20));
 				y += 20;
 
 				e.Graphics.DrawString(articulo.DtfIdProducto1.PrdCodigo, resaltar, Brushes.Black, new RectangleF(0, y, ancho, 20));
-				e.Graphics.DrawString(articulo.DtfIdProducto1.PrdNombre, sistemaTitulo, Brushes.Black, new RectangleF(100, y, ancho, 20));
-				y += 40;
+				e.Graphics.DrawString(articulo.DtfIdProducto1.PrdNombre, fontForeache, Brushes.Black, new RectangleF(60, y, ancho, 40));
+				y += 60;
 			}
 
 			e.Graphics.DrawString(separador, sistemaTitulo, Brushes.Black, new RectangleF(0, y, ancho + 100, 20));
