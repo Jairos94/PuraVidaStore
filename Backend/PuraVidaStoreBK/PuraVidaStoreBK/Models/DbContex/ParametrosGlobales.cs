@@ -27,6 +27,8 @@ public partial class ParametrosGlobales
 
     public string? PrgCedula { get; set; }
 
+    public string? PrgLeyenda { get; set; }
+
     public virtual ICollection<ImpuestosPorParametro> ImpuestosPorParametros { get; set; } = new List<ImpuestosPorParametro>();
 
     public virtual ParametrosEmail? ParametrosEmail { get; set; }

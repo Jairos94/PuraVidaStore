@@ -31,6 +31,16 @@ BEGIN
     ADD PrgCedula VARCHAR(50);
 END
 
+IF NOT EXISTS (
+    SELECT * FROM INFORMATION_SCHEMA.COLUMNS 
+    WHERE TABLE_NAME = 'ParametrosGlobales' 
+    AND COLUMN_NAME = 'PrgLeyenda'
+)
+BEGIN
+    ALTER TABLE ParametrosGlobales
+    ADD PrgLeyenda VARCHAR(800);
+END
+
 GO
 
 ALTER PROCEDURE [dbo].[SP_Inventarios]

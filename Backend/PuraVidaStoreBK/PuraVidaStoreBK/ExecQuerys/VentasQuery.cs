@@ -185,6 +185,8 @@ namespace PuraVidaStoreBK.ExecQuerys
                     .Include(x => x.FtrMayoristaNavigation).ThenInclude(x=>x.ClmIdPersonaNavigation)
                     .Include(x => x.ImpuestosPorFacturas).ThenInclude(x => x.IpfIdImpuestoNavigation)
                     .Include(x => x.FtrIdUsuarioNavigation)
+					.Include(x => x.FtrBodegaNavigation)
+                    .Include(x=> x.FtrFormaPagoNavigation)
                     //.Include(x => x.HistorialFacturasAnulada)
                     .Where(x=>x.FtrCodigoFactura== codigo ||
                               x.FtrId.ToString()==codigo)

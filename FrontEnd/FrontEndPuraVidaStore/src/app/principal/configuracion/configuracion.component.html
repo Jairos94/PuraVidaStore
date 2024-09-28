@@ -40,7 +40,9 @@
             </div>
 
             <div class="field">
-              <label htmlFor="swImpuestosIncluidos">Con impuestos incluidos </label>
+              <label htmlFor="swImpuestosIncluidos"
+                >Con impuestos incluidos
+              </label>
               <p-inputSwitch
                 formControlName="impuestosIncluidos"
               ></p-inputSwitch>
@@ -68,9 +70,7 @@
             </div>
 
             <div class="field">
-              <label htmlFor="lblUnidadesHabilitarMayorista"
-                >Impresoras
-              </label>
+              <label htmlFor="lblUnidadesHabilitarMayorista">Impresoras </label>
 
               <p-dropdown
                 formControlName="impresora"
@@ -78,7 +78,22 @@
               ></p-dropdown>
             </div>
 
+            <div class="field">
+              <span class="p-float-label">
+                <textarea
+                  rows="20"
+                  cols="30"
+                  pInputTextarea
+                  formControlName="leyenda"
+                  id="leyenda"
+                ></textarea>
+                <label htmlFor="leyenda">Leyenda</label>
+              </span>
+            </div>
+            
+  
           </p-accordionTab>
+
 
           <!-- <p-accordionTab header="Configuración del correo">
             <div class="field">
@@ -157,7 +172,6 @@
               </div>
             </div>
           </p-accordionTab> -->
-
         </div>
         <div class="sm:col md:col-1">
           <button

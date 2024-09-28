@@ -49,6 +49,7 @@ export class ConfiguracionComponent implements OnInit {
     prgNombreNegocio: null,
     prgCedula:  null,
     parametrosEmail: this.emial,
+    prgLeyenda:null,
     impuestosPorParametros: this.listaImpuestos,
     prgIdBodegaNavigation: null,
   };
@@ -82,7 +83,8 @@ export class ConfiguracionComponent implements OnInit {
     usuario: new FormControl(this.emial.preUser),
     clave: new FormControl(this.emial.preClave),
     ssl: new FormControl(this.emial.preSsl),
-    impresora: new FormControl<string | null>(null) // O asegúrate de que el tipo permita 'undefined' si es necesario
+    impresora: new FormControl<string | null>(null), // O asegúrate de que el tipo permita 'undefined' si es necesario
+    leyenda: new FormControl<string | null>(null) // O asegúrate de que el tipo permita 'undefined' si es necesario
 
   });
   listaImpresoras:string[]=[];
@@ -214,6 +216,7 @@ export class ConfiguracionComponent implements OnInit {
       this.parametrosGlobales.prgIdTiempo =
       this.ParametrosForm.get('tiempoParaRenovarId')?.value!;
       this.parametrosGlobales.prgImpresora = this.ParametrosForm.get('impresora')?.value!;
+      this.parametrosGlobales.prgLeyenda = this.ParametrosForm.get('leyenda')?.value!;
 
     if (this.CorreoHbilitado) {
       this.emial.preHost = this.ParametrosForm.get('host')?.value!;
@@ -293,7 +296,8 @@ export class ConfiguracionComponent implements OnInit {
       impuestosIncluidos: datos.prgImpustosIncluidos,
       tiempoParaRenovar: datos.prgCantidadTiempo,
       tiempoParaRenovarId: datos.prgIdTiempo,
-      impresora: datos.prgImpresora ?? null // Asigna null si el valor es undefined
+      impresora: datos.prgImpresora ?? null, // Asigna null si el valor es undefined
+      leyenda: datos.prgLeyenda ?? null, // Asigna null si el valor es undefined
     });
   }
   

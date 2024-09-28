@@ -14,7 +14,7 @@ namespace PuraVidaStoreBK.Utilitarios
 			_configuration = configuration;
 		}
 
-		public void Imprimir(Factura factura, ParametrosGlobales parametros)
+		public void Imprimir(Factura factura, ParametrosGlobales parametros, bool esReimprimir)
 		{
 			var pd = new PrintDocument();
 			PrinterSettings ps = new PrinterSettings();
@@ -24,14 +24,14 @@ namespace PuraVidaStoreBK.Utilitarios
 			pd.PrinterSettings = ps;
 
 			// Pasar la factura a ImprimirDocumento
-			pd.PrintPage += (sender, e) => ImprimirDocumento(sender, e, factura);
+			pd.PrintPage += (sender, e) => ImprimirDocumento(sender, e, factura, parametros,esReimprimir);
 
 			// Iniciar impresión
 			pd.Print();
 		}
 
 
-		private void ImprimirDocumento(object sender, PrintPageEventArgs e, Factura factura) 
+		private void ImprimirDocumento(object sender, PrintPageEventArgs e, Factura factura, ParametrosGlobales parametros,bool esReImpresion) 
 		{
 			/*
 			 * Fuente para el titulo
@@ -57,7 +57,7 @@ namespace PuraVidaStoreBK.Utilitarios
 				y+=45;  // Ajusta el incremento
 			}
 
-			e.Graphics.DrawString(_configuration["NombreTienda"], fuenteTitulo, Brushes.Black, new RectangleF(10,y,ancho,20));
+			e.Graphics.DrawString(_configuration["NombreTienda"], fuenteTitulo, Brushes.Black, new RectangleF(50,y,ancho,20));
 			y +=30;
 
 			/*Estan en la misma linea*/
@@ -78,6 +78,11 @@ namespace PuraVidaStoreBK.Utilitarios
 
 			var numeroRecibo = $"Recibo: {factura.FtrCodigoFactura}";
 			e.Graphics.DrawString(numeroRecibo, sistemaTitulo, Brushes.Black, new RectangleF(0, y, ancho, 20));
+			if (esReImpresion) 
+			{
+				Font fontReimpresion = new Font("Arial", 12, FontStyle.Bold, GraphicsUnit.Point);
+				e.Graphics.DrawString("Reimpresión", fontReimpresion, Brushes.Black, new RectangleF(150, y, ancho, 20));
+			}
 			y += 20;
 
 			e.Graphics.DrawString(separador, sistemaTitulo, Brushes.Black, new RectangleF(0, y, ancho + 100, 20));
@@ -140,6 +145,31 @@ namespace PuraVidaStoreBK.Utilitarios
 			e.Graphics.DrawString(resumen.FtrCambio.HasValue ? resumen.FtrCambio.Value.ToString("N2") : "", sistemaTitulo, Brushes.Black, new RectangleF(150, y, ancho, 20));
 			y += 20;
 
+			e.Graphics.DrawString(separador, sistemaTitulo, Brushes.Black, new RectangleF(0, y, ancho + 100, 20));
+			y += 20;
+
+			if (parametros.PrgLeyenda != null) 
+			{
+				string[] lineas = parametros.PrgLeyenda.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+
+				if (lineas.Length > 0)
+				{
+					foreach (var linea in lineas)
+					{
+						if (!string.IsNullOrEmpty(linea)) 
+						{
+							e.Graphics.DrawString(linea, sistemaTitulo, Brushes.Black, new RectangleF(0, y, 300, 40));
+							y += 20;
+						}
+					}
+				}
+				else 
+				{
+					e.Graphics.DrawString(parametros.PrgLeyenda, sistemaTitulo, Brushes.Black, new RectangleF(0, y, 300, 60));
+					y += 20;
+				}
+			}
+			y += 250;
 			e.Graphics.DrawString(separador, sistemaTitulo, Brushes.Black, new RectangleF(0, y, ancho + 100, 20));
 			y += 20;
 		}

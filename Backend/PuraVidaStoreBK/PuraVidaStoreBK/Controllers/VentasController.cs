@@ -123,7 +123,7 @@ namespace PuraVidaStoreBK.Controllers
                     facturaEmail.FtrBodegaNavigation = facturaFaltantes.FtrBodegaNavigation;
                     var listaCorreo = new List<string> { facturaEmail.FtrCorreoEnvio };
                    // _envioCorreo.EnviarFactura(facturaEmail, parametrosGlobales.ParametrosEmail, listaCorreo);
-                    _imprimir.Imprimir(facturaEmail, parametrosGlobales);
+                    _imprimir.Imprimir(facturaEmail, parametrosGlobales,false);
                 }
 
 
@@ -222,21 +222,15 @@ namespace PuraVidaStoreBK.Controllers
         }
 
         [HttpGet ("ReenviarFactura"), Authorize]
-        public async Task<IActionResult> ReenviarFactura(string idFactura, string correo) 
+        public async Task<IActionResult> ReenviarFactura(string idFactura) 
         {
             try
             {
                 var facturaEmail = await _ventas.consultarFactura(idFactura);
                 var parametrosGlobales = await _parametros.ObtenerParametrosId(facturaEmail.FtrBodega);
-                if (parametrosGlobales != null && parametrosGlobales.ParametrosEmail != null)
+                if (parametrosGlobales != null)
                 {
-
-                    facturaEmail.DetalleFacturas = await _ventas.ConsultarDetallePorFactura(facturaEmail.FtrId);
-                    var facturaFaltantes = await _ventas.ConsultarFormaPagoPorFactura(facturaEmail.FtrId);
-                    facturaEmail.FtrFormaPagoNavigation = facturaFaltantes.FtrFormaPagoNavigation;
-                    facturaEmail.FtrBodegaNavigation = facturaFaltantes.FtrBodegaNavigation;
-                    var listaCorreo = new List<string> { correo };
-                    _envioCorreo.EnviarFactura(facturaEmail, parametrosGlobales.ParametrosEmail, listaCorreo);
+                    _imprimir.Imprimir(facturaEmail,parametrosGlobales,true);
                 }
                 return Ok("Se hizo el envio del correo");
             }
