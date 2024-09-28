@@ -16,5 +16,7 @@ namespace PuraVidaStoreBK.ExecQuerys.Interfaces
         Task<Factura> consultarFactura(string codigo);
         Task<List<DetalleFactura>> ConsultarDetallePorFactura(long idFactura);
         Task<Factura> ConsultarFormaPagoPorFactura(long idFactura);
-    }
+        Factura GuardarFactura(Factura factura);
+
+	}
 }
