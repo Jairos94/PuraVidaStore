@@ -68,6 +68,7 @@ namespace PuraVidaStoreBK.ExecQuerys
                     var retorno = await dbContex.ParametrosGlobales
                         .Where(x => x.PrgIdBodega == idBodega)
                         .Include(x=>x.ParametrosEmail)
+                        .Include (x=>x.PrgIdBodegaNavigation)
                         .FirstOrDefaultAsync();
 
                     return retorno;

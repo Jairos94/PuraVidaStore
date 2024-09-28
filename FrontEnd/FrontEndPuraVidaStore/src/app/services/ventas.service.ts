@@ -45,10 +45,9 @@ export class VentasService {
 
   }
 
-  ReenviarFactura(factura:string,correo:string):Observable<string>{
+  ReenviarFactura(factura:string):Observable<string>{
     const params = new HttpParams()
     .set('idFactura', factura)
-    .set('correo', correo);
     return this.http.get<string>(`${this.baseUrl}Ventas/ReenviarFactura`,{params});
   }
 }

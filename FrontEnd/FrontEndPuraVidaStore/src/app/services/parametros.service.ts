@@ -22,6 +22,13 @@ export class ParametrosService {
     );
   }
 
+  ObtenerImpresoras(): Observable<string[]> {
+
+    return this.http.get<string[]>(
+      `${this.baseUrl}Parametros/ObtnerImpresar`
+    );
+  }
+
   ObtenerListaParaRenovar(): Observable<TiempoParaRenovarModel[]> {
     return this.http.get<TiempoParaRenovarModel[]>(
       `${this.baseUrl}Parametros/ListaTiempoParaRenovar`

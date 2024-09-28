@@ -182,12 +182,9 @@ export class AnularFacturasComponent implements OnInit {
 
   }
 
-  asignarCorreo(){
-    this.correo = this.facturaseleccionada.ftrCorreoEnvio!;
-    this.habilitarCorreo = true;
-  }
+
   reenviarFactura() {
-    this.ventas.ReenviarFactura(this.facturaseleccionada.ftrId.toString(), this.correo).subscribe(x=>
+    this.ventas.ReenviarFactura(this.facturaseleccionada.ftrId.toString()).subscribe(x=>
       {this.habilitarCorreo =false;},
       _e=>{
         this.habilitarCorreo =false;

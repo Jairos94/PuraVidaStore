@@ -97,7 +97,7 @@ namespace PuraVidaStoreBK.Controllers
             return Ok(_mapper.Map<List<TiempoParaRenovarDTO>>(await _parametros.ListaTiempoParaRenovar()));
         }
 
-        [HttpGet("ObtnerImpresar")/*, Authorize*/]
+        [HttpGet("ObtnerImpresar"), Authorize]
         public async Task<IActionResult> ObtnerImpresar()
         {
             try
