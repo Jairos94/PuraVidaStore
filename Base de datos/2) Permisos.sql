@@ -28,3 +28,12 @@ GO
 ALTER ROLE db_datareader ADD MEMBER Tienda;
 ALTER ROLE db_datawriter ADD MEMBER Tienda;
 GO
+
+
+-- Cambiar a la base de datos PuraVidaStore
+USE PuraVidaStore;
+GO
+
+-- Otorgar permiso de ejecución a todos los procedimientos en el esquema dbo
+GRANT EXECUTE ON SCHEMA::dbo TO Tienda;
+GO
