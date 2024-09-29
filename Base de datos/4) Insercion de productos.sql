@@ -3,6 +3,14 @@ GO
 
 /*Primero Inserta las categor[ias*/
 -- Inserta las categorías solo si no existen
+IF NOT EXISTS (SELECT 1 FROM[dbo].[Bodegas] WHERE bdgDescripcion = 'Secundaria')
+BEGIN
+    INSERT INTO [dbo].[Bodegas] ([bdgDescripcion],[bdgVisible])
+    VALUES ('Secundaria', 1);
+END
+
+/*Primero Inserta las categor[ias*/
+-- Inserta las categorías solo si no existen
 IF NOT EXISTS (SELECT 1 FROM [dbo].[TipoProducto] WHERE [TppDescripcion] = 'COSMÉTICOS')
 BEGIN
     INSERT INTO [dbo].[TipoProducto] ([TppDescripcion], [TppVisible])
@@ -273,7 +281,7 @@ BEGIN
            ,NULL
            ,0
            , (SELECT TOP(1) TppId FROM [dbo].[TipoProducto]  WHERE TppDescripcion = @Categoria)
-           ,0
+           ,NULL
            ,''
            ,NULL
            ,1

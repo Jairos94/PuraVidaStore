@@ -2,16 +2,20 @@
 using PuraVidaStoreBK.ExecQuerys.Interfaces;
 using PuraVidaStoreBK.Models.DbContex;
 using Serilog;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace PuraVidaStoreBK.ExecQuerys
 {
     public class VentasQuery : IVentasQuery
     {
-        private readonly PuraVidaStoreContext dbContex;
+		private readonly IDataBase _data;
+		private readonly PuraVidaStoreContext dbContex;
 
-        public VentasQuery( PuraVidaStoreContext _dbContex)
+        public VentasQuery(IDataBase conexion, PuraVidaStoreContext _dbContex)
         {
-            dbContex = _dbContex;
+			_data = conexion;
+			dbContex = _dbContex;
         }
         public async Task<Factura> ingresarFactura(Factura factura)
         {
@@ -236,6 +240,97 @@ namespace PuraVidaStoreBK.ExecQuerys
             return retorno;
         }
 
+		public Factura GuardarFactura(Factura factura)
+		{
+			SqlConnection conn = _data.GetConnection();
+			try
+			{
+				SqlDataReader reader;
+				SqlCommand command = conn.CreateCommand();
+				conn.Open();
+				command.CommandType = CommandType.StoredProcedure;
+				command.CommandText = "IngresarFacturacion";
 
-    }
+				// Parámetros de la factura
+				command.Parameters.Add("@IdUsuario", SqlDbType.Int).Value = factura.FtrIdUsuario;
+				command.Parameters.Add("@IdBodega", SqlDbType.Int).Value = factura.FtrBodega;
+				command.Parameters.Add("@IdFormaPago", SqlDbType.Int).Value = factura.FtrFormaPago;
+				command.Parameters.Add("@IdClienteMayorista", SqlDbType.BigInt).Value = factura.FtrMayorista;
+				command.Parameters.Add("@CorreoEnvio", SqlDbType.VarChar, 250).Value = factura.FtrCorreoEnvio;  // Corrige el tipo
+				command.Parameters.Add("@ResumenMontoTotal", SqlDbType.Decimal).Value = factura.FacturaResumen.FirstOrDefault().FtrMontoTotal;
+				command.Parameters.Add("@ResumemMontoImpuestos", SqlDbType.Decimal).Value = factura.FacturaResumen.FirstOrDefault().FtrMontoImpuestos;
+				command.Parameters.Add("@ResumenMontoPagado", SqlDbType.Decimal).Value = factura.FacturaResumen.FirstOrDefault().FtrMontoPagado;
+				command.Parameters.Add("@ResumenMontoCambio", SqlDbType.Decimal).Value = factura.FacturaResumen.FirstOrDefault().FtrCambio;
+
+				// Crear y llenar la tabla para DetalleFactura
+				DataTable detalleFacturaTable = new DataTable();
+				detalleFacturaTable.Columns.Add("IdProducto", typeof(long));
+				detalleFacturaTable.Columns.Add("Linea", typeof(int));
+				detalleFacturaTable.Columns.Add("Precio", typeof(decimal));
+				detalleFacturaTable.Columns.Add("MontoImpuesto", typeof(decimal));
+				detalleFacturaTable.Columns.Add("MontoDescuento", typeof(decimal));
+				detalleFacturaTable.Columns.Add("Cantidad", typeof(int));
+
+				var detalleProductos = factura.DetalleFacturas;
+				var totalLineas = 0;
+				foreach (var detalle in detalleProductos)
+				{
+					totalLineas++;
+					detalle.DtfCantidad = totalLineas;
+
+					detalleFacturaTable.Rows.Add(detalle.DtfIdProducto, detalle.DtfLinea, detalle.DtfPrecio, detalle.DtfMontoImpuestos, detalle.DtfDescuento, detalle.DtfCantidad);
+				}
+
+				SqlParameter detalleFacturaParam = command.Parameters.AddWithValue("@DetalleFactura", detalleFacturaTable);
+				detalleFacturaParam.SqlDbType = SqlDbType.Structured;
+				detalleFacturaParam.TypeName = "dbo.InDetalleFactura";  // Nombre del tipo de tabla
+
+				// Crear y llenar la tabla para ImpuestosPorFactura (si aplica)
+				DataTable impuestosTable = new DataTable();
+				impuestosTable.Columns.Add("IdImpuesto", typeof(int));
+				impuestosTable.Columns.Add("Porcentaje", typeof(decimal));
+
+				if (factura.ImpuestosPorFacturas != null && factura.ImpuestosPorFacturas.Count > 0)
+				{
+					foreach (var impuesto in factura.ImpuestosPorFacturas)
+					{
+						impuestosTable.Rows.Add(impuesto.IpfId, impuesto.IpfPorcentaje);
+					}
+				}
+
+				SqlParameter impuestosParam = command.Parameters.AddWithValue("@Impuestos", impuestosTable);
+				impuestosParam.SqlDbType = SqlDbType.Structured;
+				impuestosParam.TypeName = "dbo.ImpuestosPorFactura";  // Nombre del tipo de tabla
+
+				// Ejecutar el comando
+				reader = command.ExecuteReader();
+				while (reader.Read())
+				{
+					try
+					{
+						factura.FtrId = reader.GetInt64(0);
+						factura.FtrCodigoFactura = reader.GetString(1); // Corrige el índice
+					}
+					catch (Exception ex)
+					{
+						Log.Error(ex.StackTrace);
+						factura = new Factura();
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				Log.Error(ex.StackTrace);
+				factura = new Factura();
+			}
+			finally
+			{
+				conn.Close();
+			}
+
+			return factura;
+		}
+
+
+	}
 }

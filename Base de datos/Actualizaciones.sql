@@ -121,17 +121,18 @@ DROP TABLE #TempInventarios;
 END
 
 GO
--- Declarar variable para el SQL dinámico
-DECLARE @sql NVARCHAR(MAX) = N'';
 
--- Construir los GRANT para los procedimientos almacenados del esquema dbo
-SELECT @sql += 'IF NOT EXISTS (SELECT * FROM sys.database_permissions WHERE grantee_principal_id = USER_ID(''Tienda'') AND major_id = OBJECT_ID(''[' + ROUTINE_SCHEMA + '].[' + ROUTINE_NAME + ']'') AND permission_name = ''EXECUTE'') '
-               + 'BEGIN '
-               + 'GRANT EXECUTE ON OBJECT::[' + ROUTINE_SCHEMA + '].[' + ROUTINE_NAME + '] TO Tienda; '
-               + 'END; '
-FROM INFORMATION_SCHEMA.ROUTINES
-WHERE ROUTINE_TYPE = 'PROCEDURE' 
-AND ROUTINE_SCHEMA = 'dbo';
+---- Declarar variable para el SQL dinámico
+--DECLARE @sql NVARCHAR(MAX) = N'';
 
--- Ejecutar el SQL dinámico
-EXEC sp_executesql @sql;
+---- Construir los GRANT para los procedimientos almacenados del esquema dbo
+--SELECT @sql += 'IF NOT EXISTS (SELECT * FROM sys.database_permissions WHERE grantee_principal_id = USER_ID(''Tienda'') AND major_id = OBJECT_ID(''[' + ROUTINE_SCHEMA + '].[' + ROUTINE_NAME + ']'') AND permission_name = ''EXECUTE'') '
+--               + 'BEGIN '
+--               + 'GRANT EXECUTE ON OBJECT::[' + ROUTINE_SCHEMA + '].[' + ROUTINE_NAME + '] TO Tienda; '
+--               + 'END; '
+--FROM INFORMATION_SCHEMA.ROUTINES
+--WHERE ROUTINE_TYPE = 'PROCEDURE' 
+--AND ROUTINE_SCHEMA = 'dbo';
+
+---- Ejecutar el SQL dinámico
+--EXEC sp_executesql @sql;
