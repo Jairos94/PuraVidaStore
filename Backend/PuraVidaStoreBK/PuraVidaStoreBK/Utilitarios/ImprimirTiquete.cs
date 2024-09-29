@@ -109,7 +109,7 @@ namespace PuraVidaStoreBK.Utilitarios
 				y += 20;
 
 				e.Graphics.DrawString(articulo.DtfIdProducto1.PrdCodigo, resaltar, Brushes.Black, new RectangleF(0, y, ancho, 20));
-				e.Graphics.DrawString(articulo.DtfIdProducto1.PrdNombre, fontForeache, Brushes.Black, new RectangleF(60, y, ancho, 40));
+				e.Graphics.DrawString(articulo.DtfIdProducto1.PrdNombre, fontForeache, Brushes.Black, new RectangleF(100, y, ancho, 40));
 				y += 60;
 			}
 
