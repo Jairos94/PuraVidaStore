@@ -281,7 +281,7 @@ BEGIN
            ,NULL
            ,0
            , (SELECT TOP(1) TppId FROM [dbo].[TipoProducto]  WHERE TppDescripcion = @Categoria)
-           ,0
+           ,NULL
            ,''
            ,NULL
            ,1
