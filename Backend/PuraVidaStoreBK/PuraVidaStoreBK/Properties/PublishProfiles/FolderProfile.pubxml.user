@@ -4,8 +4,8 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 -->
 <Project>
   <PropertyGroup>
-    <_PublishTargetUrl>E:\PuraVida\PuraVidaStore\Backend\PuraVidaStoreBK\PuraVidaStoreBK\bin\Release\net7.0\publish\</_PublishTargetUrl>
-    <History>True|2024-09-28T17:08:01.5364078Z||;</History>
+    <_PublishTargetUrl>E:\PuraVida\PuraVidaStore\Publish\Api</_PublishTargetUrl>
+    <History>True|2024-09-30T00:24:11.0295160Z||;True|2024-09-29T18:23:58.1660294-06:00||;True|2024-09-29T17:32:42.3344517-06:00||;</History>
     <LastFailureDetails />
   </PropertyGroup>
 </Project>

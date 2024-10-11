@@ -77,11 +77,11 @@ namespace PuraVidaStoreBK.Utilitarios
 			y += 20;
 
 			var numeroRecibo = $"Recibo: {factura.FtrCodigoFactura}";
-			e.Graphics.DrawString(numeroRecibo, sistemaTitulo, Brushes.Black, new RectangleF(0, y, ancho, 20));
+			e.Graphics.DrawString(numeroRecibo, new Font("Arial", 9, FontStyle.Regular, GraphicsUnit.Point), Brushes.Black, new RectangleF(0, y, ancho, 20));
 			if (esReImpresion) 
 			{
-				Font fontReimpresion = new Font("Arial", 12, FontStyle.Bold, GraphicsUnit.Point);
-				e.Graphics.DrawString("Reimpresión", fontReimpresion, Brushes.Black, new RectangleF(150, y, ancho, 20));
+				Font fontReimpresion = new Font("Arial", 9, FontStyle.Bold, GraphicsUnit.Point);
+				e.Graphics.DrawString("Reimpresión", fontReimpresion, Brushes.Black, new RectangleF(170, y, ancho, 20));
 			}
 			y += 20;
 
@@ -159,7 +159,7 @@ namespace PuraVidaStoreBK.Utilitarios
 						if (!string.IsNullOrEmpty(linea)) 
 						{
 							e.Graphics.DrawString(linea, sistemaTitulo, Brushes.Black, new RectangleF(0, y, 300, 40));
-							y += 20;
+							y += 60;
 						}
 					}
 				}
