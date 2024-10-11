@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RptDataSource xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Name="Pura Vida">
+  <ConnectionProperties>
+    <Extension>SQL</Extension>
+    <ConnectString>Data Source=JRIVERA;Initial Catalog=PuraVidaStore;Trusted_Connection=True;TrustServerCertificate=True</ConnectString>
+  </ConnectionProperties>
+  <DataSourceID>18bd1527-6408-4233-92f8-d5fce9c5a4b2</DataSourceID>
+</RptDataSource>
