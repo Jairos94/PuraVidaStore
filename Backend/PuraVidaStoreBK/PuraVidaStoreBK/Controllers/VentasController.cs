@@ -176,6 +176,7 @@ namespace PuraVidaStoreBK.Controllers
             try
             {
                 var facturaEmail = await _ventas.consultarFactura(idFactura);
+                facturaEmail.DetalleFacturas = await _ventas.ConsultarDetallePorFactura(facturaEmail.FtrId);
                 var parametrosGlobales = await _parametros.ObtenerParametrosId(facturaEmail.FtrBodega);
                 if (parametrosGlobales != null)
                 {

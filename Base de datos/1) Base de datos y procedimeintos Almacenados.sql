@@ -823,7 +823,7 @@ AS
 BEGIN
     DECLARE @FacturaId BIGINT;  -- Variable para almacenar el ID de la factura
     DECLARE @CodigoFactura NVARCHAR(20);  -- Variable para almacenar el código de la factura
-    DECLARE @FechaActual DATE = GETDATE();  -- Obtener la fecha actual
+    DECLARE @FechaActual DATETIME = GETDATE();  -- Obtener la fecha actual
 
     /* Inserta la factura */
     INSERT INTO [dbo].[Factura]
