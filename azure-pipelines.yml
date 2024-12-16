@@ -4,7 +4,9 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- master
+  branches:
+    include:
+      - 'master'  # Solo ejecuta el pipeline cuando haya un cambio en la rama "master"
 
 pool:
   name: 'localPoolJrivera'  # Asegúrate de que tu agente local esté configurado correctamente
