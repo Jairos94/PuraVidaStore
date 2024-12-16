@@ -64,7 +64,7 @@ steps:
   displayName: 'npm install'
 
 - script: |
-    npm run build -- --outputPath=$(outputFolder)\FE
+    ng build --prod --output-path=$(outputFolder)\FE
   workingDirectory: '$(Build.SourcesDirectory)/FrontEnd/FrontEndPuraVidaStore'
   displayName: 'Construir FrontEnd/FrontEndPuraVidaStore'
 
