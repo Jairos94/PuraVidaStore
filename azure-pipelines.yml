@@ -37,7 +37,7 @@ steps:
   inputs:
     command: 'build'
     projects: '$(solution)'
-    arguments: '--configuration $(buildConfiguration) --output $(outputFolder)\build_output'
+    arguments: '--configuration $(buildConfiguration)'
 
 # Paso 4: Ejecutar pruebas (si tienes proyectos de prueba)
 - task: DotNetCoreCLI@2
