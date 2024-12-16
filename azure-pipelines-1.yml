@@ -1,0 +1,36 @@
+# Node.js with Angular
+# Build a Node.js project that uses Angular.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- master
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  outputFolder: 'C:\publish\FEPuraVida'  # Ruta en el agente Windows
+
+steps:
+# Paso 1: Instalar Node.js
+- task: NodeTool@0
+  inputs:
+    versionSpec: '20.x'
+  displayName: 'Install Node.js'
+
+# Paso 2: Instalar dependencias y construir el proyecto Angular
+- script: |
+    npm install -g @angular/cli
+    npm install
+    ng build --prod --output-path=$(outputFolder)  # Publica el build en la carpeta especificada
+  displayName: 'npm install and build'
+
+# Paso 3: (Opcional) Si quieres que el archivo sea un artefacto, puedes agregar un paso para publicarlo
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: $(outputFolder)
+    ArtifactName: 'angularBuild'
+    publishLocation: 'Container'
+  displayName: 'Publish Build Artifacts'
+
