@@ -66,10 +66,12 @@ steps:
 
 # Paso 7: Instalar dependencias y construir el proyecto Angular
 - script: |
-    cd FrontEnd/FrontEndPuraVidaStore  # Cambiar al directorio donde está el proyecto Angular
-    npm install  # Instalar las dependencias de Angular
-    ng build --prod --output-path=$(angularProjectFolder)  # Construir el proyecto Angular y colocarlo en la ruta C:\publish\angularApp
+    pushd FrontEnd/FrontEndPuraVidaStore  # Cambiar al directorio correcto en Windows
+    npm install  # Instalar dependencias
+    ng build --prod --output-path=$(angularProjectFolder)  # Construir el proyecto Angular
+    popd  # Volver al directorio anterior
   displayName: 'Instalar dependencias y construir el proyecto Angular'
+
   
 # Paso 8: Publicar artefactos del API (opcional, si quieres almacenarlos como artefactos de la construcción)
 - task: PublishBuildArtifacts@1
