@@ -66,8 +66,7 @@ steps:
 
 # Paso 7: Instalar dependencias y construir el proyecto Angular
 - script: |
-    npm install -g @angular/cli  # Instalar Angular CLI
-    npm install  # Instalar las dependencias del proyecto Angular
+    npm install
     ng build --prod --output-path=$(angularProjectFolder)  # Construir el proyecto Angular y colocarlo en la ruta C:\publish\angularApp
   displayName: 'Instalar dependencias y construir el proyecto Angular'
 
