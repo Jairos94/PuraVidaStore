@@ -7,28 +7,46 @@ trigger:
 - master
 
 pool:
-  vmImage: 'windows-latest'
+  name: 'localPoolJrivera'  # Asegúrate de que tu agente local esté configurado correctamente
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
+  solution: '**/*.sln'  # Ruta de la solución, ajusta según tu estructura
   buildConfiguration: 'Release'
+  buildPlatform: 'Any CPU'
+  outputFolder: 'C:\agent_build_output'  # Ruta de salida en tu máquina local
 
 steps:
-- task: NuGetToolInstaller@1
-
-- task: NuGetCommand@2
+# Paso 1: Instalar la herramienta .NET 7 (asegúrate de tener .NET SDK 7 en tu máquina local)
+- task: UseDotNet@2
   inputs:
-    restoreSolution: '$(solution)'
+    packageType: 'sdk'
+    version: '7.x'
+    installationPath: $(Agent.ToolsDirectory)/dotnet
 
-- task: VSBuild@1
+# Paso 2: Restaurar los paquetes NuGet
+- task: DotNetCoreCLI@2
   inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    command: 'restore'
+    projects: '$(solution)'
 
-- task: VSTest@2
+# Paso 3: Compilar el proyecto en la carpeta de salida personalizada
+- task: DotNetCoreCLI@2
   inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    command: 'build'
+    projects: '$(solution)'
+    arguments: '--configuration $(buildConfiguration) --output $(outputFolder)\build_output'
+
+# Paso 4: Ejecutar pruebas (si tienes proyectos de prueba)
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: '$(solution)'
+    arguments: '--configuration $(buildConfiguration)'
+
+# Paso 5: Publicar el proyecto en la carpeta de salida personalizada
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    projects: '$(solution)'
+    arguments: '--configuration $(buildConfiguration) --output $(outputFolder)\publish_output'
+
