@@ -13,11 +13,12 @@ variables:
   solution: '**/*.sln'  # Ruta de la solución, ajusta según tu estructura
   buildConfiguration: 'Release'
   buildPlatform: 'Any CPU'
-  outputFolder: 'C:\agent_build_output'  # Ruta de salida en tu máquina local
+  outputFolder: 'C:\publish\puraVida'  # Ruta de salida en tu máquina local
 
 steps:
 # Paso 1: Instalar la herramienta .NET 7 (asegúrate de tener .NET SDK 7 en tu máquina local)
 - task: UseDotNet@2
+  displayName: 'Instalar .NET SDK 7'  # Nombre personalizado
   inputs:
     packageType: 'sdk'
     version: '7.x'
@@ -25,12 +26,14 @@ steps:
 
 # Paso 2: Restaurar los paquetes NuGet
 - task: DotNetCoreCLI@2
+  displayName: 'Restaurar dependencias NuGet'  # Nombre personalizado
   inputs:
     command: 'restore'
     projects: '$(solution)'
 
 # Paso 3: Compilar el proyecto en la carpeta de salida personalizada
 - task: DotNetCoreCLI@2
+  displayName: 'Compilar proyecto'  # Nombre personalizado
   inputs:
     command: 'build'
     projects: '$(solution)'
@@ -38,6 +41,7 @@ steps:
 
 # Paso 4: Ejecutar pruebas (si tienes proyectos de prueba)
 - task: DotNetCoreCLI@2
+  displayName: 'Ejecutar pruebas'  # Nombre personalizado
   inputs:
     command: 'test'
     projects: '$(solution)'
@@ -45,6 +49,7 @@ steps:
 
 # Paso 5: Publicar el proyecto en la carpeta de salida personalizada
 - task: DotNetCoreCLI@2
+  displayName: 'Publicar proyecto'  # Nombre personalizado
   inputs:
     command: 'publish'
     projects: '$(solution)'
