@@ -56,28 +56,16 @@ steps:
   inputs:
     command: 'publish'
     projects: '$(solution)'
-    arguments: '--configuration $(buildConfiguration) --output $(outputFolder)\publish_output'
-
-# Paso 6: Instalar Node.js y preparar el frontend Angular
-- task: UseNode@1
-  inputs:
-    version: '16.x'
-  displayName: 'Instalar Node.js'
+    arguments: '--configuration $(buildConfiguration) --output $(outputFolder)\API'
 
 - script: |
     npm install
-  workingDirectory: '$(Build.SourcesDirectory)/angularApp'
+  workingDirectory: '$(Build.SourcesDirectory)/FrontEnd/FrontEndPuraVidaStore'
   displayName: 'npm install'
 
 - script: |
-    npm run build -- --prod
-  workingDirectory: '$(Build.SourcesDirectory)/angularApp'
-  displayName: 'npm build'
+    npm run build -- --outputPath=$(outputFolder)\FE
+  workingDirectory: '$(Build.SourcesDirectory)/FrontEnd/FrontEndPuraVidaStore'
+  displayName: 'Construir FrontEnd/FrontEndPuraVidaStore'
 
-# Paso 7: Copiar los archivos de Angular al directorio del backend
-- task: CopyFiles@2
-  displayName: 'Copiar archivos de Angular al backend'
-  inputs:
-    SourceFolder: '$(Build.SourcesDirectory)/angularApp/dist'
-    Contents: '**/*'
-    TargetFolder: '$(Build.SourcesDirectory)/wwwroot'
+
